@@ -111,7 +111,7 @@ class tx_kickstarter_compilefiles {
 			}
 		}
 
-				// This should be BEFORE PI.
+		// This should be BEFORE PI.
 		if (is_array($this->wizArray["fields"]))	{
 			reset($this->wizArray["fields"]);
 			while(list($k,$config)=each($this->wizArray["fields"]))	{

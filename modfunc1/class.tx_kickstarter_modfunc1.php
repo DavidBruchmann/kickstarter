@@ -55,11 +55,13 @@ class tx_kickstarter_modfunc1 extends t3lib_extobjbase {
 
 class tx_kickstarter_modfunc2 extends tx_kickstarter_modfunc1 {
 	function main()	{
-		$kickstarter = $this->initKickstarter();
-		$kickstarter->modData["wizArray_ser"] = base64_encode($this->getWizardFormDat());
-		$content = $kickstarter->mgm_wizard();
-
-		return '</form>'.$this->pObj->doc->section('Kickstarter wizard',$content,0,1).'<form>';
+	  $kickstarter = $this->initKickstarter();
+	  if(!$kickstarter->modData['wizArray_ser']) {
+	    $kickstarter->modData['wizArray_ser'] = base64_encode($this->getWizardFormDat());
+	  }
+	  $content = $kickstarter->mgm_wizard();
+	  
+	  return '</form>'.$this->pObj->doc->section('Kickstarter wizard',$content,0,1).'<form>';
 	}
 	
 	function getWizardFormDat() {

@@ -147,6 +147,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		$saveKey = $this->saveKey = $this->wizArray["save"]["extension_key"] = trim($this->wizArray["save"]["extension_key"]);
 		$this->outputWOP = $this->wizArray["save"]["print_wop_comments"] ? 1 : 0;
 
+
+
 		if ($saveKey)	{
 			$this->extKey=$saveKey;
 			$this->extKey_nusc=str_replace("_","",$saveKey);
