@@ -379,9 +379,9 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		$DBfields[] = trim($this->sPS('
 			uid int(11) NOT NULL auto_increment,
 			pid int(11) DEFAULT "0" NOT NULL,
-			tstamp int(11) unsigned DEFAULT "0" NOT NULL,
-			crdate int(11) unsigned DEFAULT "0" NOT NULL,
-			cruser_id int(11) unsigned DEFAULT "0" NOT NULL,
+			tstamp int(11) DEFAULT "0" NOT NULL,
+			crdate int(11) DEFAULT "0" NOT NULL,
+			cruser_id int(11) DEFAULT "0" NOT NULL,
 		',0));
 
 		if ($config['type_field'])	{
@@ -389,8 +389,8 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		}
 		if ($config['versioning'])	{
 			$ctrl[] = '"versioning" => "1",	' . $this->WOPcomment('WOP:'.$WOP.'[versioning]');
-			$DBfields[] = 't3ver_oid int(11) unsigned DEFAULT "0" NOT NULL,';
-			$DBfields[] = 't3ver_id int(11) unsigned DEFAULT "0" NOT NULL,';
+			$DBfields[] = 't3ver_oid int(11) DEFAULT "0" NOT NULL,';
+			$DBfields[] = 't3ver_id int(11) DEFAULT "0" NOT NULL,';
 			$DBfields[] = 't3ver_label varchar(30) DEFAULT "" NOT NULL,';
 		}
 		if ($config["localization"])	{
@@ -444,17 +444,17 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		}
 		if ($config["sorting"])	{
 			$ctrl[] = '"sortby" => "sorting",	'.$this->WOPcomment('WOP:'.$WOP.'[sorting]');
-			$DBfields[] = "sorting int(10) unsigned DEFAULT '0' NOT NULL,";
+			$DBfields[] = "sorting int(10) DEFAULT '0' NOT NULL,";
 		} else {
 			$ctrl[] = '"default_sortby" => "ORDER BY '.trim($config["sorting_field"].' '.($config["sorting_desc"]?"DESC":"")).'",	'.$this->WOPcomment('WOP:'.$WOP.'[sorting] / '.$WOP.'[sorting_field] / '.$WOP.'[sorting_desc]');
 		}
 		if ($config["add_deleted"])	{
 			$ctrl[] = '"delete" => "deleted",	'.$this->WOPcomment('WOP:'.$WOP.'[add_deleted]');
-			$DBfields[] = "deleted tinyint(4) unsigned DEFAULT '0' NOT NULL,";
+			$DBfields[] = "deleted tinyint(4) DEFAULT '0' NOT NULL,";
 		}
 		if ($config["add_hidden"])	{
 			$enFields[] = '"disabled" => "hidden",	'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden]');
-			$DBfields[] = "hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,";
+			$DBfields[] = "hidden tinyint(4) DEFAULT '0' NOT NULL,";
 			$columns["hidden"] = trim($this->sPS('
 				"hidden" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden]').'
 					"exclude" => 1,
@@ -468,7 +468,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		}
 		if ($config["add_starttime"])	{
 			$enFields[] = '"starttime" => "starttime",	'.$this->WOPcomment('WOP:'.$WOP.'[add_starttime]');
-			$DBfields[] = "starttime int(11) unsigned DEFAULT '0' NOT NULL,";
+			$DBfields[] = "starttime int(11) DEFAULT '0' NOT NULL,";
 			$columns["starttime"] = trim($this->sPS('
 				"starttime" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_starttime]').'
 					"exclude" => 1,
@@ -486,7 +486,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		}
 		if ($config["add_endtime"])	{
 			$enFields[] = '"endtime" => "endtime",	'.$this->WOPcomment('WOP:'.$WOP.'[add_endtime]');
-			$DBfields[] = "endtime int(11) unsigned DEFAULT '0' NOT NULL,";
+			$DBfields[] = "endtime int(11) DEFAULT '0' NOT NULL,";
 			$columns["endtime"] = trim($this->sPS('
 				"endtime" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_endtime]').'
 					"exclude" => 1,

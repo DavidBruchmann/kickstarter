@@ -1159,10 +1159,10 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			case 'check_10':
 				$configL[]='"type" => "check",';
 				if ($t=='check')	{
-					$DBfields[] = $fConf['fieldname'].' tinyint(3) unsigned DEFAULT "0" NOT NULL,';
+					$DBfields[] = $fConf['fieldname'].' tinyint(3) DEFAULT "0" NOT NULL,';
 					if ($fConf['conf_check_default'])	$configL[]='"default" => 1,	'.$this->WOPcomment('WOP:'.$WOP.'[conf_check_default]');
 				} else {
-					$DBfields[] = $fConf['fieldname'].' int(11) unsigned DEFAULT "0" NOT NULL,';
+					$DBfields[] = $fConf['fieldname'].' int(11) DEFAULT "0" NOT NULL,';
 				}
 				if ($t=='check_4' || $t=='check_10')	{
 					$configL[]='"cols" => 4,';
@@ -1248,7 +1248,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$varCharLn = t3lib_div::intInRange(max($len),1);
 					$DBfields[] = $fConf["fieldname"]." ".($varCharLn>$this->wizard->charMaxLng?'var':'')."char(".$varCharLn.") DEFAULT '' NOT NULL,";
 				} else {
-					$DBfields[] = $fConf["fieldname"]." int(11) unsigned DEFAULT '0' NOT NULL,";
+					$DBfields[] = $fConf["fieldname"]." int(11) DEFAULT '0' NOT NULL,";
 				}
 			break;
 			case "rel":
@@ -1302,7 +1302,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				if ($fConf["conf_relations_mm"])	{
 					$mmTableName=$id."_mm";
 					$configL[]='"MM" => "'.$mmTableName.'",	'.$this->WOPcomment('WOP:'.$WOP.'[conf_relations_mm]');
-					$DBfields[] = $fConf["fieldname"]." int(11) unsigned DEFAULT '0' NOT NULL,";
+					$DBfields[] = $fConf["fieldname"]." int(11) DEFAULT '0' NOT NULL,";
 
 					$createTable = $this->sPS("
 						#
@@ -1310,10 +1310,10 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						# ".$this->WOPcomment('WOP:'.$WOP.'[conf_relations_mm]')."
 						#
 						CREATE TABLE ".$mmTableName." (
-						  uid_local int(11) unsigned DEFAULT '0' NOT NULL,
-						  uid_foreign int(11) unsigned DEFAULT '0' NOT NULL,
+						  uid_local int(11) DEFAULT '0' NOT NULL,
+						  uid_foreign int(11) DEFAULT '0' NOT NULL,
 						  tablenames varchar(30) DEFAULT '' NOT NULL,
-						  sorting int(11) unsigned DEFAULT '0' NOT NULL,
+						  sorting int(11) DEFAULT '0' NOT NULL,
 						  KEY uid_local (uid_local),
 						  KEY uid_foreign (uid_foreign)
 						);
@@ -1322,7 +1322,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				} elseif (t3lib_div::intInRange($fConf["conf_relations"],1,100)>1 || $fConf["conf_rel_type"]=="group") {
 					$DBfields[] = $fConf["fieldname"]." blob NOT NULL,";
 				} else {
-					$DBfields[] = $fConf["fieldname"]." int(11) unsigned DEFAULT '0' NOT NULL,";
+					$DBfields[] = $fConf["fieldname"]." int(11) DEFAULT '0' NOT NULL,";
 				}
 
 				if ($fConf["conf_rel_type"]!="group")	{

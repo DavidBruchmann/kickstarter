@@ -1,3 +1,7 @@
+2005-04-06  Kasper Skårhøj,,,  <kasper@typo3.com>
+
+	* Removed all "unsigned" keywords from produced SQL (non-DBAL compliant)
+
 2004-11-23  Ingmar Schlecht  <ingmars@web.de>
 
 	* Finetuning new modularity of the Kickstarter.
