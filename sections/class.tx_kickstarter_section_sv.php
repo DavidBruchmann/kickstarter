@@ -47,8 +47,8 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
-			if (!$this->EMmode && $this->saveKey)	{
-				$extKeyRec = $this->pObj->getExtKeyRecord($this->saveKey);
+			if (!$this->wizard->EMmode && $this->wizard->saveKey)	{
+				$extKeyRec = $this->wizard->pObj->getExtKeyRecord($this->saveKey);
 			}
 
 				// Title
@@ -148,7 +148,7 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 		$cN = $this->returnName($extKey,'class','sv'.$k);
 		$pathSuffix = 'sv'.$k.'/';
 
-		$this->ext_tables[]=$this->sPS('
+		$this->wizard->ext_tables[]=$this->sPS('
 			'.$this->WOPcomment('WOP:'.$WOP.'[type]').'
 			t3lib_extMgm::addService($_EXTKEY,  \''.$config['type'].'\' /* sv type */,  \''.$cN.'\' /* sv key */,
 					array(

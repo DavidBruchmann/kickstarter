@@ -105,7 +105,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	var $modData;
 
 	function tx_kickstarter_wizard() {
-	  $this->modData = t3lib_div::_POST($this->varPrefix);
+		$this->modData = t3lib_div::_POST($this->varPrefix);
 	}
 
 	function initWizArray()	{
@@ -126,6 +126,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	}
 
 	function mgm_wizard()	{
+		$this->wizard =& $this;
 		$this->initWizArray();
 		$this->sections = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['sections'];
 		
@@ -301,9 +302,9 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
 		if(is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['sidemenu'])) {
-		  foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['sidemenu'] as $_funcRef) {
-		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
-		  }
+			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['sidemenu'] as $_funcRef) {
+				$lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
+			}
 		}
 
 		$content = '<table border=0 cellpadding=2 cellspacing=2>'.implode('',$lines).'</table>';

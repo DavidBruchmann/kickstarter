@@ -42,7 +42,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 		if ($action[0]=="edit")	{
 			$this->regNewEntry($this->sectionID,$action[1]);
 			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
-			$piConf = $this->wizArray[$this->sectionID][$action[1]];
+			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 				// Enter title of the module
@@ -133,7 +133,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 				$subPos="before:info";
 			break;
 		}
-		$this->ext_tables[]=$this->sPS('
+		$this->wizard->ext_tables[]=$this->sPS('
 			'.$this->WOPcomment('WOP:'.$WOP).'
 			if (TYPO3_MODE=="BE")	{
 					'.$this->WOPcomment('1. and 2. parameter is WOP:'.$WOP.'[position] , 3. parameter is WOP:'.$WOP.'[subpos]').'
@@ -161,7 +161,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 			$MLANG["default"]["tabs_images"]["tab"] = "moduleicon.gif";
 			$MLANG["default"]["ll_ref"]="LLL:EXT:'.$extKey.'/'.$pathSuffix.'locallang_mod.php";
 		');
-		$this->EM_CONF_presets["module"][]=ereg_replace("\/$","",$pathSuffix);
+		$this->wizard->EM_CONF_presets["module"][]=ereg_replace("\/$","",$pathSuffix);
 
 
 		$ll=array();

@@ -42,7 +42,7 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 		if ($action[0]=="edit")	{
 			$this->regNewEntry($this->sectionID,$action[1]);
 			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
-			$piConf = $this->wizArray[$this->sectionID][$action[1]];
+			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 				// Enter title of the module function
@@ -97,19 +97,19 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 		$subPos="";
 		switch($config["position"])	{
 			case "user_task";
-				$this->EM_CONF_presets["dependencies"][]="taskcenter";
+				$this->wizard->EM_CONF_presets["dependencies"][]="taskcenter";
 			break;
 			case "web_ts";
-				$this->EM_CONF_presets["dependencies"][]="tstemplate";
+				$this->wizard->EM_CONF_presets["dependencies"][]="tstemplate";
 			break;
 			case "web_func_wizards";
-				$this->EM_CONF_presets["dependencies"][]="func_wizards";
+				$this->wizard->EM_CONF_presets["dependencies"][]="func_wizards";
 				$position="web_func";
 				$subPos="wiz";
 			break;
 		}
 
-		$this->ext_tables[]=$this->sPS('
+		$this->wizard->ext_tables[]=$this->sPS('
 			if (TYPO3_MODE=="BE")	{
 				t3lib_extMgm::insertModuleFunction(
 					"'.$position.'",		'.$this->WOPcomment('WOP:'.$WOP.'[position]').'
@@ -145,13 +145,13 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 							// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 						global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
-						$theOutput.=$this->pObj->doc->spacer(5);
-						$theOutput.=$this->pObj->doc->section($LANG->getLL("title"),"Dummy content here...",0,1);
+						$theOutput.=$this->wizard->pObj->doc->spacer(5);
+						$theOutput.=$this->wizard->pObj->doc->section($LANG->getLL("title"),"Dummy content here...",0,1);
 
 						$menu=array();
-						$menu[]=t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET['.$cN.'_check]",$this->pObj->MOD_SETTINGS["'.$cN.'_check"]).$LANG->getLL("checklabel");
-						$theOutput.=$this->pObj->doc->spacer(5);
-						$theOutput.=$this->pObj->doc->section("Menu",implode(" - ",$menu),0,1);
+						$menu[]=t3lib_BEfunc::getFuncCheck($this->wizard->pObj->id,"SET['.$cN.'_check]",$this->wizard->pObj->MOD_SETTINGS["'.$cN.'_check"]).$LANG->getLL("checklabel");
+						$theOutput.=$this->wizard->pObj->doc->spacer(5);
+						$theOutput.=$this->wizard->pObj->doc->section("Menu",implode(" - ",$menu),0,1);
 
 						return $theOutput;
 					}
@@ -164,7 +164,7 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 					 * Makes the content for the overview frame...
 					 */
 					function overview_main(&$pObj)	{
-						$icon = \'<img src="\'.$this->backPath.t3lib_extMgm::extRelPath("'.$extKey.'").\'ext_icon.gif" width=18 height=16 class="absmiddle">\';
+						$icon = \'<img src="\'.$this->wizard->backPath.t3lib_extMgm::extRelPath("'.$extKey.'").\'ext_icon.gif" width=18 height=16 class="absmiddle">\';
 						$content.=$pObj->doc->section($icon."&nbsp;".$this->headLink("'.$cN.'",0),$this->overviewContent(),1,1);
 						return $content;
 					}

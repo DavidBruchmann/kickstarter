@@ -45,7 +45,7 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 		if ($action[0]=="edit")	{
 			$this->regNewEntry($this->sectionID,$action[1]);
 			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
-			$piConf = $this->wizArray[$this->sectionID][$action[1]];
+			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 				// Enter title of the module function
@@ -73,7 +73,7 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 		}
 
 
-		$lines =& $this->process_hook('render_wizard', $lines);
+		$this->process_hook('render_wizard', $lines);
 
 		$content = '<table border=0 cellpadding=2 cellspacing=2>'.implode("",$lines).'</table>';
 		return $content;
@@ -96,7 +96,7 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 		$pathSuffix = $this->sectionID . $k .'/';
 
 			// This will make sure our item is inserted in the clickmenu!
-		$this->ext_tables[]=$this->sPS('
+		$this->wizard->ext_tables[]=$this->sPS('
 			'.$this->WOPcomment('WOP:'.$WOP.':').'
 			if (TYPO3_MODE=="BE")	{
 				$GLOBALS["TBE_MODULES_EXT"]["xMOD_alt_clickmenu"]["extendCMclasses"][]=array(
@@ -106,7 +106,7 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 			}
 		');
 			// Add title to the locallang file.
-		$this->addLocalConf($this->ext_locallang,$config,"title","cm",$k);
+		$this->addLocalConf($this->wizard->ext_locallang,$config,"title","cm",$k);
 
 			// Add icon
 		$this->addFileToFileArray($pathSuffix."cm_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound_module.gif"));
@@ -146,7 +146,7 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 			');
 
 				// Add activate title to the locallang file.
-			$this->addLocalConf($this->ext_locallang,array("title_activate"=>"...Second level ->"),"title_activate","cm",$k,0,1);
+			$this->addLocalConf($this->wizard->ext_locallang,array("title_activate"=>"...Second level ->"),"title_activate","cm",$k,0,1);
 				// Add activate icon
 			$this->addFileToFileArray($pathSuffix."cm_icon_activate.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound_module.gif"));
 		}

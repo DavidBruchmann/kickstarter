@@ -45,13 +45,13 @@ class tx_kickstarter_section_languages extends tx_kickstarter_sectionbase {
 			$this->regNewEntry($this->sectionID,$action[1]);
 
 			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
-			$piConf = $this->wizArray[$this->sectionID][$action[1]];
+			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 				// Admin only
 			$subContent ="";
-			reset($this->languages);
-			while(list($k,$v)=each($this->languages))	{
+			reset($this->wizard->languages);
+			while(list($k,$v)=each($this->wizard->languages))	{
 				$subContent.= $this->renderCheckBox($ffPrefix."[".$k."]",$piConf[$k]).$v."<BR>";
 			}
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($this->textSetup("Enter which languages to setup:",$subContent)).'</td></tr>';

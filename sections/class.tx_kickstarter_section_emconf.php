@@ -50,8 +50,8 @@ class tx_kickstarter_section_emconf extends tx_kickstarter_sectionbase {
 
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
-			if (!$this->EMmode && $this->saveKey)	{
-				$extKeyRec = $this->pObj->getExtKeyRecord($this->saveKey);
+			if (!$this->wizard->EMmode && $this->wizard->saveKey)	{
+				$extKeyRec = $this->wizard->pObj->getExtKeyRecord($this->wizard->saveKey);
 			}
 
 				// Title

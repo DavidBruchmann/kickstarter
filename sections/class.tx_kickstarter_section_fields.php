@@ -43,7 +43,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		if ($action[0]=='edit')	{
 			$this->regNewEntry($this->sectionID,$action[1]);
 			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],'&nbsp;',$action[1]);
-			$piConf = $this->wizArray[$this->sectionID][$action[1]];
+			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 		}
@@ -214,9 +214,9 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			}
 		}
 		//		debug($newFConf);
-		$this->wizArray[$catID][$action]['fields'] = $newFConf;
+		$this->wizard->wizArray[$catID][$action]['fields'] = $newFConf;
 		$sesdat = $GLOBALS['BE_USER']->getSessionData('kickstarter');
-		$sesdat['presets'][$this->extKey.'-'.$catID.'-'.$action]=$newFConf;
+		$sesdat['presets'][$this->wizard->extKey.'-'.$catID.'-'.$action]=$newFConf;
 		$GLOBALS['BE_USER']->setAndSaveSessionData('kickstarter',$sesdat);
 
 #debug($newFConf);
@@ -224,45 +224,11 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	}
 
 
-	function returnName($extKey,$type,$suffix='')	{
-		if (substr($extKey,0,5)=='user_')	{
-			$extKey = substr($extKey,5);
-			switch($type)	{
-				case 'class':
-					return 'user_'.str_replace('_','',$extKey).($suffix?'_'.$suffix:'');
-				break;
-				case 'tables':
-				case 'fields':
-				case 'fields':
-					return 'user_'.str_replace('_','',$extKey).($suffix?'_'.$suffix:'');
-				break;
-				case 'module':
-					return 'u'.str_replace('_','',$extKey).$suffix;
-				break;
-			}
-		} else {
-			switch($type)	{
-				case 'class':
-					return 'tx_'.str_replace('_','',$extKey).($suffix?'_'.$suffix:'');
-				break;
-				case 'tables':
-				case 'fields':
-				case 'fields':
-					return 'tx_'.str_replace('_','',$extKey).($suffix?'_'.$suffix:'');
-				break;
-				case 'module':
-					return 'tx'.str_replace('_','',$extKey).$suffix;
-				break;
-			}
-		}
-	}
-
-
 	function addOtherExtensionTables($optValues)	{
-		if (is_array($this->wizArray['tables']))	{
-			foreach($this->wizArray['tables'] as $k=>$info)	{
+		if (is_array($this->wizard->wizArray['tables']))	{
+			foreach($this->wizard->wizArray['tables'] as $k=>$info)	{
 				if (trim($info['tablename']))	{
-					$tableName = $this->returnName($this->extKey,'tables',trim($info['tablename']));
+					$tableName = $this->returnName($this->wizard->extKey,'tables',trim($info['tablename']));
 					$optValues[$tableName]='Extension table: '.$info['title'].' ('.$tableName.')';
 				}
 			}
@@ -271,7 +237,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	}
 	function cleanUpFieldName($str)	{
 		$fieldName = ereg_replace('[^[:alnum:]_]','',strtolower($str));
-		if (!$fieldName || t3lib_div::inList($this->reservedTypo3Fields.','.$this->mysql_reservedFields,$fieldName) || in_array($fieldName,$this->usedNames))	{
+		if (!$fieldName || t3lib_div::inList($this->wizard->reservedTypo3Fields.','.$this->wizard->mysql_reservedFields,$fieldName) || in_array($fieldName,$this->usedNames))	{
 			$fieldName.=($fieldName?'_':'').t3lib_div::shortmd5(microtime());
 		}
 		$this->usedNames[]=$fieldName;
@@ -283,9 +249,9 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		$onCP = $this->getOnChangeParts($prefix.'[fieldname]');
 		$fieldName = $this->renderStringBox($prefix.'[fieldname]',$fConf['fieldname']).
 			(!$dontRemove?' (Remove:'.$this->renderCheckBox($prefix.'[_DELETE]',0).')'.
-				'<input type="image" hspace=2 src="'.$this->siteBackPath.TYPO3_mainDir.'gfx/pil2up.gif" name="'.$this->varPrefix.'_CMD_'.$fConf["fieldname"].'_UP" onClick="'.$onCP[1].'">'.
-				'<input type="image" hspace=2 src="'.$this->siteBackPath.TYPO3_mainDir.'gfx/pil2down.gif" name="'.$this->varPrefix.'_CMD_'.$fConf["fieldname"].'_DOWN" onClick="'.$onCP[1].'">'.
-				'<input type="image" hspace=2 src="'.$this->siteBackPath.TYPO3_mainDir.'gfx/savesnapshot.gif" name="'.$this->varPrefix.'_CMD_'.$fConf["fieldname"].'_SAVE" onClick="'.$onCP[1].'" title="Save this field setting as a preset.">':'');
+				'<input type="image" hspace=2 src="'.$this->wizard->siteBackPath.TYPO3_mainDir.'gfx/pil2up.gif" name="'.$this->varPrefix.'_CMD_'.$fConf["fieldname"].'_UP" onClick="'.$onCP[1].'">'.
+				'<input type="image" hspace=2 src="'.$this->wizard->siteBackPath.TYPO3_mainDir.'gfx/pil2down.gif" name="'.$this->varPrefix.'_CMD_'.$fConf["fieldname"].'_DOWN" onClick="'.$onCP[1].'">'.
+				'<input type="image" hspace=2 src="'.$this->wizard->siteBackPath.TYPO3_mainDir.'gfx/savesnapshot.gif" name="'.$this->varPrefix.'_CMD_'.$fConf["fieldname"].'_SAVE" onClick="'.$onCP[1].'" title="Save this field setting as a preset.">':'');
 
 		$fieldTitle = ((string)$fConf['type'] != 'passthrough') ? $this->renderStringBox_lang('title',$prefix,$fConf) : '';
 		$typeCfg = '';
@@ -654,9 +620,9 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			}
 		}
 
-		if ($tableName=='tt_address')	$this->EM_CONF_presets['dependencies'][]='tt_address';
-		if ($tableName=='tt_news')	$this->EM_CONF_presets['dependencies'][]='tt_news';
-		if (t3lib_div::inList('tt_content,fe_users,fe_groups',$tableName))	$this->EM_CONF_presets['dependencies'][]='cms';
+		if ($tableName=='tt_address')	$this->wizard->EM_CONF_presets['dependencies'][]='tt_address';
+		if ($tableName=='tt_news')	$this->wizard->EM_CONF_presets['dependencies'][]='tt_news';
+		if (t3lib_div::inList('tt_content,fe_users,fe_groups',$tableName))	$this->wizard->EM_CONF_presets['dependencies'][]='cms';
 
 		$createTable = $this->wrapBody('
 			#
@@ -667,11 +633,11 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 			);
 		');
-		$this->ext_tables_sql[]=chr(10).$createTable.chr(10);
+		$this->wizard->ext_tables_sql[]=chr(10).$createTable.chr(10);
 
 
 			// Finalize ext_tables.php:
-		$this->ext_tables[]=$this->wrapBody('
+		$this->wizard->ext_tables[]=$this->wrapBody('
 			$tempColumns = Array (
 				', implode(chr(10),$columns)	,'
 			);
@@ -680,16 +646,16 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 		list($typeList) = $this->implodeColumns($columns);
 		$applyToAll=1;
-		if (is_array($this->wizArray['pi']))	{
-			reset($this->wizArray['pi']);
-			while(list(,$fC)=each($this->wizArray['pi']))	{
+		if (is_array($this->wizard->wizArray['pi']))	{
+			reset($this->wizard->wizArray['pi']);
+			while(list(,$fC)=each($this->wizard->wizArray['pi']))	{
 				if ($fC['apply_extended']==$k)	{
 					$applyToAll=0;
-					$this->_apply_extended_types[$k]=$typeList;
+					$this->wizard->_apply_extended_types[$k]=$typeList;
 				}
 			}
 		}
-		$this->ext_tables[]=$this->sPS('
+		$this->wizard->ext_tables[]=$this->sPS('
 			t3lib_div::loadTCA("'.$tableName.'");
 			t3lib_extMgm::addTCAcolumns("'.$tableName.'",$tempColumns,1);
 			'.($applyToAll?'t3lib_extMgm::addToAllTCAtypes("'.$tableName.'","'.$typeList.'");':'').'
@@ -710,7 +676,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		while(list($fN)=each($columns))	{
 			if (!$hiddenFlag || !t3lib_div::inList('starttime,endtime,fe_group',$fN))	{
 				$outTem = array($fN,'','','','');
-				$outTem[3] = $this->_typeP[$fN];
+				$outTem[3] = $this->wizard->_typeP[$fN];
 				if ($c==0)	$outTem[4]='1-1-1';
 				if ($fN=='title')	{
 					$outTem[4]='2-2-2';
@@ -812,7 +778,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$DBfields[] = $fConf['fieldname'] . ' tinytext NOT NULL,';
 				} else {
 					$varCharLn = (intval($fConf['conf_max'])?t3lib_div::intInRange($fConf['conf_max'],1,255):255);
-					$DBfields[] = $fConf['fieldname'] . ' ' . ($varCharLn>$this->charMaxLng?'var':'') . 'char(' . $varCharLn .') DEFAULT "" NOT NULL,';
+					$DBfields[] = $fConf['fieldname'] . ' ' . ($varCharLn>$this->wizard->charMaxLng?'var':'') . 'char(' . $varCharLn .') DEFAULT "" NOT NULL,';
 				}
 			break;
 			case 'link':
@@ -931,7 +897,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 				$rteImageDir = '';
 				if ($fConf['conf_rte_separateStorageForImages'] && t3lib_div::inList('moderate,basic,custom',$fConf['conf_rte']))	{
-					$this->EM_CONF_presets['createDirs'][]=$this->ulFolder($extKey).'rte/';
+					$this->wizard->EM_CONF_presets['createDirs'][]=$this->ulFolder($extKey).'rte/';
 					$rteImageDir = '|imgpath='.$this->ulFolder($extKey).'rte/';
 				}
 
@@ -950,7 +916,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					break;
 					case 'basic':
 						$typeP = 'richtext[cut|copy|paste|formatblock|textcolor|bold|italic|underline|left|center|right|orderedlist|unorderedlist|outdent|indent|link|table|image|line|chMode]:rte_transform[mode=ts_css'.$rteImageDir.']';
-						$this->ext_localconf[]=trim($this->wrapBody("
+						$this->wizard->ext_localconf[]=trim($this->wrapBody("
 								t3lib_extMgm::addPageTSConfig('
 
 									# ***************************************************************************************
@@ -1173,7 +1139,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 							'));
 						}
 						if (count($finalPageTSconfig))	{
-							$this->ext_localconf[]=trim($this->wrapBody("
+							$this->wizard->ext_localconf[]=trim($this->wrapBody("
 								t3lib_extMgm::addPageTSConfig('
 
 									# ***************************************************************************************
@@ -1186,7 +1152,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						}
 					break;
 				}
-				$this->_typeP[$fConf['fieldname']]	= $typeP;
+				$this->wizard->_typeP[$fConf['fieldname']]	= $typeP;
 			break;
 			case 'check':
 			case 'check_4':
@@ -1260,7 +1226,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 					$this->addFileToFileArray('class.'.$cN.'.php',$this->PHPclassFile($extKey,'class.'.$cN.'.php',$classContent,'Class/Function which manipulates the item-array for table/field '.$id.'.'));
 
-					$this->ext_tables[]=$this->sPS('
+					$this->wizard->ext_tables[]=$this->sPS('
 						'.$this->WOPcomment('WOP:'.$WOP.'[conf_select_pro]:').'
 						if (TYPO3_MODE=="BE")	include_once(t3lib_extMgm::extPath("'.$extKey.'")."'.'class.'.$cN.'.php");
 					');
@@ -1280,7 +1246,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					}
 				} elseif ($notIntVal)	{
 					$varCharLn = t3lib_div::intInRange(max($len),1);
-					$DBfields[] = $fConf["fieldname"]." ".($varCharLn>$this->charMaxLng?'var':'')."char(".$varCharLn.") DEFAULT '' NOT NULL,";
+					$DBfields[] = $fConf["fieldname"]." ".($varCharLn>$this->wizard->charMaxLng?'var':'')."char(".$varCharLn.") DEFAULT '' NOT NULL,";
 				} else {
 					$DBfields[] = $fConf["fieldname"]." int(11) unsigned DEFAULT '0' NOT NULL,";
 				}
@@ -1302,7 +1268,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					'));
 				}
 
-				if (t3lib_div::inList("tt_content,fe_users,fe_groups",$fConf["conf_rel_table"]))		$this->EM_CONF_presets["dependencies"][]="cms";
+				if (t3lib_div::inList("tt_content,fe_users,fe_groups",$fConf["conf_rel_table"]))		$this->wizard->EM_CONF_presets["dependencies"][]="cms";
 
 				if ($fConf["conf_rel_table"]=="_CUSTOM")	{
 					$fConf["conf_rel_table"]=$fConf["conf_custom_table_name"]?$fConf["conf_custom_table_name"]:"NO_TABLE_NAME_AVAILABLE";
@@ -1352,7 +1318,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						  KEY uid_foreign (uid_foreign)
 						);
 					");
-					$this->ext_tables_sql[]=chr(10).$createTable.chr(10);
+					$this->wizard->ext_tables_sql[]=chr(10).$createTable.chr(10);
 				} elseif (t3lib_div::intInRange($fConf["conf_relations"],1,100)>1 || $fConf["conf_rel_type"]=="group") {
 					$DBfields[] = $fConf["fieldname"]." blob NOT NULL,";
 				} else {
@@ -1434,7 +1400,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				}
 				$configL[]='"max_size" => '.t3lib_div::intInRange($fConf["conf_max_filesize"],1,1000,500).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_max_filesize]');
 
-				$this->EM_CONF_presets["uploadfolder"]=1;
+				$this->wizard->EM_CONF_presets["uploadfolder"]=1;
 
 				$ulFolder = 'uploads/tx_'.str_replace("_","",$extKey);
 				$configL[]='"uploadfolder" => "'.$ulFolder.'",';

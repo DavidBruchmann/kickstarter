@@ -43,7 +43,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 		if ($action[0]=="edit")	{
 			$this->regNewEntry($this->sectionID,$action[1]);
 			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"<strong>Edit Plugin #".$action[1]."</strong>",$action[1]);
-			$piConf = $this->wizArray[$this->sectionID][$action[1]];
+			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 
@@ -60,11 +60,11 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 
 				// Position
-			if (is_array($this->wizArray["fields"]))	{
+			if (is_array($this->wizard->wizArray["fields"]))	{
 				$optValues = array(
 					"0" => "",
 				);
-				foreach($this->wizArray["fields"] as $kk => $fC)	{
+				foreach($this->wizard->wizArray["fields"] as $kk => $fC)	{
 					if ($fC["which_table"]=="tt_content")	{
 						$optValues[$kk]=($fC["title"]?$fC["title"]:"Item ".$kk)." (".count($fC["fields"])." fields)";
 					}
@@ -92,12 +92,12 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 
 				// Insert Plugin
-			if (is_array($this->wizArray["tables"]))	{
+			if (is_array($this->wizard->wizArray["tables"]))	{
 				$optValues = array(
 					"0" => "",
 				);
-				foreach($this->wizArray["tables"] as $kk => $fC)	{
-					$optValues[$kk]=($fC["tablename"]||$fC["title"]?$fC["title"]." (".$this->returnName($this->extKey,"tables").($fC["tablename"]?"_".$fC["tablename"]:"").")":"Item ".$kk)." (".count($fC["fields"])." fields)";
+				foreach($this->wizard->wizArray["tables"] as $kk => $fC)	{
+					$optValues[$kk]=($fC["tablename"]||$fC["title"]?$fC["title"]." (".$this->returnName($this->wizard->extKey,"tables").($fC["tablename"]?"_".$fC["tablename"]:"").")":"Item ".$kk)." (".count($fC["fields"])." fields)";
 				}
 				$incListing="<BR><BR>If you have configured custom tables you can select one of the tables to list by default as an example:
 						<BR>".
@@ -209,14 +209,14 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 			case "list_type":
 				$setType="list_type";
 
-				$this->ext_tables[]=$this->sPS('
+				$this->wizard->ext_tables[]=$this->sPS('
 					'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
 					t3lib_div::loadTCA("tt_content");
 					$TCA["tt_content"]["types"]["list"]["subtypes_excludelist"][$_EXTKEY."_pi'.$k.'"]="layout,select_key";
-					'.($config["apply_extended"]?'$TCA["tt_content"]["types"]["list"]["subtypes_addlist"][$_EXTKEY."_pi'.$k.'"]="'.$this->_apply_extended_types[$config["apply_extended"]].'";':'').'
+					'.($config["apply_extended"]?'$TCA["tt_content"]["types"]["list"]["subtypes_addlist"][$_EXTKEY."_pi'.$k.'"]="'.$this->wizard->_apply_extended_types[$config["apply_extended"]].'";':'').'
 				');
 
-				$this->ext_localconf[]=$this->sPS('
+				$this->wizard->ext_localconf[]=$this->sPS('
 					'.$this->WOPcomment('WOP:'.$WOP.'[addType] / '.$WOP.'[tag_name]').'
 					  ## Extending TypoScript from static template uid=43 to set up userdefined tag:
 					t3lib_extMgm::addTypoScript($_EXTKEY,"editorcfg","
@@ -228,11 +228,11 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				$setType="splash_layout";
 
 				if ($config["apply_extended"])	{
-					$this->ext_tables[]=$this->sPS('
+					$this->wizard->ext_tables[]=$this->sPS('
 						'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
 						t3lib_div::loadTCA("tt_content");
 						$TCA["tt_content"]["types"]["splash"]["subtype_value_field"]="splash_layout";
-						$TCA["tt_content"]["types"]["splash"]["subtypes_addlist"][$_EXTKEY."_pi'.$k.'"]="'.$this->_apply_extended_types[$config["apply_extended"]].'";
+						$TCA["tt_content"]["types"]["splash"]["subtypes_addlist"][$_EXTKEY."_pi'.$k.'"]="'.$this->wizard->_apply_extended_types[$config["apply_extended"]].'";
 					');
 				}
 			break;
@@ -240,11 +240,11 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				$setType="menu_type";
 
 				if ($config["apply_extended"])	{
-					$this->ext_tables[]=$this->sPS('
+					$this->wizard->ext_tables[]=$this->sPS('
 						'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
 						t3lib_div::loadTCA("tt_content");
 						$TCA["tt_content"]["types"]["menu"]["subtype_value_field"]="menu_type";
-						$TCA["tt_content"]["types"]["menu"]["subtypes_addlist"][$_EXTKEY."_pi'.$k.'"]="'.$this->_apply_extended_types[$config["apply_extended"]].'";
+						$TCA["tt_content"]["types"]["menu"]["subtypes_addlist"][$_EXTKEY."_pi'.$k.'"]="'.$this->wizard->_apply_extended_types[$config["apply_extended"]].'";
 					');
 				}
 			break;
@@ -254,9 +254,9 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				$tFields=array();
 				$tFields[] = "CType;;4;button;1-1-1, header;;3;;2-2-2";
 				if ($config["apply_extended"])	{
-					$tFields[] = $this->_apply_extended_types[$config["apply_extended"]];
+					$tFields[] = $this->wizard->_apply_extended_types[$config["apply_extended"]];
 				}
-				$this->ext_tables[]=$this->sPS('
+				$this->wizard->ext_tables[]=$this->sPS('
 					'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
 					t3lib_div::loadTCA("tt_content");
 					$TCA["tt_content"]["types"][$_EXTKEY."_pi'.$k.'"]["showitem"]="'.implode(", ",$tFields).'";
@@ -271,7 +271,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 			case "typotags":
 				$tagName = ereg_replace("[^a-z0-9_]","",strtolower($config["tag_name"]));
 				if ($tagName)	{
-					$this->ext_localconf[]=$this->sPS('
+					$this->wizard->ext_localconf[]=$this->sPS('
 						'.$this->WOPcomment('WOP:'.$WOP.'[addType] / '.$WOP.'[tag_name]').'
 						  ## Extending TypoScript from static template uid=43 to set up userdefined tag:
 						t3lib_extMgm::addTypoScript($_EXTKEY,"setup","
@@ -286,13 +286,13 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 		$cache= $config["plus_user_obj"] ? 0 : 1;
 
-		$this->ext_localconf[]=$this->sPS('
+		$this->wizard->ext_localconf[]=$this->sPS('
 			'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
 			t3lib_extMgm::addPItoST43($_EXTKEY,"pi'.$k.'/class.'.$cN.'.php","_pi'.$k.'","'.$setType.'",'.$cache.');
 		');
 
 		if ($setType && !t3lib_div::inList("typotags,includeLib",$setType))	{
-			$this->ext_tables[]=$this->sPS('
+			$this->wizard->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
 				t3lib_extMgm::addPlugin(Array("'.addslashes($this->getSplitLabels_reference($config,"title","tt_content.".$setType."_pi".$k)).'", $_EXTKEY."_pi'.$k.'"),"'.$setType.'");
 			');
@@ -302,8 +302,8 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 		switch($config["addType"])	{
 			case "list_type":
 				if ($config["list_default"])	{
-					if (is_array($this->wizArray["tables"][$config["list_default"]]))	{
-						$tempTableConf = $this->wizArray["tables"][$config["list_default"]];
+					if (is_array($this->wizard->wizArray["tables"][$config["list_default"]]))	{
+						$tempTableConf = $this->wizard->wizArray["tables"][$config["list_default"]];
 						$tableName = $this->returnName($extKey,"tables",$tempTableConf["tablename"]);
 
 						$ll=array();
@@ -594,7 +594,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							',3);
 						}
 
-						$this->ext_localconf[]=$this->sPS('
+						$this->wizard->ext_localconf[]=$this->sPS('
 							'.$this->WOPcomment('WOP:'.$WOP.'[...]').'
 							t3lib_extMgm::addTypoScript($_EXTKEY,"setup","
 								tt_content.shortcut.20.0.conf.'.$tableName.' = < plugin.".t3lib_extMgm::getCN($_EXTKEY)."_pi'.$k.'
@@ -898,10 +898,10 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							plugin.'.$cN.'._DEFAULT_PI_VARS.test = test
 						'),1);
 
-						$this->EM_CONF_presets["clearCacheOnLoad"]=1;
+						$this->wizard->EM_CONF_presets["clearCacheOnLoad"]=1;
 
 						if (!$config["plus_not_staticTemplate"])	{
-							$this->ext_tables[]=$this->sPS('
+							$this->wizard->ext_tables[]=$this->sPS('
 								t3lib_extMgm::addStaticFile($_EXTKEY,"'.$pathSuffix.'static/","'.addslashes(trim($config['title'])).'");
 							');
 						}
@@ -969,14 +969,14 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					'),1);
 
 					if (!$config["plus_not_staticTemplate"])	{
-						$this->ext_tables[]=$this->sPS('
+						$this->wizard->ext_tables[]=$this->sPS('
 							t3lib_extMgm::addStaticFile($_EXTKEY,"'.$pathSuffix.'static/","'.addslashes(trim($config['title'])).'");
 						');
 					}
 				}
 			break;
 			case "textbox":
-				$this->ext_localconf[]=$this->sPS('
+				$this->wizard->ext_localconf[]=$this->sPS('
 					  ## Setting TypoScript for the image in the textbox:
 					t3lib_extMgm::addTypoScript($_EXTKEY,"setup","
 						plugin.'.$cN.'_pi'.$k.'.IMAGEcObject {
@@ -1124,8 +1124,8 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 			// Add wizard?
 		if ($config["plus_wiz"] && $config["addType"]=="list_type")	{
-			$this->addLocalConf($this->ext_locallang,$config,"title","pi",$k);
-			$this->addLocalConf($this->ext_locallang,$config,"plus_wiz_description","pi",$k);
+			$this->addLocalConf($this->wizard->ext_locallang,$config,"title","pi",$k);
+			$this->addLocalConf($this->wizard->ext_locallang,$config,"plus_wiz_description","pi",$k);
 
 			$indexContent= $this->sPS('
 				class '.$cN.'_wizicon {
@@ -1157,7 +1157,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				// Add clear.gif
 			$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/clear.gif"));
 
-			$this->ext_tables[]=$this->sPS('
+			$this->wizard->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[plus_wiz]:').'
 				if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["'.$cN.'_wizicon"] = t3lib_extMgm::extPath($_EXTKEY)."pi'.$k.'/class.'.$cN.'_wizicon.php";
 			');

@@ -63,7 +63,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 
 				// Enter title of the table
 			$subContent='<strong>Tablename:</strong><BR>'.
-				$this->returnName($this->extKey,'tables').'_'.$this->renderStringBox($ffPrefix.'[tablename]',$piConf['tablename']).
+				$this->returnName($this->wizard->extKey,'tables').'_'.$this->renderStringBox($ffPrefix.'[tablename]',$piConf['tablename']).
 				'<BR><strong>Notice:</strong> Use characters a-z0-9 only. Only lowercase, no spaces.<BR>
 				This becomes the table name in the database. ';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
@@ -183,7 +183,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 
 			$subContent = '<strong>Notice on fieldnames:<BR></strong>'.
 				'Don\'t use fieldnames from this list of reserved names/words: <BR>
-				<blockquote><em>' . implode(', ',explode(',',$this->reservedTypo3Fields . ',' . $this->mysql_reservedFields)).'</em></blockquote>';
+				<blockquote><em>' . implode(', ',explode(',',$this->wizard->reservedTypo3Fields . ',' . $this->wizard->mysql_reservedFields)).'</em></blockquote>';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 
@@ -515,19 +515,19 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		$ctrl[]= '"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_'.$tableName.'.gif",';
 
 		if ($config["allow_on_pages"])	{
-			$this->ext_tables[]=$this->sPS('
+			$this->compilesfiles->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[allow_on_pages]').'
 				t3lib_extMgm::allowTableOnStandardPages("'.$tableName.'");
 			');
 		}
 		if ($config["allow_ce_insert_records"])	{
-			$this->ext_tables[]=$this->sPS('
+			$this->compilesfiles->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[allow_ce_insert_records]').'
 				t3lib_extMgm::addToInsertRecords("'.$tableName.'");
 			');
 		}
 		if ($config["save_and_new"])	{
-			$this->ext_localconf[]=trim($this->wrapBody("
+			$this->compilesfiles->ext_localconf[]=trim($this->wrapBody("
 				t3lib_extMgm::addUserTSConfig('
 					","options.saveDocNew.".$tableName."=1","
 				');
@@ -556,7 +556,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		', implode(chr(10),$DBfields), '
 			);
 		');
-		$this->ext_tables_sql[]=chr(10).$createTable.chr(10);
+		$this->compilesfiles->ext_tables_sql[]=chr(10).$createTable.chr(10);
 
 			// Finalize tca.php:
 		$tca_file="";
@@ -579,10 +579,10 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 				)
 			);
 		',2);
-		$this->ext_tca[]=chr(10).$tca_file.chr(10);
+		$this->compilesfiles->ext_tca[]=chr(10).$tca_file.chr(10);
 
 			// Finalize ext_tables.php:
-		$this->ext_tables[]=$this->wrapBody('
+		$this->compilesfiles->ext_tables[]=$this->wrapBody('
 			$TCA["'.$tableName.'"] = Array (
 				"ctrl" => Array (
 			', implode(chr(10),$ctrl)	,'
