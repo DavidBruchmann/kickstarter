@@ -29,7 +29,7 @@
  */
 
 require_once(t3lib_extMgm::extPath("kickstarter")."class.tx_kickstarter_sectionbase.php");
- 
+
 class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
   var $sectionID = 'pi';
 
@@ -163,7 +163,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				// Processing of tags in content.
 			$subContent=$this->renderRadioBox($ffPrefix."[addType]",$piConf["addType"],"typotags").
 				$this->textSetup("Processing of userdefined tag",
-						htmlspecialchars("If you wish the plugin to proces content from a userdefined tag in Content Element text-fields, enter the tagname here. Eg. if you wish the tags <mytag>This is the content</mytag> to be your userdefined tags, just enter 'mytag' in this field (lowercase a-z, 0-9 and underscore):")."<BR>".
+						htmlspecialchars("If you wish the plugin to process content from a userdefined tag in Content Element text-fields, enter the tagname here. Eg. if you wish the tags <mytag>This is the content</mytag> to be your userdefined tags, just enter 'mytag' in this field (lowercase a-z, 0-9 and underscore):")."<BR>".
 							$this->renderStringBox($ffPrefix."[tag_name]",$piConf["tag_name"])
 					);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
