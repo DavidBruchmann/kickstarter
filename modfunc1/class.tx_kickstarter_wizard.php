@@ -99,6 +99,9 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		'lv' => 'Latvian',
 		'jp' => 'Japanese',
 		'vn' => 'Vietnamese',
+		'ca' => 'Catalan',
+		'ba' => 'Bosnian',
+		'kr' => 'Korean',
 	);
 	var $reservedTypo3Fields="uid,pid,endtime,starttime,sorting,fe_group,hidden,deleted,cruser_id,crdate,tstamp";
 	var $mysql_reservedFields="data,table,field,key,desc";
@@ -126,7 +129,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	  if (is_array($this->modData["wizArray_upd"]))	{
 	    $this->wizArray = t3lib_div::array_merge_recursive_overrule($this->wizArray,$this->modData["wizArray_upd"]);
 	  }
-	  
+
 	  $lA = is_array($this->wizArray["languages"]) ? current($this->wizArray["languages"]) : "";
 	  if (is_array($lA))	{
 	    reset($lA);
@@ -2141,7 +2144,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 	/**
 	 * Getting link to this page + extra parameters, we have specified
-	 * 
+	 *
 	 * @param	array		Additional parameters specified.
 	 * @return	string		The URL
 	 */
@@ -2152,7 +2155,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 	/**
 	 * Font wrap function; Wrapping input string in a <span> tag with font family and font size set
-	 * 
+	 *
 	 * @param	string		Input value
 	 * @return	string		Wrapped input value.
 	 */
