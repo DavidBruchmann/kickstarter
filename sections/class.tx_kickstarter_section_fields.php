@@ -31,7 +31,7 @@
 require_once(t3lib_extMgm::extPath("kickstarter")."class.tx_kickstarter_sectionbase.php");
  
 class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
-	var $catName = "";
+  var $sectionID = 'fields';
 
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_fields()
@@ -39,13 +39,12 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	function render_wizard() {
 		$lines=array();
 
-		$catID = "fields";
 		$action = explode(":",$this->wizard->modData["wizAction"]);
 		if ($action[0]=="edit")	{
-			$this->wizard->regNewEntry($catID,$action[1]);
-			$lines = $this->wizard->catHeaderLines($lines,$catID,$this->wizard->options[$catID],"&nbsp;",$action[1]);
-			$piConf = $this->wizard->wizArray[$catID][$action[1]];
-			$ffPrefix='['.$catID.']['.$action[1].']';
+			$this->wizard->regNewEntry($this->sectionID,$action[1]);
+			$lines = $this->wizard->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
+			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
+			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 		}
 
@@ -85,7 +84,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			$c=array(0);
 			$this->wizard->usedNames=array();
 			if (is_array($piConf["fields"]))	{
-				$piConf["fields"] = $this->wizard->cleanFieldsAndDoCommands($piConf["fields"],$catID,$action[1]);
+				$piConf["fields"] = $this->wizard->cleanFieldsAndDoCommands($piConf["fields"],$this->sectionID,$action[1]);
 
 					// Do it for real...
 				reset($piConf["fields"]);

@@ -31,7 +31,7 @@
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
 
 class tx_kickstarter_section_emconf extends tx_kickstarter_sectionbase {
-	var $catName = 'General info';
+  var $sectionID = 'emconf';
 
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_emconf()
@@ -39,16 +39,15 @@ class tx_kickstarter_section_emconf extends tx_kickstarter_sectionbase {
 	function render_wizard() {
 		$lines=array();
 
-		$catID = 'emconf';
 		$action = explode(':',$this->wizard->modData['wizAction']);
 
 		if ($action[0]=='edit')	{
 			$action[1]=1;
-			$this->wizard->regNewEntry($catID,$action[1]);
+			$this->wizard->regNewEntry($this->sectionID,$action[1]);
 
-			$lines = $this->wizard->catHeaderLines($lines,$catID,$this->wizard->options[$catID],'&nbsp;',$action[1]);
-			$piConf = $this->wizard->wizArray[$catID][$action[1]];
-			$ffPrefix='['.$catID.']['.$action[1].']';
+			$lines = $this->wizard->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],'&nbsp;',$action[1]);
+			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
+			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 			if (!$this->wizard->EMmode && $this->wizard->saveKey)	{
 				$extKeyRec = $this->wizard->pObj->getExtKeyRecord($this->wizard->saveKey);

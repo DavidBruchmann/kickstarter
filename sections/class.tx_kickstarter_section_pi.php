@@ -31,7 +31,7 @@
 require_once(t3lib_extMgm::extPath("kickstarter")."class.tx_kickstarter_sectionbase.php");
  
 class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
-	var $catName = "Frontend Plugins";
+  var $sectionID = 'pi';
 
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_pi()
@@ -39,14 +39,12 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 	function render_wizard() {
 		$lines=array();
 
-		$catID = "pi";
-
 		$action = explode(":",$this->wizard->modData["wizAction"]);
 		if ($action[0]=="edit")	{
-			$this->wizard->regNewEntry($catID,$action[1]);
-			$lines = $this->wizard->catHeaderLines($lines,$catID,$this->wizard->options[$catID],"<strong>Edit Plugin #".$action[1]."</strong>",$action[1]);
-			$piConf = $this->wizard->wizArray[$catID][$action[1]];
-			$ffPrefix='['.$catID.']['.$action[1].']';
+			$this->wizard->regNewEntry($this->sectionID,$action[1]);
+			$lines = $this->wizard->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"<strong>Edit Plugin #".$action[1]."</strong>",$action[1]);
+			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
+			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 
 				// Enter title of the plugin

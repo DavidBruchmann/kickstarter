@@ -31,7 +31,7 @@
 require_once(t3lib_extMgm::extPath("kickstarter")."sections/class.tx_kickstarter_section_fields.php");
 
 class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
-	var $catName = "New Database Tables";
+  var $sectionID = 'tables';
 
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_tables()
@@ -39,18 +39,17 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 	function render_wizard() {
 		$lines=array();
 
-		$catID = "tables";
 		$action = explode(":",$this->wizard->modData["wizAction"]);
 		if ($action[0]=="edit")	{
-			$this->wizard->regNewEntry($catID,$action[1]);
-			$lines = $this->wizard->catHeaderLines($lines,$catID,$this->wizard->options[$catID],"&nbsp;",$action[1]);
-			$piConf = $this->wizard->wizArray[$catID][$action[1]];
-			$ffPrefix='['.$catID.']['.$action[1].']';
+			$this->wizard->regNewEntry($this->sectionID,$action[1]);
+			$lines = $this->wizard->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
+			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
+			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 				// Unique table name:
 			$table_suffixes=array();
-			if (is_array($this->wizard->wizArray[$catID]))	{
-				foreach($this->wizard->wizArray[$catID] as $kk => $vv)	{
+			if (is_array($this->wizard->wizArray[$this->sectionID]))	{
+				foreach($this->wizard->wizArray[$this->sectionID] as $kk => $vv)	{
 					if (!strcmp($action[1],$kk))	{
 						if (count($table_suffixes) && t3lib_div::inList(implode(",",$table_suffixes),$vv["tablename"]."Z"))	{
 							$piConf["tablename"].=$kk;
@@ -81,7 +80,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$c=array(0);
 			$this->wizard->usedNames=array();
 			if (is_array($piConf["fields"]))	{
-				$piConf["fields"] = $this->wizard->cleanFieldsAndDoCommands($piConf["fields"],$catID,$action[1]);
+				$piConf["fields"] = $this->wizard->cleanFieldsAndDoCommands($piConf["fields"],$this->sectionID,$action[1]);
 
 				// Do it for real...
 				$lines[]='<tr'.$this->wizard->bgCol(1).'><td><strong> Fields Overview </strong></td></tr>';

@@ -31,7 +31,7 @@
 require_once(t3lib_extMgm::extPath("kickstarter")."class.tx_kickstarter_sectionbase.php");
  
 class tx_kickstarter_section_languages extends tx_kickstarter_sectionbase {
-	var $catName = "";
+  var $sectionID = 'languages';
 
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_languages()
@@ -39,15 +39,14 @@ class tx_kickstarter_section_languages extends tx_kickstarter_sectionbase {
 	function render_wizard() {
 		$lines=array();
 
-		$catID = "languages";
 		$action = explode(":",$this->wizard->modData["wizAction"]);
 		if ($action[0]=="edit")	{
 			$action[1]=1;
-			$this->wizard->regNewEntry($catID,$action[1]);
+			$this->wizard->regNewEntry($this->sectionID,$action[1]);
 
-			$lines = $this->wizard->catHeaderLines($lines,$catID,$this->wizard->options[$catID],"&nbsp;",$action[1]);
-			$piConf = $this->wizard->wizArray[$catID][$action[1]];
-			$ffPrefix='['.$catID.']['.$action[1].']';
+			$lines = $this->wizard->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
+			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
+			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 				// Admin only
 			$subContent ="";
