@@ -149,7 +149,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				$content = $this->view_result();
 			} else $content = $this->fw('<strong>Error:</strong> Please enter an extension key first!<BR><BR>');
 		} elseif ($this->modData['WRITE'])	{
-			$this->modData['wizAction']='';
+		  	$this->modData['wizAction']='';
 			$this->modData['wizSubCmd']='';
 			if ($saveKey)	{
 				$this->makeFilesArray($this->saveKey);
@@ -325,9 +325,10 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		$filesContent=array();
 
 		$filesOverview1[]= '<tr'.$this->bgCol(1).'>
-			<td><strong>'.$this->fw('Filename:').'</strong></td>
-			<td><strong>'.$this->fw('Size:').'</strong></td>
-			<td><strong>'.$this->fw('&nbsp;').'</strong></td>
+			<td><strong>' . $this->fw('Filename:') . '</strong></td>
+			<td><strong>' . $this->fw('Size:') . '</strong></td>
+			<td><strong>' . $this->fw('&nbsp;') . '</strong></td>
+			<td><strong>' . $this->fw('Overwrite:') . '</strong></td>
 		</tr>';
 
 		foreach($keyA as $fileName)	{
@@ -336,18 +337,19 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			$fI = pathinfo($fileName);
 			if (t3lib_div::inList('php,sql,txt',strtolower($fI['extension'])))	{
 				$linkToFile='<strong><a href="#'.md5($fileName).'">'.$this->fw("&nbsp;View&nbsp;").'</a></strong>';
-				$filesContent[]='<tr'.$this->bgCol(1).'>
-				<td><a name="'.md5($fileName).'"></a><strong>'.$this->fw($fileName).'</strong></td>
+				$filesContent[]='<tr' .$this->bgCol(1) .'>
+				<td><a name="' . md5($fileName) . '"></a><strong>' . $this->fw($fileName) . '</strong></td>
 				</tr>
 				<tr>
-					<td>'.$this->preWrap($data['content']).'</td>
+					<td>' . $this->preWrap($data['content']) . '</td>
 				</tr>';
 			} else $linkToFile=$this->fw('&nbsp;');
 
-			$line = '<tr'.$this->bgCol(2).'>
-				<td>'.$this->fw($fileName).'</td>
-				<td>'.$this->fw(t3lib_div::formatSize($data['size'])).'</td>
-				<td>'.$linkToFile.'</td>
+			$line = '<tr' . $this->bgCol(2) . '>
+				<td>' . $this->fw($fileName) . '</td>
+				<td>' . $this->fw(t3lib_div::formatSize($data['size'])) . '</td>
+				<td>' . $linkToFile . '</td>
+				<td><input type="checkbox" name="' . $this->piFieldName('wizArray_upd') . '[save][overwrite_files][]" value="' . $fileName . '" checked="checked"></td>
 			</tr>';
 			if (strstr($fileName,'/'))	{
 				$filesOverview2[]=$line;
@@ -424,8 +426,14 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		$uploadArray['misc']['codelines']=0;
 		$uploadArray['misc']['codebytes']=0;
 		$uploadArray['techInfo'] = '';
-
-		$uploadArray['FILES'] = $files;
+		
+		/* Go through overwrite-files list to determine which files are to be written to disk */
+		/* This allows to change only certain files on disk while keeping all others */
+		if(is_array($this->wizArray['save']['overwrite_files'])) {
+		  for($i=0; $i<count($this->wizArray['save']['overwrite_files']); $i++) {
+		    $uploadArray['FILES'][$this->wizArray['save']['overwrite_files'][$i]] = $files[$this->wizArray['save']['overwrite_files'][$i]];
+		  }
+		}
 		return $uploadArray;
 	}
 
