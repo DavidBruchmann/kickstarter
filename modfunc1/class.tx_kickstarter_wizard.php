@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2001-2004 Kasper Skaarhoj (kasper@typo3.com)
+*  (c) 2001-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
@@ -27,7 +27,7 @@
 /**
  * TYPO3 Extension Repository
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 require_once(t3lib_extMgm::extPath("kickstarter")."modfunc1/class.tx_kickstarter_compilefiles.php");
@@ -119,26 +119,26 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	var $modData;
 
 	function tx_kickstarter_wizard() {
-	  $this->modData = t3lib_div::GPvar($this->varPrefix,1);
+	  $this->modData = t3lib_div::_POST($this->varPrefix);
 	}
 
 
 	function initWizArray()	{
-	  $inArray=unserialize(base64_decode($this->modData["wizArray_ser"]));
-	  $this->wizArray = is_array($inArray) ? $inArray : array();
-	  if (is_array($this->modData["wizArray_upd"]))	{
-	    $this->wizArray = t3lib_div::array_merge_recursive_overrule($this->wizArray,$this->modData["wizArray_upd"]);
-	  }
+		$inArray = unserialize(base64_decode($this->modData["wizArray_ser"]));
+		$this->wizArray = is_array($inArray) ? $inArray : array();
+		if (is_array($this->modData["wizArray_upd"]))	{
+			$this->wizArray = t3lib_div::array_merge_recursive_overrule($this->wizArray,$this->modData["wizArray_upd"]);
+		}
 
-	  $lA = is_array($this->wizArray["languages"]) ? current($this->wizArray["languages"]) : "";
-	  if (is_array($lA))	{
-	    reset($lA);
-	    while(list($k,$v)=each($lA))	{
-	      if ($v && isset($this->languages[$k]))	{
-		$this->selectedLanguages[$k]=$this->languages[$k];
-	      }
-	    }
-	  }
+		$lA = is_array($this->wizArray["languages"]) ? current($this->wizArray["languages"]) : "";
+		if (is_array($lA))	{
+			reset($lA);
+			while(list($k,$v)=each($lA))	{
+				if ($v && isset($this->languages[$k]))	{
+					$this->selectedLanguages[$k]=$this->languages[$k];
+				}
+			}
+		}
 	}
 
 	function mgm_wizard()	{
@@ -158,7 +158,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			$this->modData["wizAction"]="";
 			$this->modData["wizSubCmd"]="";
 			if ($saveKey)	{
-				$content=$this->view_result();
+				$content = $this->view_result();
 			} else $content = $this->fw("<strong>Error:</strong> Please enter an extension key first!<BR><BR>");
 		} elseif ($this->modData["WRITE"])	{
 			$this->modData["wizAction"]="";
@@ -166,7 +166,6 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			if ($saveKey)	{
 				$this->makeFilesArray($this->saveKey);
 				$uploadArray = $this->makeUploadArray($this->saveKey,$this->fileArray);
-
 				$this->pObj->importExtFromRep(0,$this->modData["loc"],0,$uploadArray);
 			} else $content = $this->fw("<strong>Error:</strong> Please enter an extension key first!<BR><BR>");
 		} elseif ($this->modData["totalForm"])	{
@@ -192,7 +191,6 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			$content = $this->getFormContent();
 		}
 		$wasContent = $content?1:0;
-
 		$content = '
 		<script language="javascript" type="text/javascript">
 			function setFormAnchorPoint(anchor)	{
@@ -205,7 +203,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				<td valign=top>'.$this->sidemenu().'</td>
 				<td>&nbsp;&nbsp;&nbsp;</td>
 				<td valign=top>'.$content.'
-					<input type="hidden" name="'.$this->piFieldName("wizArray_ser").'" value="'.htmlspecialchars(base64_encode(serialize($this->wizArray))).'"><BR>';
+					<input type="hidden" name="'.$this->piFieldName("wizArray_ser").'" value="'.htmlspecialchars(base64_encode(serialize($this->wizArray))).'" /><BR>';
 
 		if ((string)$this->modData["wizSubCmd"])	{
 			if ($wasContent)	$content.='<input name="update2" type="submit" value="Update..."> ';
@@ -1294,7 +1292,9 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				"tstamp" => "[tstamp]",
 			);
 			$subContent = "";
-			$subContent.= $this->renderCheckBox($ffPrefix."[sorting]",$piConf["sorting"])."Manual ordering of records ".$this->whatIsThis("If set, the records can be moved up and down relative to each other in the backend. Just like Content Elements. Otherwise they are sorted automatically by any field you specify");
+			$subContent.= $this->renderCheckBox($ffPrefix."[localization]",$piConf["localization"])."Enabled localization features".$this->whatIsThis("If set, the records will have a selector box for language and a reference field which can point back to the original default translation for the record. These features are part of the internal framework for localization.").'<BR>';
+			$subContent.= $this->renderCheckBox($ffPrefix."[versioning]",$piConf["versioning"])."Enable versioning ".$this->whatIsThis("If set, you will be able to versionize records from this table. Highly recommended if the records are passed around in a workflow.").'<BR>';
+			$subContent.= $this->renderCheckBox($ffPrefix."[sorting]",$piConf["sorting"])."Manual ordering of records ".$this->whatIsThis("If set, the records can be moved up and down relative to each other in the backend. Just like Content Elements. Otherwise they are sorted automatically by any field you specify").'<BR>';
 			$subContent.= $this->textSetup("","If 'Manual ordering' is not set, order the table by this field:<BR>".
 				$this->renderSelectBox($ffPrefix."[sorting_field]",$piConf["sorting_field"],$this->currentFields($optValues,$piConf["fields"]))."<BR>".
 				$this->renderCheckBox($ffPrefix."[sorting_desc]",$piConf["sorting_desc"])." Descending");

@@ -1,22 +1,22 @@
 <?php
 /***************************************************************
 *  Copyright notice
-*  
-*  (c) 2001-2004 Kasper Skaarhoj (kasper@typo3.com)
+*
+*  (c) 2001-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
 *  All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is 
+*  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
 *  it under the terms of the GNU General Public License as published by
 *  the Free Software Foundation; either version 2 of the License, or
 *  (at your option) any later version.
-* 
+*
 *  The GNU General Public License can be found at
 *  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license 
+*  A copy is found in the textfile GPL.txt and important notices to the license
 *  from the author is found in LICENSE.txt distributed with these scripts.
 *
-* 
+*
 *  This script is distributed in the hope that it will be useful,
 *  but WITHOUT ANY WARRANTY; without even the implied warranty of
 *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -27,7 +27,7 @@
 /**
  * TYPO3 Extension Repository
  *
- * @author	Kasper Skårhøj <kasper@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 
@@ -43,12 +43,12 @@ class tx_kickstarter_compilefiles {
 	var $ext_locallang_db=array();
 
 	var $extKey="";
-	
+
 	var $charMaxLng = 2;	// Varchars are created instead of chars when over this length.
 
 
 	function makeFilesArray($extKey)	{
-		
+
 		$this->ext_localconf=array();
 		$this->ext_tables=array();
 		$this->fileArray=array();
@@ -73,7 +73,7 @@ class tx_kickstarter_compilefiles {
 				"));
 			}
 		}
-		
+
 			// TypoScript
 		if (is_array($this->wizArray["ts"]))	{
 			$content = current($this->wizArray["ts"]);
@@ -89,7 +89,7 @@ class tx_kickstarter_compilefiles {
 #debug(array($this->fileArray["ext_typoscript_setup.txt"]));
 			}
 		}
-		
+
 		if (is_array($this->wizArray["module"]))	{
 			reset($this->wizArray["module"]);
 			while(list($k,$config)=each($this->wizArray["module"]))	{
@@ -119,7 +119,7 @@ class tx_kickstarter_compilefiles {
 				$this->EM_CONF_presets["modify_tables"][]=$config["which_table"];
 			}
 		}
-		
+
 		if (is_array($this->wizArray["tables"]))	{
 			reset($this->wizArray["tables"]);
 			while(list($k,$config)=each($this->wizArray["tables"]))	{
@@ -159,7 +159,7 @@ class tx_kickstarter_compilefiles {
 			$this->addFileToFileArray("ext_tables.php",trim($this->wrapBody('
 				<?php
 				if (!defined ("TYPO3_MODE")) 	die ("Access denied.");
-				
+
 				',implode(chr(10),$this->ext_tables),'
 				?>
 			',0)));
@@ -169,7 +169,7 @@ class tx_kickstarter_compilefiles {
 			$this->addFileToFileArray("tca.php",trim($this->wrapBody('
 				<?php
 				if (!defined ("TYPO3_MODE")) 	die ("Access denied.");
-				
+
 				',implode(chr(10),$this->ext_tca),'
 				?>
 			',0)));
@@ -186,34 +186,34 @@ class tx_kickstarter_compilefiles {
 		if (count($this->ext_locallang_db))	{
 			$this->addLocalLangFile($this->ext_locallang_db,"locallang_db.php",'Language labels for database tables/fields belonging to extension "'.$extKey.'"');
 		}
-		
+
 		// The form used to generate the extension:
 		$this->dontPrintImages = 1;
 		$this->addFileToFileArray("doc/wizard_form.html",trim($this->sPS('
 			<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-			
+
 			<html>
 			<head>
 				<title>Untitled</title>
 			</head>
-			
+
 			<body>
-				
+
 				'.$this->totalForm().'
 			</body>
 			</html>
 		')));
 		$this->addFileToFileArray("doc/wizard_form.dat",serialize($this->wizArray));
-		
+
 			// icon:
 		$this->addFileToFileArray("ext_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound.gif"));
-		
+
 
 #		debug($this->wizArray);
 #		debug ($this->fileArray);
 #		return $dataArr;
 	}
-	
+
 
 	function addLocalLangFile($arr,$filename,$description)	{
 		$lines=array();
@@ -222,7 +222,7 @@ class tx_kickstarter_compilefiles {
 		$lines[]=trim($this->sPS('
 			/**
 			 * '.$description.'
-			 * 
+			 *
 			 * This file is detected by the translation tool.
 			 */
 		'));
@@ -264,11 +264,11 @@ class tx_kickstarter_compilefiles {
 				$this->makeFieldTCA($DBfields,$columns,$fConf,$WOP."[fields][".$i."]",$tableName,$extKey);
 			}
 		}
-		
+
 		if ($tableName=="tt_address")	$this->EM_CONF_presets["dependencies"][]="tt_address";
 		if ($tableName=="tt_news")	$this->EM_CONF_presets["dependencies"][]="tt_news";
 		if (t3lib_div::inList("tt_content,fe_users,fe_groups",$tableName))	$this->EM_CONF_presets["dependencies"][]="cms";
-		
+
 		$createTable = $this->wrapBody('
 			#
 			# Table structure for table \''.$tableName.'\'
@@ -320,7 +320,7 @@ class tx_kickstarter_compilefiles {
 		$ctrl=array();
 		$enFields=array();
 
-//str_replace("\\'","'",addslashes($this->getSplitLabels($config,"title")))		
+//str_replace("\\'","'",addslashes($this->getSplitLabels($config,"title")))
 		$ctrl[] = trim($this->sPS('
 			"title" => "'.$this->getSplitLabels_reference($config,"title",$tableName).'",		'.$this->WOPcomment('WOP:'.$WOP.'[title]').'
 			"label" => "'.($config["header_field"]?$config["header_field"]:"uid").'",	'.$this->WOPcomment('WOP:'.$WOP.'[header_field]').'
@@ -329,8 +329,8 @@ class tx_kickstarter_compilefiles {
 			"cruser_id" => "cruser_id",
 		',0));
 		$DBfields[] = trim($this->sPS("
-			uid int(11) unsigned DEFAULT '0' NOT NULL auto_increment,
-			pid int(11) unsigned DEFAULT '0' NOT NULL,
+			uid int(11) DEFAULT '0' NOT NULL auto_increment,
+			pid int(11) DEFAULT '0' NOT NULL,
 			tstamp int(11) unsigned DEFAULT '0' NOT NULL,
 			crdate int(11) unsigned DEFAULT '0' NOT NULL,
 			cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
@@ -338,6 +338,61 @@ class tx_kickstarter_compilefiles {
 
 		if ($config["type_field"])	{
 			$ctrl[] = '"type" => "'.$config["type_field"].'",	'.$this->WOPcomment('WOP:'.$WOP.'[type_field]');
+		}
+		if ($config["versioning"])	{
+			$ctrl[] = '"versioning" => "1",	'.$this->WOPcomment('WOP:'.$WOP.'[versioning]');
+			$DBfields[] = "t3ver_oid int(11) unsigned DEFAULT '0' NOT NULL,";
+			$DBfields[] = "t3ver_id int(11) unsigned DEFAULT '0' NOT NULL,";
+			$DBfields[] = "t3ver_label varchar(30) DEFAULT '' NOT NULL,";
+		}
+		if ($config["localization"])	{
+			$ctrl[] = '"languageField" => "sys_language_uid",	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
+			$ctrl[] = '"transOrigPointerField" => "l18n_parent",	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
+			$ctrl[] = '"transOrigDiffSourceField" => "l18n_diffsource",	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
+
+			$DBfields[] = "sys_language_uid int(11) DEFAULT '0' NOT NULL,";
+			$DBfields[] = "l18n_parent int(11) DEFAULT '0' NOT NULL,";
+			$DBfields[] = "l18n_diffsource mediumblob NOT NULL,";
+
+			$columns["sys_language_uid"] = trim($this->sPS("
+				'sys_language_uid' => Array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
+					'exclude' => 1,
+					'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
+					'config' => Array (
+						'type' => 'select',
+						'foreign_table' => 'sys_language',
+						'foreign_table_where' => 'ORDER BY sys_language.title',
+						'items' => Array(
+							Array('LLL:EXT:lang/locallang_general.php:LGL.allLanguages',-1),
+							Array('LLL:EXT:lang/locallang_general.php:LGL.default_value',0)
+						)
+					)
+				),
+			"));
+
+			$columns["l18n_parent"] = trim($this->sPS("
+				'l18n_parent' => Array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
+					'displayCond' => 'FIELD:sys_language_uid:>:0',
+					'exclude' => 1,
+					'label' => 'LLL:EXT:lang/locallang_general.php:LGL.l18n_parent',
+					'config' => Array (
+						'type' => 'select',
+						'items' => Array (
+							Array('', 0),
+						),
+						'foreign_table' => '".$tableName."',
+						'foreign_table_where' => 'AND ".$tableName.".pid=###CURRENT_PID### AND ".$tableName.".sys_language_uid IN (-1,0)',
+					)
+				),
+			"));
+
+			$columns["l18n_diffsource"] = trim($this->sPS("
+				'l18n_diffsource' => Array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
+					'config' => Array (
+						'type' => 'passthrough'
+					)
+				),
+			"));
 		}
 		if ($config["sorting"])	{
 			$ctrl[] = '"sortby" => "sorting",	'.$this->WOPcomment('WOP:'.$WOP.'[sorting]');
@@ -354,7 +409,7 @@ class tx_kickstarter_compilefiles {
 			$DBfields[] = "hidden tinyint(4) unsigned DEFAULT '0' NOT NULL,";
 			$columns["hidden"] = trim($this->sPS('
 				"hidden" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden]').'
-					"exclude" => 1,	
+					"exclude" => 1,
 					"label" => "LLL:EXT:lang/locallang_general.php:LGL.hidden",
 					"config" => Array (
 						"type" => "check",
@@ -368,7 +423,7 @@ class tx_kickstarter_compilefiles {
 			$DBfields[] = "starttime int(11) unsigned DEFAULT '0' NOT NULL,";
 			$columns["starttime"] = trim($this->sPS('
 				"starttime" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_starttime]').'
-					"exclude" => 1,	
+					"exclude" => 1,
 					"label" => "LLL:EXT:lang/locallang_general.php:LGL.starttime",
 					"config" => Array (
 						"type" => "input",
@@ -386,7 +441,7 @@ class tx_kickstarter_compilefiles {
 			$DBfields[] = "endtime int(11) unsigned DEFAULT '0' NOT NULL,";
 			$columns["endtime"] = trim($this->sPS('
 				"endtime" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_endtime]').'
-					"exclude" => 1,	
+					"exclude" => 1,
 					"label" => "LLL:EXT:lang/locallang_general.php:LGL.endtime",
 					"config" => Array (
 						"type" => "input",
@@ -408,10 +463,10 @@ class tx_kickstarter_compilefiles {
 			$DBfields[] = "fe_group int(11) DEFAULT '0' NOT NULL,";
 			$columns["fe_group"] = trim($this->sPS('
 				"fe_group" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_access]').'
-					"exclude" => 1,	
+					"exclude" => 1,
 					"label" => "LLL:EXT:lang/locallang_general.php:LGL.fe_group",
 					"config" => Array (
-						"type" => "select",	
+						"type" => "select",
 						"items" => Array (
 							Array("", 0),
 							Array("LLL:EXT:lang/locallang_general.php:LGL.hide_at_login", -1),
@@ -423,7 +478,7 @@ class tx_kickstarter_compilefiles {
 				),
 			'));
 		}
-			// Add enable fields in header:		
+			// Add enable fields in header:
 		if (is_array($enFields) && count($enFields))	{
 			$ctrl[]=trim($this->wrapBody('
 				"enablecolumns" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden] / '.$WOP.'[add_starttime] / '.$WOP.'[add_endtime] / '.$WOP.'[add_access]').'
@@ -434,7 +489,7 @@ class tx_kickstarter_compilefiles {
 			// Add dynamic config file.
 		$ctrl[]= '"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",';
 		$ctrl[]= '"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_'.$tableName.'.gif",';
-		
+
 		if ($config["allow_on_pages"])	{
 			$this->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[allow_on_pages]').'
@@ -461,7 +516,7 @@ class tx_kickstarter_compilefiles {
 				$this->makeFieldTCA($DBfields,$columns,$fConf,$WOP."[fields][".$i."]",$tableName,$extKey);
 			}
 		}
-		
+
 
 
 			// Finalize tables.sql:
@@ -585,7 +640,7 @@ class tx_kickstarter_compilefiles {
 						if ($fConf["conf_unique"]=="L")		{$evalItems[0][] = "uniqueInPid";			$evalItems[1][] = $WOP.'[conf_unique] = Local (unique in this page (PID))';}
 						if ($fConf["conf_unique"]=="G")		{$evalItems[0][] = "unique";			$evalItems[1][] = $WOP.'[conf_unique] = Global (unique in whole database)';}
 					}
-					
+
 					$wizards =array();
 					if ($fConf["conf_wiz_color"])	{
 						$wizards[] = trim($this->sPS('
@@ -638,7 +693,7 @@ class tx_kickstarter_compilefiles {
 			case "link":
 				$DBfields[] = $fConf["fieldname"]." tinytext NOT NULL,";
 				$configL[]=trim($this->sPS('
-					"type" => "input",		
+					"type" => "input",
 					"size" => "15",
 					"max" => "255",
 					"checkbox" => "",
@@ -670,7 +725,7 @@ class tx_kickstarter_compilefiles {
 			case "integer":
 				$DBfields[] = $fConf["fieldname"]." int(11) DEFAULT '0' NOT NULL,";
 				$configL[]=trim($this->sPS('
-					"type" => "input",	
+					"type" => "input",
 					"size" => "4",
 					"max" => "4",
 					"eval" => "int",
@@ -714,7 +769,7 @@ class tx_kickstarter_compilefiles {
 						$id."wiz"
 					);
 					$this->addFileToFileArray($id."/wizard_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound.gif"));
-					
+
 					$configL[]=trim($this->wrapBody('
 						"wizards" => Array(
 							"_PADDING" => 2,
@@ -754,13 +809,13 @@ class tx_kickstarter_compilefiles {
 					$this->EM_CONF_presets["createDirs"][]=$this->ulFolder($extKey)."rte/";
 					$rteImageDir = "|imgpath=".$this->ulFolder($extKey)."rte/";
 				}
-				
+
 				$transformation="ts_images-ts_reglinks";
 				if ($fConf["conf_mode_cssOrNot"] && t3lib_div::inList("moderate,custom",$fConf["conf_rte"]))	{
 					$transformation="ts_css";
 				}
-				
-				
+
+
 				switch($fConf["conf_rte"])	{
 					case "tt_content":
 						$typeP = 'richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts]';
@@ -772,11 +827,11 @@ class tx_kickstarter_compilefiles {
 						$typeP = 'richtext[cut|copy|paste|formatblock|textcolor|bold|italic|underline|left|center|right|orderedlist|unorderedlist|outdent|indent|link|table|image|line|chMode]:rte_transform[mode=ts_css'.$rteImageDir.']';
 						$this->ext_localconf[]=trim($this->wrapBody("
 								t3lib_extMgm::addPageTSConfig('
-	
+
 									# ***************************************************************************************
 									# CONFIGURATION of RTE in table \"".$table."\", field \"".$fConf["fieldname"]."\"
 									# ***************************************************************************************
-								
+
 									",trim($this->slashValueForSingleDashes(str_replace(chr(9),"  ",$this->sPS("
 										RTE.config.".$table.".".$fConf["fieldname"]." {
 											hidePStyleItems = H1, H4, H5, H6
@@ -881,7 +936,7 @@ class tx_kickstarter_compilefiles {
 						if (count($enabledButtons))	{
 							$typeP = 'richtext['.implode("|",$enabledButtons).']:rte_transform[mode='.$transformation.''.$rteImageDir.']';
 						}
-						
+
 						$rte_colors=array();
 						$setupUpColors=array();
 						for ($a=1;$a<=3;$a++)	{
@@ -909,7 +964,7 @@ class tx_kickstarter_compilefiles {
 								'));
 							}
 						}
-						
+
 						$PageTSconfig= Array();
 						if ($fConf["conf_rte_removecolorpicker"])	{
 							$PageTSconfig[]="	".$this->WOPcomment('WOP:'.$WOP.'[conf_rte_removecolorpicker]');
@@ -969,7 +1024,7 @@ class tx_kickstarter_compilefiles {
 								}
 							'));
 						}
-	
+
 						$finalPageTSconfig=array();
 						if (count($rte_colors))		{
 							$finalPageTSconfig[]=trim($this->wrapBody('
@@ -995,11 +1050,11 @@ class tx_kickstarter_compilefiles {
 						if (count($finalPageTSconfig))	{
 							$this->ext_localconf[]=trim($this->wrapBody("
 								t3lib_extMgm::addPageTSConfig('
-	
+
 									# ***************************************************************************************
 									# CONFIGURATION of RTE in table \"".$table."\", field \"".$fConf["fieldname"]."\"
 									# ***************************************************************************************
-								
+
 								",trim($this->slashValueForSingleDashes(str_replace(chr(9),"  ",implode(chr(10).chr(10),$finalPageTSconfig)))),"
 								');
 							",0));
@@ -1060,7 +1115,7 @@ class tx_kickstarter_compilefiles {
 				if ($fConf["conf_select_pro"] && $t=="select")	{
 					$cN = $this->returnName($extKey,"class",$id);
 					$configL[]='"itemsProcFunc" => "'.$cN.'->main",	'.$this->WOPcomment('WOP:'.$WOP.'[conf_select_pro]');
-					
+
 					$classContent= $this->sPS('
 						class '.$cN.' {
 							function main(&$params,&$pObj)	{
@@ -1069,15 +1124,15 @@ class tx_kickstarter_compilefiles {
 								debug($params);
 								debug("\$pObj:",1);
 								debug($pObj);
-	*/							
+	*/
 									// Adding an item!
 								$params["items"][]=Array($pObj->sL("Added label by PHP function|Tilføjet Dansk tekst med PHP funktion"), 999);
-								
+
 								// No return - the $params and $pObj variables are passed by reference, so just change content in then and it is passed back automatically...
 							}
 						}
 					');
-					
+
 					$this->addFileToFileArray("class.".$cN.".php",$this->PHPclassFile($extKey,"class.".$cN.".php",$classContent,"Class/Function which manipulates the item-array for table/field ".$id."."));
 
 					$this->ext_tables[]=$this->sPS('
@@ -1112,7 +1167,7 @@ class tx_kickstarter_compilefiles {
 				} else {
 					$configL[]='"type" => "select",	'.$this->WOPcomment('WOP:'.$WOP.'[conf_rel_type]');
 				}
-				
+
 				if ($fConf["conf_rel_type"]!="group" && $fConf["conf_relations"]==1 && $fConf["conf_rel_dummyitem"])	{
 					$configL[]=trim($this->wrapBody('
 						'.$this->WOPcomment('WOP:'.$WOP.'[conf_rel_dummyitem]').'
@@ -1121,13 +1176,13 @@ class tx_kickstarter_compilefiles {
 						),
 					'));
 				}
-				
+
 				if (t3lib_div::inList("tt_content,fe_users,fe_groups",$fConf["conf_rel_table"]))		$this->EM_CONF_presets["dependencies"][]="cms";
 
 				if ($fConf["conf_rel_table"]=="_CUSTOM")	{
 					$fConf["conf_rel_table"]=$fConf["conf_custom_table_name"]?$fConf["conf_custom_table_name"]:"NO_TABLE_NAME_AVAILABLE";
 				}
-				
+
 				if ($fConf["conf_rel_type"]=="group")	{
 					$configL[]='"allowed" => "'.($fConf["conf_rel_table"]!="_ALL"?$fConf["conf_rel_table"]:"*").'",	'.$this->WOPcomment('WOP:'.$WOP.'[conf_rel_table]');
 					if ($fConf["conf_rel_table"]=="_ALL")	$configL[]='"prepend_tname" => 1,	'.$this->WOPcomment('WOP:'.$WOP.'[conf_rel_table]=_ALL');
@@ -1152,12 +1207,12 @@ class tx_kickstarter_compilefiles {
 				$configL[]='"size" => '.t3lib_div::intInRange($fConf["conf_relations_selsize"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_relations_selsize]');
 				$configL[]='"minitems" => 0,';
 				$configL[]='"maxitems" => '.t3lib_div::intInRange($fConf["conf_relations"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_relations]');
-				
+
 				if ($fConf["conf_relations_mm"])	{
 					$mmTableName=$id."_mm";
 					$configL[]='"MM" => "'.$mmTableName.'",	'.$this->WOPcomment('WOP:'.$WOP.'[conf_relations_mm]');
 					$DBfields[] = $fConf["fieldname"]." int(11) unsigned DEFAULT '0' NOT NULL,";
-					
+
 					$createTable = $this->sPS("
 						#
 						# Table structure for table '".$mmTableName."'
@@ -1178,8 +1233,8 @@ class tx_kickstarter_compilefiles {
 				} else {
 					$DBfields[] = $fConf["fieldname"]." int(11) unsigned DEFAULT '0' NOT NULL,";
 				}
-				
-				if ($fConf["conf_rel_type"]!="group")	{	
+
+				if ($fConf["conf_rel_type"]!="group")	{
 					$wTable=$fConf["conf_rel_table"];
 					$wizards =array();
 					if ($fConf["conf_wiz_addrec"])	{
@@ -1263,7 +1318,7 @@ class tx_kickstarter_compilefiles {
 				$configL[]='"size" => '.t3lib_div::intInRange($fConf["conf_files_selsize"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files_selsize]');
 				$configL[]='"minitems" => 0,';
 				$configL[]='"maxitems" => '.t3lib_div::intInRange($fConf["conf_files"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files]');
-			
+
 				$DBfields[] = $fConf["fieldname"]." blob NOT NULL,";
 			break;
 			case "none":
@@ -1282,7 +1337,7 @@ class tx_kickstarter_compilefiles {
 				debug("Unknown type: ".(string)$fConf["type"]);
 			break;
 		}
-		
+
 		if ($t=="passthrough")	{
 			$columns[$fConf["fieldname"]] = trim($this->wrapBody('
 				"'.$fConf["fieldname"].'" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[fieldname]').'
@@ -1290,7 +1345,7 @@ class tx_kickstarter_compilefiles {
 						',implode(chr(10),$configL),'
 					)
 				),
-			',2));		
+			',2));
 		} else {
 			$columns[$fConf["fieldname"]] = trim($this->wrapBody('
 				"'.$fConf["fieldname"].'" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[fieldname]').'
@@ -1303,7 +1358,7 @@ class tx_kickstarter_compilefiles {
 			',2));
 		}
 	}
-		
+
 	/**
 	 * MAKES a Plugin
 	 */
@@ -1377,7 +1432,7 @@ class tx_kickstarter_compilefiles {
 			case "includeLib":
 				if ($config["plus_user_ex"])	$setType="includeLib";
 			break;
-			case "typotags":	
+			case "typotags":
 				$tagName = ereg_replace("[^a-z0-9_]","",strtolower($config["tag_name"]));
 				if ($tagName)	{
 					$this->ext_localconf[]=$this->sPS('
@@ -1392,9 +1447,9 @@ class tx_kickstarter_compilefiles {
 			default:
 			break;
 		}
-		
-		$cache= $config["plus_user_obj"] ? 0 : 1;		
-		
+
+		$cache= $config["plus_user_obj"] ? 0 : 1;
+
 		$this->ext_localconf[]=$this->sPS('
 			'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
 			t3lib_extMgm::addPItoST43($_EXTKEY,"pi'.$k.'/class.'.$cN.'.php","_pi'.$k.'","'.$setType.'",'.$cache.');
@@ -1406,7 +1461,7 @@ class tx_kickstarter_compilefiles {
 				t3lib_extMgm::addPlugin(Array("'.addslashes($this->getSplitLabels_reference($config,"title","tt_content.".$setType."_pi".$k)).'", $_EXTKEY."_pi'.$k.'"),"'.$setType.'");
 			');
 		}
-		
+
 			// Make Plugin class:
 		switch($config["addType"])	{
 			case "list_type":
@@ -1414,7 +1469,7 @@ class tx_kickstarter_compilefiles {
 					if (is_array($this->wizArray["tables"][$config["list_default"]]))	{
 						$tempTableConf = $this->wizArray["tables"][$config["list_default"]];
 						$tableName = $this->returnName($extKey,"tables",$tempTableConf["tablename"]);
-						
+
 						$ll=array();
 
 						$theLines = Array();
@@ -1426,10 +1481,10 @@ class tx_kickstarter_compilefiles {
 						$theLines["listItemRows"]=Array();
 						$theLines["singleRows_section"]=Array();
 						$P_classes=array();
-						
+
 						$theLines["searchFieldList"]=Array();
 						$theLines["orderByList"]=Array();
-						
+
 						$tcol="uid";
 						$theLines["getListRow"][$tcol] = '<td><p>\'.$this->getFieldContent("'.$tcol.'").\'</p></td>';
 						$theLines["getListHeader"][$tcol] = '<td><p>\'.$this->getFieldHeader_sortLink("'.$tcol.'").\'</p></td>';
@@ -1458,7 +1513,7 @@ class tx_kickstarter_compilefiles {
 										'));
 										$P_classes["SV"][]=$tempN;
 									}
-									
+
 									if (!strstr($fC["type"],"textarea"))	{
 										$theLines["getListRow"][$tcol] = '<td valign="top"><p>\'.$this->getFieldContent("'.$tcol.'").\'</p></td>';
 										$theLines["getListHeader"][$tcol] = '<td nowrap><p>\'.$this->getFieldHeader("'.$tcol.'").\'</p></td>';
@@ -1472,7 +1527,7 @@ class tx_kickstarter_compilefiles {
 
 
 									$this->addLocalConf($ll,array("listFieldHeader_".$tcol=>$fC["title"]),"listFieldHeader_".$tcol,"pi",$k,1,1);
-		
+
 									if ($tcol=="title")	{
 										$theLines["getFieldContent"][$tcol] = trim($this->sPS('
 												case "'.$tcol.'":
@@ -1512,7 +1567,7 @@ class tx_kickstarter_compilefiles {
 									if (strstr($fC["type"],"input")||strstr($fC["type"],"textarea"))	{
 										$theLines["searchFieldList"][$tcol]=$tcol;
 									}
-								}								
+								}
 							}
 						}
 
@@ -1568,11 +1623,11 @@ class tx_kickstarter_compilefiles {
 								$this->pi_loadLL();		// Loading the LOCAL_LANG values
 								'.(!$cache ? '$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
 								$lConf = $this->conf["listView."];	// Local settings for the listView function
-								
+
 								if ($this->piVars["showUid"])	{	// If a single element should be displayed:
 									$this->internal["currentTable"] = "'.$tableName.'";
 									$this->internal["currentRow"] = $this->pi_getRecord("'.$tableName.'",$this->piVars["showUid"]);
-									
+
 									$content = $this->singleView($content,$conf);
 									return $content;
 								} else {
@@ -1590,38 +1645,38 @@ class tx_kickstarter_compilefiles {
 									$this->internal["maxPages"]=t3lib_div::intInRange($lConf["maxPages"],0,1000,2);;		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
 									$this->internal["searchFieldList"]="'.implode(",",$theLines["searchFieldList"]).'";
 									$this->internal["orderByList"]="'.implode(",",$theLines["orderByList"]).'";
-									
+
 										// Get number of records:
 									$res = $this->pi_exec_query("'.$tableName.'",1);
 									list($this->internal["res_count"]) = $GLOBALS[\'TYPO3_DB\']->sql_fetch_row($res);
-						
+
 										// Make listing query, pass query to SQL database:
 									$res = $this->pi_exec_query("'.$tableName.'");
 									$this->internal["currentTable"] = "'.$tableName.'";
-							
+
 										// Put the whole list together:
 									$fullTable="";	// Clear var;
 								#	$fullTable.=t3lib_div::view_array($this->piVars);	// DEBUG: Output the content of $this->piVars for debug purposes. REMEMBER to comment out the IP-lock in the debug() function in t3lib/config_default.php if nothing happens when you un-comment this line!
-										
+
 										// Adds the mode selector.
-									$fullTable.=$this->pi_list_modeSelector($items);	
-									
+									$fullTable.=$this->pi_list_modeSelector($items);
+
 										// Adds the whole list table
 									$fullTable.='.($config["list_default_listmode"]?'$this->makelist($res);':'$this->pi_list_makelist($res);').'
-									
+
 										// Adds the search box:
 									$fullTable.=$this->pi_list_searchBox();
-										
+
 										// Adds the result browser:
 									$fullTable.=$this->pi_list_browseresults();
-									
+
 										// Returns the content from the plugin.
 									return $fullTable;
 								}
 							}
 						');
 
-						
+
 						if ($config["list_default_listmode"])	{
 							$innerMainContent.= $this->wrapBody('
 								/**
@@ -1633,12 +1688,12 @@ class tx_kickstarter_compilefiles {
 									while($this->internal["currentRow"] = $GLOBALS[\'TYPO3_DB\']->sql_fetch_assoc($res))	{
 										$items[]=$this->makeListItem();
 									}
-							
+
 									$out = \'<div\'.$this->pi_classParam("listrow").\'>
 										\'.implode(chr(10),$items).\'
 										</div>\';
 									return $out;
-								}	
+								}
 
 								/**
 								 * [Put your description here]
@@ -1651,7 +1706,7 @@ class tx_kickstarter_compilefiles {
 								}
 							',3);
 						}
-						
+
 						// Single display:
 						if ($config["list_default_singlemode"])	{
 							$innerMainContent.= $this->wrapBody('
@@ -1663,18 +1718,18 @@ class tx_kickstarter_compilefiles {
 									$this->pi_setPiVarDefaults();
 									$this->pi_loadLL();
 									'.(!$cache ? '$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
-									
+
 										// This sets the title of the page for use in indexed search results:
 									if ($this->internal["currentRow"]["title"])	$GLOBALS["TSFE"]->indexedDocTitle=$this->internal["currentRow"]["title"];
-	
+
 									$content=\'<div\'.$this->pi_classParam("singleView").\'>
 										<H2>Record "\'.$this->internal["currentRow"]["uid"].\'" from table "\'.$this->internal["currentTable"].\'":</H2>
 										',implode(chr(10),$theLines["singleRows_section"]),'
 									<p>\'.$this->pi_list_linkSingle($this->pi_getLL("back","Back"),0).\'</p></div>\'.
 									$this->pi_getEditPanel();
-	
+
 									return $content;
-								}	
+								}
 							',3);
 						} else {
 							$innerMainContent.= $this->wrapBody('
@@ -1686,10 +1741,10 @@ class tx_kickstarter_compilefiles {
 									$this->pi_setPiVarDefaults();
 									$this->pi_loadLL();
 									'.(!$cache ? '$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
-									
+
 										// This sets the title of the page for use in indexed search results:
 									if ($this->internal["currentRow"]["title"])	$GLOBALS["TSFE"]->indexedDocTitle=$this->internal["currentRow"]["title"];
-	
+
 									$content=\'<div\'.$this->pi_classParam("singleView").\'>
 										<H2>Record "\'.$this->internal["currentRow"]["uid"].\'" from table "\'.$this->internal["currentTable"].\'":</H2>
 										<table>
@@ -1697,12 +1752,12 @@ class tx_kickstarter_compilefiles {
 										</table>
 									<p>\'.$this->pi_list_linkSingle($this->pi_getLL("back","Back"),0).\'</p></div>\'.
 									$this->pi_getEditPanel();
-	
+
 									return $content;
-								}	
+								}
 							',3);
 						}
-						
+
 						$this->ext_localconf[]=$this->sPS('
 							'.$this->WOPcomment('WOP:'.$WOP.'[...]').'
 							t3lib_extMgm::addTypoScript($_EXTKEY,"setup","
@@ -1710,7 +1765,7 @@ class tx_kickstarter_compilefiles {
 								tt_content.shortcut.20.0.conf.'.$tableName.'.CMD = singleView
 							",43);
 						');
-						
+
 						if (!$config["list_default_listmode"])	{
 							$innerMainContent.= $this->wrapBody('
 								/**
@@ -1719,7 +1774,7 @@ class tx_kickstarter_compilefiles {
 								function pi_list_row($c)	{
 									$editPanel = $this->pi_getEditPanel();
 									if ($editPanel)	$editPanel="<TD>".$editPanel."</TD>";
-									
+
 									return \'<tr\'.($c%2 ? $this->pi_classParam("listrow-odd") : "").\'>
 											',implode(chr(10),$theLines["getListRow"]),'
 											\'.$editPanel.\'
@@ -1772,17 +1827,17 @@ class tx_kickstarter_compilefiles {
 							 */
 							function getFieldHeader_sortLink($fN)	{
 								return $this->pi_linkTP_keepPIvars($this->getFieldHeader($fN),array("sort"=>$fN.":".($this->internal["descFlag"]?0:1)));
-							}	
+							}
 						');
 
 
-						
-						
-						
-						
+
+
+
+
 						$CSS_editor_code="";
 						$pCSSSel = str_replace("_","-",$cN);
-						
+
 						if ($config["list_default_listmode"])	{
 							$temp_merge=array();
 							if (is_array($P_classes["LV"]))	{
@@ -1884,7 +1939,7 @@ class tx_kickstarter_compilefiles {
 								single.ch.TD.ch.TD.ch.P < .P
 							');
 						}
-						
+
 						$this->addFileToFileArray($config["plus_not_staticTemplate"]?"ext_typoscript_editorcfg.txt":$pathSuffix."static/editorcfg.txt",$this->wrapBody('
 							plugin.'.$cN.'.CSS_editor = Plugin: "'.$cN.'"
 							plugin.'.$cN.'.CSS_editor.selector = .'.$pCSSSel.'
@@ -1896,22 +1951,22 @@ class tx_kickstarter_compilefiles {
 								P.example = <p>General text wrapped in &lt;P&gt;:<BR>This is text <a href="#">with a link</a> in it. In principio creavit Deus caelum et terram terra autem erat inanis et vacua et tenebrae super faciem abyssi et spiritus...</p>
 								P.exampleStop = 1
 								P.ch.links = < CSS_editor.ch.A
-								
+
 								H2 = Header 2
 								H2.selector = H2
 								H2.attribs = HEADER
 								H2.example = <H2>Header 2 example <a href="#"> with link</a></H2><p>Bodytext, Et praeessent diei ac nocti et dividerent lucem ac tenebras et vidit Deus quod esset bonum et factum est...</p>
 								H2.ch.links = < CSS_editor.ch.A
 								H2.exampleStop = 1
-								
+
 								H3 = Header 3
 								H3.selector = H3
 								H3.attribs = HEADER
 								H3.example = <h3>Header 3 example <a href="#"> with link</a></h3><p>Bodytext, Et praeessent diei ac nocti et dividerent lucem ac tenebras et vidit Deus quod esset bonum et factum est...</p>
 								H3.ch.links = < CSS_editor.ch.A
 								H3.exampleStop = 1
-								
-								
+
+
 									## LISTING:
 								modeSelector = Mode selector
 								modeSelector.selector = .'.$pCSSSel.'-modeSelector
@@ -1930,8 +1985,8 @@ class tx_kickstarter_compilefiles {
 								  TD.attribs = TD
 								}
 								modeSelector.ch.TD.ch.TD.ch.P < .P
-								
-								
+
+
 								browsebox = Browsing box
 								browsebox.selector = .'.$pCSSSel.'-browsebox
 								browsebox.example = <div class="'.$pCSSSel.'-browsebox"><p>Displaying results <span class="'.$pCSSSel.'-browsebox-strong">1 to 3</span> out of <span class="'.$pCSSSel.'-browsebox-strong">4</span></p><table><tr><td class="'.$pCSSSel.'-browsebox-SCell"><p><a HREF="#">Page 1 (S)</a></p></td><td><p><a HREF="#">Page 2</a></p></td><td><p><a HREF="#">Next ></a></p></td></tr></table></div>
@@ -1955,8 +2010,8 @@ class tx_kickstarter_compilefiles {
 								}
 								browsebox.ch.TD.ch.P < .P
 								browsebox.ch.TD.ch.TD.ch.P < .P
-		
-		
+
+
 								searchbox = Search box
 								searchbox.selector = .'.$pCSSSel.'-searchbox
 								searchbox.example = <div class="'.$pCSSSel.'-searchbox"><table><form action="#" method="POST"><tr><td><input type="text" name="'.$cN.'[sword]" value="Search word" class="'.$pCSSSel.'-searchbox-sword"></td><td><input type="submit" value="Search" class="'.$pCSSSel.'-searchbox-button"></td></tr></form></table></div>
@@ -1975,7 +2030,7 @@ class tx_kickstarter_compilefiles {
 										sword = Search word field
 										sword.selector = +.'.$pCSSSel.'-searchbox-sword
 										sword.attribs = TEXT,background-color,width
-		
+
 										button = Submit button
 										button.selector = +.'.$pCSSSel.'-searchbox-button
 										button.attribs = TEXT,background-color,width
@@ -1987,13 +2042,13 @@ class tx_kickstarter_compilefiles {
 
 						$this->addFileToFileArray($config["plus_not_staticTemplate"]?"ext_typoscript_setup.txt":$pathSuffix."static/setup.txt",$this->sPS('
 							plugin.'.$cN.' {
-								CMD = 
-								pidList = 
-								recursive = 
+								CMD =
+								pidList =
+								recursive =
 							}
 							plugin.'.$cN.'.listView {
-								results_at_a_time = 
-								maxPages = 
+								results_at_a_time =
+								maxPages =
 							}
 							  # Example of default set CSS styles (these go into the document header):
 							plugin.'.$cN.'._CSS_DEFAULT_STYLE (
@@ -2011,7 +2066,7 @@ class tx_kickstarter_compilefiles {
 
 						if (!$config["plus_not_staticTemplate"])	{
 							$this->ext_tables[]=$this->sPS('
-								t3lib_extMgm::addStaticFile($_EXTKEY,"'.$pathSuffix.'static/","'.addslashes(trim($config['title'])).'");						
+								t3lib_extMgm::addStaticFile($_EXTKEY,"'.$pathSuffix.'static/","'.addslashes(trim($config['title'])).'");
 							');
 						}
 					}
@@ -2032,7 +2087,7 @@ class tx_kickstarter_compilefiles {
 							$this->pi_setPiVarDefaults();
 							$this->pi_loadLL();
 							'.(!$cache ? '$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
-								
+
 							$content=\'
 								<strong>This is a few paragraphs:</strong><BR>
 								<p>This is line 1</p>
@@ -2067,7 +2122,7 @@ class tx_kickstarter_compilefiles {
 							P.example = <p>General text wrapped in &lt;P&gt;:<BR>This is text <a href="#">with a link</a> in it. In principio creavit Deus caelum et terram terra autem erat inanis et vacua et tenebrae super faciem abyssi et spiritus...</p>
 							P.exampleStop = 1
 							P.ch.links = < CSS_editor.ch.A
-							
+
 							H3 = Header 3
 							H3.selector = H3
 							H3.attribs = HEADER
@@ -2076,10 +2131,10 @@ class tx_kickstarter_compilefiles {
 							H3.exampleStop = 1
 						}
 					'),1);
-					
+
 					if (!$config["plus_not_staticTemplate"])	{
 						$this->ext_tables[]=$this->sPS('
-							t3lib_extMgm::addStaticFile($_EXTKEY,"'.$pathSuffix.'static/","'.addslashes(trim($config['title'])).'");						
+							t3lib_extMgm::addStaticFile($_EXTKEY,"'.$pathSuffix.'static/","'.addslashes(trim($config['title'])).'");
 						');
 					}
 				}
@@ -2093,13 +2148,13 @@ class tx_kickstarter_compilefiles {
 						}
 					",43);
 				');
-				
+
 				$innerMainContent = $this->sPS('
 					/**
 					 * [Put your description here]
 					 */
 					function main($content,$conf)	{
-					
+
 							// Processes the image-field content:
 							// $conf["IMAGEcObject."] is passed to the getImage() function as TypoScript
 							// configuration for the image (except filename which is set automatically here)
@@ -2112,10 +2167,10 @@ class tx_kickstarter_compilefiles {
 							</tr>";
 						}
 						$imageBlock = count($imageRows)?\'<table border=0 cellpadding=5 cellspacing=0>\'.implode("",$imageRows).\'</table>\':\'<img src=clear.gif width=100 height=1>\';
-						
+
 							// Sets bodytext
 						$bodyText = nl2br($this->cObj->data["bodytext"]);
-						
+
 							// And compiles everything into a table:
 						$finalContent = \'<table border=1>
 							<tr>
@@ -2123,14 +2178,14 @@ class tx_kickstarter_compilefiles {
 								<td valign=top>\'.$bodyText.\'</td>
 							</tr>
 						</table>\';
-						
+
 							// And returns content
 						return $finalContent;
 					}
 						/**
 						 * This calls a function in the TypoScript API which will return an image tag with the image
 						 * processed according to the parsed TypoScript content in the $TSconf array.
-						 */ 
+						 */
 					function getImage($filename,$TSconf)	{
 						list($theImage)=explode(",",$filename);
 						$TSconf["file"] = "uploads/pics/".$theImage;
@@ -2156,33 +2211,33 @@ class tx_kickstarter_compilefiles {
 					 * [Put your description here]
 					 */
 					function main($content,$conf)	{
-							// Get the PID from which to make the menu. 
+							// Get the PID from which to make the menu.
 							// If a page is set as reference in the \'Startingpoint\' field, use that
 							// Otherwise use the page\'s id-number from TSFE
 						$menuPid = intval($this->cObj->data["pages"]?$this->cObj->data["pages"]:$GLOBALS["TSFE"]->id);
-						
+
 							// Now, get an array with all the subpages to this pid:
 							// (Function getMenu() is found in class.t3lib_page.php)
 						$menuItems_level1 = $GLOBALS["TSFE"]->sys_page->getMenu($menuPid);
-						
+
 							// Prepare vars:
 						$tRows=array();
-						
+
 							// Traverse menuitems:
 						reset($menuItems_level1);
 						while(list($uid,$pages_row)=each($menuItems_level1))	{
 							$tRows[]=\'<tr bgColor="#cccccc"><td>\'.$this->pi_linkToPage(
-								$pages_row["nav_title"]?$pages_row["nav_title"]:$pages_row["title"], 
-								$pages_row["uid"], 
+								$pages_row["nav_title"]?$pages_row["nav_title"]:$pages_row["title"],
+								$pages_row["uid"],
 								$pages_row["target"]
 							).\'</td></tr>\';
 						}
-						
+
 						$totalMenu = \'<table border=0 cellpadding=0 cellspacing=2>
 							<tr><td>This is a menu. Go to your favourite page:</td></tr>
 							\'.implode(\'\',$tRows).
 							\'</table><BR>(\'.$this->tellWhatToDo(\'Click here if you want to know where to change the menu design\').\')\';
-				
+
 						return $totalMenu;
 					}
 
@@ -2220,7 +2275,7 @@ class tx_kickstarter_compilefiles {
 		}
 		$indexContent= $this->wrapBody('
 			require_once(PATH_tslib."class.tslib_pibase.php");
-		
+
 			class '.$cN.' extends tslib_pibase {
 				var $prefixId = "'.$cN.'";		// Same as class name
 				var $scriptRelPath = "'.($pathSuffix."class.".$cN.".php").'";	// Path to this script relative to the extension dir.
@@ -2231,25 +2286,25 @@ class tx_kickstarter_compilefiles {
 		');
 		$this->addFileToFileArray($pathSuffix."class.".$cN.".php",$this->PHPclassFile($extKey,$pathSuffix."class.".$cN.".php",$indexContent,"Plugin '".$config["title"]."' for the '".$extKey."' extension."));
 
-			// Add wizard?	
+			// Add wizard?
 		if ($config["plus_wiz"] && $config["addType"]=="list_type")	{
 			$this->addLocalConf($this->ext_locallang,$config,"title","pi",$k);
 			$this->addLocalConf($this->ext_locallang,$config,"plus_wiz_description","pi",$k);
-	
-			$indexContent= $this->sPS('	
+
+			$indexContent= $this->sPS('
 				class '.$cN.'_wizicon {
 					function proc($wizardItems)	{
 						global $LANG;
-				
+
 						$LL = $this->includeLocalLang();
-				
+
 						$wizardItems["plugins_'.$cN.'"] = array(
 							"icon"=>t3lib_extMgm::extRelPath("'.$extKey.'")."'.$pathSuffix.'ce_wiz.gif",
 							"title"=>$LANG->getLLL("pi'.$k.'_title",$LL),
 							"description"=>$LANG->getLLL("pi'.$k.'_plus_wiz_description",$LL),
 							"params"=>"&defVals[tt_content][CType]=list&defVals[tt_content][list_type]='.$extKey.'_pi'.$k.'"
 						);
-	
+
 						return $wizardItems;
 					}
 					function includeLocalLang()	{
@@ -2259,13 +2314,13 @@ class tx_kickstarter_compilefiles {
 				}
 			');
 			$this->addFileToFileArray($pathSuffix."class.".$cN."_wizicon.php",$this->PHPclassFile($extKey,$pathSuffix."class.".$cN."_wizicon.php",$indexContent,"Class that adds the wizard icon."));
-			
+
 				// Add wizard icon
 			$this->addFileToFileArray($pathSuffix."ce_wiz.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/wiz.gif"));
 
 				// Add clear.gif
 			$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/clear.gif"));
-	
+
 			$this->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[plus_wiz]:').'
 				if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["'.$cN.'_wizicon"] = t3lib_extMgm::extPath($_EXTKEY)."pi'.$k.'/class.'.$cN.'_wizicon.php";
@@ -2405,7 +2460,7 @@ class tx_kickstarter_compilefiles {
 		');
 		$this->EM_CONF_presets["module"][]=ereg_replace("\/$","",$pathSuffix);
 
-		
+
 		$ll=array();
 		$this->addLocalConf($ll,$config,"title","module",$k,1,0,"mlang_tabs_tab");
 		$this->addLocalConf($ll,$config,"description","module",$k,1,0,"mlang_labels_tabdescr");
@@ -2416,7 +2471,7 @@ class tx_kickstarter_compilefiles {
 //			$MLANG["default"]["labels"]["tabdescr"] = "'.addslashes($config["description"]).'";	'.$this->WOPcomment('WOP:'.$WOP.'[description]').'
 //			$MLANG["default"]["labels"]["tablabel"] = "'.addslashes($config["tablabel"]).'";	'.$this->WOPcomment('WOP:'.$WOP.'[tablabel]').'
 
-/*		
+/*
 		if (count($this->selectedLanguages))	{
 			reset($this->selectedLanguages);
 			while(list($lk,$lv)=each($this->selectedLanguages))	{
@@ -2430,13 +2485,13 @@ class tx_kickstarter_compilefiles {
 				}
 			}
 		}
-*/		
+*/
 		$content=$this->wrapBody('
 			<?php
 			',$content,'
 			?>
 		',0);
-		
+
 		$this->addFileToFileArray($pathSuffix."conf.php",trim($content));
 
 			// Add title to local lang file
@@ -2449,15 +2504,15 @@ class tx_kickstarter_compilefiles {
 
 			// Add clear.gif
 		$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/clear.gif"));
-		
+
 			// Add clear.gif
 		$this->addFileToFileArray($pathSuffix."moduleicon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound_module.gif"));
 
-		
+
 			// Make module index.php file:
 		$indexContent = $this->sPS('
 				// DEFAULT initialization of a module [BEGIN]
-			unset($MCONF);	
+			unset($MCONF);
 			require ("conf.php");
 			require ($BACK_PATH."init.php");
 			require ($BACK_PATH."template.php");
@@ -2467,19 +2522,19 @@ class tx_kickstarter_compilefiles {
 			$BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
 				// DEFAULT initialization of a module [END]
 		');
-		
+
 		$indexContent.= $this->sPS('
 			class '.$cN.' extends t3lib_SCbase {
 				var $pageinfo;
-			
+
 				/**
-				 * 
+				 *
 				 */
 				function init()	{
 					global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-					
+
 					parent::init();
-			
+
 					/*
 					if (t3lib_div::_GP("clear_all_cache"))	{
 						$this->include_once[]=PATH_t3lib."class.t3lib_tcemain.php";
@@ -2508,14 +2563,14 @@ class tx_kickstarter_compilefiles {
 				 */
 				function main()	{
 					global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-					
+
 					// Access check!
 					// The page will show only if there is a valid page and if this page may be viewed by the user
 					$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 					$access = is_array($this->pageinfo) ? 1 : 0;
-					
+
 					if (($this->id && $access) || ($BE_USER->user["admin"] && !$this->id))	{
-				
+
 							// Draw the header.
 						$this->doc = t3lib_div::makeInstance("mediumDoc");
 						$this->doc->backPath = $BACK_PATH;
@@ -2545,23 +2600,23 @@ class tx_kickstarter_compilefiles {
 						$this->content.=$this->doc->section("",$this->doc->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->id,"SET[function]",$this->MOD_SETTINGS["function"],$this->MOD_MENU["function"])));
 						$this->content.=$this->doc->divider(5);
 
-						
+
 						// Render content:
 						$this->moduleContent();
 
-						
+
 						// ShortCut
 						if ($BE_USER->mayMakeShortcut())	{
 							$this->content.=$this->doc->spacer(20).$this->doc->section("",$this->doc->makeShortcutIcon("id",implode(",",array_keys($this->MOD_MENU)),$this->MCONF["name"]));
 						}
-					
+
 						$this->content.=$this->doc->spacer(10);
 					} else {
 							// If no access or if ID == zero
-					
+
 						$this->doc = t3lib_div::makeInstance("mediumDoc");
 						$this->doc->backPath = $BACK_PATH;
-					
+
 						$this->content.=$this->doc->startPage($LANG->getLL("title"));
 						$this->content.=$this->doc->header($LANG->getLL("title"));
 						$this->content.=$this->doc->spacer(5);
@@ -2573,11 +2628,11 @@ class tx_kickstarter_compilefiles {
 				 * Prints out the module HTML
 				 */
 				function printContent()	{
-			
+
 					$this->content.=$this->doc->endPage();
 					echo $this->content;
 				}
-				
+
 				/**
 				 * Generates the module content
 				 */
@@ -2588,8 +2643,8 @@ class tx_kickstarter_compilefiles {
 								The \'Kickstarter\' has made this module automatically, it contains a default framework for a backend module but apart from it does nothing useful until you open the script \'".substr(t3lib_extMgm::extPath("'.$extKey.'"),strlen(PATH_site))."'.$pathSuffix.'index.php\' and edit it!
 								<HR>
 								<BR>This is the GET/POST vars sent to the script:<BR>".
-								"GET:".t3lib_div::view_array($GLOBALS["HTTP_GET_VARS"])."<BR>".
-								"POST:".t3lib_div::view_array($GLOBALS["HTTP_POST_VARS"])."<BR>".
+								"GET:".t3lib_div::view_array($_GET)."<BR>".
+								"POST:".t3lib_div::view_array($_POST)."<BR>".
 								"";
 							$this->content.=$this->doc->section("Message #1:",$content,0,1);
 						break;
@@ -2601,7 +2656,7 @@ class tx_kickstarter_compilefiles {
 							$content="<div align=center><strong>Menu item #3...</strong></div>";
 							$this->content.=$this->doc->section("Message #3:",$content,0,1);
 						break;
-					} 
+					}
 				}
 			}
 		');
@@ -2609,7 +2664,7 @@ class tx_kickstarter_compilefiles {
 		$SOBE_extras["firstLevel"]=0;
 		$SOBE_extras["include"]=1;
 		$this->addFileToFileArray($pathSuffix."index.php",$this->PHPclassFile($extKey,$pathSuffix."index.php",$indexContent,"Module '".$config["title"]."' for the '".$extKey."' extension.",$cN,$SOBE_extras));
-		
+
 	}
 
 	/**
@@ -2619,7 +2674,7 @@ class tx_kickstarter_compilefiles {
 		$WOP="[moduleFunction][".$k."]";
 		$cN = $this->returnName($extKey,"class","modfunc".$k);
 		$pathSuffix = "modfunc".$k."/";
-		
+
 		$position =$config["position"];
 		$subPos="";
 		switch($config["position"])	{
@@ -2658,28 +2713,28 @@ class tx_kickstarter_compilefiles {
 		if ($position!="user_task")	{
 			$indexContent.= $this->sPS('
 				require_once(PATH_t3lib."class.t3lib_extobjbase.php");
-				
+
 				class '.$cN.' extends t3lib_extobjbase {
 					function modMenu()	{
 						global $LANG;
-						
+
 						return Array (
 							"'.$cN.'_check" => "",
-						);		
+						);
 					}
-				
+
 					function main()	{
 							// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 						global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-						
+
 						$theOutput.=$this->pObj->doc->spacer(5);
 						$theOutput.=$this->pObj->doc->section($LANG->getLL("title"),"Dummy content here...",0,1);
-						
+
 						$menu=array();
 						$menu[]=t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET['.$cN.'_check]",$this->pObj->MOD_SETTINGS["'.$cN.'_check"]).$LANG->getLL("checklabel");
 						$theOutput.=$this->pObj->doc->spacer(5);
 						$theOutput.=$this->pObj->doc->section("Menu",implode(" - ",$menu),0,1);
-				
+
 						return $theOutput;
 					}
 				}
@@ -2697,7 +2752,7 @@ class tx_kickstarter_compilefiles {
 					}
 					function main() {
 						global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-				
+
 						return $this->mainContent();
 					}
 					function overviewContent()	{
@@ -2721,7 +2776,7 @@ class tx_kickstarter_compilefiles {
 		$cN = $this->returnName($extKey,"class","cm".$k);
 		$filename = 'class.'.$cN.'.php';
 		$pathSuffix = "cm".$k."/";
-		
+
 			// This will make sure our item is inserted in the clickmenu!
 		$this->ext_tables[]=$this->sPS('
 			'.$this->WOPcomment('WOP:'.$WOP.':').'
@@ -2743,7 +2798,7 @@ class tx_kickstarter_compilefiles {
 		$content.=$this->sPS('
 				// Adds the regular item:
 			$LL = $this->includeLL();
-		
+
 				// Repeat this (below) for as many items you want to add!
 				// Remember to add entries in the localconf.php file for additional titles.
 			$url = t3lib_extMgm::extRelPath("'.$extKey.'")."'.$pathSuffix.'index.php?id=".$uid;
@@ -2757,11 +2812,11 @@ class tx_kickstarter_compilefiles {
 		if ($config["second_level"])	{
 			$secondContent = $content;
 			$secondContent.=chr(10).'$menuItems=array_merge($menuItems,$localItems);';
-			
+
 			$content = "";
 			$content.=$this->sPS('
 				$LL = $this->includeLL();
-				
+
 				$localItems[]="spacer";
 				$localItems["moreoptions_'.$cN.'"]=$backRef->linkItem(
 					$GLOBALS["LANG"]->getLLL("cm'.$k.'_title_activate",$LL),
@@ -2782,7 +2837,7 @@ class tx_kickstarter_compilefiles {
 				// Returns directly, because the clicked item was not from the pages table '.$this->WOPcomment('(WOP:'.$WOP.'[only_page])').'
 			if ($table!="pages")	return $menuItems;
 		').$content;
-		
+
 		$content.=$this->sPS('
 			'.$this->WOPcomment('(WOP:'.$WOP.'[options] BEGIN) Inserts the item at the chosen location').'
 		');
@@ -2790,7 +2845,7 @@ class tx_kickstarter_compilefiles {
 			$content.=$this->sPS('
 				$menuItems=array_merge($localItems,$menuItems);
 			');
-		} elseif ($config["options"]=="before_delete")	{	// Just before "Delete" and its preceding divider line: 
+		} elseif ($config["options"]=="before_delete")	{	// Just before "Delete" and its preceding divider line:
 			$content.=$this->sPS('
 					// Find position of "delete" element:
 				reset($menuItems);
@@ -2824,13 +2879,13 @@ class tx_kickstarter_compilefiles {
 			',$content,'
 			}
 		');
-		
-		
+
+
 		if ($config["remove_view"])	$content.=$this->sPS('
 				// Removes the view-item from clickmenu  '.$this->WOPcomment('(WOP:'.$WOP.'[remove_view])').'
-			unset($menuItems["view"]);	
+			unset($menuItems["view"]);
 		');
-		
+
 		$content=$this->wrapBody('
 			if (!$backRef->cmLevel)	{
 			',$content,'
@@ -2844,8 +2899,8 @@ class tx_kickstarter_compilefiles {
 				}
 			');
 		}
-		
-		
+
+
 
 
 			// Now wrap the function body around this:
@@ -2856,7 +2911,7 @@ class tx_kickstarter_compilefiles {
 				$localItems = Array();
 				',$content,'
 				return $menuItems;
-			} 
+			}
 		');
 			// Add include locallanguage function:
 		$content.=$this->addLLFunc($extKey);
@@ -2865,19 +2920,19 @@ class tx_kickstarter_compilefiles {
 		$content=$this->wrapBody('
 			class '.$cN.' {
 				',$content,'
-			} 
+			}
 		');
 
 
 #		$this->printPre($content);
-		
+
 		$this->addFileToFileArray($filename,$this->PHPclassFile($extKey,$filename,$content,"Addition of an item to the clickmenu"));
-		
+
 
 		$cN = $this->returnName($extKey,"class","cm".$k);
 		$this->writeStandardBE_xMod($extKey,$config,$pathSuffix,$cN,$k,"cm");
 	}
-	
+
 	function writeStandardBE_xMod($extKey,$config,$pathSuffix,$cN,$k,$k_prefix)	{
 			// Make conf.php file:
 		$content = $this->sPS('
@@ -2904,11 +2959,11 @@ class tx_kickstarter_compilefiles {
 
 			// Add clear.gif
 		$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/clear.gif"));
-		
+
 			// Make module index.php file:
 		$indexContent = $this->sPS('
 				// DEFAULT initialization of a module [BEGIN]
-			unset($MCONF);	
+			unset($MCONF);
 			require ("conf.php");
 			require ($BACK_PATH."init.php");
 			require ($BACK_PATH."template.php");
@@ -2916,9 +2971,9 @@ class tx_kickstarter_compilefiles {
 			#include ("locallang.php");
 			require_once (PATH_t3lib."class.t3lib_scbase.php");
 				// ....(But no access check here...)
-				// DEFAULT initialization of a module [END] 
+				// DEFAULT initialization of a module [END]
 		');
-		
+
 		$indexContent.= $this->sPS('
 			class '.$cN.' extends t3lib_SCbase {
 				/**
@@ -2941,7 +2996,7 @@ class tx_kickstarter_compilefiles {
 				 */
 				function main()	{
 					global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-					
+
 						// Draw the header.
 					$this->doc = t3lib_div::makeInstance("mediumDoc");
 					$this->doc->backPath = $BACK_PATH;
@@ -2965,31 +3020,31 @@ class tx_kickstarter_compilefiles {
 						}
 
 						$headerSection = $this->doc->getHeader("pages",$this->pageinfo,$this->pageinfo["_thePath"])."<br>".$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.path").": ".t3lib_div::fixed_lgd_pre($this->pageinfo["_thePath"],50);
-	
+
 						$this->content.=$this->doc->startPage($LANG->getLL("title"));
 						$this->content.=$this->doc->header($LANG->getLL("title"));
 						$this->content.=$this->doc->spacer(5);
 						$this->content.=$this->doc->section("",$this->doc->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->id,"SET[function]",$this->MOD_SETTINGS["function"],$this->MOD_MENU["function"])));
 						$this->content.=$this->doc->divider(5);
-	
-							
+
+
 						// Render content:
 						$this->moduleContent();
-	
-						
+
+
 						// ShortCut
 						if ($BE_USER->mayMakeShortcut())	{
 							$this->content.=$this->doc->spacer(20).$this->doc->section("",$this->doc->makeShortcutIcon("id",implode(",",array_keys($this->MOD_MENU)),$this->MCONF["name"]));
 						}
-					}				
+					}
 					$this->content.=$this->doc->spacer(10);
 				}
 				function printContent()	{
-			
+
 					$this->content.=$this->doc->endPage();
 					echo $this->content;
 				}
-				
+
 				function moduleContent()	{
 					switch((string)$this->MOD_SETTINGS["function"])	{
 						case 1:
@@ -2997,8 +3052,8 @@ class tx_kickstarter_compilefiles {
 								The \'Kickstarter\' has made this module automatically, it contains a default framework for a backend module but apart from it does nothing useful until you open the script \'".substr(t3lib_extMgm::extPath("'.$extKey.'"),strlen(PATH_site))."'.$pathSuffix.'index.php\' and edit it!
 								<HR>
 								<BR>This is the GET/POST vars sent to the script:<BR>".
-								"GET:".t3lib_div::view_array($GLOBALS["HTTP_GET_VARS"])."<BR>".
-								"POST:".t3lib_div::view_array($GLOBALS["HTTP_POST_VARS"])."<BR>".
+								"GET:".t3lib_div::view_array($_GET)."<BR>".
+								"POST:".t3lib_div::view_array($_POST)."<BR>".
 								"";
 							$this->content.=$this->doc->section("Message #1:",$content,0,1);
 						break;
@@ -3010,14 +3065,14 @@ class tx_kickstarter_compilefiles {
 							$content="<div align=center><strong>Menu item #3...</strong></div>";
 							$this->content.=$this->doc->section("Message #3:",$content,0,1);
 						break;
-					} 
+					}
 				}
 			}
 		');
 
 		$this->addFileToFileArray($pathSuffix."index.php",$this->PHPclassFile($extKey,$pathSuffix."index.php",$indexContent,$extKey.' module '.$k_prefix.$k,$cN));
 	}
-	
+
 	function addLLfunc($extKey)	{
 		return $this->sPS('
 			/**
@@ -3027,7 +3082,7 @@ class tx_kickstarter_compilefiles {
 				include(t3lib_extMgm::extPath("'.$extKey.'")."locallang.php");
 				return $LOCAL_LANG;
 			}
-		');	
+		');
 	}
 	function addStdLocalLangConf($ll,$k,$onlyMode=0)	{
 		$this->addLocalConf($ll,array(
@@ -3064,13 +3119,13 @@ class tx_kickstarter_compilefiles {
 				"pi_list_browseresults_displays"=>"Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>",
 				"pi_list_browseresults_displays_dk"=>"Viser resultaterne ###SPAN_BEGIN###%s til %s</span> ud af ###SPAN_BEGIN###%s</span>"
 			),"pi_list_browseresults_displays","pi",$k,1,1);
-			
+
 			$this->addLocalConf($ll,array(
 				"pi_list_searchBox_search"=>"Search",
 				"pi_list_searchBox_search_dk"=>"Søg"
 			),"pi_list_searchBox_search","pi",$k,1,1);
 		}
-				
+
 		return $ll;
 	}
 	function wrapBody($before,$content,$after,$indent=1)	{
@@ -3096,7 +3151,7 @@ class tx_kickstarter_compilefiles {
 			}
 		}
 		$number_of=count($min) ? min($min) : 0;
-		$newLines=array();		
+		$newLines=array();
 		if ($firstLineWithContent>=0)	{
 			for ($a=$firstLineWithContent;$a<=$lastLineWithContent;$a++)	{
 				$parts = explode(chr(9),$lines[$a],$number_of);
@@ -3113,7 +3168,7 @@ class tx_kickstarter_compilefiles {
 		}
 		return implode(chr(10),$lines);
 	}
-	
+
 	function printPre($content)	{
 		echo '<pre>'.htmlspecialchars(str_replace(chr(9),"    ",$content)).'</pre>';
 	}
@@ -3121,14 +3176,14 @@ class tx_kickstarter_compilefiles {
 		reset($this->languages);
 
 		$overruleKey = $overruleKey ? $overruleKey : ($dontPrefixKey?"":$prefix.$subPrefix."_").$key;
-		
+
 		$lArray["default"][$overruleKey] = array($confArray[$key],(!$noWOP?'WOP:['.$prefix.']['.$subPrefix.']['.$key.']':''));
 		while(list($k)=each($this->languages))	{
 			$lArray[$k][$overruleKey] = array(trim($confArray[$key."_".$k]),(!$noWOP?'WOP:['.$prefix.']['.$subPrefix.']['.$key."_".$k.']':''));
 		}
 		return $lArray;
 	}
-	
+
 	function replaceMarkers($content,$markers)	{
 		reset($markers);
 		while(list($k,$v)=each($markers))	{
@@ -3140,54 +3195,54 @@ class tx_kickstarter_compilefiles {
 		if (substr($extKey,0,5)=="user_")	{
 			$extKey = substr($extKey,5);
 			switch($type)	{
-				case "class":	
+				case "class":
 					return "user_".str_replace("_","",$extKey).($suffix?"_".$suffix:"");
 				break;
-				case "tables":	
-				case "fields":	
+				case "tables":
+				case "fields":
 				case "fields":
 					return "user_".str_replace("_","",$extKey).($suffix?"_".$suffix:"");
 				break;
-				case "module":	
+				case "module":
 					return "u".str_replace("_","",$extKey).$suffix;
 				break;
 			}
 		} else {
 			switch($type)	{
-				case "class":	
+				case "class":
 					return "tx_".str_replace("_","",$extKey).($suffix?"_".$suffix:"");
 				break;
-				case "tables":	
-				case "fields":	
+				case "tables":
+				case "fields":
 				case "fields":
 					return "tx_".str_replace("_","",$extKey).($suffix?"_".$suffix:"");
 				break;
-				case "module":	
+				case "module":
 					return "tx".str_replace("_","",$extKey).$suffix;
 				break;
 			}
 		}
 	}
-	
-	
+
+
 	function PHPclassFile($extKey,$filename,$content,$desrc,$SOBE_class="",$SOBE_extras="")	{
-		$file = trim($this->sPS('	
+		$file = trim($this->sPS('
 			<?php
 			/***************************************************************
 			*  Copyright notice
-			*  
+			*
 			*  (c) 2004 '.$this->userField("name").' ('.$this->userField("email").')
 			*  All rights reserved
 			*
-			*  This script is part of the TYPO3 project. The TYPO3 project is 
+			*  This script is part of the TYPO3 project. The TYPO3 project is
 			*  free software; you can redistribute it and/or modify
 			*  it under the terms of the GNU General Public License as published by
 			*  the Free Software Foundation; either version 2 of the License, or
 			*  (at your option) any later version.
-			* 
+			*
 			*  The GNU General Public License can be found at
 			*  http://www.gnu.org/copyleft/gpl.html.
-			* 
+			*
 			*  This script is distributed in the hope that it will be useful,
 			*  but WITHOUT ANY WARRANTY; without even the implied warranty of
 			*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -3195,24 +3250,24 @@ class tx_kickstarter_compilefiles {
 			*
 			*  This copyright notice MUST APPEAR in all copies of the script!
 			***************************************************************/
-			/** 
+			/**
 			 * '.$desrc.'
 			 *
 			 * @author	'.$this->userField("name").' <'.$this->userField("email").'>
 			 */
 		'));
-	
+
 		$file.="\n\n\n".$content."\n\n\n";
-	
+
 		$file.=trim($this->sPS('
-			
+
 			if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/'.$extKey.'/'.$filename.'"])	{
 				include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/'.$extKey.'/'.$filename.'"]);
 			}
 			'.($SOBE_class?'
-			
-			
-			
+
+
+
 			// Make instance:
 			$SOBE = t3lib_div::makeInstance("'.$SOBE_class.'");
 			$SOBE->init();
@@ -3229,8 +3284,8 @@ class tx_kickstarter_compilefiles {
 
 		return $file;
 	}
-	
-	
+
+
 	function slashValueForSingleDashes($value)	{
 		return str_replace("'","\'",str_replace('\\','\\\\',$value));
 	}
@@ -3286,7 +3341,7 @@ class tx_kickstarter_compilefiles {
 			default:	// Substitution:
 				$this->fileArray[$name]=$this->makeFileArray($name,$content);
 			break;
-		} 
+		}
 	}
 	function WOPcomment($str)	{
 		return $str&&$this->outputWOP ? "## ".$str : "";
@@ -3298,11 +3353,11 @@ class tx_kickstarter_compilefiles {
 		while(list(,$s)=each($presetFields))	{
 			$EM_CONF[$prefix.$s]="";
 		}
-		
-		
+
+
 		$EM_CONF[$prefix."uploadfolder"] = $this->EM_CONF_presets["uploadfolder"]?1:0;
 		$EM_CONF[$prefix."clearCacheOnLoad"] = $this->EM_CONF_presets["clearCacheOnLoad"]?1:0;
-		
+
 		if (is_array($this->EM_CONF_presets["createDirs"]))	{
 			$EM_CONF[$prefix."createDirs"] = implode(",",array_unique($this->EM_CONF_presets["createDirs"]));
 		}
@@ -3318,7 +3373,7 @@ class tx_kickstarter_compilefiles {
 		if (is_array($this->EM_CONF_presets["modify_tables"]))	{
 			$EM_CONF[$prefix."modify_tables"] = implode(",",array_unique($this->EM_CONF_presets["modify_tables"]));
 		}
-		
+
 		return $EM_CONF;
 	}
 	function userField($k)	{
@@ -3335,8 +3390,8 @@ class tx_kickstarter_compilefiles {
 		return "uploads/tx_".str_replace("_","",$eKey)."/";
 	}
 	function fieldIsRTE($fC)	{
-		return !strcmp($fC["type"],"textarea_rte") && 
-						($fC["conf_rte"]=="basic" || 
+		return !strcmp($fC["type"],"textarea_rte") &&
+						($fC["conf_rte"]=="basic" ||
 						(t3lib_div::inList("custom,moderate",$fC["conf_rte"]) && $fC["conf_mode_cssOrNot"])
 						);
 	}
