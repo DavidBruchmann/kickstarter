@@ -72,8 +72,8 @@ class tx_kickstarter_modfunc2 extends tx_kickstarter_modfunc1 {
 
 
 
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/kickstarter/modfunc1/class.tx_kickstarter_modfunc1.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/kickstarter/modfunc1/class.tx_kickstarter_modfunc1.php"]);
+if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/tx_kickstarter/modfunc1/class.tx_kickstarter_modfunc1.php"])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/tx_kickstarter/modfunc1/class.tx_kickstarter_modfunc1.php"]);
 }
 
 ?>
