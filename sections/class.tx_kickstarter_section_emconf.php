@@ -126,7 +126,7 @@ class tx_kickstarter_section_emconf extends tx_kickstarter_sectionbase {
 		return $content;
 	}
 
-	function render_extPart() {
+	function render_extPart($k,$config,$extKey) {
 
 	}
 }

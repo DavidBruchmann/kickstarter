@@ -331,10 +331,34 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 	}
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	/**
 	 * Renders the files to be created; this was renderExtPart_tables()
 	 */
-	function render_extPart() {
+	function render_extPart($k,$config,$extKey) {
 		$WOP='[tables]['.$k.']';
 		$tableName=$config['tablename'];
 		$tableName = $this->returnName($extKey,'tables',$tableName);
@@ -515,19 +539,19 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		$ctrl[]= '"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_'.$tableName.'.gif",';
 
 		if ($config["allow_on_pages"])	{
-			$this->compilesfiles->ext_tables[]=$this->sPS('
+			$this->wizard->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[allow_on_pages]').'
 				t3lib_extMgm::allowTableOnStandardPages("'.$tableName.'");
 			');
 		}
 		if ($config["allow_ce_insert_records"])	{
-			$this->compilesfiles->ext_tables[]=$this->sPS('
+			$this->wizard->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[allow_ce_insert_records]').'
 				t3lib_extMgm::addToInsertRecords("'.$tableName.'");
 			');
 		}
 		if ($config["save_and_new"])	{
-			$this->compilesfiles->ext_localconf[]=trim($this->wrapBody("
+			$this->wizard->ext_localconf[]=trim($this->wrapBody("
 				t3lib_extMgm::addUserTSConfig('
 					","options.saveDocNew.".$tableName."=1","
 				');
@@ -556,7 +580,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		', implode(chr(10),$DBfields), '
 			);
 		');
-		$this->compilesfiles->ext_tables_sql[]=chr(10).$createTable.chr(10);
+		$this->wizard->ext_tables_sql[]=chr(10).$createTable.chr(10);
 
 			// Finalize tca.php:
 		$tca_file="";
@@ -579,10 +603,10 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 				)
 			);
 		',2);
-		$this->compilesfiles->ext_tca[]=chr(10).$tca_file.chr(10);
+		$this->wizard->ext_tca[]=chr(10).$tca_file.chr(10);
 
 			// Finalize ext_tables.php:
-		$this->compilesfiles->ext_tables[]=$this->wrapBody('
+		$this->wizard->ext_tables[]=$this->wrapBody('
 			$TCA["'.$tableName.'"] = Array (
 				"ctrl" => Array (
 			', implode(chr(10),$ctrl)	,'

@@ -210,30 +210,30 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				$setType="list_type";
 
 				$this->wizard->ext_tables[]=$this->sPS('
-					'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
-					t3lib_div::loadTCA("tt_content");
-					$TCA["tt_content"]["types"]["list"]["subtypes_excludelist"][$_EXTKEY."_pi'.$k.'"]="layout,select_key";
-					'.($config["apply_extended"]?'$TCA["tt_content"]["types"]["list"]["subtypes_addlist"][$_EXTKEY."_pi'.$k.'"]="'.$this->wizard->_apply_extended_types[$config["apply_extended"]].'";':'').'
-				');
+					'.$this->WOPcomment('WOP:'.$WOP.'[addType]')."
+					t3lib_div::loadTCA('tt_content');
+					\$TCA['tt_content']['types']['list']['subtypes_excludelist'][\$_EXTKEY.'_pi".$k."']='layout,select_key';
+					".($config['apply_extended']?"\$TCA['tt_content']['types']['list']['subtypes_addlist'][\$_EXTKEY.'_pi".$k."']='".$this->wizard->_apply_extended_types[$config['apply_extended']]."';":"")."
+				");
 
 				$this->wizard->ext_localconf[]=$this->sPS('
-					'.$this->WOPcomment('WOP:'.$WOP.'[addType] / '.$WOP.'[tag_name]').'
+					'.$this->WOPcomment('WOP:'.$WOP.'[addType] / '.$WOP.'[tag_name]')."
 					  ## Extending TypoScript from static template uid=43 to set up userdefined tag:
-					t3lib_extMgm::addTypoScript($_EXTKEY,"editorcfg","
-						tt_content.CSS_editor.ch.'.$cN.' = < plugin.'.$cN.'.CSS_editor
-					",43);
-				');
+					t3lib_extMgm::addTypoScript(\$_EXTKEY,'editorcfg','
+						tt_content.CSS_editor.ch.".$cN." = < plugin.".$cN.".CSS_editor
+					',43);
+				");
 			break;
 			case "textbox":
 				$setType="splash_layout";
 
 				if ($config["apply_extended"])	{
 					$this->wizard->ext_tables[]=$this->sPS('
-						'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
-						t3lib_div::loadTCA("tt_content");
-						$TCA["tt_content"]["types"]["splash"]["subtype_value_field"]="splash_layout";
-						$TCA["tt_content"]["types"]["splash"]["subtypes_addlist"][$_EXTKEY."_pi'.$k.'"]="'.$this->wizard->_apply_extended_types[$config["apply_extended"]].'";
-					');
+						'.$this->WOPcomment('WOP:'.$WOP.'[addType]')."
+						t3lib_div::loadTCA('tt_content');
+						\$TCA['tt_content']['types']['splash']['subtype_value_field']='splash_layout';
+						\$TCA['tt_content']['types']['splash']['subtypes_addlist'][\$_EXTKEY.'_pi".$k."']='".$this->wizard->_apply_extended_types[$config['apply_extended']]."';
+					");
 				}
 			break;
 			case "menu_sitemap":
@@ -241,11 +241,11 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 				if ($config["apply_extended"])	{
 					$this->wizard->ext_tables[]=$this->sPS('
-						'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
-						t3lib_div::loadTCA("tt_content");
-						$TCA["tt_content"]["types"]["menu"]["subtype_value_field"]="menu_type";
-						$TCA["tt_content"]["types"]["menu"]["subtypes_addlist"][$_EXTKEY."_pi'.$k.'"]="'.$this->wizard->_apply_extended_types[$config["apply_extended"]].'";
-					');
+						'.$this->WOPcomment('WOP:'.$WOP.'[addType]')."
+						t3lib_div::loadTCA('tt_content');
+						\$TCA['tt_content']['types']['menu']['subtype_value_field']='menu_type';
+						\$TCA['tt_content']['types']['menu']['subtypes_addlist'][\$_EXTKEY.'_pi".$k."']='".$this->wizard->_apply_extended_types[$config['apply_extended']]."';
+					");
 				}
 			break;
 			case "ce":
@@ -257,10 +257,10 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					$tFields[] = $this->wizard->_apply_extended_types[$config["apply_extended"]];
 				}
 				$this->wizard->ext_tables[]=$this->sPS('
-					'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
-					t3lib_div::loadTCA("tt_content");
-					$TCA["tt_content"]["types"][$_EXTKEY."_pi'.$k.'"]["showitem"]="'.implode(", ",$tFields).'";
-				');
+					'.$this->WOPcomment('WOP:'.$WOP.'[addType]')."
+					t3lib_div::loadTCA('tt_content');
+					\$TCA['tt_content']['types'][\$_EXTKEY.'_pi".$k."']['showitem']='".implode(', ',$tFields)."';
+				");
 			break;
 			case "header":
 				$setType="header_layout";
@@ -272,12 +272,12 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				$tagName = ereg_replace("[^a-z0-9_]","",strtolower($config["tag_name"]));
 				if ($tagName)	{
 					$this->wizard->ext_localconf[]=$this->sPS('
-						'.$this->WOPcomment('WOP:'.$WOP.'[addType] / '.$WOP.'[tag_name]').'
+						'.$this->WOPcomment('WOP:'.$WOP.'[addType] / '.$WOP.'[tag_name]')."
 						  ## Extending TypoScript from static template uid=43 to set up userdefined tag:
-						t3lib_extMgm::addTypoScript($_EXTKEY,"setup","
-							tt_content.text.20.parseFunc.tags.'.$tagName.' = < plugin.".t3lib_extMgm::getCN($_EXTKEY)."_pi'.$k.'
-						",43);
-					');
+						t3lib_extMgm::addTypoScript(\$_EXTKEY,'setup','
+							tt_content.text.20.parseFunc.tags.".$tagName." = < plugin.'.t3lib_extMgm::getCN(\$_EXTKEY).'_pi".$k."
+						',43);
+					");
 				}
 			break;
 			default:
@@ -287,15 +287,15 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 		$cache= $config["plus_user_obj"] ? 0 : 1;
 
 		$this->wizard->ext_localconf[]=$this->sPS('
-			'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
-			t3lib_extMgm::addPItoST43($_EXTKEY,"pi'.$k.'/class.'.$cN.'.php","_pi'.$k.'","'.$setType.'",'.$cache.');
-		');
+			'.$this->WOPcomment('WOP:'.$WOP.'[addType]')."
+			t3lib_extMgm::addPItoST43(\$_EXTKEY,'pi".$k."/class.".$cN.".php','_pi".$k."','".$setType."',".$cache.");
+		");
 
 		if ($setType && !t3lib_div::inList("typotags,includeLib",$setType))	{
 			$this->wizard->ext_tables[]=$this->sPS('
-				'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
-				t3lib_extMgm::addPlugin(Array("'.addslashes($this->getSplitLabels_reference($config,"title","tt_content.".$setType."_pi".$k)).'", $_EXTKEY."_pi'.$k.'"),"'.$setType.'");
-			');
+				'.$this->WOPcomment('WOP:'.$WOP.'[addType]')."
+				t3lib_extMgm::addPlugin(Array('".addslashes($this->getSplitLabels_reference($config,'title','tt_content.'.$setType.'_pi'.$k))."', \$_EXTKEY.'_pi".$k."'),'".$setType."');
+			");
 		}
 
 			// Make Plugin class:
@@ -322,8 +322,8 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 						$theLines["orderByList"]=Array();
 
 						$tcol="uid";
-						$theLines["getListRow"][$tcol] = '<td><p>\'.$this->getFieldContent("'.$tcol.'").\'</p></td>';
-						$theLines["getListHeader"][$tcol] = '<td><p>\'.$this->getFieldHeader_sortLink("'.$tcol.'").\'</p></td>';
+						$theLines["getListRow"][$tcol] = '<td><p>\'.$this->getFieldContent(\''.$tcol.'\').\'</p></td>';
+						$theLines["getListHeader"][$tcol] = '<td><p>\'.$this->getFieldHeader_sortLink(\''.$tcol.'\').\'</p></td>';
 						$theLines["orderByList"][$tcol]=$tcol;
 
 						if (is_array($tempTableConf["fields"]))	{
@@ -333,30 +333,30 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								if ($tcol)	{
 									$theLines["singleRows"][$tcol] = trim($this->sPS('
 										<tr>
-											<td nowrap valign="top"\'.$this->pi_classParam("singleView-HCell").\'><p>\'.$this->getFieldHeader("'.$tcol.'").\'</p></td>
-											<td valign="top"><p>\'.$this->getFieldContent("'.$tcol.'").\'</p></td>
+											<td nowrap valign="top"\'.$this->pi_classParam(\'singleView-HCell\').\'><p>\'.$this->getFieldHeader(\''.$tcol.'\').\'</p></td>
+											<td valign="top"><p>\'.$this->getFieldContent(\''.$tcol.'\').\'</p></td>
 										</tr>
 									'));
 
 									if ($this->fieldIsRTE($fC))	{
 										$theLines["singleRows_section"][$tcol] = trim($this->sPS('
-											\'.$this->getFieldContent("'.$tcol.'").\'
+											\'.$this->getFieldContent(\''.$tcol.'\').\'
 										'));
 									} else {
 										$tempN='singleViewField-'.str_replace("_","-",$tcol);
 										$theLines["singleRows_section"][$tcol] = trim($this->sPS('
-											<p\'.$this->pi_classParam("'.$tempN.'").\'><strong>\'.$this->getFieldHeader("'.$tcol.'").\':</strong> \'.$this->getFieldContent("'.$tcol.'").\'</p>
+											<p\'.$this->pi_classParam("'.$tempN.'").\'><strong>\'.$this->getFieldHeader(\''.$tcol.'\').\':</strong> \'.$this->getFieldContent(\''.$tcol.'\').\'</p>
 										'));
 										$P_classes["SV"][]=$tempN;
 									}
 
 									if (!strstr($fC["type"],"textarea"))	{
-										$theLines["getListRow"][$tcol] = '<td valign="top"><p>\'.$this->getFieldContent("'.$tcol.'").\'</p></td>';
-										$theLines["getListHeader"][$tcol] = '<td nowrap><p>\'.$this->getFieldHeader("'.$tcol.'").\'</p></td>';
+										$theLines["getListRow"][$tcol] = '<td valign="top"><p>\'.$this->getFieldContent(\''.$tcol.'\').\'</p></td>';
+										$theLines["getListHeader"][$tcol] = '<td nowrap><p>\'.$this->getFieldHeader(\''.$tcol.'\').\'</p></td>';
 
 										$tempN='listrowField-'.str_replace("_","-",$tcol);
 										$theLines["listItemRows"][$tcol] = trim($this->sPS('
-											<p\'.$this->pi_classParam("'.$tempN.'").\'>\'.$this->getFieldContent("'.$tcol.'").\'</p>
+											<p\'.$this->pi_classParam(\''.$tempN.'\').\'>\'.$this->getFieldContent(\''.$tcol.'\').\'</p>
 										'));
 										$P_classes["LV"][]=$tempN;
 									}
@@ -368,36 +368,36 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 										$theLines["getFieldContent"][$tcol] = trim($this->sPS('
 												case "'.$tcol.'":
 														// This will wrap the title in a link.
-													return $this->pi_list_linkSingle($this->internal["currentRow"]["'.$tcol.'"],$this->internal["currentRow"]["uid"],1);
+													return $this->pi_list_linkSingle($this->internal[\'currentRow\'][\''.$tcol.'\'],$this->internal[\'currentRow\'][\'uid\'],1);
 												break;
 										'));
 										$theLines["getFieldHeader"][$tcol] = trim($this->sPS('
 												case "'.$tcol.'":
-													return $this->pi_getLL("listFieldHeader_'.$tcol.'","<em>'.$tcol.'</em>");
+													return $this->pi_getLL(\'listFieldHeader_'.$tcol.'\',\'<em>'.$tcol.'</em>\');
 												break;
 										'));
 									} elseif ($this->fieldIsRTE($fC)) {
 											$theLines["getFieldContent"][$tcol] = trim($this->sPS('
 													case "'.$tcol.'":
-														return $this->pi_RTEcssText($this->internal["currentRow"]["'.$tcol.'"]);
+														return $this->pi_RTEcssText($this->internal[\'currentRow\'][\''.$tcol.'\']);
 													break;
 											'));
 									} elseif ($fC["type"]=="datetime")	{
 										$theLines["getFieldContent"][$tcol] = trim($this->sPS('
 												case "'.$tcol.'":
-													return strftime("%d-%m-%y %H:%M:%S",$this->internal["currentRow"]["'.$tcol.'"]);
+													return strftime(\'%d-%m-%y %H:%M:%S\',$this->internal[\'currentRow\'][\''.$tcol.'\']);
 												break;
 										'));
 									} elseif ($fC["type"]=="date")	{
 										$theLines["getFieldContent"][$tcol] = trim($this->sPS('
 												case "'.$tcol.'":
 														// For a numbers-only date, use something like: %d-%m-%y
-													return strftime("%A %e. %B %Y",$this->internal["currentRow"]["'.$tcol.'"]);
+													return strftime(\'%A %e. %B %Y\',$this->internal[\'currentRow\'][\''.$tcol.'\']);
 												break;
 										'));
 									}
 									if (strstr($fC["type"],"input"))	{
-										$theLines["getListHeader"][$tcol] = '<td><p>\'.$this->getFieldHeader_sortLink("'.$tcol.'").\'</p></td>';
+										$theLines["getListHeader"][$tcol] = '<td><p>\'.$this->getFieldHeader_sortLink(\''.$tcol.'\').\'</p></td>';
 										$theLines["orderByList"][$tcol]=$tcol;
 									}
 									if (strstr($fC["type"],"input")||strstr($fC["type"],"textarea"))	{
@@ -409,14 +409,14 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 						$theLines["singleRows"]["tstamp"] = trim($this->sPS('
 							<tr>
-								<td nowrap\'.$this->pi_classParam("singleView-HCell").\'><p>Last updated:</p></td>
-								<td valign="top"><p>\'.date("d-m-Y H:i",$this->internal["currentRow"]["tstamp"]).\'</p></td>
+								<td nowrap\'.$this->pi_classParam(\'singleView-HCell\').\'><p>Last updated:</p></td>
+								<td valign="top"><p>\'.date(\'d-m-Y H:i\',$this->internal[\'currentRow\'][\'tstamp\']).\'</p></td>
 							</tr>
 						'));
 						$theLines["singleRows"]["crdate"] = trim($this->sPS('
 							<tr>
-								<td nowrap\'.$this->pi_classParam("singleView-HCell").\'><p>Created:</p></td>
-								<td valign="top"><p>\'.date("d-m-Y H:i",$this->internal["currentRow"]["crdate"]).\'</p></td>
+								<td nowrap\'.$this->pi_classParam(\'singleView-HCell\').\'><p>Created:</p></td>
+								<td valign="top"><p>\'.date(\'d-m-Y H:i\',$this->internal[\'currentRow\'][\'crdate\']).\'</p></td>
 							</tr>
 						'));
 
@@ -431,17 +431,17 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							 * [Put your description here]
 							 */
 							function main($content,$conf)	{
-								switch((string)$conf["CMD"])	{
-									case "singleView":
-										list($t) = explode(":",$this->cObj->currentRecord);
-										$this->internal["currentTable"]=$t;
-										$this->internal["currentRow"]=$this->cObj->data;
+								switch((string)$conf[\'CMD\'])	{
+									case \'singleView\':
+										list($t) = explode(\':\',$this->cObj->currentRecord);
+										$this->internal[\'currentTable\']=$t;
+										$this->internal[\'currentRow\']=$this->cObj->data;
 										return $this->pi_wrapInBaseClass($this->singleView($content,$conf));
 									break;
 									default:
-										if (strstr($this->cObj->currentRecord,"tt_content"))	{
-											$conf["pidList"] = $this->cObj->data["pages"];
-											$conf["recursive"] = $this->cObj->data["recursive"];
+										if (strstr($this->cObj->currentRecord,\'tt_content\'))	{
+											$conf[\'pidList\'] = $this->cObj->data[\'pages\'];
+											$conf[\'recursive\'] = $this->cObj->data[\'recursive\'];
 										}
 										return $this->pi_wrapInBaseClass($this->listView($content,$conf));
 									break;
@@ -458,40 +458,40 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								$this->pi_setPiVarDefaults();
 								$this->pi_loadLL();		// Loading the LOCAL_LANG values
 								'.(!$cache ? '$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
-								$lConf = $this->conf["listView."];	// Local settings for the listView function
+								$lConf = $this->conf[\'listView.\'];	// Local settings for the listView function
 
-								if ($this->piVars["showUid"])	{	// If a single element should be displayed:
-									$this->internal["currentTable"] = "'.$tableName.'";
-									$this->internal["currentRow"] = $this->pi_getRecord("'.$tableName.'",$this->piVars["showUid"]);
+								if ($this->piVars[\'showUid\'])	{	// If a single element should be displayed:
+									$this->internal[\'currentTable\'] = \''.$tableName.'\';
+									$this->internal[\'currentRow\'] = $this->pi_getRecord(\''.$tableName.'\',$this->piVars[\'showUid\']);
 
 									$content = $this->singleView($content,$conf);
 									return $content;
 								} else {
 									$items=array(
-										"1"=> $this->pi_getLL("list_mode_1","Mode 1"),
-										"2"=> $this->pi_getLL("list_mode_2","Mode 2"),
-										"3"=> $this->pi_getLL("list_mode_3","Mode 3"),
+										\'1\'=> $this->pi_getLL(\'list_mode_1\',\'Mode 1\'),
+										\'2\'=> $this->pi_getLL(\'list_mode_2\',\'Mode 2\'),
+										\'3\'=> $this->pi_getLL(\'list_mode_3\',\'Mode 3\'),
 									);
-									if (!isset($this->piVars["pointer"]))	$this->piVars["pointer"]=0;
-									if (!isset($this->piVars["mode"]))	$this->piVars["mode"]=1;
+									if (!isset($this->piVars[\'pointer\']))	$this->piVars[\'pointer\']=0;
+									if (!isset($this->piVars[\'mode\']))	$this->piVars[\'mode\']=1;
 
 										// Initializing the query parameters:
-									list($this->internal["orderBy"],$this->internal["descFlag"]) = explode(":",$this->piVars["sort"]);
-									$this->internal["results_at_a_time"]=t3lib_div::intInRange($lConf["results_at_a_time"],0,1000,3);		// Number of results to show in a listing.
-									$this->internal["maxPages"]=t3lib_div::intInRange($lConf["maxPages"],0,1000,2);;		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
-									$this->internal["searchFieldList"]="'.implode(",",$theLines["searchFieldList"]).'";
-									$this->internal["orderByList"]="'.implode(",",$theLines["orderByList"]).'";
+									list($this->internal[\'orderBy\'],$this->internal[\'descFlag\']) = explode(\':\',$this->piVars[\'sort\']);
+									$this->internal[\'results_at_a_time\']=t3lib_div::intInRange($lConf[\'results_at_a_time\'],0,1000,3);		// Number of results to show in a listing.
+									$this->internal[\'maxPages\']=t3lib_div::intInRange($lConf[\'maxPages\'],0,1000,2);;		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
+									$this->internal[\'searchFieldList\']=\''.implode(",",$theLines["searchFieldList"]).'\';
+									$this->internal[\'orderByList\']=\''.implode(",",$theLines["orderByList"]).'\';
 
 										// Get number of records:
-									$res = $this->pi_exec_query("'.$tableName.'",1);
-									list($this->internal["res_count"]) = $GLOBALS[\'TYPO3_DB\']->sql_fetch_row($res);
+									$res = $this->pi_exec_query(\''.$tableName.'\',1);
+									list($this->internal[\'res_count\']) = $GLOBALS[\'TYPO3_DB\']->sql_fetch_row($res);
 
 										// Make listing query, pass query to SQL database:
-									$res = $this->pi_exec_query("'.$tableName.'");
-									$this->internal["currentTable"] = "'.$tableName.'";
+									$res = $this->pi_exec_query(\''.$tableName.'\');
+									$this->internal[\'currentTable\'] = \''.$tableName.'\';
 
 										// Put the whole list together:
-									$fullTable="";	// Clear var;
+									$fullTable=\'\';	// Clear var;
 								#	$fullTable.=t3lib_div::view_array($this->piVars);	// DEBUG: Output the content of $this->piVars for debug purposes. REMEMBER to comment out the IP-lock in the debug() function in t3lib/config_default.php if nothing happens when you un-comment this line!
 
 										// Adds the mode selector.
@@ -521,11 +521,11 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								function makelist($res)	{
 									$items=Array();
 										// Make list table rows
-									while($this->internal["currentRow"] = $GLOBALS[\'TYPO3_DB\']->sql_fetch_assoc($res))	{
+									while($this->internal[\'currentRow\'] = $GLOBALS[\'TYPO3_DB\']->sql_fetch_assoc($res))	{
 										$items[]=$this->makeListItem();
 									}
 
-									$out = \'<div\'.$this->pi_classParam("listrow").\'>
+									$out = \'<div\'.$this->pi_classParam(\'listrow\').\'>
 										\'.implode(chr(10),$items).\'
 										</div>\';
 									return $out;
@@ -556,12 +556,12 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 									'.(!$cache ? '$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
 
 										// This sets the title of the page for use in indexed search results:
-									if ($this->internal["currentRow"]["title"])	$GLOBALS["TSFE"]->indexedDocTitle=$this->internal["currentRow"]["title"];
+									if ($this->internal[\'currentRow\'][\'title\'])	$GLOBALS[\'TSFE\']->indexedDocTitle=$this->internal[\'currentRow\'][\'title\'];
 
-									$content=\'<div\'.$this->pi_classParam("singleView").\'>
-										<H2>Record "\'.$this->internal["currentRow"]["uid"].\'" from table "\'.$this->internal["currentTable"].\'":</H2>
+									$content=\'<div\'.$this->pi_classParam(\'singleView\').\'>
+										<H2>Record "\'.$this->internal[\'currentRow\'][\'uid\'].\'" from table "\'.$this->internal[\'currentTable\'].\'":</H2>
 										',implode(chr(10),$theLines["singleRows_section"]),'
-									<p>\'.$this->pi_list_linkSingle($this->pi_getLL("back","Back"),0).\'</p></div>\'.
+									<p>\'.$this->pi_list_linkSingle($this->pi_getLL(\'back\',\'Back\'),0).\'</p></div>\'.
 									$this->pi_getEditPanel();
 
 									return $content;
@@ -579,14 +579,14 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 									'.(!$cache ? '$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
 
 										// This sets the title of the page for use in indexed search results:
-									if ($this->internal["currentRow"]["title"])	$GLOBALS["TSFE"]->indexedDocTitle=$this->internal["currentRow"]["title"];
+									if ($this->internal[\'currentRow\'][\'title\'])	$GLOBALS[\'TSFE\']->indexedDocTitle=$this->internal[\'currentRow\'][\'title\'];
 
-									$content=\'<div\'.$this->pi_classParam("singleView").\'>
-										<H2>Record "\'.$this->internal["currentRow"]["uid"].\'" from table "\'.$this->internal["currentTable"].\'":</H2>
+									$content=\'<div\'.$this->pi_classParam(\'singleView\').\'>
+										<H2>Record "\'.$this->internal[\'currentRow\'][\'uid\'].\'" from table "\'.$this->internal[\'currentTable\'].\'":</H2>
 										<table>
 											',implode(chr(10),$theLines["singleRows"]),'
 										</table>
-									<p>\'.$this->pi_list_linkSingle($this->pi_getLL("back","Back"),0).\'</p></div>\'.
+									<p>\'.$this->pi_list_linkSingle($this->pi_getLL(\'back\',\'Back\'),0).\'</p></div>\'.
 									$this->pi_getEditPanel();
 
 									return $content;
@@ -596,10 +596,10 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 						$this->wizard->ext_localconf[]=$this->sPS('
 							'.$this->WOPcomment('WOP:'.$WOP.'[...]').'
-							t3lib_extMgm::addTypoScript($_EXTKEY,"setup","
-								tt_content.shortcut.20.0.conf.'.$tableName.' = < plugin.".t3lib_extMgm::getCN($_EXTKEY)."_pi'.$k.'
+							t3lib_extMgm::addTypoScript($_EXTKEY,\'setup\',\'
+								tt_content.shortcut.20.0.conf.'.$tableName.' = < plugin.\'.t3lib_extMgm::getCN($_EXTKEY).\'_pi'.$k.'
 								tt_content.shortcut.20.0.conf.'.$tableName.'.CMD = singleView
-							",43);
+							\',43);
 						');
 
 						if (!$config["list_default_listmode"])	{
@@ -609,11 +609,11 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								 */
 								function pi_list_row($c)	{
 									$editPanel = $this->pi_getEditPanel();
-									if ($editPanel)	$editPanel="<TD>".$editPanel."</TD>";
+									if ($editPanel)	$editPanel=\'<TD>\'.$editPanel.\'</TD>\';
 
-									return \'<tr\'.($c%2 ? $this->pi_classParam("listrow-odd") : "").\'>
-											',implode(chr(10),$theLines["getListRow"]),'
-											\'.$editPanel.\'
+									return \'<tr\'.($c%2 ? $this->pi_classParam(\'listrow-odd\') : \'\').\'>
+											',implode(chr(10),$theLines['getListRow']),'
+											'.$editPanel.'
 										</tr>\';
 								}
 							',3);
@@ -622,7 +622,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								 * [Put your description here]
 								 */
 								function pi_list_header()	{
-									return \'<tr\'.$this->pi_classParam("listrow-header").\'>
+									return \'<tr\'.$this->pi_classParam(\'listrow-header\').\'>
 											',implode(chr(10),$theLines["getListHeader"]),'
 										</tr>\';
 								}
@@ -634,12 +634,12 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							 */
 							function getFieldContent($fN)	{
 								switch($fN) {
-									case "uid":
-										return $this->pi_list_linkSingle($this->internal["currentRow"][$fN],$this->internal["currentRow"]["uid"],1);	// The "1" means that the display of single items is CACHED! Set to zero to disable caching.
+									case \'uid\':
+										return $this->pi_list_linkSingle($this->internal[\'currentRow\'][$fN],$this->internal[\'currentRow\'][\'uid\'],1);	// The "1" means that the display of single items is CACHED! Set to zero to disable caching.
 									break;
-									',implode(chr(10),$theLines["getFieldContent"]),'
+									',implode(chr(10),$theLines['getFieldContent']),'
 									default:
-										return $this->internal["currentRow"][$fN];
+										return $this->internal[\'currentRow\'][$fN];
 									break;
 								}
 							}
@@ -652,7 +652,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								switch($fN) {
 									',implode(chr(10),$theLines["getFieldHeader"]),'
 									default:
-										return $this->pi_getLL("listFieldHeader_".$fN,"[".$fN."]");
+										return $this->pi_getLL(\'listFieldHeader_\'.$fN,\'[\'.$fN.\']\');
 									break;
 								}
 							}
@@ -662,7 +662,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							 * [Put your description here]
 							 */
 							function getFieldHeader_sortLink($fN)	{
-								return $this->pi_linkTP_keepPIvars($this->getFieldHeader($fN),array("sort"=>$fN.":".($this->internal["descFlag"]?0:1)));
+								return $this->pi_linkTP_keepPIvars($this->getFieldHeader($fN),array(\'sort\'=>$fN.\':\'.($this->internal[\'descFlag\']?0:1)));
 							}
 						');
 
@@ -902,7 +902,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 						if (!$config["plus_not_staticTemplate"])	{
 							$this->wizard->ext_tables[]=$this->sPS('
-								t3lib_extMgm::addStaticFile($_EXTKEY,"'.$pathSuffix.'static/","'.addslashes(trim($config['title'])).'");
+								t3lib_extMgm::addStaticFile($_EXTKEY,\''.$pathSuffix.'static/\',\''.addslashes(trim($config['title'])).'\');
 							');
 						}
 					}
@@ -930,13 +930,13 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								<p>This is line 2</p>
 
 								<h3>This is a form:</h3>
-								<form action="\'.$this->pi_getPageLink($GLOBALS["TSFE"]->id).\'" method="POST">
+								<form action="\'.$this->pi_getPageLink($GLOBALS[\'TSFE\']->id).\'" method="POST">
 									<input type="hidden" name="no_cache" value="1">
-									<input type="text" name="\'.$this->prefixId.\'[input_field]" value="\'.htmlspecialchars($this->piVars["input_field"]).\'">
-									<input type="submit" name="\'.$this->prefixId.\'[submit_button]" value="\'.htmlspecialchars($this->pi_getLL("submit_button_label")).\'">
+									<input type="text" name="\'.$this->prefixId.\'[input_field]" value="\'.htmlspecialchars($this->piVars[\'input_field\']).\'">
+									<input type="submit" name="\'.$this->prefixId.\'[submit_button]" value="\'.htmlspecialchars($this->pi_getLL(\'submit_button_label\')).\'">
 								</form>
 								<BR>
-								<p>You can click here to \'.$this->pi_linkToPage("get to this page again",$GLOBALS["TSFE"]->id).\'</p>
+								<p>You can click here to \'.$this->pi_linkToPage(\'get to this page again\',$GLOBALS[\'TSFE\']->id).\'</p>
 							\';
 
 							return $this->pi_wrapInBaseClass($content);
@@ -978,11 +978,11 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 			case "textbox":
 				$this->wizard->ext_localconf[]=$this->sPS('
 					  ## Setting TypoScript for the image in the textbox:
-					t3lib_extMgm::addTypoScript($_EXTKEY,"setup","
+					t3lib_extMgm::addTypoScript($_EXTKEY,\'setup\',\'
 						plugin.'.$cN.'_pi'.$k.'.IMAGEcObject {
 						  file.width=100
 						}
-					",43);
+					\',43);
 				');
 
 				$innerMainContent = $this->sPS('
@@ -992,20 +992,20 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					function main($content,$conf)	{
 
 							// Processes the image-field content:
-							// $conf["IMAGEcObject."] is passed to the getImage() function as TypoScript
+							// $conf[\'IMAGEcObject.\'] is passed to the getImage() function as TypoScript
 							// configuration for the image (except filename which is set automatically here)
-						$imageFiles = explode(",",$this->cObj->data["image"]);	// This returns an array with image-filenames, if many
+						$imageFiles = explode(\',\',$this->cObj->data[\'image\']);	// This returns an array with image-filenames, if many
 						$imageRows=array();	// Accumulates the images
 						reset($imageFiles);
 						while(list(,$iFile)=each($imageFiles))	{
-							$imageRows[] = "<tr>
-								<td>".$this->getImage($iFile,$conf["IMAGEcObject."])."</td>
-							</tr>";
+							$imageRows[] = \'<tr>
+								<td>\'.$this->getImage($iFile,$conf[\'IMAGEcObject.\']).\'</td>
+							</tr>\';
 						}
-						$imageBlock = count($imageRows)?\'<table border=0 cellpadding=5 cellspacing=0>\'.implode("",$imageRows).\'</table>\':\'<img src=clear.gif width=100 height=1>\';
+						$imageBlock = count($imageRows)?\'<table border=0 cellpadding=5 cellspacing=0>\'.implode(\'\',$imageRows).\'</table>\':\'<img src=clear.gif width=100 height=1>\';
 
 							// Sets bodytext
-						$bodyText = nl2br($this->cObj->data["bodytext"]);
+						$bodyText = nl2br($this->cObj->data[\'bodytext\']);
 
 							// And compiles everything into a table:
 						$finalContent = \'<table border=1>
@@ -1023,8 +1023,8 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 						 * processed according to the parsed TypoScript content in the $TSconf array.
 						 */
 					function getImage($filename,$TSconf)	{
-						list($theImage)=explode(",",$filename);
-						$TSconf["file"] = "uploads/pics/".$theImage;
+						list($theImage)=explode(\',\',$filename);
+						$TSconf[\'file\'] = \'uploads/pics/\'.$theImage;
 						$img = $this->cObj->IMAGE($TSconf);
 						return $img;
 					}
@@ -1036,7 +1036,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					 * [Put your description here]
 					 */
 					function main($content,$conf)	{
-						return "<H1>".$this->cObj->data["header"]."</H1>";
+						return \'<H1>\'.$this->cObj->data[\'header\'].\'</H1>\';
 					}
 				');
 			break;
@@ -1050,11 +1050,11 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							// Get the PID from which to make the menu.
 							// If a page is set as reference in the \'Startingpoint\' field, use that
 							// Otherwise use the page\'s id-number from TSFE
-						$menuPid = intval($this->cObj->data["pages"]?$this->cObj->data["pages"]:$GLOBALS["TSFE"]->id);
+						$menuPid = intval($this->cObj->data[\'pages\']?$this->cObj->data[\'pages\']:$GLOBALS[\'TSFE\']->id);
 
 							// Now, get an array with all the subpages to this pid:
 							// (Function getMenu() is found in class.t3lib_page.php)
-						$menuItems_level1 = $GLOBALS["TSFE"]->sys_page->getMenu($menuPid);
+						$menuItems_level1 = $GLOBALS[\'TSFE\']->sys_page->getMenu($menuPid);
 
 							// Prepare vars:
 						$tRows=array();
@@ -1063,9 +1063,9 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 						reset($menuItems_level1);
 						while(list($uid,$pages_row)=each($menuItems_level1))	{
 							$tRows[]=\'<tr bgColor="#cccccc"><td>\'.$this->pi_linkToPage(
-								$pages_row["nav_title"]?$pages_row["nav_title"]:$pages_row["title"],
-								$pages_row["uid"],
-								$pages_row["target"]
+								$pages_row[\'nav_title\']?$pages_row[\'nav_title\']:$pages_row[\'title\'],
+								$pages_row[\'uid\'],
+								$pages_row[\'target\']
 							).\'</td></tr>\';
 						}
 
@@ -1078,7 +1078,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					}
 
 					function tellWhatToDo($str)	{
-						return \'<a href="#" onClick="alert(\\\'Open the PHP-file \'.t3lib_extMgm::siteRelPath("'.$extKey.'").\''.$pathSuffix.'class.'.$cN.'.php and edit the function main()\nto change how the menu is rendered! It is pure PHP coding!\\\')">\'.$str.\'</a>\';
+						return \'<a href="#" onClick="alert(\\\'Open the PHP-file \'.t3lib_extMgm::siteRelPath(\''.$extKey.'\').\''.$pathSuffix.'class.'.$cN.'.php and edit the function main()\nto change how the menu is rendered! It is pure PHP coding!\\\')">\'.$str.\'</a>\';
 					}
 				');
 			break;
@@ -1089,10 +1089,10 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					 */
 					function main($content,$conf)	{
 						$tag_content = $this->cObj->getCurrentVal();
-						return "<b>".$this->tellWhatToDo(strtoupper($tag_content))."</b>";
+						return \'<b>\'.$this->tellWhatToDo(strtoupper($tag_content)).\'</b>\';
 					}
 					function tellWhatToDo($str)	{
-						return \'<a href="#" onClick="alert(\\\'Open the PHP-file \'.t3lib_extMgm::siteRelPath("'.$extKey.'").\''.$pathSuffix.'class.'.$cN.'.php and edit the function main()\nto change how the tag content is processed!\\\')">\'.$str.\'</a>\';
+						return \'<a href="#" onClick="alert(\\\'Open the PHP-file \'.t3lib_extMgm::siteRelPath(\''.$extKey.'\').\''.$pathSuffix.'class.'.$cN.'.php and edit the function main()\nto change how the tag content is processed!\\\')">\'.$str.\'</a>\';
 					}
 				');
 			break;
@@ -1102,20 +1102,20 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					 * [Put your description here]
 					 */
 					function main($content,$conf)	{
-						return "Hello World!<HR>
-							Here is the TypoScript passed to the method:".
+						return \'Hello World!<HR>
+							Here is the TypoScript passed to the method:\'.
 									t3lib_div::view_array($conf);
 					}
 				');
 			break;
 		}
 		$indexContent= $this->wrapBody('
-			require_once(PATH_tslib."class.tslib_pibase.php");
+			require_once(PATH_tslib.\'class.tslib_pibase.php\');
 
 			class '.$cN.' extends tslib_pibase {
-				var $prefixId = "'.$cN.'";		// Same as class name
-				var $scriptRelPath = "'.($pathSuffix."class.".$cN.".php").'";	// Path to this script relative to the extension dir.
-				var $extKey = "'.$extKey.'";	// The extension key.
+				var $prefixId = \''.$cN.'\';		// Same as class name
+				var $scriptRelPath = \''.($pathSuffix."class.".$cN.".php").'\';	// Path to this script relative to the extension dir.
+				var $extKey = \''.$extKey.'\';	// The extension key.
 
 				',$innerMainContent,'
 			}
@@ -1134,17 +1134,17 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 						$LL = $this->includeLocalLang();
 
-						$wizardItems["plugins_'.$cN.'"] = array(
-							"icon"=>t3lib_extMgm::extRelPath("'.$extKey.'")."'.$pathSuffix.'ce_wiz.gif",
-							"title"=>$LANG->getLLL("pi'.$k.'_title",$LL),
-							"description"=>$LANG->getLLL("pi'.$k.'_plus_wiz_description",$LL),
-							"params"=>"&defVals[tt_content][CType]=list&defVals[tt_content][list_type]='.$extKey.'_pi'.$k.'"
+						$wizardItems[\'plugins_'.$cN.'\'] = array(
+							\'icon\'=>t3lib_extMgm::extRelPath(\''.$extKey.'\').\''.$pathSuffix.'ce_wiz.gif\',
+							\'title\'=>$LANG->getLLL(\'pi'.$k.'_title\',$LL),
+							\'description\'=>$LANG->getLLL(\'pi'.$k.'_plus_wiz_description\',$LL),
+							\'params\'=>\'&defVals[tt_content][CType]=list&defVals[tt_content][list_type]='.$extKey.'_pi'.$k.'\'
 						);
 
 						return $wizardItems;
 					}
 					function includeLocalLang()	{
-						include(t3lib_extMgm::extPath("'.$extKey.'")."locallang.php");
+						include(t3lib_extMgm::extPath(\''.$extKey.'\').\'locallang.php\');
 						return $LOCAL_LANG;
 					}
 				}
@@ -1159,7 +1159,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 			$this->wizard->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[plus_wiz]:').'
-				if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["'.$cN.'_wizicon"] = t3lib_extMgm::extPath($_EXTKEY)."pi'.$k.'/class.'.$cN.'_wizicon.php";
+				if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["'.$cN.'_wizicon"] = t3lib_extMgm::extPath($_EXTKEY).\'pi'.$k.'/class.'.$cN.'_wizicon.php\';
 			');
 		}
 	}

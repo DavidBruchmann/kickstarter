@@ -238,7 +238,12 @@ class tx_kickstarter_sectionbase {
 		return $str;
 	}
 
-
+	function fieldIsRTE($fC)	{
+		return !strcmp($fC["type"],"textarea_rte") &&
+						($fC["conf_rte"]=="basic" ||
+						(t3lib_div::inList("custom,moderate",$fC["conf_rte"]) && $fC["conf_mode_cssOrNot"])
+						);
+	}
 
 
 
@@ -634,8 +639,8 @@ class tx_kickstarter_sectionbase {
 
 		$file.=trim($this->sPS("
 
-			if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/".$extKey."/".$filename."'])	{
-				include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/".$extKey."/".$filename."']);
+			if (defined('TYPO3_MODE') && \$TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/".$extKey."/".$filename."'])	{
+				include_once(\$TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/".$extKey."/".$filename."']);
 			}
 			".($SOBE_class?"
 

@@ -1452,12 +1452,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	function ulFolder($eKey)	{
 		return "uploads/tx_".str_replace("_","",$eKey)."/";
 	}
-	function fieldIsRTE($fC)	{
-		return !strcmp($fC["type"],"textarea_rte") &&
-						($fC["conf_rte"]=="basic" ||
-						(t3lib_div::inList("custom,moderate",$fC["conf_rte"]) && $fC["conf_mode_cssOrNot"])
-						);
-	}
+
 
 }
 
