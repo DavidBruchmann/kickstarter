@@ -31,7 +31,13 @@
 require_once(t3lib_extMgm::extPath("kickstarter")."class.tx_kickstarter_sectionbase.php");
  
 class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
-	var $catName = "";
+	var $catName = '';
+
+	function tx_kickstarter_section_cm() {
+	  tx_kickstarter_sectionbase::tx_kickstarter_sectionbase();
+	  $this->catName = '';
+	  $this->catDesc = '';
+	}
 
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_cm()
@@ -71,12 +77,8 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
 		}
 
-		/* HOOK: Place a hook here, so additional output can be integrated */
-		if(is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['add_cat_cm'])) {
-		  foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['add_cat_cm'] as $_funcRef) {
-		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
-		  }
-		}
+
+		$lines =& $this->process_hook('render_wizard', $lines);
 
 		$content = '<table border=0 cellpadding=2 cellspacing=2>'.implode("",$lines).'</table>';
 		return $content;
