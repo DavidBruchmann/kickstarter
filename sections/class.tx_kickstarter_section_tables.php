@@ -377,7 +377,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			"cruser_id" => "cruser_id",
 		',0));
 		$DBfields[] = trim($this->sPS('
-			uid int(11) DEFAULT "0" NOT NULL auto_increment,
+			uid int(11) NOT NULL auto_increment,
 			pid int(11) DEFAULT "0" NOT NULL,
 			tstamp int(11) unsigned DEFAULT "0" NOT NULL,
 			crdate int(11) unsigned DEFAULT "0" NOT NULL,
