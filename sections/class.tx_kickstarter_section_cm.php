@@ -26,6 +26,8 @@
 ***************************************************************/
 /**
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Daniel Brün <dbruen@saltation.de>
+ * @author	Ingmar Schlecht <ingmars@web.de>
  */
 
 require_once(t3lib_extMgm::extPath("kickstarter")."class.tx_kickstarter_sectionbase.php");
@@ -39,7 +41,6 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 	function render_wizard() {
 		$lines=array();
 
-		$this->sectionID = "cm";
 		$action = explode(":",$this->wizard->modData["wizAction"]);
 		if ($action[0]=="edit")	{
 			$this->regNewEntry($this->sectionID,$action[1]);
@@ -89,10 +90,10 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 	 * Renders the extension PHP codee; this was 
 	 */
 	function render_extPart($k,$config,$extKey) {
-		$WOP="[cm][".$k."]";
-		$cN = $this->returnName($extKey,"class","cm".$k);
+		$WOP = '[' . $this->sectionID . '][' . $k .']';
+		$cN = $this->returnName($extKey,'class', $this->sectionID . $k);
 		$filename = 'class.'.$cN.'.php';
-		$pathSuffix = "cm".$k."/";
+		$pathSuffix = $this->sectionID . $k .'/';
 
 			// This will make sure our item is inserted in the clickmenu!
 		$this->ext_tables[]=$this->sPS('

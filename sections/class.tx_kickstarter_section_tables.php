@@ -39,39 +39,39 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 	function render_wizard() {
 		$lines=array();
 
-		$action = explode(":",$this->wizard->modData["wizAction"]);
+		$action = explode(":",$this->wizard->modData['wizAction']);
 		if ($action[0]=="edit")	{
 			$this->regNewEntry($this->sectionID,$action[1]);
-			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
-			$piConf = $this->wizArray[$this->sectionID][$action[1]];
+			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],'&nbsp;',$action[1]);
+			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 				// Unique table name:
 			$table_suffixes=array();
-			if (is_array($this->wizArray[$this->sectionID]))	{
-				foreach($this->wizArray[$this->sectionID] as $kk => $vv)	{
+			if (is_array($this->wizard->wizArray[$this->sectionID]))	{
+				foreach($this->wizard->wizArray[$this->sectionID] as $kk => $vv)	{
 					if (!strcmp($action[1],$kk))	{
-						if (count($table_suffixes) && t3lib_div::inList(implode(",",$table_suffixes),$vv["tablename"]."Z"))	{
-							$piConf["tablename"].=$kk;
+						if (count($table_suffixes) && t3lib_div::inList(implode(',',$table_suffixes),$vv['tablename'].'Z'))	{
+							$piConf['tablename'].=$kk;
 						}
 						break;
 					}
-					$table_suffixes[]=$vv["tablename"]."Z";
+					$table_suffixes[]=$vv['tablename'].'Z';
 				}
 			}
 
 
 				// Enter title of the table
-			$subContent="<strong>Tablename:</strong><BR>".
-				$this->returnName($this->extKey,"tables")."_".$this->renderStringBox($ffPrefix."[tablename]",$piConf["tablename"]).
-				"<BR><strong>Notice:</strong> Use characters a-z0-9 only. Only lowercase, no spaces.<BR>
-				This becomes the table name in the database. ";
+			$subContent='<strong>Tablename:</strong><BR>'.
+				$this->returnName($this->extKey,'tables').'_'.$this->renderStringBox($ffPrefix.'[tablename]',$piConf['tablename']).
+				'<BR><strong>Notice:</strong> Use characters a-z0-9 only. Only lowercase, no spaces.<BR>
+				This becomes the table name in the database. ';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 
 				// Enter title of the table
-			$subContent="<strong>Title of the table:</strong><BR>".
-				$this->renderStringBox_lang("title",$ffPrefix,$piConf);
+			$subContent='<strong>Title of the table:</strong><BR>'.
+				$this->renderStringBox_lang('title',$ffPrefix,$piConf);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 
@@ -79,8 +79,8 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 				// Fields - overview
 			$c=array(0);
 			$this->usedNames=array();
-			if (is_array($piConf["fields"]))	{
-				$piConf["fields"] = $this->cleanFieldsAndDoCommands($piConf["fields"],$this->sectionID,$action[1]);
+			if (is_array($piConf['fields']))	{
+				$piConf['fields'] = $this->cleanFieldsAndDoCommands($piConf['fields'],$this->sectionID,$action[1]);
 
 				// Do it for real...
 				$lines[]='<tr'.$this->bgCol(1).'><td><strong> Fields Overview </strong></td></tr>';
@@ -94,9 +94,9 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 					<td><strong>Exclude?</strong></td>
 					<td><strong>Details</strong></td>
 				</tr>';
-				foreach($piConf["fields"] as $k=>$v)	{
+				foreach($piConf['fields'] as $k=>$v)	{
 					$c[]=$k;
-					$subContent .=$this->renderFieldOverview($ffPrefix."[fields][".$k."]",$v);
+					$subContent .=$this->renderFieldOverview($ffPrefix.'[fields]['.$k.']',$v);
 				}
 				$lines[]='<tr'.$this->bgCol(3).'><td><table>'.$this->fw($subContent).'</table></td></tr>';
 			}
@@ -109,81 +109,81 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 
 
 				// Admin only
-			$subContent = "";
-			$subContent.= $this->renderCheckBox($ffPrefix."[add_deleted]",$piConf["add_deleted"],1)."Add 'Deleted' field ".$this->whatIsThis("Whole system: If a table has a deleted column, records are never really deleted, just 'marked deleted'. Thus deleted records can actually be restored by clearing a deleted-flag later.\nNotice that all attached files are also not deleted from the server, so if you expect the table to hold some heavy size uploads, maybe you should not set this...")."<BR>";
-			$subContent.= $this->renderCheckBox($ffPrefix."[add_hidden]",$piConf["add_hidden"],1)."Add 'Hidden' flag ".$this->whatIsThis("Frontend: The 'Hidden' flag will prevent the record from being displayed on the frontend.")."<BR>".$this->resImg("t_flag_hidden.png",'hspace=20','','<BR><BR>');
-			$subContent.= $this->renderCheckBox($ffPrefix."[add_starttime]",$piConf["add_starttime"])."Add 'Starttime' ".$this->whatIsThis("Frontend: If a 'Starttime' is set, the record will not be visible on the website, before that date arrives.")."<BR>".$this->resImg("t_flag_starttime.png",'hspace=20','','<BR><BR>');
-			$subContent.= $this->renderCheckBox($ffPrefix."[add_endtime]",$piConf["add_endtime"])."Add 'Endtime' ".$this->whatIsThis("Frontend: If a 'Endtime' is set, the record will be hidden from that date and into the future.")."<BR>".$this->resImg("t_flag_endtime.png",'hspace=20','','<BR><BR>');
-			$subContent.= $this->renderCheckBox($ffPrefix."[add_access]",$piConf["add_access"])."Add 'Access group' ".$this->whatIsThis("Frontend: If a frontend user group is set for a record, only frontend users that are members of that group will be able to see the record.")."<BR>".$this->resImg("t_flag_access.png",'hspace=20','','<BR><BR>');
-			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
+			$subContent = '';
+			$subContent .= $this->renderCheckBox($ffPrefix.'[add_deleted]',$piConf['add_deleted'],1).'Add "Deleted" field '.$this->whatIsThis('Whole system: If a table has a deleted column, records are never really deleted, just "marked deleted" . Thus deleted records can actually be restored by clearing a deleted-flag later.\nNotice that all attached files are also not deleted from the server, so if you expect the table to hold some heavy size uploads, maybe you should not set this...') . '<BR>';
+			$subContent .= $this->renderCheckBox($ffPrefix . '[add_hidden]', $piConf['add_hidden'],1) . 'Add "Hidden" flag ' . $this->whatIsThis('Frontend: The "Hidden" flag will prevent the record from being displayed on the frontend.') . '<BR>' . $this->resImg('t_flag_hidden.png','hspace=20','','<BR><BR>');
+			$subContent .= $this->renderCheckBox($ffPrefix . '[add_starttime]', $piConf['add_starttime']) . 'Add "Starttime" ' . $this->whatIsThis('Frontend: If a "Starttime" is set, the record will not be visible on the website, before that date arrives.') . '<BR>' . $this->resImg('t_flag_starttime.png','hspace=20','','<BR><BR>');
+			$subContent .= $this->renderCheckBox($ffPrefix . '[add_endtime]', $piConf['add_endtime']) . 'Add "Endtime" ' . $this->whatIsThis('Frontend: If a "Endtime" is set, the record will be hidden from that date and into the future.') . '<BR>' . $this->resImg('t_flag_endtime.png', 'hspace=20','','<BR><BR>');
+			$subContent .= $this->renderCheckBox($ffPrefix . '[add_access]', $piConf['add_access']) . 'Add "Access group" ' . $this->whatIsThis('Frontend: If a frontend user group is set for a record, only frontend users that are members of that group will be able to see the record.') . '<BR>' . $this->resImg('t_flag_access.png', 'hspace=20','','<BR><BR>');
+			$lines[] = '<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Sorting
 			$optValues = array(
-				"crdate" => "[crdate]",
-				"cruser_id" => "[cruser_id]",
-				"tstamp" => "[tstamp]",
+				'crdate' => '[crdate]',
+				'cruser_id' => '[cruser_id]',
+				'tstamp' => '[tstamp]',
 			);
-			$subContent = "";
-			$subContent.= $this->renderCheckBox($ffPrefix."[localization]",$piConf["localization"])."Enabled localization features".$this->whatIsThis("If set, the records will have a selector box for language and a reference field which can point back to the original default translation for the record. These features are part of the internal framework for localization.").'<BR>';
-			$subContent.= $this->renderCheckBox($ffPrefix."[versioning]",$piConf["versioning"])."Enable versioning ".$this->whatIsThis("If set, you will be able to versionize records from this table. Highly recommended if the records are passed around in a workflow.").'<BR>';
-			$subContent.= $this->renderCheckBox($ffPrefix."[sorting]",$piConf["sorting"])."Manual ordering of records ".$this->whatIsThis("If set, the records can be moved up and down relative to each other in the backend. Just like Content Elements. Otherwise they are sorted automatically by any field you specify").'<BR>';
-			$subContent.= $this->textSetup("","If 'Manual ordering' is not set, order the table by this field:<BR>".
-				$this->renderSelectBox($ffPrefix."[sorting_field]",$piConf["sorting_field"],$this->currentFields($optValues,$piConf["fields"]))."<BR>".
-				$this->renderCheckBox($ffPrefix."[sorting_desc]",$piConf["sorting_desc"])." Descending");
+			$subContent = '';
+			$subContent.= $this->renderCheckBox($ffPrefix.'[localization]',$piConf['localization']).'Enabled localization features'.$this->whatIsThis('If set, the records will have a selector box for language and a reference field which can point back to the original default translation for the record. These features are part of the internal framework for localization.').'<BR>';
+			$subContent.= $this->renderCheckBox($ffPrefix.'[versioning]',$piConf['versioning']).'Enable versioning '.$this->whatIsThis('If set, you will be able to versionize records from this table. Highly recommended if the records are passed around in a workflow.').'<BR>';
+			$subContent.= $this->renderCheckBox($ffPrefix.'[sorting]',$piConf['sorting']).'Manual ordering of records '.$this->whatIsThis('If set, the records can be moved up and down relative to each other in the backend. Just like Content Elements. Otherwise they are sorted automatically by any field you specify').'<BR>';
+			$subContent.= $this->textSetup('','If "Manual ordering" is not set, order the table by this field:<BR>'.
+				$this->renderSelectBox($ffPrefix.'[sorting_field]',$piConf['sorting_field'],$this->currentFields($optValues,$piConf['fields'])).'<BR>'.
+				$this->renderCheckBox($ffPrefix.'[sorting_desc]',$piConf['sorting_desc']).' Descending');
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Type field
 			$optValues = array(
-				"0" => "[none]",
+				'0' => '[none]',
 			);
-			$subContent = "<strong>'Type-field', if any:<BR></strong>".
-					$this->renderSelectBox($ffPrefix."[type_field]",$piConf["type_field"],$this->currentFields($optValues,$piConf["fields"])).
-					$this->whatIsThis("A 'type-field' is the field in the table which determines how the form is rendered in the backend, eg. which fields are shown under which circumstances.\nFor instance the Content Element table 'tt_content' has a type-field, CType. The value of this field determines if the editing form shows the bodytext field as is the case when the type is 'Text' or if also the image-field should be shown as when the type is 'Text w/Image'");
+			$subContent = '<strong>"Type-field", if any:<BR></strong>'.
+					$this->renderSelectBox($ffPrefix.'[type_field]',$piConf['type_field'],$this->currentFields($optValues,$piConf['fields'])).
+					$this->whatIsThis('A "type-field" is the field in the table which determines how the form is rendered in the backend, eg. which fields are shown under which circumstances.\nFor instance the Content Element table "tt_content" has a type-field, CType. The value of this field determines if the editing form shows the bodytext field as is the case when the type is "Text" or if also the image-field should be shown as when the type is "Text w/Image"');
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Header field
 			$optValues = array(
-				"0" => "[none]",
+				'0' => '[none]',
 			);
-			$subContent = "<strong>Label-field:<BR></strong>".
-					$this->renderSelectBox($ffPrefix."[header_field]",$piConf["header_field"],$this->currentFields($optValues,$piConf["fields"])).
-					$this->whatIsThis("A 'label-field' is the field used as record title in the backend.");
+			$subContent = '<strong>Label-field:<BR></strong>'.
+					$this->renderSelectBox($ffPrefix.'[header_field]',$piConf['header_field'],$this->currentFields($optValues,$piConf['fields'])).
+					$this->whatIsThis('A "label-field" is the field used as record title in the backend.');
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Icon
 			$optValues = array(
-				"default.gif" => "Default (white)",
-				"default_black.gif" => "Black",
-				"default_gray4.gif" => "Gray",
-				"default_blue.gif" => "Blue",
-				"default_green.gif" => "Green",
-				"default_red.gif" => "Red",
-				"default_yellow.gif" => "Yellow",
-				"default_purple.gif" => "Purple",
+				'default.gif' => 'Default (white)',
+				'default_black.gif' => 'Black',
+				'default_gray4.gif' => 'Gray',
+				'default_blue.gif' => 'Blue',
+				'default_green.gif' => 'Green',
+				'default_red.gif' => 'Red',
+				'default_yellow.gif' => 'Yellow',
+				'default_purple.gif' => 'Purple',
 			);
 
-			$subContent= $this->renderSelectBox($ffPrefix."[defIcon]",$piConf["defIcon"],$optValues)." Default icon ".$this->whatIsThis("All tables have at least one associated icon. Select which default icon you wish. You can always substitute the file with another.");
+			$subContent= $this->renderSelectBox($ffPrefix.'[defIcon]',$piConf['defIcon'],$optValues).' Default icon '.$this->whatIsThis('All tables have at least one associated icon. Select which default icon you wish. You can always substitute the file with another.');
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Allowed on pages
-			$subContent = "<strong>Allowed on pages:<BR></strong>".
-					$this->renderCheckBox($ffPrefix."[allow_on_pages]",$piConf["allow_on_pages"])." Allow records from this table to be created on regular pages.";
+			$subContent = '<strong>Allowed on pages:<BR></strong>'.
+					$this->renderCheckBox($ffPrefix.'[allow_on_pages]',$piConf['allow_on_pages']).' Allow records from this table to be created on regular pages.';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Allowed in "Insert Records"
-			$subContent = "<strong>Allowed in 'Insert Records' field in content elements:<BR></strong>".
-					$this->renderCheckBox($ffPrefix."[allow_ce_insert_records]",$piConf["allow_ce_insert_records"])." Allow records from this table to be linked to by content elements.";
+			$subContent = '<strong>Allowed in 'Insert Records' field in content elements:<BR></strong>'.
+					$this->renderCheckBox($ffPrefix.'[allow_ce_insert_records]',$piConf['allow_ce_insert_records']).' Allow records from this table to be linked to by content elements.';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Add new button
-			$subContent = "<strong>Add 'Save and new' button in forms:<BR></strong>".
-					$this->renderCheckBox($ffPrefix."[save_and_new]",$piConf["save_and_new"])." Will add an additional save-button to forms by which you can save the item and instantly create the next.";
+			$subContent = '<strong>Add "Save and new" button in forms:<BR></strong>'.
+					$this->renderCheckBox($ffPrefix.'[save_and_new]',$piConf['save_and_new']).' Will add an additional save-button to forms by which you can save the item and instantly create the next.';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 
-			$subContent = "<strong>Notice on fieldnames:<BR></strong>".
-				"Don't use fieldnames from this list of reserved names/words: <BR>
-				<blockquote><em>".implode(", ",explode(",",$this->reservedTypo3Fields.",".$this->mysql_reservedFields))."</em></blockquote>";
+			$subContent = '<strong>Notice on fieldnames:<BR></strong>'.
+				'Don\'t use fieldnames from this list of reserved names/words: <BR>
+				<blockquote><em>' . implode(', ',explode(',',$this->reservedTypo3Fields . ',' . $this->mysql_reservedFields)).'</em></blockquote>';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 
@@ -194,13 +194,13 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 				// Fields
 			$c=array(0);
 			$this->usedNames=array();
-			if (is_array($piConf["fields"]))	{
+			if (is_array($piConf['fields']))	{
 
 				// Do it for real...
-				foreach($piConf["fields"] as $k=>$v)	{
+				foreach($piConf['fields'] as $k=>$v)	{
 					$c[]=$k;
-					$subContent=$this->renderField($ffPrefix."[fields][".$k."]",$v);
-					$lines[]='<tr'.$this->bgCol(2).'><td>'.$this->fw("<strong>FIELD:</strong> <em>".$v["fieldname"]."</em>").'</td></tr>';
+					$subContent=$this->renderField($ffPrefix.'[fields]['.$k.']',$v);
+					$lines[]='<tr'.$this->bgCol(2).'><td>'.$this->fw('<strong>FIELD:</strong> <em>'.$v['fieldname'].'</em>').'</td></tr>';
 					$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 				}
 			}
@@ -208,12 +208,12 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 				// New field:
 			$k=max($c)+1;
 			$v=array();
-			$lines[]='<tr'.$this->bgCol(2).'><td>'.$this->fw("<strong>NEW FIELD:</strong>").'</td></tr>';
-			$subContent=$this->renderField($ffPrefix."[fields][".$k."]",$v,1);
+			$lines[]='<tr'.$this->bgCol(2).'><td>'.$this->fw('<strong>NEW FIELD:</strong>').'</td></tr>';
+			$subContent=$this->renderField($ffPrefix.'[fields]['.$k.']',$v,1);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 
-			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw("<BR><BR>Load preset fields: <BR>".$selPresetBox).'</td></tr>';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw('<BR><BR>Load preset fields: <BR>'.$selPresetBox).'</td></tr>';
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
@@ -223,7 +223,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		  }
 		}
 
-		$content = '<table border=0 cellpadding=2 cellspacing=2>'.implode("",$lines).'</table>';
+		$content = '<table border=0 cellpadding=2 cellspacing=2>'.implode('',$lines).'</table>';
 
 		return $content;
 	}
@@ -231,8 +231,8 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 	function currentFields($addFields,$fArr)	{
 		if (is_array($fArr))	{
 			foreach($fArr as $k=>$v)	{
-				if ($v["type"] && trim($v["fieldname"]))	{
-					$addFields[trim($v["fieldname"])]=$v["fieldname"].": ".$v["title"];
+				if ($v['type'] && trim($v['fieldname']))	{
+					$addFields[trim($v['fieldname'])]=$v['fieldname'].': '.$v['title'];
 				}
 			}
 		}
@@ -245,44 +245,44 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 	function renderFieldOverview($prefix,$fConf,$dontRemove=0)	{
 			// Sorting
 		$optTypes = array(
-			"" => "",
-			"input" => "String input",
-			"input+" => "String input, advanced",
-			"textarea" => "Text area",
-			"textarea_rte" => "Text area with RTE",
-			"textarea_nowrap" => "Text area, No wrapping",
-			"check" => "Checkbox, single",
-			"check_4" => "Checkbox, 4 boxes in a row",
-			"check_10" => "Checkbox, 10 boxes in two rows (max)",
-			"link" => "Link",
-			"date" => "Date",
-			"datetime" => "Date and time",
-			"integer" => "Integer, 10-1000",
-			"select" => "Selectorbox",
-			"radio" => "Radio buttons",
-			"rel" => "Database relation",
-			"files" => "Files",
+			'' => '',
+			'input' => 'String input',
+			'input+' => 'String input, advanced',
+			'textarea' => 'Text area',
+			'textarea_rte' => 'Text area with RTE',
+			'textarea_nowrap' => 'Text area, No wrapping',
+			'check' => 'Checkbox, single',
+			'check_4' => 'Checkbox, 4 boxes in a row',
+			'check_10' => 'Checkbox, 10 boxes in two rows (max)',
+			'link' => 'Link',
+			'date' => 'Date',
+			'datetime' => 'Date and time',
+			'integer' => 'Integer, 10-1000',
+			'select' => 'Selectorbox',
+			'radio' => 'Radio buttons',
+			'rel' => 'Database relation',
+			'files' => 'Files',
 		);
 		$optEval = array(
-			"" => "",
-			"date" => "Date (day-month-year)",
-			"time" => "Time (hours, minutes)",
-			"timesec" => "Time + seconds",
-			"datetime" => "Date + Time",
-			"year" => "Year",
-			"int" => "Integer",
-			"int+" => "Integer 0-1000",
-			"double2" => "Floating point, x.xx",
-			"alphanum" => "Alphanumeric only",
-			"upper" => "Upper case",
-			"lower" => "Lower case",
+			'' => '',
+			'date' => 'Date (day-month-year)',
+			'time' => 'Time (hours, minutes)',
+			'timesec' => 'Time + seconds',
+			'datetime' => 'Date + Time',
+			'year' => 'Year',
+			'int' => 'Integer',
+			'int+' => 'Integer 0-1000',
+			'double2' => 'Floating point, x.xx',
+			'alphanum' => 'Alphanumeric only',
+			'upper' => 'Upper case',
+			'lower' => 'Lower case',
 		);
 		$optRte = array(
-			"tt_content" => "Transform like 'Bodytext'",
-			"basic" => "Typical (based on CSS)",
-			"moderate" => "Transform images / links",
-			"none" => "No transform",
-			"custom" => "Custom transform"
+			'tt_content' => 'Transform like 'Bodytext'',
+			'basic' => 'Typical (based on CSS)',
+			'moderate' => 'Transform images / links',
+			'none' => 'No transform',
+			'custom' => 'Custom transform'
 		);
 
 		switch($fConf['type']) {
@@ -335,9 +335,9 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 	 * Renders the files to be created; this was renderExtPart_tables()
 	 */
 	function render_extPart() {
-		$WOP="[tables][".$k."]";
-		$tableName=$config["tablename"];
-		$tableName = $this->returnName($extKey,"tables",$tableName);
+		$WOP='[tables]['.$k.']';
+		$tableName=$config['tablename'];
+		$tableName = $this->returnName($extKey,'tables',$tableName);
 
 		$DBfields=array();
 		$columns=array();
@@ -346,39 +346,39 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 
 //str_replace("\\'","'",addslashes($this->getSplitLabels($config,"title")))
 		$ctrl[] = trim($this->sPS('
-			"title" => "'.$this->getSplitLabels_reference($config,"title",$tableName).'",		'.$this->WOPcomment('WOP:'.$WOP.'[title]').'
-			"label" => "'.($config["header_field"]?$config["header_field"]:"uid").'",	'.$this->WOPcomment('WOP:'.$WOP.'[header_field]').'
+			"title" => "' . $this->getSplitLabels_reference($config,'title',$tableName) . '",		' . $this->WOPcomment('WOP:'.$WOP.'[title]').'
+			"label" => "' . ($config["header_field"]?$config['header_field']:'uid') . '",	'.$this->WOPcomment('WOP:'.$WOP.'[header_field]').'
 			"tstamp" => "tstamp",
 			"crdate" => "crdate",
 			"cruser_id" => "cruser_id",
 		',0));
-		$DBfields[] = trim($this->sPS("
-			uid int(11) DEFAULT '0' NOT NULL auto_increment,
-			pid int(11) DEFAULT '0' NOT NULL,
-			tstamp int(11) unsigned DEFAULT '0' NOT NULL,
-			crdate int(11) unsigned DEFAULT '0' NOT NULL,
-			cruser_id int(11) unsigned DEFAULT '0' NOT NULL,
-		",0));
+		$DBfields[] = trim($this->sPS('
+			uid int(11) DEFAULT "0" NOT NULL auto_increment,
+			pid int(11) DEFAULT "0" NOT NULL,
+			tstamp int(11) unsigned DEFAULT "0" NOT NULL,
+			crdate int(11) unsigned DEFAULT "0" NOT NULL,
+			cruser_id int(11) unsigned DEFAULT "0" NOT NULL,
+		',0));
 
-		if ($config["type_field"])	{
+		if ($config['type_field'])	{
 			$ctrl[] = '"type" => "'.$config["type_field"].'",	'.$this->WOPcomment('WOP:'.$WOP.'[type_field]');
 		}
-		if ($config["versioning"])	{
-			$ctrl[] = '"versioning" => "1",	'.$this->WOPcomment('WOP:'.$WOP.'[versioning]');
-			$DBfields[] = "t3ver_oid int(11) unsigned DEFAULT '0' NOT NULL,";
-			$DBfields[] = "t3ver_id int(11) unsigned DEFAULT '0' NOT NULL,";
-			$DBfields[] = "t3ver_label varchar(30) DEFAULT '' NOT NULL,";
+		if ($config['versioning'])	{
+			$ctrl[] = '"versioning" => "1",	' . $this->WOPcomment('WOP:'.$WOP.'[versioning]');
+			$DBfields[] = 't3ver_oid int(11) unsigned DEFAULT "0" NOT NULL,';
+			$DBfields[] = 't3ver_id int(11) unsigned DEFAULT "0" NOT NULL,';
+			$DBfields[] = 't3ver_label varchar(30) DEFAULT "" NOT NULL,';
 		}
 		if ($config["localization"])	{
 			$ctrl[] = '"languageField" => "sys_language_uid",	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
 			$ctrl[] = '"transOrigPointerField" => "l18n_parent",	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
 			$ctrl[] = '"transOrigDiffSourceField" => "l18n_diffsource",	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
 
-			$DBfields[] = "sys_language_uid int(11) DEFAULT '0' NOT NULL,";
-			$DBfields[] = "l18n_parent int(11) DEFAULT '0' NOT NULL,";
-			$DBfields[] = "l18n_diffsource mediumblob NOT NULL,";
+			$DBfields[] = 'sys_language_uid int(11) DEFAULT "0" NOT NULL,';
+			$DBfields[] = 'l18n_parent int(11) DEFAULT "0" NOT NULL,';
+			$DBfields[] = 'l18n_diffsource mediumblob NOT NULL,';
 
-			$columns["sys_language_uid"] = trim($this->sPS("
+			$columns['sys_language_uid'] = trim($this->sPS("
 				'sys_language_uid' => Array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
 					'exclude' => 1,
 					'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
@@ -394,7 +394,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 				),
 			"));
 
-			$columns["l18n_parent"] = trim($this->sPS("
+			$columns['l18n_parent'] = trim($this->sPS("
 				'l18n_parent' => Array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
 					'displayCond' => 'FIELD:sys_language_uid:>:0',
 					'exclude' => 1,

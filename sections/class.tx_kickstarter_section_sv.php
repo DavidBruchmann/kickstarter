@@ -44,7 +44,7 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 			$this->regNewEntry($this->sectionID,$action[1]);
 
 			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],'<strong>Edit Service #'.$action[1].'</strong>',$action[1]);
-			$piConf = $this->wizArray[$this->sectionID][$action[1]];
+			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 			if (!$this->EMmode && $this->saveKey)	{
