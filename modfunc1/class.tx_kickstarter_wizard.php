@@ -1489,14 +1489,15 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 		$optValues = array();
 
-		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'kickstarter_static_presets', '');
-		while($presetRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-			$optValues[] = '<option value="'.htmlspecialchars($presetRow["fieldname"]).'">'.htmlspecialchars($presetRow["title"]." (".$presetRow["fieldname"].", type: ".$presetRow["type"].")").'</option>';
-			if (is_array($_PRESETS) && in_array($presetRow["fieldname"],$_PRESETS))	{
-				if (!is_array($piConfFields))	$piConfFields=array();
-				$piConfFields[] = unserialize($presetRow["appdata"]);
-			}
-		}
+		/* Static Presets from DB-Table are disabled. Just leave the code in here for possible future use */
+		//		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'kickstarter_static_presets', '');
+		//		while($presetRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
+		//			$optValues[] = '<option value="'.htmlspecialchars($presetRow["fieldname"]).'">'.htmlspecialchars($presetRow["title"]." (".$presetRow["fieldname"].", type: ".$presetRow["type"].")").'</option>';
+		//			if (is_array($_PRESETS) && in_array($presetRow["fieldname"],$_PRESETS))	{
+		//				if (!is_array($piConfFields))	$piConfFields=array();
+		//				$piConfFields[] = unserialize($presetRow["appdata"]);
+		//			}
+		//		}
 
 			// Session presets:
 		$ses_optValues=array();
@@ -1553,32 +1554,32 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				}
 
 					// PRESET:
-				if (t3lib_div::_GP($this->varPrefix.'_CMD_'.$v["fieldname"].'_SAVE_x'))	{
-					$datArr=Array(
-						"fieldname" => $v["fieldname"],
-						"title" => $v["title"],
-						"type" => $v["type"],
-						"appdata" => serialize($v),
-						"tstamp" => time()
-					);
+				//				if (t3lib_div::_GP($this->varPrefix.'_CMD_'.$v["fieldname"].'_SAVE_x'))	{
+				//					$datArr=Array(
+				//						"fieldname" => $v["fieldname"],
+				//						"title" => $v["title"],
+// 						"type" => $v["type"],
+// 						"appdata" => serialize($v),
+// 						"tstamp" => time()
+// 					);
 
-					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('fieldname', 'kickstarter_static_presets', 'fieldname="'.$GLOBALS['TYPO3_DB']->quoteStr($v['fieldname'], 'kickstarter_static_presets').'"');
-					if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) || $v["_DELETE"])	{
-						if ($v["_DELETE"])	{
-							$GLOBALS['TYPO3_DB']->exec_DELETEquery('kickstarter_static_presets', 'fieldname="'.$GLOBALS['TYPO3_DB']->quoteStr($v['fieldname'], 'kickstarter_static_presets').'"');
-						} else {
-							$GLOBALS['TYPO3_DB']->exec_UPDATEquery('kickstarter_static_presets', 'fieldname="'.$GLOBALS['TYPO3_DB']->quoteStr($v['fieldname'], 'kickstarter_static_presets').'"', $datArr);
-						}
-					} else {
-						$GLOBALS['TYPO3_DB']->exec_INSERTquery("kickstarter_static_presets", $datArr);
-					}
-				}
+// 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('fieldname', 'kickstarter_static_presets', 'fieldname="'.$GLOBALS['TYPO3_DB']->quoteStr($v['fieldname'], 'kickstarter_static_presets').'"');
+// 					if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) || $v["_DELETE"])	{
+// 						if ($v["_DELETE"])	{
+// 							$GLOBALS['TYPO3_DB']->exec_DELETEquery('kickstarter_static_presets', 'fieldname="'.$GLOBALS['TYPO3_DB']->quoteStr($v['fieldname'], 'kickstarter_static_presets').'"');
+// 						} else {
+// 							$GLOBALS['TYPO3_DB']->exec_UPDATEquery('kickstarter_static_presets', 'fieldname="'.$GLOBALS['TYPO3_DB']->quoteStr($v['fieldname'], 'kickstarter_static_presets').'"', $datArr);
+// 						}
+// 					} else {
+// 						$GLOBALS['TYPO3_DB']->exec_INSERTquery("kickstarter_static_presets", $datArr);
+// 					}
+// 				}
 			} else {
-#				unset($this->wizArray[$catID][$action]["fields"][$k]);
-#				unset($fConf[$k]);
+			  //				unset($this->wizArray[$catID][$action]["fields"][$k]);
+			  //				unset($fConf[$k]);
 			}
 		}
-#		debug($newFConf);
+		//		debug($newFConf);
 		$this->wizArray[$catID][$action]["fields"] = $newFConf;
 		$sesdat = $GLOBALS["BE_USER"]->getSessionData("kickstarter");
 		$sesdat["presets"][$this->extKey."-".$catID."-".$action]=$newFConf;
@@ -1587,6 +1588,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 #debug($newFConf);
 		return $newFConf;
 	}
+
+
 	function renderField($prefix,$fConf,$dontRemove=0)	{
 		$onCP = $this->getOnChangeParts($prefix."[fieldname]");
 		$fieldName = $this->renderStringBox($prefix."[fieldname]",$fConf["fieldname"]).
