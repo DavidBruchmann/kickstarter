@@ -42,21 +42,21 @@ class tx_kickstarter_section_tsconfig extends tx_kickstarter_sectionbase {
 		$action = explode(":",$this->wizard->modData["wizAction"]);
 		if ($action[0]=="edit")	{
 			$action[1]=1;
-			$this->wizard->regNewEntry($this->sectionID,$action[1]);
+			$this->regNewEntry($this->sectionID,$action[1]);
 
-			$lines = $this->wizard->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
-			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
+			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
+			$piConf = $this->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 				// Enter Page TSconfige
 			$subContent="<strong>Default Page TSconfig:</strong><BR>".
-				$this->wizard->renderTextareaBox($ffPrefix."[page_TSconfig]",$piConf["page_TSconfig"]);
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+				$this->renderTextareaBox($ffPrefix."[page_TSconfig]",$piConf["page_TSconfig"]);
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Enter User TSconfig
 			$subContent="<strong>Default User TSconfig:</strong><BR>".
-				$this->wizard->renderTextareaBox($ffPrefix."[user_TSconfig]",$piConf["user_TSconfig"]);
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+				$this->renderTextareaBox($ffPrefix."[user_TSconfig]",$piConf["user_TSconfig"]);
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */

@@ -41,21 +41,21 @@ class tx_kickstarter_section_ts extends tx_kickstarter_sectionbase {
 		$action = explode(":",$this->wizard->modData["wizAction"]);
 		if ($action[0]=="edit")	{
 			$action[1]=1;
-			$this->wizard->regNewEntry($this->sectionID,$action[1]);
+			$this->regNewEntry($this->sectionID,$action[1]);
 
-			$lines = $this->wizard->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
-			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
+			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
+			$piConf = $this->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 				// Enter constants
 			$subContent="<strong>Constants:</strong><BR>".
-				$this->wizard->renderTextareaBox($ffPrefix."[constants]",$piConf["constants"]);
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+				$this->renderTextareaBox($ffPrefix."[constants]",$piConf["constants"]);
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Enter setup
 			$subContent="<strong>Setup:</strong><BR>".
-				$this->wizard->renderTextareaBox($ffPrefix."[setup]",$piConf["setup"]);
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+				$this->renderTextareaBox($ffPrefix."[setup]",$piConf["setup"]);
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */

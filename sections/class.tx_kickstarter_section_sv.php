@@ -41,39 +41,39 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 
 		$action = explode(':',$this->wizard->modData['wizAction']);
 		if ($action[0]=='edit')	{
-			$this->wizard->regNewEntry($this->sectionID,$action[1]);
+			$this->regNewEntry($this->sectionID,$action[1]);
 
-			$lines = $this->wizard->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],'<strong>Edit Service #'.$action[1].'</strong>',$action[1]);
-			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
+			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],'<strong>Edit Service #'.$action[1].'</strong>',$action[1]);
+			$piConf = $this->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
-			if (!$this->wizard->EMmode && $this->wizard->saveKey)	{
-				$extKeyRec = $this->wizard->pObj->getExtKeyRecord($this->wizard->saveKey);
+			if (!$this->EMmode && $this->saveKey)	{
+				$extKeyRec = $this->pObj->getExtKeyRecord($this->saveKey);
 			}
 
 				// Title
 			$subContent='<strong>Title:</strong><br />'.
-				$this->wizard->renderStringBox($ffPrefix.'[title]',$piConf['title']?$piConf['title']:$extKeyRec['title']);
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+				$this->renderStringBox($ffPrefix.'[title]',$piConf['title']?$piConf['title']:$extKeyRec['title']);
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Description
 			$subContent='<strong>Description:</strong><br />'.
-				$this->wizard->renderStringBox($ffPrefix.'[description]',$piConf['description']?$piConf['description']:$extKeyRec['description']);
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+				$this->renderStringBox($ffPrefix.'[description]',$piConf['description']?$piConf['description']:$extKeyRec['description']);
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 			$lines[]='<tr><td>&nbsp;</td><td></td></tr>';
 
 				// Type
 			$subContent='<strong>Service type:</strong><br />'.
-				$this->wizard->renderStringBox($ffPrefix.'[type]',$piConf['type']?$piConf['type']:$extKeyRec['type']).'<br />'.
+				$this->renderStringBox($ffPrefix.'[type]',$piConf['type']?$piConf['type']:$extKeyRec['type']).'<br />'.
 				'Enter here the key to define which type of service this should be.<br />Examples: "textExtract", "metaExtract".';
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// SubType
 			$subContent='<strong>Sub type(s) (comma list):</strong><br />'.
-				$this->wizard->renderStringBox($ffPrefix.'[subtype]',$piConf['subtype']?$piConf['subtype']:$extKeyRec['subtype']).'<br />'.
+				$this->renderStringBox($ffPrefix.'[subtype]',$piConf['subtype']?$piConf['subtype']:$extKeyRec['subtype']).'<br />'.
 				'Possible subtypes are defined by the service type.<br />You have read the service type documentation.<br />Example: using subtypes for file types (doc, txt, pdf, ...) the service might work for.';
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 			$lines[]='<tr><td>&nbsp;</td><td></td></tr>';
 
@@ -88,17 +88,17 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 				'100' => 'Very high (100)',
 			);
 			$subContent='<strong>Priority:</strong><br />'.
-				$this->wizard->renderSelectBox($ffPrefix.'[priority]',$piConf['priority'],$optValues).'<br />'.
+				$this->renderSelectBox($ffPrefix.'[priority]',$piConf['priority'],$optValues).'<br />'.
 				'50 = medium priority. <br />The priority of services can be changed by admin configuration.';
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Quality
 			$quality = $piConf['quality']?$piConf['quality']:$extKeyRec['quality'];
 			$quality = $quality ? $quality : '50';
 			$subContent='<strong>Quality:</strong><br />'.
-				$this->wizard->renderStringBox($ffPrefix.'[quality]',$quality).'<br />'.
+				$this->renderStringBox($ffPrefix.'[quality]',$quality).'<br />'.
 				'The numbering of the quality is defined by the service type.<br />You have read the service type documentation.<br />The default quality range is 0-100.';
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 
 				// OS Dependencies
@@ -112,14 +112,14 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 			$lines[]='<tr><td>&nbsp;</td><td></td></tr>';
 
 			$subContent='<strong>Operating System dependency:</strong><br />'.
-				$this->wizard->renderSelectBox($ffPrefix.'[os]',$piConf['os'],$optValues);
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+				$this->renderSelectBox($ffPrefix.'[os]',$piConf['os'],$optValues);
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Exec dependencies
 			$subContent='<strong>External program(s) (comma list):</strong><br />'.
-				$this->wizard->renderStringBox($ffPrefix.'[exec]',$piConf['exec']).'<br />'.
+				$this->renderStringBox($ffPrefix.'[exec]',$piConf['exec']).'<br />'.
 				'Program(s) needed to run this service (eg. "perl").';
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
@@ -145,25 +145,25 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 	 */
 	function render_extPart($k,$config,$extKey) {
 		$WOP='[sv]['.$k.']';
-		$cN = $this->wizard->returnName($extKey,'class','sv'.$k);
+		$cN = $this->returnName($extKey,'class','sv'.$k);
 		$pathSuffix = 'sv'.$k.'/';
 
-		$this->wizard->ext_tables[]=$this->wizard->sPS('
-			'.$this->wizard->WOPcomment('WOP:'.$WOP.'[type]').'
+		$this->ext_tables[]=$this->sPS('
+			'.$this->WOPcomment('WOP:'.$WOP.'[type]').'
 			t3lib_extMgm::addService($_EXTKEY,  \''.$config['type'].'\' /* sv type */,  \''.$cN.'\' /* sv key */,
 					array(
 
-						\'title\' => \''.addslashes($config['title']).'\','.$this->wizard->WOPcomment('	WOP:'.$WOP.'[title]').'
-						\'description\' => \''.addslashes($config['description']).'\','.$this->wizard->WOPcomment('	WOP:'.$WOP.'[description]').'
+						\'title\' => \''.addslashes($config['title']).'\','.$this->WOPcomment('	WOP:'.$WOP.'[title]').'
+						\'description\' => \''.addslashes($config['description']).'\','.$this->WOPcomment('	WOP:'.$WOP.'[description]').'
 
-						\'subtype\' => \''.$config['subtype'].'\','.$this->wizard->WOPcomment('	WOP:'.$WOP.'[subtype]').'
+						\'subtype\' => \''.$config['subtype'].'\','.$this->WOPcomment('	WOP:'.$WOP.'[subtype]').'
 
 						\'available\' => TRUE,
-						\'priority\' => '.$config['priority'].','.$this->wizard->WOPcomment('	WOP:'.$WOP.'[priority]').'
-						\'quality\' => '.$config['quality'].','.$this->wizard->WOPcomment('	WOP:'.$WOP.'[quality]').'
+						\'priority\' => '.$config['priority'].','.$this->WOPcomment('	WOP:'.$WOP.'[priority]').'
+						\'quality\' => '.$config['quality'].','.$this->WOPcomment('	WOP:'.$WOP.'[quality]').'
 
-						\'os\' => \''.$config['os'].'\','.$this->wizard->WOPcomment('	WOP:'.$WOP.'[os]').'
-						\'exec\' => \''.$config['exec'].'\','.$this->wizard->WOPcomment('	WOP:'.$WOP.'[exec]').'
+						\'os\' => \''.$config['os'].'\','.$this->WOPcomment('	WOP:'.$WOP.'[os]').'
+						\'exec\' => \''.$config['exec'].'\','.$this->WOPcomment('	WOP:'.$WOP.'[exec]').'
 
 						\'classFile\' => t3lib_extMgm::extPath($_EXTKEY).\'sv'.$k.'/class.'.$cN.'.php\',
 						\'className\' => \''.$cN.'\',
@@ -171,7 +171,7 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 				);
 		');
 
-		$innerMainContent = $this->wizard->sPS('
+		$innerMainContent = $this->sPS('
 
 			/**
 			 * [Put your description here]
@@ -207,7 +207,7 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 			}
 		');
 
-		$indexContent= $this->wizard->wrapBody('
+		$indexContent= $this->wrapBody('
 			require_once(PATH_t3lib.\'class.t3lib_svbase.php\');
 
 			class '.$cN.' extends t3lib_svbase {
@@ -218,7 +218,7 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 				',$innerMainContent,'
 			}
 		');
-		$this->wizard->addFileToFileArray($pathSuffix."class.".$cN.".php",$this->wizard->PHPclassFile($extKey,$pathSuffix."class.".$cN.".php",$indexContent,"Service '".$config['title']."' for the '".$extKey."' extension."));
+		$this->addFileToFileArray($pathSuffix."class.".$cN.".php",$this->PHPclassFile($extKey,$pathSuffix."class.".$cN.".php",$indexContent,"Service '".$config['title']."' for the '".$extKey."' extension."));
 
 	}
 

@@ -30,8 +30,9 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
+require_once(t3lib_extMgm::extPath("kickstarter")."class.tx_kickstarter_sectionbase.php");
 
-class tx_kickstarter_compilefiles {
+class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 
 		// Internal:
 	var $fileArray=array();
@@ -56,15 +57,15 @@ class tx_kickstarter_compilefiles {
 
 
 		/*
-		if (is_array($this->wizArray["tables"]))	{
-			reset($this->wizArray["tables"]);
-			while(list($k,$config)=each($this->wizArray["tables"]))	{
+		if (is_array($this->wizard->wizArray["tables"]))	{
+			reset($this->wizard->wizArray["tables"]);
+			while(list($k,$config)=each($this->wizard->wizArray["tables"]))	{
 				$this->renderExtPart_tables($k,$config,$extKey);
 			}
 		}
 		*/
 
-		foreach($this->wizArray as $catID=>$catData)	{
+		foreach($this->wizard->wizArray as $catID=>$catData)	{
 			if($this->sections[$catID]) {
 				$path = t3lib_div::getFileAbsFileName($this->sections[$catID]['filepath']);
 				if(is_file($path)) {
@@ -82,9 +83,9 @@ class tx_kickstarter_compilefiles {
 
 
 		/*
-		if (is_array($this->wizArray["pi"]))	{
-			reset($this->wizArray["pi"]);
-			while(list($k,$config)=each($this->wizArray["pi"]))	{
+		if (is_array($this->wizard->wizArray["pi"]))	{
+			reset($this->wizard->wizArray["pi"]);
+			while(list($k,$config)=each($this->wizard->wizArray["pi"]))	{
 				$this->renderExtPart_PI($k,$config,$extKey);
 				$this->EM_CONF_presets["clearCacheOnLoad"]=1;
 			}
@@ -92,9 +93,9 @@ class tx_kickstarter_compilefiles {
 		}
 		*/
 
-		if (is_array($this->wizArray["sv"]))	{
-			reset($this->wizArray["sv"]);
-			while(list($k,$config)=each($this->wizArray["sv"]))	{
+		if (is_array($this->wizard->wizArray["sv"]))	{
+			reset($this->wizard->wizArray["sv"]);
+			while(list($k,$config)=each($this->wizard->wizArray["sv"]))	{
 				$this->renderExtPart_SV($k,$config,$extKey);
 				$this->EM_CONF_presets["clearCacheOnLoad"]=1;
 			}
@@ -159,13 +160,13 @@ class tx_kickstarter_compilefiles {
 			</body>
 			</html>
 		')));
-		$this->addFileToFileArray("doc/wizard_form.dat",serialize($this->wizArray));
+		$this->addFileToFileArray("doc/wizard_form.dat",serialize($this->wizard->wizArray));
 
 			// icon:
 		$this->addFileToFileArray("ext_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound.gif"));
 
 
-#		debug($this->wizArray);
+#		debug($this->wizard->wizArray);
 #		debug ($this->fileArray);
 #		return $dataArr;
 	}
@@ -455,38 +456,7 @@ class tx_kickstarter_compilefiles {
 		}
 		return $content;
 	}
-	function returnName($extKey,$type,$suffix="")	{
-		if (substr($extKey,0,5)=="user_")	{
-			$extKey = substr($extKey,5);
-			switch($type)	{
-				case "class":
-					return "user_".str_replace("_","",$extKey).($suffix?"_".$suffix:"");
-				break;
-				case "tables":
-				case "fields":
-				case "fields":
-					return "user_".str_replace("_","",$extKey).($suffix?"_".$suffix:"");
-				break;
-				case "module":
-					return "u".str_replace("_","",$extKey).$suffix;
-				break;
-			}
-		} else {
-			switch($type)	{
-				case "class":
-					return "tx_".str_replace("_","",$extKey).($suffix?"_".$suffix:"");
-				break;
-				case "tables":
-				case "fields":
-				case "fields":
-					return "tx_".str_replace("_","",$extKey).($suffix?"_".$suffix:"");
-				break;
-				case "module":
-					return "tx".str_replace("_","",$extKey).$suffix;
-				break;
-			}
-		}
-	}
+
 
 	function PHPclassFile($extKey,$filename,$content,$desrc,$SOBE_class="",$SOBE_extras="")	{
 		$file = trim($this->sPS('
@@ -609,7 +579,7 @@ class tx_kickstarter_compilefiles {
 		return $str&&$this->outputWOP ? "## ".$str : "";
 	}
 	function makeEMCONFpreset($prefix="")	{
-		$this->_addArray = $this->wizArray["emconf"][1];
+		$this->_addArray = $this->wizard->wizArray["emconf"][1];
 		$EM_CONF=array();
 		$presetFields = explode(",","title,description,category,shy,dependencies,conflicts,priority,module,state,internal,uploadfolder,createDirs,modify_tables,clearCacheOnLoad,lockType,author,author_email,author_company,private,download_password,version");
 		while(list(,$s)=each($presetFields))	{
@@ -624,8 +594,8 @@ class tx_kickstarter_compilefiles {
 			$EM_CONF[$prefix."createDirs"] = implode(",",array_unique($this->EM_CONF_presets["createDirs"]));
 		}
 
-		if (is_array($this->EM_CONF_presets["dependencies"]) || $this->wizArray["emconf"][1]["dependencies"])	{
-			$aa= t3lib_div::trimExplode(",",strtolower($this->wizArray["emconf"][1]["dependencies"]),1);
+		if (is_array($this->EM_CONF_presets["dependencies"]) || $this->wizard->wizArray["emconf"][1]["dependencies"])	{
+			$aa= t3lib_div::trimExplode(",",strtolower($this->wizard->wizArray["emconf"][1]["dependencies"]),1);
 			$EM_CONF[$prefix."dependencies"] = implode(",",array_unique(array_merge($this->EM_CONF_presets["dependencies"],$aa)));
 		}
 		unset($this->_addArray["dependencies"]);
@@ -641,21 +611,13 @@ class tx_kickstarter_compilefiles {
 	function userField($k)	{
 	  $v = "";
 	  if($k == "name") {
-	    $v = ($GLOBALS['BE_USER']->user['realName'] != "") ? $GLOBALS['BE_USER']->user['realName'] : $this->wizArray["emconf"][1]["author"];
+	    $v = ($GLOBALS['BE_USER']->user['realName'] != "") ? $GLOBALS['BE_USER']->user['realName'] : $this->wizard->wizArray["emconf"][1]["author"];
 	  } else if ($k == "email") {
-	    $v = ($GLOBALS['BE_USER']->user['email'] != "") ? $GLOBALS['BE_USER']->user['email'] : $this->wizArray["emconf"][1]["author_email"];
+	    $v = ($GLOBALS['BE_USER']->user['email'] != "") ? $GLOBALS['BE_USER']->user['email'] : $this->wizard->wizArray["emconf"][1]["author_email"];
 	  }
 	  return $v;
 	}
-	function ulFolder($eKey)	{
-		return "uploads/tx_".str_replace("_","",$eKey)."/";
-	}
-	function fieldIsRTE($fC)	{
-		return !strcmp($fC["type"],"textarea_rte") &&
-						($fC["conf_rte"]=="basic" ||
-						(t3lib_div::inList("custom,moderate",$fC["conf_rte"]) && $fC["conf_mode_cssOrNot"])
-						);
-	}
+
 }
 
 // Include extension?

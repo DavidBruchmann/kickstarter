@@ -41,30 +41,30 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 		$action = explode(":",$this->wizard->modData["wizAction"]);
 		if ($action[0]=="edit")	{
-			$this->wizard->regNewEntry($this->sectionID,$action[1]);
-			$lines = $this->wizard->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"<strong>Edit Plugin #".$action[1]."</strong>",$action[1]);
-			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
+			$this->regNewEntry($this->sectionID,$action[1]);
+			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"<strong>Edit Plugin #".$action[1]."</strong>",$action[1]);
+			$piConf = $this->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 
 				// Enter title of the plugin
 			$subContent="<strong>Enter a title for the plugin:</strong><BR>".
-				$this->wizard->renderStringBox_lang("title",$ffPrefix,$piConf);
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+				$this->renderStringBox_lang("title",$ffPrefix,$piConf);
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
-			$subContent = $this->wizard->renderCheckBox($ffPrefix."[plus_user_obj]",$piConf["plus_user_obj"])."USER cObjects are cached. Make it a non-cached USER_INT instead<BR>";
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+			$subContent = $this->renderCheckBox($ffPrefix."[plus_user_obj]",$piConf["plus_user_obj"])."USER cObjects are cached. Make it a non-cached USER_INT instead<BR>";
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
-			$subContent = $this->wizard->renderCheckBox($ffPrefix."[plus_not_staticTemplate]",$piConf["plus_not_staticTemplate"])."Enable this option if you want the TypoScript code to be set by default. Otherwise the code will go into a static template file which must be included in the template record (recommended is to <em>not</em> set this option).<BR>";
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+			$subContent = $this->renderCheckBox($ffPrefix."[plus_not_staticTemplate]",$piConf["plus_not_staticTemplate"])."Enable this option if you want the TypoScript code to be set by default. Otherwise the code will go into a static template file which must be included in the template record (recommended is to <em>not</em> set this option).<BR>";
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 
 				// Position
-			if (is_array($this->wizard->wizArray["fields"]))	{
+			if (is_array($this->wizArray["fields"]))	{
 				$optValues = array(
 					"0" => "",
 				);
-				foreach($this->wizard->wizArray["fields"] as $kk => $fC)	{
+				foreach($this->wizArray["fields"] as $kk => $fC)	{
 					if ($fC["which_table"]=="tt_content")	{
 						$optValues[$kk]=($fC["title"]?$fC["title"]:"Item ".$kk)." (".count($fC["fields"])." fields)";
 					}
@@ -73,108 +73,108 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					$subContent="<strong>Apply a set of extended fields</strong><BR>
 						If you have configured a set of extra fields (Extend existing Tables) for the tt_content table, you can have them assigned to this plugin.
 						<BR>".
-						$this->wizard->renderSelectBox($ffPrefix."[apply_extended]",$piConf["apply_extended"],$optValues);
-					$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+						$this->renderSelectBox($ffPrefix."[apply_extended]",$piConf["apply_extended"],$optValues);
+					$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 				}
 			}
 
 /*				// Enter title of the plugin
 			$subContent="<strong>Enter a 'key'-string for the plugin:</strong><BR>".
-				$this->wizard->renderStringBox($ffPrefix."[keystring]",$piConf["keystring"]).
+				$this->renderStringBox($ffPrefix."[keystring]",$piConf["keystring"]).
 				"<BR>(<em>A key string is used as a sub-prefix to the class name, in the database as identification of the plugin etc. If you don't specify any, the wizard will make one based on the title above.<BR>
 					Example: If your extension has the extension key 'my_extension' and you enter the key value 'crazymenu', then the class, additional fields etc. will be named 'tx_myextension_crazymenu'<BR>
 					Use a-z characters only.</em>)"
 				;
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 */
 
 
 
 
 				// Insert Plugin
-			if (is_array($this->wizard->wizArray["tables"]))	{
+			if (is_array($this->wizArray["tables"]))	{
 				$optValues = array(
 					"0" => "",
 				);
-				foreach($this->wizard->wizArray["tables"] as $kk => $fC)	{
-					$optValues[$kk]=($fC["tablename"]||$fC["title"]?$fC["title"]." (".$this->wizard->returnName($this->wizard->extKey,"tables").($fC["tablename"]?"_".$fC["tablename"]:"").")":"Item ".$kk)." (".count($fC["fields"])." fields)";
+				foreach($this->wizArray["tables"] as $kk => $fC)	{
+					$optValues[$kk]=($fC["tablename"]||$fC["title"]?$fC["title"]." (".$this->returnName($this->extKey,"tables").($fC["tablename"]?"_".$fC["tablename"]:"").")":"Item ".$kk)." (".count($fC["fields"])." fields)";
 				}
 				$incListing="<BR><BR>If you have configured custom tables you can select one of the tables to list by default as an example:
 						<BR>".
-						$this->wizard->renderSelectBox($ffPrefix."[list_default]",$piConf["list_default"],$optValues);
-				$incListing.="<BR>".$this->wizard->renderCheckBox($ffPrefix."[list_default_listmode]",$piConf["list_default_listmode"]).
+						$this->renderSelectBox($ffPrefix."[list_default]",$piConf["list_default"],$optValues);
+				$incListing.="<BR>".$this->renderCheckBox($ffPrefix."[list_default_listmode]",$piConf["list_default_listmode"]).
 					"Listing: Sections instead of table-rows";
-				$incListing.="<BR>".$this->wizard->renderCheckBox($ffPrefix."[list_default_singlemode]",$piConf["list_default_singlemode"]).
+				$incListing.="<BR>".$this->renderCheckBox($ffPrefix."[list_default_singlemode]",$piConf["list_default_singlemode"]).
 					"Singleview: Sections instead of table-rows";
 			} else $incListing="";
 
 
 			if (!$piConf["addType"])	$piConf["addType"]="list_type";
-			$subContent=$this->wizard->renderRadioBox($ffPrefix."[addType]",$piConf["addType"],"list_type").
-				$this->wizard->textSetup(
+			$subContent=$this->renderRadioBox($ffPrefix."[addType]",$piConf["addType"],"list_type").
+				$this->textSetup(
 				"Add to 'Insert Plugin' list in Content Elements",
 				"Most frontend plugins should be added to the Plugin list of Content Element type 'Insert Plugin'. This is what happens with most other plugins you know of.".
-				$this->wizard->resImg("pi_pi.png").
-				"<BR>".$this->wizard->renderCheckBox($ffPrefix."[plus_wiz]",$piConf["plus_wiz"]).
+				$this->resImg("pi_pi.png").
+				"<BR>".$this->renderCheckBox($ffPrefix."[plus_wiz]",$piConf["plus_wiz"]).
 				"Add icon to 'New Content Element' wizard:".
-				$this->wizard->resImg("pi_cewiz.png").
+				$this->resImg("pi_cewiz.png").
 				"Write a description for the entry (if any):<BR>".
-				$this->wizard->renderStringBox_lang("plus_wiz_description",$ffPrefix,$piConf).$incListing
+				$this->renderStringBox_lang("plus_wiz_description",$ffPrefix,$piConf).$incListing
 				);
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Text box
-			$subContent=$this->wizard->renderRadioBox($ffPrefix."[addType]",$piConf["addType"],"textbox").
-				$this->wizard->textSetup("Add as a 'Textbox' type",
+			$subContent=$this->renderRadioBox($ffPrefix."[addType]",$piConf["addType"],"textbox").
+				$this->textSetup("Add as a 'Textbox' type",
 				"The Textbox Content Element is not very common but has a confortable set of fields: Bodytext and image upload.".
-				$this->wizard->resImg("pi_textbox.png"));
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+				$this->resImg("pi_textbox.png"));
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Menu/Sitemap
-			$subContent=$this->wizard->renderRadioBox($ffPrefix."[addType]",$piConf["addType"],"menu_sitemap").
-				$this->wizard->textSetup("Add as a 'Menu/Sitemap' item",
+			$subContent=$this->renderRadioBox($ffPrefix."[addType]",$piConf["addType"],"menu_sitemap").
+				$this->textSetup("Add as a 'Menu/Sitemap' item",
 					"Adds the plugin to the Menu/Sitemap list. Use this if your plugin is a list of links to pages or elements on the website. An alternative sitemap? Or some special kind of menu in a special design?".
-					$this->wizard->resImg("pi_menu_sitemap.png"));
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+					$this->resImg("pi_menu_sitemap.png"));
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// New content element
-			$subContent=$this->wizard->renderRadioBox($ffPrefix."[addType]",$piConf["addType"],"ce").
-				$this->wizard->textSetup("Add as a totally new Content Element type",
+			$subContent=$this->renderRadioBox($ffPrefix."[addType]",$piConf["addType"],"ce").
+				$this->textSetup("Add as a totally new Content Element type",
 					"You can also take the plunge into a whole new content element type! Scarry eh?".
-					$this->wizard->resImg("pi_ce.png").
-/*					$this->wizard->renderCheckBox($ffPrefix."[plus_rte]",$piConf["plus_rte"])."Enable Rich Text editing for the bodytext field<BR>".
-					$this->wizard->renderCheckBox($ffPrefix."[plus_images]",$piConf["plus_images"])."Enable images-field<BR>".
-					$this->wizard->renderCheckBox($ffPrefix."[plus_no_header]",$piConf["plus_images"])."Disable header rendering<BR>".
-					$this->wizard->renderCheckBox($ffPrefix."[plus_insert_check]",$piConf["plus_insert_check"])."Insert a custom checkbox field<BR>".
-					$this->wizard->renderCheckBox($ffPrefix."[plus_insert_select]",$piConf["plus_insert_select"])."Insert a custom select field<BR>".
-					$this->wizard->renderCheckBox($ffPrefix."[plus_insert_string]",$piConf["plus_insert_string"])."Insert a custom text string field<BR>".
-					$this->wizard->renderCheckBox($ffPrefix."[plus_insert_file]",$piConf["plus_insert_file"])."Insert a custom file field<BR>".
+					$this->resImg("pi_ce.png").
+/*					$this->renderCheckBox($ffPrefix."[plus_rte]",$piConf["plus_rte"])."Enable Rich Text editing for the bodytext field<BR>".
+					$this->renderCheckBox($ffPrefix."[plus_images]",$piConf["plus_images"])."Enable images-field<BR>".
+					$this->renderCheckBox($ffPrefix."[plus_no_header]",$piConf["plus_images"])."Disable header rendering<BR>".
+					$this->renderCheckBox($ffPrefix."[plus_insert_check]",$piConf["plus_insert_check"])."Insert a custom checkbox field<BR>".
+					$this->renderCheckBox($ffPrefix."[plus_insert_select]",$piConf["plus_insert_select"])."Insert a custom select field<BR>".
+					$this->renderCheckBox($ffPrefix."[plus_insert_string]",$piConf["plus_insert_string"])."Insert a custom text string field<BR>".
+					$this->renderCheckBox($ffPrefix."[plus_insert_file]",$piConf["plus_insert_file"])."Insert a custom file field<BR>".
 	*/				''
 				);
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// New header type
-			$subContent=$this->wizard->renderRadioBox($ffPrefix."[addType]",$piConf["addType"],"header").
-				$this->wizard->textSetup("Add as a new header type",
+			$subContent=$this->renderRadioBox($ffPrefix."[addType]",$piConf["addType"],"header").
+				$this->textSetup("Add as a new header type",
 					"Finally you might insert a new header type here:".
-					$this->wizard->resImg("pi_header.png"));
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+					$this->resImg("pi_header.png"));
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Processing of tags in content.
-			$subContent=$this->wizard->renderRadioBox($ffPrefix."[addType]",$piConf["addType"],"typotags").
-				$this->wizard->textSetup("Processing of userdefined tag",
+			$subContent=$this->renderRadioBox($ffPrefix."[addType]",$piConf["addType"],"typotags").
+				$this->textSetup("Processing of userdefined tag",
 						htmlspecialchars("If you wish the plugin to proces content from a userdefined tag in Content Element text-fields, enter the tagname here. Eg. if you wish the tags <mytag>This is the content</mytag> to be your userdefined tags, just enter 'mytag' in this field (lowercase a-z, 0-9 and underscore):")."<BR>".
-							$this->wizard->renderStringBox($ffPrefix."[tag_name]",$piConf["tag_name"])
+							$this->renderStringBox($ffPrefix."[tag_name]",$piConf["tag_name"])
 					);
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Just include library
-			$subContent=$this->wizard->renderRadioBox($ffPrefix."[addType]",$piConf["addType"],"includeLib").
-				$this->wizard->textSetup("Just include library",
+			$subContent=$this->renderRadioBox($ffPrefix."[addType]",$piConf["addType"],"includeLib").
+				$this->textSetup("Just include library",
 					"In this case your library is just included when pages are rendered.<BR><BR>".
-					$this->wizard->renderCheckBox($ffPrefix."[plus_user_ex]",$piConf["plus_user_ex"])."Provide TypoScript example for USER cObject in 'page.1000'<BR>"
+					$this->renderCheckBox($ffPrefix."[plus_user_ex]",$piConf["plus_user_ex"])."Provide TypoScript example for USER cObject in 'page.1000'<BR>"
 					);
-			$lines[]='<tr'.$this->wizard->bgCol(3).'><td>'.$this->wizard->fw($subContent).'</td></tr>';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
@@ -200,7 +200,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 	function render_extPart($k,$config,$extKey) {
 		$WOP="[pi][".$k."]";
-		$cN = $this->wizard->returnName($extKey,"class","pi".$k);
+		$cN = $this->returnName($extKey,"class","pi".$k);
 		$pathSuffix = "pi".$k."/";
 
 #debug($config);
@@ -209,15 +209,15 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 			case "list_type":
 				$setType="list_type";
 
-				$this->wizard->ext_tables[]=$this->wizard->sPS('
-					'.$this->wizard->WOPcomment('WOP:'.$WOP.'[addType]').'
+				$this->ext_tables[]=$this->sPS('
+					'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
 					t3lib_div::loadTCA("tt_content");
 					$TCA["tt_content"]["types"]["list"]["subtypes_excludelist"][$_EXTKEY."_pi'.$k.'"]="layout,select_key";
-					'.($config["apply_extended"]?'$TCA["tt_content"]["types"]["list"]["subtypes_addlist"][$_EXTKEY."_pi'.$k.'"]="'.$this->wizard->_apply_extended_types[$config["apply_extended"]].'";':'').'
+					'.($config["apply_extended"]?'$TCA["tt_content"]["types"]["list"]["subtypes_addlist"][$_EXTKEY."_pi'.$k.'"]="'.$this->_apply_extended_types[$config["apply_extended"]].'";':'').'
 				');
 
-				$this->wizard->ext_localconf[]=$this->wizard->sPS('
-					'.$this->wizard->WOPcomment('WOP:'.$WOP.'[addType] / '.$WOP.'[tag_name]').'
+				$this->ext_localconf[]=$this->sPS('
+					'.$this->WOPcomment('WOP:'.$WOP.'[addType] / '.$WOP.'[tag_name]').'
 					  ## Extending TypoScript from static template uid=43 to set up userdefined tag:
 					t3lib_extMgm::addTypoScript($_EXTKEY,"editorcfg","
 						tt_content.CSS_editor.ch.'.$cN.' = < plugin.'.$cN.'.CSS_editor
@@ -228,11 +228,11 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				$setType="splash_layout";
 
 				if ($config["apply_extended"])	{
-					$this->wizard->ext_tables[]=$this->wizard->sPS('
-						'.$this->wizard->WOPcomment('WOP:'.$WOP.'[addType]').'
+					$this->ext_tables[]=$this->sPS('
+						'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
 						t3lib_div::loadTCA("tt_content");
 						$TCA["tt_content"]["types"]["splash"]["subtype_value_field"]="splash_layout";
-						$TCA["tt_content"]["types"]["splash"]["subtypes_addlist"][$_EXTKEY."_pi'.$k.'"]="'.$this->wizard->_apply_extended_types[$config["apply_extended"]].'";
+						$TCA["tt_content"]["types"]["splash"]["subtypes_addlist"][$_EXTKEY."_pi'.$k.'"]="'.$this->_apply_extended_types[$config["apply_extended"]].'";
 					');
 				}
 			break;
@@ -240,11 +240,11 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				$setType="menu_type";
 
 				if ($config["apply_extended"])	{
-					$this->wizard->ext_tables[]=$this->wizard->sPS('
-						'.$this->wizard->WOPcomment('WOP:'.$WOP.'[addType]').'
+					$this->ext_tables[]=$this->sPS('
+						'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
 						t3lib_div::loadTCA("tt_content");
 						$TCA["tt_content"]["types"]["menu"]["subtype_value_field"]="menu_type";
-						$TCA["tt_content"]["types"]["menu"]["subtypes_addlist"][$_EXTKEY."_pi'.$k.'"]="'.$this->wizard->_apply_extended_types[$config["apply_extended"]].'";
+						$TCA["tt_content"]["types"]["menu"]["subtypes_addlist"][$_EXTKEY."_pi'.$k.'"]="'.$this->_apply_extended_types[$config["apply_extended"]].'";
 					');
 				}
 			break;
@@ -254,10 +254,10 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				$tFields=array();
 				$tFields[] = "CType;;4;button;1-1-1, header;;3;;2-2-2";
 				if ($config["apply_extended"])	{
-					$tFields[] = $this->wizard->_apply_extended_types[$config["apply_extended"]];
+					$tFields[] = $this->_apply_extended_types[$config["apply_extended"]];
 				}
-				$this->wizard->ext_tables[]=$this->wizard->sPS('
-					'.$this->wizard->WOPcomment('WOP:'.$WOP.'[addType]').'
+				$this->ext_tables[]=$this->sPS('
+					'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
 					t3lib_div::loadTCA("tt_content");
 					$TCA["tt_content"]["types"][$_EXTKEY."_pi'.$k.'"]["showitem"]="'.implode(", ",$tFields).'";
 				');
@@ -271,8 +271,8 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 			case "typotags":
 				$tagName = ereg_replace("[^a-z0-9_]","",strtolower($config["tag_name"]));
 				if ($tagName)	{
-					$this->wizard->ext_localconf[]=$this->wizard->sPS('
-						'.$this->wizard->WOPcomment('WOP:'.$WOP.'[addType] / '.$WOP.'[tag_name]').'
+					$this->ext_localconf[]=$this->sPS('
+						'.$this->WOPcomment('WOP:'.$WOP.'[addType] / '.$WOP.'[tag_name]').'
 						  ## Extending TypoScript from static template uid=43 to set up userdefined tag:
 						t3lib_extMgm::addTypoScript($_EXTKEY,"setup","
 							tt_content.text.20.parseFunc.tags.'.$tagName.' = < plugin.".t3lib_extMgm::getCN($_EXTKEY)."_pi'.$k.'
@@ -286,15 +286,15 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 		$cache= $config["plus_user_obj"] ? 0 : 1;
 
-		$this->wizard->ext_localconf[]=$this->wizard->sPS('
-			'.$this->wizard->WOPcomment('WOP:'.$WOP.'[addType]').'
+		$this->ext_localconf[]=$this->sPS('
+			'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
 			t3lib_extMgm::addPItoST43($_EXTKEY,"pi'.$k.'/class.'.$cN.'.php","_pi'.$k.'","'.$setType.'",'.$cache.');
 		');
 
 		if ($setType && !t3lib_div::inList("typotags,includeLib",$setType))	{
-			$this->wizard->ext_tables[]=$this->wizard->sPS('
-				'.$this->wizard->WOPcomment('WOP:'.$WOP.'[addType]').'
-				t3lib_extMgm::addPlugin(Array("'.addslashes($this->wizard->getSplitLabels_reference($config,"title","tt_content.".$setType."_pi".$k)).'", $_EXTKEY."_pi'.$k.'"),"'.$setType.'");
+			$this->ext_tables[]=$this->sPS('
+				'.$this->WOPcomment('WOP:'.$WOP.'[addType]').'
+				t3lib_extMgm::addPlugin(Array("'.addslashes($this->getSplitLabels_reference($config,"title","tt_content.".$setType."_pi".$k)).'", $_EXTKEY."_pi'.$k.'"),"'.$setType.'");
 			');
 		}
 
@@ -302,9 +302,9 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 		switch($config["addType"])	{
 			case "list_type":
 				if ($config["list_default"])	{
-					if (is_array($this->wizard->wizArray["tables"][$config["list_default"]]))	{
-						$tempTableConf = $this->wizard->wizArray["tables"][$config["list_default"]];
-						$tableName = $this->wizard->returnName($extKey,"tables",$tempTableConf["tablename"]);
+					if (is_array($this->wizArray["tables"][$config["list_default"]]))	{
+						$tempTableConf = $this->wizArray["tables"][$config["list_default"]];
+						$tableName = $this->returnName($extKey,"tables",$tempTableConf["tablename"]);
 
 						$ll=array();
 
@@ -322,8 +322,8 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 						$theLines["orderByList"]=Array();
 
 						$tcol="uid";
-						$theLines["getListRow"][$tcol] = '<td><p>\'.$this->wizard->getFieldContent("'.$tcol.'").\'</p></td>';
-						$theLines["getListHeader"][$tcol] = '<td><p>\'.$this->wizard->getFieldHeader_sortLink("'.$tcol.'").\'</p></td>';
+						$theLines["getListRow"][$tcol] = '<td><p>\'.$this->getFieldContent("'.$tcol.'").\'</p></td>';
+						$theLines["getListHeader"][$tcol] = '<td><p>\'.$this->getFieldHeader_sortLink("'.$tcol.'").\'</p></td>';
 						$theLines["orderByList"][$tcol]=$tcol;
 
 						if (is_array($tempTableConf["fields"]))	{
@@ -331,73 +331,73 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							while(list(,$fC)=each($tempTableConf["fields"]))	{
 								$tcol = $fC["fieldname"];
 								if ($tcol)	{
-									$theLines["singleRows"][$tcol] = trim($this->wizard->sPS('
+									$theLines["singleRows"][$tcol] = trim($this->sPS('
 										<tr>
-											<td nowrap valign="top"\'.$this->wizard->pi_classParam("singleView-HCell").\'><p>\'.$this->wizard->getFieldHeader("'.$tcol.'").\'</p></td>
-											<td valign="top"><p>\'.$this->wizard->getFieldContent("'.$tcol.'").\'</p></td>
+											<td nowrap valign="top"\'.$this->pi_classParam("singleView-HCell").\'><p>\'.$this->getFieldHeader("'.$tcol.'").\'</p></td>
+											<td valign="top"><p>\'.$this->getFieldContent("'.$tcol.'").\'</p></td>
 										</tr>
 									'));
 
-									if ($this->wizard->fieldIsRTE($fC))	{
-										$theLines["singleRows_section"][$tcol] = trim($this->wizard->sPS('
-											\'.$this->wizard->getFieldContent("'.$tcol.'").\'
+									if ($this->fieldIsRTE($fC))	{
+										$theLines["singleRows_section"][$tcol] = trim($this->sPS('
+											\'.$this->getFieldContent("'.$tcol.'").\'
 										'));
 									} else {
 										$tempN='singleViewField-'.str_replace("_","-",$tcol);
-										$theLines["singleRows_section"][$tcol] = trim($this->wizard->sPS('
-											<p\'.$this->wizard->pi_classParam("'.$tempN.'").\'><strong>\'.$this->wizard->getFieldHeader("'.$tcol.'").\':</strong> \'.$this->wizard->getFieldContent("'.$tcol.'").\'</p>
+										$theLines["singleRows_section"][$tcol] = trim($this->sPS('
+											<p\'.$this->pi_classParam("'.$tempN.'").\'><strong>\'.$this->getFieldHeader("'.$tcol.'").\':</strong> \'.$this->getFieldContent("'.$tcol.'").\'</p>
 										'));
 										$P_classes["SV"][]=$tempN;
 									}
 
 									if (!strstr($fC["type"],"textarea"))	{
-										$theLines["getListRow"][$tcol] = '<td valign="top"><p>\'.$this->wizard->getFieldContent("'.$tcol.'").\'</p></td>';
-										$theLines["getListHeader"][$tcol] = '<td nowrap><p>\'.$this->wizard->getFieldHeader("'.$tcol.'").\'</p></td>';
+										$theLines["getListRow"][$tcol] = '<td valign="top"><p>\'.$this->getFieldContent("'.$tcol.'").\'</p></td>';
+										$theLines["getListHeader"][$tcol] = '<td nowrap><p>\'.$this->getFieldHeader("'.$tcol.'").\'</p></td>';
 
 										$tempN='listrowField-'.str_replace("_","-",$tcol);
-										$theLines["listItemRows"][$tcol] = trim($this->wizard->sPS('
-											<p\'.$this->wizard->pi_classParam("'.$tempN.'").\'>\'.$this->wizard->getFieldContent("'.$tcol.'").\'</p>
+										$theLines["listItemRows"][$tcol] = trim($this->sPS('
+											<p\'.$this->pi_classParam("'.$tempN.'").\'>\'.$this->getFieldContent("'.$tcol.'").\'</p>
 										'));
 										$P_classes["LV"][]=$tempN;
 									}
 
 
-									$this->wizard->addLocalConf($ll,array("listFieldHeader_".$tcol=>$fC["title"]),"listFieldHeader_".$tcol,"pi",$k,1,1);
+									$this->addLocalConf($ll,array("listFieldHeader_".$tcol=>$fC["title"]),"listFieldHeader_".$tcol,"pi",$k,1,1);
 
 									if ($tcol=="title")	{
-										$theLines["getFieldContent"][$tcol] = trim($this->wizard->sPS('
+										$theLines["getFieldContent"][$tcol] = trim($this->sPS('
 												case "'.$tcol.'":
 														// This will wrap the title in a link.
-													return $this->wizard->pi_list_linkSingle($this->wizard->internal["currentRow"]["'.$tcol.'"],$this->wizard->internal["currentRow"]["uid"],1);
+													return $this->pi_list_linkSingle($this->internal["currentRow"]["'.$tcol.'"],$this->internal["currentRow"]["uid"],1);
 												break;
 										'));
-										$theLines["getFieldHeader"][$tcol] = trim($this->wizard->sPS('
+										$theLines["getFieldHeader"][$tcol] = trim($this->sPS('
 												case "'.$tcol.'":
-													return $this->wizard->pi_getLL("listFieldHeader_'.$tcol.'","<em>'.$tcol.'</em>");
+													return $this->pi_getLL("listFieldHeader_'.$tcol.'","<em>'.$tcol.'</em>");
 												break;
 										'));
-									} elseif ($this->wizard->fieldIsRTE($fC)) {
-											$theLines["getFieldContent"][$tcol] = trim($this->wizard->sPS('
+									} elseif ($this->fieldIsRTE($fC)) {
+											$theLines["getFieldContent"][$tcol] = trim($this->sPS('
 													case "'.$tcol.'":
-														return $this->wizard->pi_RTEcssText($this->wizard->internal["currentRow"]["'.$tcol.'"]);
+														return $this->pi_RTEcssText($this->internal["currentRow"]["'.$tcol.'"]);
 													break;
 											'));
 									} elseif ($fC["type"]=="datetime")	{
-										$theLines["getFieldContent"][$tcol] = trim($this->wizard->sPS('
+										$theLines["getFieldContent"][$tcol] = trim($this->sPS('
 												case "'.$tcol.'":
-													return strftime("%d-%m-%y %H:%M:%S",$this->wizard->internal["currentRow"]["'.$tcol.'"]);
+													return strftime("%d-%m-%y %H:%M:%S",$this->internal["currentRow"]["'.$tcol.'"]);
 												break;
 										'));
 									} elseif ($fC["type"]=="date")	{
-										$theLines["getFieldContent"][$tcol] = trim($this->wizard->sPS('
+										$theLines["getFieldContent"][$tcol] = trim($this->sPS('
 												case "'.$tcol.'":
 														// For a numbers-only date, use something like: %d-%m-%y
-													return strftime("%A %e. %B %Y",$this->wizard->internal["currentRow"]["'.$tcol.'"]);
+													return strftime("%A %e. %B %Y",$this->internal["currentRow"]["'.$tcol.'"]);
 												break;
 										'));
 									}
 									if (strstr($fC["type"],"input"))	{
-										$theLines["getListHeader"][$tcol] = '<td><p>\'.$this->wizard->getFieldHeader_sortLink("'.$tcol.'").\'</p></td>';
+										$theLines["getListHeader"][$tcol] = '<td><p>\'.$this->getFieldHeader_sortLink("'.$tcol.'").\'</p></td>';
 										$theLines["orderByList"][$tcol]=$tcol;
 									}
 									if (strstr($fC["type"],"input")||strstr($fC["type"],"textarea"))	{
@@ -407,104 +407,104 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							}
 						}
 
-						$theLines["singleRows"]["tstamp"] = trim($this->wizard->sPS('
+						$theLines["singleRows"]["tstamp"] = trim($this->sPS('
 							<tr>
-								<td nowrap\'.$this->wizard->pi_classParam("singleView-HCell").\'><p>Last updated:</p></td>
-								<td valign="top"><p>\'.date("d-m-Y H:i",$this->wizard->internal["currentRow"]["tstamp"]).\'</p></td>
+								<td nowrap\'.$this->pi_classParam("singleView-HCell").\'><p>Last updated:</p></td>
+								<td valign="top"><p>\'.date("d-m-Y H:i",$this->internal["currentRow"]["tstamp"]).\'</p></td>
 							</tr>
 						'));
-						$theLines["singleRows"]["crdate"] = trim($this->wizard->sPS('
+						$theLines["singleRows"]["crdate"] = trim($this->sPS('
 							<tr>
-								<td nowrap\'.$this->wizard->pi_classParam("singleView-HCell").\'><p>Created:</p></td>
-								<td valign="top"><p>\'.date("d-m-Y H:i",$this->wizard->internal["currentRow"]["crdate"]).\'</p></td>
+								<td nowrap\'.$this->pi_classParam("singleView-HCell").\'><p>Created:</p></td>
+								<td valign="top"><p>\'.date("d-m-Y H:i",$this->internal["currentRow"]["crdate"]).\'</p></td>
 							</tr>
 						'));
 
 							// Add title to local lang file
-						$ll = $this->wizard->addStdLocalLangConf($ll,$k);
+						$ll = $this->addStdLocalLangConf($ll,$k);
 
-						$this->wizard->addLocalLangFile($ll,$pathSuffix."locallang.php",'Language labels for plugin "'.$cN.'"');
+						$this->addLocalLangFile($ll,$pathSuffix."locallang.php",'Language labels for plugin "'.$cN.'"');
 
 
-						$innerMainContent = $this->wizard->sPS('
+						$innerMainContent = $this->sPS('
 							/**
 							 * [Put your description here]
 							 */
 							function main($content,$conf)	{
 								switch((string)$conf["CMD"])	{
 									case "singleView":
-										list($t) = explode(":",$this->wizard->cObj->currentRecord);
-										$this->wizard->internal["currentTable"]=$t;
-										$this->wizard->internal["currentRow"]=$this->wizard->cObj->data;
-										return $this->wizard->pi_wrapInBaseClass($this->wizard->singleView($content,$conf));
+										list($t) = explode(":",$this->cObj->currentRecord);
+										$this->internal["currentTable"]=$t;
+										$this->internal["currentRow"]=$this->cObj->data;
+										return $this->pi_wrapInBaseClass($this->singleView($content,$conf));
 									break;
 									default:
-										if (strstr($this->wizard->cObj->currentRecord,"tt_content"))	{
-											$conf["pidList"] = $this->wizard->cObj->data["pages"];
-											$conf["recursive"] = $this->wizard->cObj->data["recursive"];
+										if (strstr($this->cObj->currentRecord,"tt_content"))	{
+											$conf["pidList"] = $this->cObj->data["pages"];
+											$conf["recursive"] = $this->cObj->data["recursive"];
 										}
-										return $this->wizard->pi_wrapInBaseClass($this->wizard->listView($content,$conf));
+										return $this->pi_wrapInBaseClass($this->listView($content,$conf));
 									break;
 								}
 							}
 						');
 
-						$innerMainContent.= $this->wizard->sPS('
+						$innerMainContent.= $this->sPS('
 							/**
 							 * [Put your description here]
 							 */
 							function listView($content,$conf)	{
-								$this->wizard->conf=$conf;		// Setting the TypoScript passed to this function in $this->wizard->conf
-								$this->wizard->pi_setPiVarDefaults();
-								$this->wizard->pi_loadLL();		// Loading the LOCAL_LANG values
-								'.(!$cache ? '$this->wizard->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
-								$lConf = $this->wizard->conf["listView."];	// Local settings for the listView function
+								$this->conf=$conf;		// Setting the TypoScript passed to this function in $this->conf
+								$this->pi_setPiVarDefaults();
+								$this->pi_loadLL();		// Loading the LOCAL_LANG values
+								'.(!$cache ? '$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
+								$lConf = $this->conf["listView."];	// Local settings for the listView function
 
-								if ($this->wizard->piVars["showUid"])	{	// If a single element should be displayed:
-									$this->wizard->internal["currentTable"] = "'.$tableName.'";
-									$this->wizard->internal["currentRow"] = $this->wizard->pi_getRecord("'.$tableName.'",$this->wizard->piVars["showUid"]);
+								if ($this->piVars["showUid"])	{	// If a single element should be displayed:
+									$this->internal["currentTable"] = "'.$tableName.'";
+									$this->internal["currentRow"] = $this->pi_getRecord("'.$tableName.'",$this->piVars["showUid"]);
 
-									$content = $this->wizard->singleView($content,$conf);
+									$content = $this->singleView($content,$conf);
 									return $content;
 								} else {
 									$items=array(
-										"1"=> $this->wizard->pi_getLL("list_mode_1","Mode 1"),
-										"2"=> $this->wizard->pi_getLL("list_mode_2","Mode 2"),
-										"3"=> $this->wizard->pi_getLL("list_mode_3","Mode 3"),
+										"1"=> $this->pi_getLL("list_mode_1","Mode 1"),
+										"2"=> $this->pi_getLL("list_mode_2","Mode 2"),
+										"3"=> $this->pi_getLL("list_mode_3","Mode 3"),
 									);
-									if (!isset($this->wizard->piVars["pointer"]))	$this->wizard->piVars["pointer"]=0;
-									if (!isset($this->wizard->piVars["mode"]))	$this->wizard->piVars["mode"]=1;
+									if (!isset($this->piVars["pointer"]))	$this->piVars["pointer"]=0;
+									if (!isset($this->piVars["mode"]))	$this->piVars["mode"]=1;
 
 										// Initializing the query parameters:
-									list($this->wizard->internal["orderBy"],$this->wizard->internal["descFlag"]) = explode(":",$this->wizard->piVars["sort"]);
-									$this->wizard->internal["results_at_a_time"]=t3lib_div::intInRange($lConf["results_at_a_time"],0,1000,3);		// Number of results to show in a listing.
-									$this->wizard->internal["maxPages"]=t3lib_div::intInRange($lConf["maxPages"],0,1000,2);;		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
-									$this->wizard->internal["searchFieldList"]="'.implode(",",$theLines["searchFieldList"]).'";
-									$this->wizard->internal["orderByList"]="'.implode(",",$theLines["orderByList"]).'";
+									list($this->internal["orderBy"],$this->internal["descFlag"]) = explode(":",$this->piVars["sort"]);
+									$this->internal["results_at_a_time"]=t3lib_div::intInRange($lConf["results_at_a_time"],0,1000,3);		// Number of results to show in a listing.
+									$this->internal["maxPages"]=t3lib_div::intInRange($lConf["maxPages"],0,1000,2);;		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
+									$this->internal["searchFieldList"]="'.implode(",",$theLines["searchFieldList"]).'";
+									$this->internal["orderByList"]="'.implode(",",$theLines["orderByList"]).'";
 
 										// Get number of records:
-									$res = $this->wizard->pi_exec_query("'.$tableName.'",1);
-									list($this->wizard->internal["res_count"]) = $GLOBALS[\'TYPO3_DB\']->sql_fetch_row($res);
+									$res = $this->pi_exec_query("'.$tableName.'",1);
+									list($this->internal["res_count"]) = $GLOBALS[\'TYPO3_DB\']->sql_fetch_row($res);
 
 										// Make listing query, pass query to SQL database:
-									$res = $this->wizard->pi_exec_query("'.$tableName.'");
-									$this->wizard->internal["currentTable"] = "'.$tableName.'";
+									$res = $this->pi_exec_query("'.$tableName.'");
+									$this->internal["currentTable"] = "'.$tableName.'";
 
 										// Put the whole list together:
 									$fullTable="";	// Clear var;
-								#	$fullTable.=t3lib_div::view_array($this->wizard->piVars);	// DEBUG: Output the content of $this->wizard->piVars for debug purposes. REMEMBER to comment out the IP-lock in the debug() function in t3lib/config_default.php if nothing happens when you un-comment this line!
+								#	$fullTable.=t3lib_div::view_array($this->piVars);	// DEBUG: Output the content of $this->piVars for debug purposes. REMEMBER to comment out the IP-lock in the debug() function in t3lib/config_default.php if nothing happens when you un-comment this line!
 
 										// Adds the mode selector.
-									$fullTable.=$this->wizard->pi_list_modeSelector($items);
+									$fullTable.=$this->pi_list_modeSelector($items);
 
 										// Adds the whole list table
-									$fullTable.='.($config["list_default_listmode"]?'$this->wizard->makelist($res);':'$this->wizard->pi_list_makelist($res);').'
+									$fullTable.='.($config["list_default_listmode"]?'$this->makelist($res);':'$this->pi_list_makelist($res);').'
 
 										// Adds the search box:
-									$fullTable.=$this->wizard->pi_list_searchBox();
+									$fullTable.=$this->pi_list_searchBox();
 
 										// Adds the result browser:
-									$fullTable.=$this->wizard->pi_list_browseresults();
+									$fullTable.=$this->pi_list_browseresults();
 
 										// Returns the content from the plugin.
 									return $fullTable;
@@ -514,18 +514,18 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 
 						if ($config["list_default_listmode"])	{
-							$innerMainContent.= $this->wizard->wrapBody('
+							$innerMainContent.= $this->wrapBody('
 								/**
 								 * [Put your description here]
 								 */
 								function makelist($res)	{
 									$items=Array();
 										// Make list table rows
-									while($this->wizard->internal["currentRow"] = $GLOBALS[\'TYPO3_DB\']->sql_fetch_assoc($res))	{
-										$items[]=$this->wizard->makeListItem();
+									while($this->internal["currentRow"] = $GLOBALS[\'TYPO3_DB\']->sql_fetch_assoc($res))	{
+										$items[]=$this->makeListItem();
 									}
 
-									$out = \'<div\'.$this->wizard->pi_classParam("listrow").\'>
+									$out = \'<div\'.$this->pi_classParam("listrow").\'>
 										\'.implode(chr(10),$items).\'
 										</div>\';
 									return $out;
@@ -545,57 +545,57 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 						// Single display:
 						if ($config["list_default_singlemode"])	{
-							$innerMainContent.= $this->wizard->wrapBody('
+							$innerMainContent.= $this->wrapBody('
 								/**
 								 * [Put your description here]
 								 */
 								function singleView($content,$conf)	{
-									$this->wizard->conf=$conf;
-									$this->wizard->pi_setPiVarDefaults();
-									$this->wizard->pi_loadLL();
-									'.(!$cache ? '$this->wizard->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
+									$this->conf=$conf;
+									$this->pi_setPiVarDefaults();
+									$this->pi_loadLL();
+									'.(!$cache ? '$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
 
 										// This sets the title of the page for use in indexed search results:
-									if ($this->wizard->internal["currentRow"]["title"])	$GLOBALS["TSFE"]->indexedDocTitle=$this->wizard->internal["currentRow"]["title"];
+									if ($this->internal["currentRow"]["title"])	$GLOBALS["TSFE"]->indexedDocTitle=$this->internal["currentRow"]["title"];
 
-									$content=\'<div\'.$this->wizard->pi_classParam("singleView").\'>
-										<H2>Record "\'.$this->wizard->internal["currentRow"]["uid"].\'" from table "\'.$this->wizard->internal["currentTable"].\'":</H2>
+									$content=\'<div\'.$this->pi_classParam("singleView").\'>
+										<H2>Record "\'.$this->internal["currentRow"]["uid"].\'" from table "\'.$this->internal["currentTable"].\'":</H2>
 										',implode(chr(10),$theLines["singleRows_section"]),'
-									<p>\'.$this->wizard->pi_list_linkSingle($this->wizard->pi_getLL("back","Back"),0).\'</p></div>\'.
-									$this->wizard->pi_getEditPanel();
+									<p>\'.$this->pi_list_linkSingle($this->pi_getLL("back","Back"),0).\'</p></div>\'.
+									$this->pi_getEditPanel();
 
 									return $content;
 								}
 							',3);
 						} else {
-							$innerMainContent.= $this->wizard->wrapBody('
+							$innerMainContent.= $this->wrapBody('
 								/**
 								 * [Put your description here]
 								 */
 								function singleView($content,$conf)	{
-									$this->wizard->conf=$conf;
-									$this->wizard->pi_setPiVarDefaults();
-									$this->wizard->pi_loadLL();
-									'.(!$cache ? '$this->wizard->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
+									$this->conf=$conf;
+									$this->pi_setPiVarDefaults();
+									$this->pi_loadLL();
+									'.(!$cache ? '$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
 
 										// This sets the title of the page for use in indexed search results:
-									if ($this->wizard->internal["currentRow"]["title"])	$GLOBALS["TSFE"]->indexedDocTitle=$this->wizard->internal["currentRow"]["title"];
+									if ($this->internal["currentRow"]["title"])	$GLOBALS["TSFE"]->indexedDocTitle=$this->internal["currentRow"]["title"];
 
-									$content=\'<div\'.$this->wizard->pi_classParam("singleView").\'>
-										<H2>Record "\'.$this->wizard->internal["currentRow"]["uid"].\'" from table "\'.$this->wizard->internal["currentTable"].\'":</H2>
+									$content=\'<div\'.$this->pi_classParam("singleView").\'>
+										<H2>Record "\'.$this->internal["currentRow"]["uid"].\'" from table "\'.$this->internal["currentTable"].\'":</H2>
 										<table>
 											',implode(chr(10),$theLines["singleRows"]),'
 										</table>
-									<p>\'.$this->wizard->pi_list_linkSingle($this->wizard->pi_getLL("back","Back"),0).\'</p></div>\'.
-									$this->wizard->pi_getEditPanel();
+									<p>\'.$this->pi_list_linkSingle($this->pi_getLL("back","Back"),0).\'</p></div>\'.
+									$this->pi_getEditPanel();
 
 									return $content;
 								}
 							',3);
 						}
 
-						$this->wizard->ext_localconf[]=$this->wizard->sPS('
-							'.$this->wizard->WOPcomment('WOP:'.$WOP.'[...]').'
+						$this->ext_localconf[]=$this->sPS('
+							'.$this->WOPcomment('WOP:'.$WOP.'[...]').'
 							t3lib_extMgm::addTypoScript($_EXTKEY,"setup","
 								tt_content.shortcut.20.0.conf.'.$tableName.' = < plugin.".t3lib_extMgm::getCN($_EXTKEY)."_pi'.$k.'
 								tt_content.shortcut.20.0.conf.'.$tableName.'.CMD = singleView
@@ -603,48 +603,48 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 						');
 
 						if (!$config["list_default_listmode"])	{
-							$innerMainContent.= $this->wizard->wrapBody('
+							$innerMainContent.= $this->wrapBody('
 								/**
 								 * [Put your description here]
 								 */
 								function pi_list_row($c)	{
-									$editPanel = $this->wizard->pi_getEditPanel();
+									$editPanel = $this->pi_getEditPanel();
 									if ($editPanel)	$editPanel="<TD>".$editPanel."</TD>";
 
-									return \'<tr\'.($c%2 ? $this->wizard->pi_classParam("listrow-odd") : "").\'>
+									return \'<tr\'.($c%2 ? $this->pi_classParam("listrow-odd") : "").\'>
 											',implode(chr(10),$theLines["getListRow"]),'
 											\'.$editPanel.\'
 										</tr>\';
 								}
 							',3);
-							$innerMainContent.= $this->wizard->wrapBody('
+							$innerMainContent.= $this->wrapBody('
 								/**
 								 * [Put your description here]
 								 */
 								function pi_list_header()	{
-									return \'<tr\'.$this->wizard->pi_classParam("listrow-header").\'>
+									return \'<tr\'.$this->pi_classParam("listrow-header").\'>
 											',implode(chr(10),$theLines["getListHeader"]),'
 										</tr>\';
 								}
 							',3);
 						}
-						$innerMainContent.= $this->wizard->wrapBody('
+						$innerMainContent.= $this->wrapBody('
 							/**
 							 * [Put your description here]
 							 */
 							function getFieldContent($fN)	{
 								switch($fN) {
 									case "uid":
-										return $this->wizard->pi_list_linkSingle($this->wizard->internal["currentRow"][$fN],$this->wizard->internal["currentRow"]["uid"],1);	// The "1" means that the display of single items is CACHED! Set to zero to disable caching.
+										return $this->pi_list_linkSingle($this->internal["currentRow"][$fN],$this->internal["currentRow"]["uid"],1);	// The "1" means that the display of single items is CACHED! Set to zero to disable caching.
 									break;
 									',implode(chr(10),$theLines["getFieldContent"]),'
 									default:
-										return $this->wizard->internal["currentRow"][$fN];
+										return $this->internal["currentRow"][$fN];
 									break;
 								}
 							}
 						',2);
-						$innerMainContent.= $this->wizard->wrapBody('
+						$innerMainContent.= $this->wrapBody('
 							/**
 							 * [Put your description here]
 							 */
@@ -652,17 +652,17 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								switch($fN) {
 									',implode(chr(10),$theLines["getFieldHeader"]),'
 									default:
-										return $this->wizard->pi_getLL("listFieldHeader_".$fN,"[".$fN."]");
+										return $this->pi_getLL("listFieldHeader_".$fN,"[".$fN."]");
 									break;
 								}
 							}
 						',2);
-						$innerMainContent.= $this->wizard->sPS('
+						$innerMainContent.= $this->sPS('
 							/**
 							 * [Put your description here]
 							 */
 							function getFieldHeader_sortLink($fN)	{
-								return $this->wizard->pi_linkTP_keepPIvars($this->wizard->getFieldHeader($fN),array("sort"=>$fN.":".($this->wizard->internal["descFlag"]?0:1)));
+								return $this->pi_linkTP_keepPIvars($this->getFieldHeader($fN),array("sort"=>$fN.":".($this->internal["descFlag"]?0:1)));
 							}
 						');
 
@@ -678,7 +678,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							$temp_merge=array();
 							if (is_array($P_classes["LV"]))	{
 								while(list($c,$LVc)=each($P_classes["LV"]))	{
-									$temp_merge[]=$this->wizard->sPS('
+									$temp_merge[]=$this->sPS('
 										P_'.$c.' = ['.$LVc.']
 										P_'.$c.'.selector = +.'.$pCSSSel.'-'.$LVc.'
 										P_'.$c.'.attribs = BODYTEXT
@@ -688,7 +688,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 									',1);
 								}
 							}
-							$CSS_editor_code.=$this->wizard->wrapBody('
+							$CSS_editor_code.=$this->wrapBody('
 								list = List display
 								list.selector = .'.$pCSSSel.'-listrow
 								list.example = <div class="'.$pCSSSel.'-listrow"><p>This is regular bodytext in the list display.</p><p>Viditque Deus cuncta quae fecit et erant valde bona et factum est vespere et mane dies sextus.</p></div>
@@ -700,7 +700,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								}
 							');
 						} else {
-							$CSS_editor_code.=$this->wizard->sPS('
+							$CSS_editor_code.=$this->sPS('
 								list = List display
 								list.selector = .'.$pCSSSel.'-listrow
 								list.example = <div class="'.$pCSSSel.'-listrow"><table><tr class="'.$pCSSSel.'-listrow-header"><td nowrap><p>Time / Date:</p></td><td><p><a HREF="#">Title:</a></p></td></tr><tr><td valign="top"><p>25-08-02</p></td><td valign="top"><p><a HREF="#">New company name...</a></p></td></tr><tr class="'.$pCSSSel.'-listrow-odd"><td valign="top"><p>16-08-02</p></td><td valign="top"><p><a HREF="#">Yet another headline here</a></p></td></tr><tr><td valign="top"><p>05-08-02</p></td><td valign="top"><p><a HREF="#">The third line - even row</a></p></td></tr></table></div>
@@ -729,7 +729,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							$temp_merge=array();
 							if (is_array($P_classes["SV"]))	{
 								while(list($c,$LVc)=each($P_classes["SV"]))	{
-									$temp_merge[]=$this->wizard->sPS('
+									$temp_merge[]=$this->sPS('
 										P_'.$c.' = ['.$LVc.']
 										P_'.$c.'.selector = +.'.$pCSSSel.'-'.$LVc.'
 										P_'.$c.'.attribs = BODYTEXT
@@ -739,7 +739,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 									',1);
 								}
 							}
-							$CSS_editor_code.=$this->wizard->wrapBody('
+							$CSS_editor_code.=$this->wrapBody('
 								single = Single display
 								single.selector = .'.$pCSSSel.'-singleView
 								single.example = <div class="'.$pCSSSel.'-singleView"><H2>Header, if any:</H2><p>This is regular bodytext in the list display.</p><p>Viditque Deus cuncta quae fecit et erant valde bona et factum est vespere et mane dies sextus.</p><p><a href="#">Back</a></p></div>
@@ -751,7 +751,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								}
 							');
 						} else {
-							$CSS_editor_code.=$this->wizard->sPS('
+							$CSS_editor_code.=$this->sPS('
 								single = Single display
 								single.selector = .'.$pCSSSel.'-singleView
 								single.example = <div class="'.$pCSSSel.'-singleView"><H2>Header, if any:</H2><table><tr><td nowrap valign="top" class="'.$pCSSSel.'-singleView-HCell"><p>Date:</p></td><td valign="top"><p>13-09-02</p></td></tr><tr><td nowrap valign="top" class="'.$pCSSSel.'-singleView-HCell"><p>Title:</p></td><td valign="top"><p><a HREF="#">New title line</a></p></td></tr><tr><td nowrap valign="top" class="'.$pCSSSel.'-singleView-HCell"><p>Teaser text:</p></td><td valign="top"><p>Vocavitque Deus firmamentum caelum et factum est vespere et mane dies secundus dixit vero Deus congregentur.</p><p>Aquae quae sub caelo sunt in locum unum et appareat arida factumque est ita et vocavit Deus aridam terram congregationesque aquarum appellavit maria et vidit Deus quod esset bonum et ait germinet terra herbam virentem et facientem semen et lignum pomiferum faciens fructum iuxta genus suum cuius semen in semet ipso sit super terram et factum est ita et protulit terra herbam virentem et adferentem semen iuxta genus suum lignumque faciens fructum et habens unumquodque sementem secundum speciem suam et vidit Deus quod esset bonum.</p></td></tr><tr><td nowrap class="'.$pCSSSel.'-singleView-HCell"><p>Last updated:</p></td><td valign="top"><p>25-08-2002 18:28</p></td></tr><tr><td nowrap class="'.$pCSSSel.'-singleView-HCell"><p>Created:</p></td><td valign="top"><p>25-08-2002 18:27</p></td></tr></table><p><a href="#">Back</a></p></div>
@@ -776,7 +776,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							');
 						}
 
-						$this->wizard->addFileToFileArray($config["plus_not_staticTemplate"]?"ext_typoscript_editorcfg.txt":$pathSuffix."static/editorcfg.txt",$this->wizard->wrapBody('
+						$this->addFileToFileArray($config["plus_not_staticTemplate"]?"ext_typoscript_editorcfg.txt":$pathSuffix."static/editorcfg.txt",$this->wrapBody('
 							plugin.'.$cN.'.CSS_editor = Plugin: "'.$cN.'"
 							plugin.'.$cN.'.CSS_editor.selector = .'.$pCSSSel.'
 							plugin.'.$cN.'.CSS_editor.exampleWrap = <HR><strong>Plugin: "'.$cN.'"</strong><HR><div class="'.$pCSSSel.'"> | </div>
@@ -876,7 +876,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							}
 						'),1);
 
-						$this->wizard->addFileToFileArray($config["plus_not_staticTemplate"]?"ext_typoscript_setup.txt":$pathSuffix."static/setup.txt",$this->wizard->sPS('
+						$this->addFileToFileArray($config["plus_not_staticTemplate"]?"ext_typoscript_setup.txt":$pathSuffix."static/setup.txt",$this->sPS('
 							plugin.'.$cN.' {
 								CMD =
 								pidList =
@@ -894,35 +894,35 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							plugin.'.$cN.'._LOCAL_LANG.default {
 							  pi_list_searchBox_search = Search!
 							}
-							  # Example of how to set default values from TS in the incoming array, $this->wizard->piVars of the plugin:
+							  # Example of how to set default values from TS in the incoming array, $this->piVars of the plugin:
 							plugin.'.$cN.'._DEFAULT_PI_VARS.test = test
 						'),1);
 
-						$this->wizard->EM_CONF_presets["clearCacheOnLoad"]=1;
+						$this->EM_CONF_presets["clearCacheOnLoad"]=1;
 
 						if (!$config["plus_not_staticTemplate"])	{
-							$this->wizard->ext_tables[]=$this->wizard->sPS('
+							$this->ext_tables[]=$this->sPS('
 								t3lib_extMgm::addStaticFile($_EXTKEY,"'.$pathSuffix.'static/","'.addslashes(trim($config['title'])).'");
 							');
 						}
 					}
 				} else {
 						// Add title to local lang file
-					$ll=$this->wizard->addStdLocalLangConf($ll,$k,1);
-					$this->wizard->addLocalConf($ll,array("submit_button_label"=>"Click here to submit value"),"submit_button_label","pi",$k,1,1);
+					$ll=$this->addStdLocalLangConf($ll,$k,1);
+					$this->addLocalConf($ll,array("submit_button_label"=>"Click here to submit value"),"submit_button_label","pi",$k,1,1);
 
-					$this->wizard->addLocalLangFile($ll,$pathSuffix."locallang.php",'Language labels for plugin "'.$cN.'"');
+					$this->addLocalLangFile($ll,$pathSuffix."locallang.php",'Language labels for plugin "'.$cN.'"');
 
 
-					$innerMainContent = $this->wizard->sPS('
+					$innerMainContent = $this->sPS('
 						/**
 						 * [Put your description here]
 						 */
 						function main($content,$conf)	{
-							$this->wizard->conf=$conf;
-							$this->wizard->pi_setPiVarDefaults();
-							$this->wizard->pi_loadLL();
-							'.(!$cache ? '$this->wizard->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
+							$this->conf=$conf;
+							$this->pi_setPiVarDefaults();
+							$this->pi_loadLL();
+							'.(!$cache ? '$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
 
 							$content=\'
 								<strong>This is a few paragraphs:</strong><BR>
@@ -930,16 +930,16 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								<p>This is line 2</p>
 
 								<h3>This is a form:</h3>
-								<form action="\'.$this->wizard->pi_getPageLink($GLOBALS["TSFE"]->id).\'" method="POST">
+								<form action="\'.$this->pi_getPageLink($GLOBALS["TSFE"]->id).\'" method="POST">
 									<input type="hidden" name="no_cache" value="1">
-									<input type="text" name="\'.$this->wizard->prefixId.\'[input_field]" value="\'.htmlspecialchars($this->wizard->piVars["input_field"]).\'">
-									<input type="submit" name="\'.$this->wizard->prefixId.\'[submit_button]" value="\'.htmlspecialchars($this->wizard->pi_getLL("submit_button_label")).\'">
+									<input type="text" name="\'.$this->prefixId.\'[input_field]" value="\'.htmlspecialchars($this->piVars["input_field"]).\'">
+									<input type="submit" name="\'.$this->prefixId.\'[submit_button]" value="\'.htmlspecialchars($this->pi_getLL("submit_button_label")).\'">
 								</form>
 								<BR>
-								<p>You can click here to \'.$this->wizard->pi_linkToPage("get to this page again",$GLOBALS["TSFE"]->id).\'</p>
+								<p>You can click here to \'.$this->pi_linkToPage("get to this page again",$GLOBALS["TSFE"]->id).\'</p>
 							\';
 
-							return $this->wizard->pi_wrapInBaseClass($content);
+							return $this->pi_wrapInBaseClass($content);
 						}
 					');
 
@@ -947,7 +947,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					$CSS_editor_code="";
 					$pCSSSel = str_replace("_","-",$cN);
 
-					$this->wizard->addFileToFileArray($config["plus_not_staticTemplate"]?"ext_typoscript_editorcfg.txt":$pathSuffix."static/editorcfg.txt",$this->wizard->sPS('
+					$this->addFileToFileArray($config["plus_not_staticTemplate"]?"ext_typoscript_editorcfg.txt":$pathSuffix."static/editorcfg.txt",$this->sPS('
 						plugin.'.$cN.'.CSS_editor = Plugin: "'.$cN.'"
 						plugin.'.$cN.'.CSS_editor.selector = .'.$pCSSSel.'
 						plugin.'.$cN.'.CSS_editor.exampleWrap = <HR><strong>Plugin: "'.$cN.'"</strong><HR><div class="'.$pCSSSel.'"> | </div>
@@ -969,14 +969,14 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					'),1);
 
 					if (!$config["plus_not_staticTemplate"])	{
-						$this->wizard->ext_tables[]=$this->wizard->sPS('
+						$this->ext_tables[]=$this->sPS('
 							t3lib_extMgm::addStaticFile($_EXTKEY,"'.$pathSuffix.'static/","'.addslashes(trim($config['title'])).'");
 						');
 					}
 				}
 			break;
 			case "textbox":
-				$this->wizard->ext_localconf[]=$this->wizard->sPS('
+				$this->ext_localconf[]=$this->sPS('
 					  ## Setting TypoScript for the image in the textbox:
 					t3lib_extMgm::addTypoScript($_EXTKEY,"setup","
 						plugin.'.$cN.'_pi'.$k.'.IMAGEcObject {
@@ -985,7 +985,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					",43);
 				');
 
-				$innerMainContent = $this->wizard->sPS('
+				$innerMainContent = $this->sPS('
 					/**
 					 * [Put your description here]
 					 */
@@ -994,18 +994,18 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							// Processes the image-field content:
 							// $conf["IMAGEcObject."] is passed to the getImage() function as TypoScript
 							// configuration for the image (except filename which is set automatically here)
-						$imageFiles = explode(",",$this->wizard->cObj->data["image"]);	// This returns an array with image-filenames, if many
+						$imageFiles = explode(",",$this->cObj->data["image"]);	// This returns an array with image-filenames, if many
 						$imageRows=array();	// Accumulates the images
 						reset($imageFiles);
 						while(list(,$iFile)=each($imageFiles))	{
 							$imageRows[] = "<tr>
-								<td>".$this->wizard->getImage($iFile,$conf["IMAGEcObject."])."</td>
+								<td>".$this->getImage($iFile,$conf["IMAGEcObject."])."</td>
 							</tr>";
 						}
 						$imageBlock = count($imageRows)?\'<table border=0 cellpadding=5 cellspacing=0>\'.implode("",$imageRows).\'</table>\':\'<img src=clear.gif width=100 height=1>\';
 
 							// Sets bodytext
-						$bodyText = nl2br($this->wizard->cObj->data["bodytext"]);
+						$bodyText = nl2br($this->cObj->data["bodytext"]);
 
 							// And compiles everything into a table:
 						$finalContent = \'<table border=1>
@@ -1025,23 +1025,23 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					function getImage($filename,$TSconf)	{
 						list($theImage)=explode(",",$filename);
 						$TSconf["file"] = "uploads/pics/".$theImage;
-						$img = $this->wizard->cObj->IMAGE($TSconf);
+						$img = $this->cObj->IMAGE($TSconf);
 						return $img;
 					}
 				');
 			break;
 			case "header":
-				$innerMainContent = $this->wizard->sPS('
+				$innerMainContent = $this->sPS('
 					/**
 					 * [Put your description here]
 					 */
 					function main($content,$conf)	{
-						return "<H1>".$this->wizard->cObj->data["header"]."</H1>";
+						return "<H1>".$this->cObj->data["header"]."</H1>";
 					}
 				');
 			break;
 			case "menu_sitemap":
-				$innerMainContent = $this->wizard->sPS('
+				$innerMainContent = $this->sPS('
 
 					/**
 					 * [Put your description here]
@@ -1050,7 +1050,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							// Get the PID from which to make the menu.
 							// If a page is set as reference in the \'Startingpoint\' field, use that
 							// Otherwise use the page\'s id-number from TSFE
-						$menuPid = intval($this->wizard->cObj->data["pages"]?$this->wizard->cObj->data["pages"]:$GLOBALS["TSFE"]->id);
+						$menuPid = intval($this->cObj->data["pages"]?$this->cObj->data["pages"]:$GLOBALS["TSFE"]->id);
 
 							// Now, get an array with all the subpages to this pid:
 							// (Function getMenu() is found in class.t3lib_page.php)
@@ -1062,7 +1062,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							// Traverse menuitems:
 						reset($menuItems_level1);
 						while(list($uid,$pages_row)=each($menuItems_level1))	{
-							$tRows[]=\'<tr bgColor="#cccccc"><td>\'.$this->wizard->pi_linkToPage(
+							$tRows[]=\'<tr bgColor="#cccccc"><td>\'.$this->pi_linkToPage(
 								$pages_row["nav_title"]?$pages_row["nav_title"]:$pages_row["title"],
 								$pages_row["uid"],
 								$pages_row["target"]
@@ -1072,7 +1072,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 						$totalMenu = \'<table border=0 cellpadding=0 cellspacing=2>
 							<tr><td>This is a menu. Go to your favourite page:</td></tr>
 							\'.implode(\'\',$tRows).
-							\'</table><BR>(\'.$this->wizard->tellWhatToDo(\'Click here if you want to know where to change the menu design\').\')\';
+							\'</table><BR>(\'.$this->tellWhatToDo(\'Click here if you want to know where to change the menu design\').\')\';
 
 						return $totalMenu;
 					}
@@ -1083,13 +1083,13 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				');
 			break;
 			case "typotags":
-				$innerMainContent = $this->wizard->sPS('
+				$innerMainContent = $this->sPS('
 					/**
 					 * [Put your description here]
 					 */
 					function main($content,$conf)	{
-						$tag_content = $this->wizard->cObj->getCurrentVal();
-						return "<b>".$this->wizard->tellWhatToDo(strtoupper($tag_content))."</b>";
+						$tag_content = $this->cObj->getCurrentVal();
+						return "<b>".$this->tellWhatToDo(strtoupper($tag_content))."</b>";
 					}
 					function tellWhatToDo($str)	{
 						return \'<a href="#" onClick="alert(\\\'Open the PHP-file \'.t3lib_extMgm::siteRelPath("'.$extKey.'").\''.$pathSuffix.'class.'.$cN.'.php and edit the function main()\nto change how the tag content is processed!\\\')">\'.$str.\'</a>\';
@@ -1097,7 +1097,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				');
 			break;
 			default:
-				$innerMainContent = $this->wizard->sPS('
+				$innerMainContent = $this->sPS('
 					/**
 					 * [Put your description here]
 					 */
@@ -1109,7 +1109,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				');
 			break;
 		}
-		$indexContent= $this->wizard->wrapBody('
+		$indexContent= $this->wrapBody('
 			require_once(PATH_tslib."class.tslib_pibase.php");
 
 			class '.$cN.' extends tslib_pibase {
@@ -1120,19 +1120,19 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				',$innerMainContent,'
 			}
 		');
-		$this->wizard->addFileToFileArray($pathSuffix."class.".$cN.".php",$this->wizard->PHPclassFile($extKey,$pathSuffix."class.".$cN.".php",$indexContent,"Plugin '".$config["title"]."' for the '".$extKey."' extension."));
+		$this->addFileToFileArray($pathSuffix."class.".$cN.".php",$this->PHPclassFile($extKey,$pathSuffix."class.".$cN.".php",$indexContent,"Plugin '".$config["title"]."' for the '".$extKey."' extension."));
 
 			// Add wizard?
 		if ($config["plus_wiz"] && $config["addType"]=="list_type")	{
-			$this->wizard->addLocalConf($this->wizard->ext_locallang,$config,"title","pi",$k);
-			$this->wizard->addLocalConf($this->wizard->ext_locallang,$config,"plus_wiz_description","pi",$k);
+			$this->addLocalConf($this->ext_locallang,$config,"title","pi",$k);
+			$this->addLocalConf($this->ext_locallang,$config,"plus_wiz_description","pi",$k);
 
-			$indexContent= $this->wizard->sPS('
+			$indexContent= $this->sPS('
 				class '.$cN.'_wizicon {
 					function proc($wizardItems)	{
 						global $LANG;
 
-						$LL = $this->wizard->includeLocalLang();
+						$LL = $this->includeLocalLang();
 
 						$wizardItems["plugins_'.$cN.'"] = array(
 							"icon"=>t3lib_extMgm::extRelPath("'.$extKey.'")."'.$pathSuffix.'ce_wiz.gif",
@@ -1149,16 +1149,16 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					}
 				}
 			');
-			$this->wizard->addFileToFileArray($pathSuffix."class.".$cN."_wizicon.php",$this->wizard->PHPclassFile($extKey,$pathSuffix."class.".$cN."_wizicon.php",$indexContent,"Class that adds the wizard icon."));
+			$this->addFileToFileArray($pathSuffix."class.".$cN."_wizicon.php",$this->PHPclassFile($extKey,$pathSuffix."class.".$cN."_wizicon.php",$indexContent,"Class that adds the wizard icon."));
 
 				// Add wizard icon
-			$this->wizard->addFileToFileArray($pathSuffix."ce_wiz.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/wiz.gif"));
+			$this->addFileToFileArray($pathSuffix."ce_wiz.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/wiz.gif"));
 
 				// Add clear.gif
-			$this->wizard->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/clear.gif"));
+			$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/clear.gif"));
 
-			$this->wizard->ext_tables[]=$this->wizard->sPS('
-				'.$this->wizard->WOPcomment('WOP:'.$WOP.'[plus_wiz]:').'
+			$this->ext_tables[]=$this->sPS('
+				'.$this->WOPcomment('WOP:'.$WOP.'[plus_wiz]:').'
 				if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["'.$cN.'_wizicon"] = t3lib_extMgm::extPath($_EXTKEY)."pi'.$k.'/class.'.$cN.'_wizicon.php";
 			');
 		}

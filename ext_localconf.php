@@ -62,6 +62,12 @@ $TYPO3_CONF_VARS['EXTCONF']['kickstarter']['sections'] = array(
 		'titel' => 'TSconfig',
 		'description' => 'Adds default Page-TSconfig or User-TSconfig. Can be used to preset options inside TYPO3.',
 	),
+	'phpfile' => array(
+		'classname' => 'tx_kickstarter_section_phpfile',
+		'filepath' => 'EXT:kickstarter/sections/class.tx_kickstarter_section_phpfile.php',
+		'titel' => 'Custom PHP File',
+		'description' => 'Here you can create plain PHP files.',
+	),
 	'languages' => array(
 		'classname' => 'tx_kickstarter_section_languages',
 		'filepath' => 'EXT:kickstarter/sections/class.tx_kickstarter_section_languages.php',
