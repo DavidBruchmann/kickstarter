@@ -622,7 +622,7 @@ class tx_kickstarter_compilefiles {
 			// icon:
 
 
-		$this->addFileToFileArray("ext_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound.gif"));
+		$this->addFileToFileArray("ext_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/notfound.gif"));
 
 
 		
@@ -1552,7 +1552,7 @@ class tx_kickstarter_compilefiles {
 				// Add wizard icon
 
 
-			$this->addFileToFileArray($pathSuffix."icon_".$tableName.".gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/".$config["defIcon"]));
+			$this->addFileToFileArray($pathSuffix."icon_".$tableName.".gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/".$config["defIcon"]));
 
 
 
@@ -2143,7 +2143,7 @@ class tx_kickstarter_compilefiles {
 					);
 
 
-					$this->addFileToFileArray($id."/wizard_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound.gif"));
+					$this->addFileToFileArray($id."/wizard_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/notfound.gif"));
 
 
 					
@@ -3142,7 +3142,7 @@ class tx_kickstarter_compilefiles {
 										// Add wizard icon
 
 
-						$this->addFileToFileArray("selicon_".$id."_".$a.".gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/wiz.gif"));
+						$this->addFileToFileArray("selicon_".$id."_".$a.".gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/wiz.gif"));
 
 
 					} else $icon="";
@@ -6787,7 +6787,7 @@ class tx_kickstarter_compilefiles {
 				// Add wizard icon
 
 
-			$this->addFileToFileArray($pathSuffix."ce_wiz.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/wiz.gif"));
+			$this->addFileToFileArray($pathSuffix."ce_wiz.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/wiz.gif"));
 
 
 
@@ -6796,7 +6796,7 @@ class tx_kickstarter_compilefiles {
 				// Add clear.gif
 
 
-			$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/clear.gif"));
+			$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/clear.gif"));
 
 
 	
@@ -7348,7 +7348,7 @@ class tx_kickstarter_compilefiles {
 			// Add clear.gif
 
 
-		$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/clear.gif"));
+		$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/clear.gif"));
 
 
 		
@@ -7357,7 +7357,7 @@ class tx_kickstarter_compilefiles {
 			// Add clear.gif
 
 
-		$this->addFileToFileArray($pathSuffix."moduleicon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound_module.gif"));
+		$this->addFileToFileArray($pathSuffix."moduleicon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/notfound_module.gif"));
 
 
 
@@ -8212,7 +8212,7 @@ class tx_kickstarter_compilefiles {
 			// Add icon
 
 
-		$this->addFileToFileArray($pathSuffix."cm_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound_module.gif"));
+		$this->addFileToFileArray($pathSuffix."cm_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/notfound_module.gif"));
 
 
 
@@ -8329,7 +8329,7 @@ class tx_kickstarter_compilefiles {
 				// Add activate icon
 
 
-			$this->addFileToFileArray($pathSuffix."cm_icon_activate.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound_module.gif"));
+			$this->addFileToFileArray($pathSuffix."cm_icon_activate.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/notfound_module.gif"));
 
 
 		}
@@ -8713,7 +8713,7 @@ class tx_kickstarter_compilefiles {
 			// Add clear.gif
 
 
-		$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/clear.gif"));
+		$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/clear.gif"));
 
 
 		

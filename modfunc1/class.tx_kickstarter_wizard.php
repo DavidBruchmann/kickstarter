@@ -94,7 +94,7 @@
 
 
 
-require_once(t3lib_extMgm::extPath("kickstarter")."modfunc1/class.tx_kickstarter_compilefiles.php");
+require_once(t3lib_extMgm::extPath("tx_kickstarter")."modfunc1/class.tx_kickstarter_compilefiles.php");
 
 
 
