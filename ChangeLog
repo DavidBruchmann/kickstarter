@@ -1,3 +1,9 @@
+2004-11-18  Ingmar Schlecht  <ingmars@web.de>
+
+	* Making the Kickstarter modular.
+		- Outsourced all add_cat_*() and renderExtPart_*() functions into separate section classes.
+		- Created ext_localconf.php where all the sections are registered.
+
 2004-08-22  Ingmar Schlecht  <ingmars@web.de>
 
 	* Fine-tuning the way of interaction between EM and Kickstarter.
