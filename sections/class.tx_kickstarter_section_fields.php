@@ -29,7 +29,7 @@
  */
 
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
- 
+
 class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
   var $sectionID = 'fields';
 
@@ -313,7 +313,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			'passthrough' => '[Passthrough]',
 		);
 		$typeCfg.=$this->renderSelectBox($prefix.'[type]',$fConf['type'],$optValues);
-		$typeCfg.=$this->renderCheckBox($prefix.'[excludeField]',isset($fConf['excludeField'])?$fConf['excludeField']:1).' Is Exclude-field '.$this->whatIsThis('If a field is marked 'Exclude-field', users can edit it ONLY if the field is specifically listed in one of the backend user groups of the user.\nIn other words, if a field is marked 'Exclude-field' you can control which users can edit it and which cannot.').'<BR>';
+		$typeCfg.=$this->renderCheckBox($prefix.'[excludeField]',isset($fConf['excludeField'])?$fConf['excludeField']:1).' Is Exclude-field '.$this->whatIsThis('If a field is marked "Exclude-field", users can edit it ONLY if the field is specifically listed in one of the backend user groups of the user.\nIn other words, if a field is marked "Exclude-field" you can control which users can edit it and which cannot.').'<BR>';
 
 		$fDetails='';
 		switch((string)$fConf['type'])	{
@@ -383,8 +383,8 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$typeCfg.=$this->resImg($fConf['conf_rte']!='tt_content'?'t_rte.png':'t_rte2.png','','');
 
 				$optValues = array(
-					'tt_content' => 'Transform content like the Content Element 'Bodytext' field (default/old)',
-					'basic' => 'Typical basic setup (new 'Bodytext' field based on CSS stylesheets)',
+					'tt_content' => 'Transform content like the Content Element "Bodytext" field (default/old)',
+					'basic' => 'Typical basic setup (new "Bodytext" field based on CSS stylesheets)',
 					'moderate' => 'Moderate transform of images and links',
 					'none' => 'No transformation at all',
 					'custom' => 'Custom'
@@ -435,7 +435,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$fDetails.='<table border=0 cellpadding=2 cellspacing=2>'.implode('',$subLines).'</table><BR>';
 
 					$fDetails.='<BR><strong>Define specific colors:</strong><BR>
-						<em>Notice: Use only HEX-values for colors ('blue' should be #0000ff etc.)</em><BR>';
+						<em>Notice: Use only HEX-values for colors ("blue" should be #0000ff etc.)</em><BR>';
 					for($a=1;$a<4;$a++)	{
 						$fDetails.='Color #'.$a.': '.$this->renderStringBox($prefix.'[conf_rte_color'.$a.']',$fConf['conf_rte_color'.$a],70).'<BR>';
 					}
@@ -758,7 +758,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					}
 					if ($fConf['conf_eval'])		{$evalItems[0][] = $fConf['conf_eval'];			$evalItems[1][] = $WOP.'[conf_eval]';}
 					if ($fConf['conf_check'])	$configL[]='"checkbox" => "'.($isString?'':'0').'",	'.$this->WOPcomment('WOP:'.$WOP.'[conf_check]');
-					
+
 					if ($fConf['conf_stripspace'])		{$evalItems[0][] = 'nospace';			$evalItems[1][] = $WOP.'[conf_stripspace]';}
 					if ($fConf['conf_pass'])		{$evalItems[0][] = 'password';			$evalItems[1][] = $WOP.'[conf_pass]';}
 					if ($fConf['conf_unique'])	{

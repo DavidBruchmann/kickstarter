@@ -27,7 +27,7 @@
 /**
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
- 
+
 require_once(t3lib_extMgm::extPath("kickstarter")."sections/class.tx_kickstarter_section_fields.php");
 
 class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
@@ -171,7 +171,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Allowed in "Insert Records"
-			$subContent = '<strong>Allowed in 'Insert Records' field in content elements:<BR></strong>'.
+			$subContent = '<strong>Allowed in "Insert Records" field in content elements:<BR></strong>'.
 					$this->renderCheckBox($ffPrefix.'[allow_ce_insert_records]',$piConf['allow_ce_insert_records']).' Allow records from this table to be linked to by content elements.';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
@@ -278,7 +278,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			'lower' => 'Lower case',
 		);
 		$optRte = array(
-			'tt_content' => 'Transform like 'Bodytext'',
+			'tt_content' => 'Transform like "Bodytext"',
 			'basic' => 'Typical (based on CSS)',
 			'moderate' => 'Transform images / links',
 			'none' => 'No transform',
@@ -329,8 +329,8 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$details
 			);
 	}
-	
-	
+
+
 	/**
 	 * Renders the files to be created; this was renderExtPart_tables()
 	 */
