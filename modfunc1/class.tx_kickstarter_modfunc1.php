@@ -25,6 +25,7 @@
  * Module extension (addition to function menu) 'Make new extension' for the 'kickstarter' extension.
  *
  * @author	Daniel Bruen <dbruen@saltation.de>
+ * @author	Ingmar Schlecht <ingmars@web.de>
  */
 
 
@@ -33,40 +34,39 @@ require_once(PATH_t3lib."class.t3lib_extobjbase.php");
 require_once(t3lib_extMgm::extPath('kickstarter').'modfunc1/class.tx_kickstarter_wizard.php');
 
 class tx_kickstarter_modfunc1 extends t3lib_extobjbase {
-	function modMenu()	{
-		global $LANG;
-		
-		return Array (
-			"tx_kickstarter_modfunc1_check" => "",
-		);		
-	}
-
 	function main()	{
-			// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
-		global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-		
-		$kickstarter = t3lib_div::makeInstance('tx_kickstarter_wizard');
-
-		$kickstarter->siteBackPath = $this->pObj->doc->backPath.'../';
-		$kickstarter->pObj = &$this->pObj;
-
-
+		$kickstarter = $this->initKickstarter();
 		$content = $kickstarter->mgm_wizard();
 
-		$content ='</form>'.$this->pObj->doc->section('Kickstarter wizard',$content,0,1).'<form>';
-
-		return $content;
-
-		//		$theOutput.=$this->pObj->doc->spacer(5);
-		//		$theOutput.=$this->pObj->doc->section($LANG->getLL("title"),"Dummy content here...",0,1);
-
+		return '</form>'.$this->pObj->doc->section('Kickstarter wizard',$content,0,1).'<form>';
+	}
+	
+	function initKickstarter() {
+		$kickstarter = t3lib_div::makeInstance('tx_kickstarter_wizard');
+		$kickstarter->color = array($this->pObj->doc->bgColor5,$this->pObj->doc->bgColor4,$this->pObj->doc->bgColor);
+		$kickstarter->siteBackPath = $this->pObj->doc->backPath.'../';
+		$kickstarter->pObj = &$this->pObj;
+		$kickstarter->EMmode = 1;
 		
-		//		$menu=array();
-		//		$menu[]=t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET[tx_kickstarter_modfunc1_check]",$this->pObj->MOD_SETTINGS["tx_kickstarter_modfunc1_check"]).$LANG->getLL("checklabel");
-		//		$theOutput.=$this->pObj->doc->spacer(5);
-		//		$theOutput.=$this->pObj->doc->section("Menu",implode(" - ",$menu),0,1);
+		return $kickstarter;
+	}
+	
+}
 
-		//		return $theOutput;
+class tx_kickstarter_modfunc2 extends tx_kickstarter_modfunc1 {
+	function main()	{
+		$kickstarter = $this->initKickstarter();
+		$kickstarter->modData["wizArray_ser"] = base64_encode($this->getWizardFormDat());
+		$content = $kickstarter->mgm_wizard();
+
+		return '</form>'.$this->pObj->doc->section('Kickstarter wizard',$content,0,1).'<form>';
+	}
+	
+	function getWizardFormDat() {
+		list($list,$cat)=$this->pObj->getInstalledExtensions();
+		$absPath = $this->pObj->getExtPath($this->pObj->CMD['showExt'],$list[$this->pObj->CMD['showExt']]['type']);	
+
+		return t3lib_div::getUrl($absPath.'doc/wizard_form.dat');
 	}
 }
 
