@@ -433,7 +433,6 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		/* Go through overwrite-files list to determine which files are to be written to disk */
 		/* This allows to change only certain files on disk while keeping all others */
 		if(is_array($this->wizArray['save']['overwrite_files'])) {
-		  debug($this->wizArray['save']['overwrite_files']);
 		  for($i=0; $i<count($this->wizArray['save']['overwrite_files']); $i++) {
 		    $uploadArray['FILES'][$this->wizArray['save']['overwrite_files'][$i]] = $files[$this->wizArray['save']['overwrite_files'][$i]];
 		  }
