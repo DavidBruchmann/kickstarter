@@ -719,4 +719,12 @@ class tx_kickstarter_sectionbase {
 		return $v;
 	}
 }
+
+
+// Include extension?
+if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/kickstarter/class.tx_kickstarter_sectionbase.php"]) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/kickstarter/class.tx_kickstarter_sectionbase.php"]);
+}
+
+
 ?>
