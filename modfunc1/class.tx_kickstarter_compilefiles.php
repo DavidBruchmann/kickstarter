@@ -206,7 +206,7 @@ class tx_kickstarter_compilefiles {
 		$this->addFileToFileArray("doc/wizard_form.dat",serialize($this->wizArray));
 		
 			// icon:
-		$this->addFileToFileArray("ext_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/notfound.gif"));
+		$this->addFileToFileArray("ext_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound.gif"));
 		
 
 #		debug($this->wizArray);
@@ -516,7 +516,7 @@ class tx_kickstarter_compilefiles {
 
 
 				// Add wizard icon
-			$this->addFileToFileArray($pathSuffix."icon_".$tableName.".gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/".$config["defIcon"]));
+			$this->addFileToFileArray($pathSuffix."icon_".$tableName.".gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/".$config["defIcon"]));
 
 	}
 
@@ -713,7 +713,7 @@ class tx_kickstarter_compilefiles {
 						0,
 						$id."wiz"
 					);
-					$this->addFileToFileArray($id."/wizard_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/notfound.gif"));
+					$this->addFileToFileArray($id."/wizard_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound.gif"));
 					
 					$configL[]=trim($this->wrapBody('
 						"wizards" => Array(
@@ -1046,7 +1046,7 @@ class tx_kickstarter_compilefiles {
 					if ($fConf["conf_select_icons"] && $t=="select")	{
 						$icon = ', t3lib_extMgm::extRelPath("'.$extKey.'")."'."selicon_".$id."_".$a.".gif".'"';
 										// Add wizard icon
-						$this->addFileToFileArray("selicon_".$id."_".$a.".gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/wiz.gif"));
+						$this->addFileToFileArray("selicon_".$id."_".$a.".gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/wiz.gif"));
 					} else $icon="";
 //					$cItems[]='Array("'.str_replace("\\'","'",addslashes($this->getSplitLabels($fConf,"conf_select_item_".$a))).'", "'.addslashes($val).'"'.$icon.'),';
 					$cItems[]='Array("'.addslashes($this->getSplitLabels_reference($fConf,"conf_select_item_".$a,$table.".".$fConf["fieldname"].".I.".$a)).'", "'.addslashes($val).'"'.$icon.'),';
@@ -2261,10 +2261,10 @@ class tx_kickstarter_compilefiles {
 			$this->addFileToFileArray($pathSuffix."class.".$cN."_wizicon.php",$this->PHPclassFile($extKey,$pathSuffix."class.".$cN."_wizicon.php",$indexContent,"Class that adds the wizard icon."));
 			
 				// Add wizard icon
-			$this->addFileToFileArray($pathSuffix."ce_wiz.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/wiz.gif"));
+			$this->addFileToFileArray($pathSuffix."ce_wiz.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/wiz.gif"));
 
 				// Add clear.gif
-			$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/clear.gif"));
+			$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/clear.gif"));
 	
 			$this->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[plus_wiz]:').'
@@ -2448,10 +2448,10 @@ class tx_kickstarter_compilefiles {
 		$this->addLocalLangFile($ll,$pathSuffix."locallang.php",'Language labels for module "'.$mN.'"');
 
 			// Add clear.gif
-		$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/clear.gif"));
+		$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/clear.gif"));
 		
 			// Add clear.gif
-		$this->addFileToFileArray($pathSuffix."moduleicon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/notfound_module.gif"));
+		$this->addFileToFileArray($pathSuffix."moduleicon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound_module.gif"));
 
 		
 			// Make module index.php file:
@@ -2736,7 +2736,7 @@ class tx_kickstarter_compilefiles {
 		$this->addLocalConf($this->ext_locallang,$config,"title","cm",$k);
 
 			// Add icon
-		$this->addFileToFileArray($pathSuffix."cm_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/notfound_module.gif"));
+		$this->addFileToFileArray($pathSuffix."cm_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound_module.gif"));
 
 			// 	Building class:
 		$content = "";
@@ -2775,7 +2775,7 @@ class tx_kickstarter_compilefiles {
 				// Add activate title to the locallang file.
 			$this->addLocalConf($this->ext_locallang,array("title_activate"=>"...Second level ->"),"title_activate","cm",$k,0,1);
 				// Add activate icon
-			$this->addFileToFileArray($pathSuffix."cm_icon_activate.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/notfound_module.gif"));
+			$this->addFileToFileArray($pathSuffix."cm_icon_activate.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound_module.gif"));
 		}
 
 		if ($config["only_page"])	$content=$this->sPS('
@@ -2903,7 +2903,7 @@ class tx_kickstarter_compilefiles {
 		$this->addLocalLangFile($ll,$pathSuffix."locallang.php",'Language labels for '.$extKey.' module '.$k_prefix.$k);
 
 			// Add clear.gif
-		$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("tx_kickstarter")."res/clear.gif"));
+		$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/clear.gif"));
 		
 			// Make module index.php file:
 		$indexContent = $this->sPS('
@@ -3343,8 +3343,8 @@ class tx_kickstarter_compilefiles {
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/tx_kickstarter/modfunc1/class.tx_kickstarter_compilefiles.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/tx_kickstarter/modfunc1/class.tx_kickstarter_compilefiles.php"]);
+if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/kickstarter/modfunc1/class.tx_kickstarter_compilefiles.php"])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/kickstarter/modfunc1/class.tx_kickstarter_compilefiles.php"]);
 }
 
 ?>

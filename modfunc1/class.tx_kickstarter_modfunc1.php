@@ -22,7 +22,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /** 
- * Module extension (addition to function menu) 'Make new extension' for the 'tx_kickstarter' extension.
+ * Module extension (addition to function menu) 'Make new extension' for the 'kickstarter' extension.
  *
  * @author	Daniel Bruen <dbruen@saltation.de>
  * @author	Ingmar Schlecht <ingmars@web.de>
@@ -31,7 +31,7 @@
 
 
 require_once(PATH_t3lib."class.t3lib_extobjbase.php");
-require_once(t3lib_extMgm::extPath('tx_kickstarter').'modfunc1/class.tx_kickstarter_wizard.php');
+require_once(t3lib_extMgm::extPath('kickstarter').'modfunc1/class.tx_kickstarter_wizard.php');
 
 class tx_kickstarter_modfunc1 extends t3lib_extobjbase {
 	function main()	{
@@ -72,8 +72,8 @@ class tx_kickstarter_modfunc2 extends tx_kickstarter_modfunc1 {
 
 
 
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/tx_kickstarter/modfunc1/class.tx_kickstarter_modfunc1.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/tx_kickstarter/modfunc1/class.tx_kickstarter_modfunc1.php"]);
+if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/kickstarter/modfunc1/class.tx_kickstarter_modfunc1.php"])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/kickstarter/modfunc1/class.tx_kickstarter_modfunc1.php"]);
 }
 
 ?>

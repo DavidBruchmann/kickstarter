@@ -30,10 +30,10 @@
  * @author	Kasper Skårhøj <kasper@typo3.com>
  */
 
-require_once(t3lib_extMgm::extPath("tx_kickstarter")."modfunc1/class.tx_kickstarter_compilefiles.php");
+require_once(t3lib_extMgm::extPath("kickstarter")."modfunc1/class.tx_kickstarter_compilefiles.php");
 
 class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
-	var $varPrefix = "tx_kickstarter";		// redundant from "extrep"
+	var $varPrefix = "kickstarter";		// redundant from "extrep"
 	var $siteBackPath = "";
 	var $EMmode=1;	// If run from Extension Manager, set to 1.
 
@@ -344,8 +344,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
-		if(is_array($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['sidemenu'])) {
-		  foreach($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['sidemenu'] as $_funcRef) {
+		if(is_array($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['sidemenu'])) {
+		  foreach($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['sidemenu'] as $_funcRef) {
 		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
 		  }
 		}
@@ -574,8 +574,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
-		if(is_array($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_pi'])) {
-		  foreach($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_pi'] as $_funcRef) {
+		if(is_array($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_pi'])) {
+		  foreach($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_pi'] as $_funcRef) {
 		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
 		  }
 		}
@@ -612,8 +612,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
-		if(is_array($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_ts'])) {
-		  foreach($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_ts'] as $_funcRef) {
+		if(is_array($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_ts'])) {
+		  foreach($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_ts'] as $_funcRef) {
 		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
 		  }
 		}
@@ -650,8 +650,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
-		if(is_array($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_tsconfig'])) {
-		  foreach($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_tsconfig'] as $_funcRef) {
+		if(is_array($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_tsconfig'])) {
+		  foreach($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_tsconfig'] as $_funcRef) {
 		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
 		  }
 		}
@@ -724,8 +724,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
-		if(is_array($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_module'])) {
-		  foreach($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_module'] as $_funcRef) {
+		if(is_array($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_module'])) {
+		  foreach($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_module'] as $_funcRef) {
 		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
 		  }
 		}
@@ -771,8 +771,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
-		if(is_array($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_moduleFunction'])) {
-		  foreach($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_moduleFunction'] as $_funcRef) {
+		if(is_array($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_moduleFunction'])) {
+		  foreach($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_moduleFunction'] as $_funcRef) {
 		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
 		  }
 		}
@@ -820,8 +820,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
-		if(is_array($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_cm'])) {
-		  foreach($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_cm'] as $_funcRef) {
+		if(is_array($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_cm'])) {
+		  foreach($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_cm'] as $_funcRef) {
 		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
 		  }
 		}
@@ -857,8 +857,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
-		if(is_array($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_languages'])) {
-		  foreach($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_languages'] as $_funcRef) {
+		if(is_array($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_languages'])) {
+		  foreach($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_languages'] as $_funcRef) {
 		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
 		  }
 		}
@@ -959,8 +959,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
-		if(is_array($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_services'])) {
-		  foreach($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_services'] as $_funcRef) {
+		if(is_array($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_services'])) {
+		  foreach($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_services'] as $_funcRef) {
 		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
 		  }
 		}
@@ -1051,8 +1051,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
-		if(is_array($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_emconf'])) {
-		  foreach($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_emconf'] as $_funcRef) {
+		if(is_array($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_emconf'])) {
+		  foreach($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_emconf'] as $_funcRef) {
 		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
 		  }
 		}
@@ -1100,8 +1100,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		$this->makeRepositoryUpdateArray($piConf["extension_key"]);
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
-		if(is_array($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_save'])) {
-		  foreach($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_save'] as $_funcRef) {
+		if(is_array($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_save'])) {
+		  foreach($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_save'] as $_funcRef) {
 		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
 		  }
 		}
@@ -1186,8 +1186,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw("<BR><BR>Load preset fields: <BR>".$selPresetBox).'</td></tr>';
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
-		if(is_array($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_fields'])) {
-		  foreach($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_fields'] as $_funcRef) {
+		if(is_array($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_fields'])) {
+		  foreach($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_fields'] as $_funcRef) {
 		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
 		  }
 		}
@@ -1382,8 +1382,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
-		if(is_array($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_tables'])) {
-		  foreach($TYPO3_CONF_VARS['EXTCONF']['tx_kickstarter']['add_cat_tables'] as $_funcRef) {
+		if(is_array($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_tables'])) {
+		  foreach($TYPO3_CONF_VARS['EXTCONF']['kickstarter']['add_cat_tables'] as $_funcRef) {
 		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
 		  }
 		}
@@ -1501,7 +1501,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 			// Session presets:
 		$ses_optValues=array();
-		$sesdat = $GLOBALS["BE_USER"]->getSessionData("tx_kickstarter");
+		$sesdat = $GLOBALS["BE_USER"]->getSessionData("kickstarter");
 		if (is_array($sesdat["presets"]))	{
 			reset($sesdat["presets"]);
 			while(list($kk1,$vv1)=each($sesdat["presets"]))	{
@@ -1581,9 +1581,9 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		}
 #		debug($newFConf);
 		$this->wizArray[$catID][$action]["fields"] = $newFConf;
-		$sesdat = $GLOBALS["BE_USER"]->getSessionData("tx_kickstarter");
+		$sesdat = $GLOBALS["BE_USER"]->getSessionData("kickstarter");
 		$sesdat["presets"][$this->extKey."-".$catID."-".$action]=$newFConf;
-		$GLOBALS["BE_USER"]->setAndSaveSessionData("tx_kickstarter",$sesdat);
+		$GLOBALS["BE_USER"]->setAndSaveSessionData("kickstarter",$sesdat);
 
 #debug($newFConf);
 		return $newFConf;
@@ -2003,7 +2003,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		return '<img src="'.$this->siteBackPath.$imgRel.'" '.$imgInfo[3].($p?" ".$p:"").'>';
 	}
 	function path_resources($subdir="res/")	{
-		return substr(t3lib_extMgm::extPath("tx_kickstarter"),strlen(PATH_site)).$subdir;
+		return substr(t3lib_extMgm::extPath("kickstarter"),strlen(PATH_site)).$subdir;
 	}
 	function getOnChangeParts($prefix)	{
 		$md5h=t3lib_div::shortMd5($this->piFieldName("wizArray_upd").$prefix);
@@ -2174,8 +2174,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/tx_kickstarter/modfunc1/class.tx_kickstarter_wizard.php"])	{
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/tx_kickstarter/modfunc1/class.tx_kickstarter_wizard.php"]);
+if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/kickstarter/modfunc1/class.tx_kickstarter_wizard.php"])	{
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/kickstarter/modfunc1/class.tx_kickstarter_wizard.php"]);
 }
 
 ?>
