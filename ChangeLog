@@ -1,3 +1,7 @@
+2005-04-10  Ingmar Schlecht  <ingmars@web.de>
+
+	* Made overwrite checkboxes finally work properly
+
 2005-04-06  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Removed all "unsigned" keywords from produced SQL (non-DBAL compliant)

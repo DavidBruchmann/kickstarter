@@ -1,28 +1,28 @@
 <?php
 /***************************************************************
-*  Copyright notice
+*	Copyright notice
 *
-*  (c) 2001-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  All rights reserved
+*	(c) 2001-2004 Kasper Skaarhoj (kasperYYYY@typo3.com)
+*	All rights reserved
 *
-*  This script is part of the TYPO3 project. The TYPO3 project is
-*  free software; you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation; either version 2 of the License, or
-*  (at your option) any later version.
+*	This script is part of the TYPO3 project. The TYPO3 project is
+*	free software; you can redistribute it and/or modify
+*	it under the terms of the GNU General Public License as published by
+*	the Free Software Foundation; either version 2 of the License, or
+*	(at your option) any later version.
 *
-*  The GNU General Public License can be found at
-*  http://www.gnu.org/copyleft/gpl.html.
-*  A copy is found in the textfile GPL.txt and important notices to the license
-*  from the author is found in LICENSE.txt distributed with these scripts.
+*	The GNU General Public License can be found at
+*	http://www.gnu.org/copyleft/gpl.html.
+*	A copy is found in the textfile GPL.txt and important notices to the license
+*	from the author is found in LICENSE.txt distributed with these scripts.
 *
 *
-*  This script is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
+*	This script is distributed in the hope that it will be useful,
+*	but WITHOUT ANY WARRANTY; without even the implied warranty of
+*	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+*	GNU General Public License for more details.
 *
-*  This copyright notice MUST APPEAR in all copies of the script!
+*	This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
  * TYPO3 Extension Repository
@@ -149,12 +149,12 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				$content = $this->view_result();
 			} else $content = $this->fw('<strong>Error:</strong> Please enter an extension key first!<BR><BR>');
 		} elseif ($this->modData['WRITE'])	{
-		  	$this->modData['wizAction']='';
+				$this->modData['wizAction']='';
 			$this->modData['wizSubCmd']='';
 			if ($saveKey)	{
 				$this->makeFilesArray($this->saveKey);
 				$uploadArray = $this->makeUploadArray($this->saveKey,$this->fileArray);
-				$this->pObj->importExtFromRep(0,$this->modData['loc'],0,$uploadArray);
+				$this->pObj->importExtFromRep(0,$this->modData['loc'],0,$uploadArray,0,0,1);
 			} else $content = $this->fw('<strong>Error:</strong> Please enter an extension key first!<BR><BR>');
 		} elseif ($this->modData['totalForm'])	{
 			$content = $this->totalForm();
@@ -317,7 +317,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	function view_result()	{
 		$this->makeFilesArray($this->saveKey);
 		
-		/* Empty the array of files to be overwritten */
+			// Empty the array of files to be overwritten
 		$this->wizArray['save']['overwrite_files'] = array();
 
 		$keyA = array_keys($this->fileArray);
@@ -430,12 +430,12 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		$uploadArray['misc']['codebytes']=0;
 		$uploadArray['techInfo'] = '';
 		
-		/* Go through overwrite-files list to determine which files are to be written to disk */
-		/* This allows to change only certain files on disk while keeping all others */
+			// Go through overwrite-files list to determine which files are to be written to disk
+			// This allows to change only certain files on disk while keeping all others
 		if(is_array($this->wizArray['save']['overwrite_files'])) {
-		  for($i=0; $i<count($this->wizArray['save']['overwrite_files']); $i++) {
-		    $uploadArray['FILES'][$this->wizArray['save']['overwrite_files'][$i]] = $files[$this->wizArray['save']['overwrite_files'][$i]];
-		  }
+			foreach($this->wizArray['save']['overwrite_files'] as $fileName) {
+				$uploadArray['FILES'][$fileName] = $files[$fileName];
+			}
 		}
 		return $uploadArray;
 	}
