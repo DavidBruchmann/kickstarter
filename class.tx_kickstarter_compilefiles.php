@@ -166,7 +166,7 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 
 '.date("y-m-d").' '.$this->userField('name').'  <'.$this->userField('email').'>
 
-  * Initial release
+	* Initial release
 '		);
 
 		$this->addFileToFileArray("README.txt",'
