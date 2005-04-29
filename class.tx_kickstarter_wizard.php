@@ -88,6 +88,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		'ca' => 'Catalan',
 		'ba' => 'Bosnian',
 		'kr' => 'Korean',
+		'eo' => 'Esperanto',
+		'my' => 'Bahasa Malaysia',
 	);
 	var $reservedTypo3Fields='uid,pid,endtime,starttime,sorting,fe_group,hidden,deleted,cruser_id,crdate,tstamp';
 	var $mysql_reservedFields='data,table,field,key,desc';
@@ -129,7 +131,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		$this->wizard =& $this;
 		$this->initWizArray();
 		$this->sections = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['sections'];
-		
+
 		foreach($this->sections as $k => $v) {
 			$this->options[$k] = array($v['title'],$v['description']);
 		}
@@ -385,8 +387,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		return $content;
 	}
 
-	
-	
+
+
 	/**
 	 * Encodes extension upload array
 	 */

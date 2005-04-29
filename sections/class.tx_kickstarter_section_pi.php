@@ -1116,7 +1116,8 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				var $prefixId = \''.$cN.'\';		// Same as class name
 				var $scriptRelPath = \''.($pathSuffix."class.".$cN.".php").'\';	// Path to this script relative to the extension dir.
 				var $extKey = \''.$extKey.'\';	// The extension key.
-
+				'.($cache ? 'var $pi_checkCHash = TRUE;
+				' : '').'
 				',$innerMainContent,'
 			}
 		');
