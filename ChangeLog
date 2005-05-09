@@ -1,3 +1,7 @@
+2005-05-09  Michael Stucki  <michael@typo3.org>
+
+	* Changed quotes for SQL default values from " to '
+
 2005-04-29  Kasper Skårhøj,,,  <kasper@typo3.com>
 
 	* Added "var $pi_checkCHash = TRUE;" in plugins when based on USER objects. See changelog of core for more explanation of this very important parameter for cached plugins.
