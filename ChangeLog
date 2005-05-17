@@ -1,6 +1,6 @@
-2005-05-09  Michael Stucki  <michael@typo3.org>
+2005-05-13  Michael Stucki  <michael@typo3.org>
 
-	* Changed quotes for SQL default values from " to '
+	* Changed quotes for SQL default values
 
 2005-04-29  Kasper Skårhøj,,,  <kasper@typo3.com>
 

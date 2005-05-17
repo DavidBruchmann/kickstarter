@@ -593,7 +593,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 				),
 				"feInterface" => $TCA["'.$tableName.'"]["feInterface"],
 				"columns" => Array (
-			', trim(implode(chr(10),$columns))	,'
+			', trim(implode(chr(10),$columns)),'
 				),
 				"types" => Array (
 					"0" => Array("showitem" => "'.$typeList.'")
@@ -609,7 +609,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		$this->wizard->ext_tables[]=$this->wrapBody('
 			$TCA["'.$tableName.'"] = Array (
 				"ctrl" => Array (
-			', implode(chr(10),$ctrl)	,'
+			', implode(chr(10),$ctrl),'
 				),
 				"feInterface" => Array (
 					"fe_admin_fieldList" => "'.implode(", ",array_keys($columns)).'",

@@ -1162,7 +1162,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$DBfields[] = $fConf['fieldname'].' tinyint(3) DEFAULT \'0\' NOT NULL,';
 					if ($fConf['conf_check_default'])	$configL[]='"default" => 1,	'.$this->WOPcomment('WOP:'.$WOP.'[conf_check_default]');
 				} else {
-					$DBfields[] = $fConf['fieldname'].' int(11) DEFAULT "0" NOT NULL,';
+					$DBfields[] = $fConf['fieldname'].' int(11) DEFAULT \'0\' NOT NULL,';
 				}
 				if ($t=='check_4' || $t=='check_10')	{
 					$configL[]='"cols" => 4,';
