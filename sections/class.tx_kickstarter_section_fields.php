@@ -778,7 +778,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$DBfields[] = $fConf['fieldname'] . ' tinytext NOT NULL,';
 				} else {
 					$varCharLn = (intval($fConf['conf_max'])?t3lib_div::intInRange($fConf['conf_max'],1,255):255);
-					$DBfields[] = $fConf['fieldname'] . ' ' . ($varCharLn>$this->wizard->charMaxLng?'var':'') . 'char(' . $varCharLn .') DEFAULT "" NOT NULL,';
+					$DBfields[] = $fConf['fieldname'] . ' ' . ($varCharLn>$this->wizard->charMaxLng?'var':'') . 'char(' . $varCharLn .') DEFAULT \'\' NOT NULL,';
 				}
 			break;
 			case 'link':

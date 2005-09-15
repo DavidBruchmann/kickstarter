@@ -1,3 +1,7 @@
+2005-09-15  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed one more pair of quotes for SQL default values
+
 2005-05-13  Michael Stucki  <michael@typo3.org>
 
 	* Changed quotes for SQL default values
