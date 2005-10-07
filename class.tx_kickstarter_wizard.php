@@ -90,6 +90,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		'kr' => 'Korean',
 		'eo' => 'Esperanto',
 		'my' => 'Bahasa Malaysia',
+		'hi' => 'Hindi',
 	);
 	var $reservedTypo3Fields='uid,pid,endtime,starttime,sorting,fe_group,hidden,deleted,cruser_id,crdate,tstamp';
 	var $mysql_reservedFields='data,table,field,key,desc';
@@ -318,7 +319,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	 */
 	function view_result()	{
 		$this->makeFilesArray($this->saveKey);
-		
+
 			// Empty the array of files to be overwritten
 		$this->wizArray['save']['overwrite_files'] = array();
 
@@ -431,7 +432,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		$uploadArray['misc']['codelines']=0;
 		$uploadArray['misc']['codebytes']=0;
 		$uploadArray['techInfo'] = '';
-		
+
 			// Go through overwrite-files list to determine which files are to be written to disk
 			// This allows to change only certain files on disk while keeping all others
 		if(is_array($this->wizArray['save']['overwrite_files'])) {

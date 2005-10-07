@@ -25,7 +25,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½hj <kasperYYYY@typo3.com>
  */
 
 require_once(t3lib_extMgm::extPath("kickstarter")."sections/class.tx_kickstarter_section_fields.php");
@@ -388,10 +388,16 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$ctrl[] = '"type" => "'.$config["type_field"].'",	'.$this->WOPcomment('WOP:'.$WOP.'[type_field]');
 		}
 		if ($config['versioning'])	{
-			$ctrl[] = '"versioning" => "1",	' . $this->WOPcomment('WOP:'.$WOP.'[versioning]');
+			$ctrl[] = '"versioningWS" => TRUE, ' . $this->WOPcomment('WOP:'.$WOP.'[versioning]');
+			$ctrl[] = '"origUid" => "t3_origuid",';
 			$DBfields[] = 't3ver_oid int(11) DEFAULT \'0\' NOT NULL,';
 			$DBfields[] = 't3ver_id int(11) DEFAULT \'0\' NOT NULL,';
+			$DBfields[] = 't3ver_wsid int(11) DEFAULT \'0\' NOT NULL,';
 			$DBfields[] = 't3ver_label varchar(30) DEFAULT \'\' NOT NULL,';
+			$DBfields[] = 't3ver_state tinyint(4) DEFAULT \'0\' NOT NULL,';
+			$DBfields[] = 't3ver_count int(11) DEFAULT \'0\' NOT NULL,';
+			$DBfields[] = 't3ver_tstamp int(11) DEFAULT \'0\' NOT NULL,';
+			$DBfields[] = 't3_origuid int(11) DEFAULT \'0\' NOT NULL,';
 		}
 		if ($config["localization"])	{
 			$ctrl[] = '"languageField" => "sys_language_uid",	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
