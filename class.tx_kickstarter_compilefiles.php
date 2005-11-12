@@ -47,7 +47,23 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 
 	var $charMaxLng = 2;	// Varchars are created instead of chars when over this length.
 
-
+	/**
+	 * Creates all files that are necessary for an extension
+	 *	- ext_localconf.php
+	 *	- ext_tables.php
+	 *	- tca.php
+	 *	- ext_tables.sql
+	 *	- locallang.php
+	 *	- locallang_db.php
+	 *	- doc/wizard_form.html
+	 *	- doc/wizard_form.dat
+	 *	- ChangeLog
+	 *	- README.txt
+	 *	- ext_icon.gif
+	 *
+	 * @param	string	$extKey: the extension key
+	 * @return	void
+	 */
 	function makeFilesArray($extKey)	{
 
 		$this->ext_localconf=array();
@@ -72,7 +88,7 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 					require_once($path);
 					$section = t3lib_div::makeInstance($this->sections[$catID]['classname']);
 					$section->wizard = &$this;
-					
+
 					foreach($catData as $k=>$config) {
 						$section->render_extPart($k,$config,$extKey);
 					}
@@ -100,7 +116,7 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 			}
 		}
 
-		// Write the ext_localconf.php file:
+			// Write the ext_localconf.php file:
 		if (count($this->ext_localconf))	{
 			$this->addFileToFileArray("ext_localconf.php",trim($this->wrapBody("
 				<?php
@@ -110,7 +126,7 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 				"?>
 			",0)));
 		}
-		// Write the ext_tables.php file:
+			// Write the ext_tables.php file:
 		if (count($this->ext_tables))	{
 			$this->addFileToFileArray("ext_tables.php",trim($this->wrapBody("
 				<?php
@@ -120,7 +136,7 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 				?>
 			",0)));
 		}
-		// Write the tca.php file:
+			// Write the tca.php file:
 		if (count($this->ext_tca))	{
 			$this->addFileToFileArray("tca.php",trim($this->wrapBody("
 				<?php
@@ -130,20 +146,20 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 				?>
 			",0)));
 		}
-		// Write the ext_tables.sql file:
+			// Write the ext_tables.sql file:
 		if (count($this->ext_tables_sql))	{
 			$this->addFileToFileArray("ext_tables.sql",trim($this->sPS(implode(chr(10),$this->ext_tables_sql))));
 		}
-		// Local lang file:
+			// Local lang file:
 		if (count($this->ext_locallang))	{
 			$this->addLocalLangFile($this->ext_locallang,"locallang.php",'Language labels for extension "'.$extKey.'"');
 		}
-		// Local lang DB file:
+			// Local lang DB file:
 		if (count($this->ext_locallang_db))	{
 			$this->addLocalLangFile($this->ext_locallang_db,"locallang_db.php",'Language labels for database tables/fields belonging to extension "'.$extKey.'"');
 		}
 
-		// The form used to generate the extension:
+			// The form used to generate the extension:
 		$this->dontPrintImages = 1;
 		$this->addFileToFileArray("doc/wizard_form.html",trim($this->sPS('
 			<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -160,7 +176,7 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 			</html>
 		')));
 		$this->addFileToFileArray("doc/wizard_form.dat",serialize($this->wizArray));
-		
+
 		$this->addFileToFileArray("ChangeLog",
 '(add new changes on top of this file)
 
@@ -172,7 +188,7 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 		$this->addFileToFileArray("README.txt",'
 Feel free to add some documentation or simply add a link to the online manual.
 '		);
-		
+
 			// icon:
 		$this->addFileToFileArray("ext_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound.gif"));
 
