@@ -49,19 +49,19 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 
 	/**
 	 * Creates all files that are necessary for an extension
-	 *	- ext_localconf.php
-	 *	- ext_tables.php
-	 *	- tca.php
-	 *	- ext_tables.sql
-	 *	- locallang.php
-	 *	- locallang_db.php
-	 *	- doc/wizard_form.html
-	 *	- doc/wizard_form.dat
-	 *	- ChangeLog
-	 *	- README.txt
-	 *	- ext_icon.gif
+	 * 	- ext_localconf.php
+	 * 	- ext_tables.php
+	 * 	- tca.php
+	 * 	- ext_tables.sql
+	 * 	- locallang.php
+	 * 	- locallang_db.php
+	 * 	- doc/wizard_form.html
+	 * 	- doc/wizard_form.dat
+	 * 	- ChangeLog
+	 * 	- README.txt
+	 * 	- ext_icon.gif
 	 *
-	 * @param	string	$extKey: the extension key
+	 * @param	string		$extKey: the extension key
 	 * @return	void
 	 */
 	function makeFilesArray($extKey)	{

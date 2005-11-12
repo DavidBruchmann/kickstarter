@@ -107,10 +107,18 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 	var $modData;
 
+	/**
+	 * Constructor
+	 */
 	function tx_kickstarter_wizard() {
 		$this->modData = t3lib_div::_POST($this->varPrefix);
 	}
 
+	/**
+	 * Initializing the wizard.
+	 *
+	 * @return	void
+	 */
 	function initWizArray()	{
 		$inArray = unserialize(base64_decode($this->modData['wizArray_ser']));
 		$this->wizArray = is_array($inArray) ? $inArray : array();
@@ -128,6 +136,12 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		}
 	}
 
+	/**
+	 * Switch between the basic operations. Calls the different modules and puts their
+	 * content into a basic framework.
+	 *
+	 * @return	HTML code for the kickstarter containing the module content
+	 */
 	function mgm_wizard()	{
 		$this->wizard =& $this;
 		$this->initWizArray();
@@ -150,7 +164,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			$this->modData['wizSubCmd']='';
 			if ($saveKey)	{
 				$content = $this->view_result();
-			} else $content = $this->fw('<strong>Error:</strong> Please enter an extension key first!<BR><BR>');
+			} else $content = $this->fw('<strong>Error:</strong> Please enter an extension key first!<br /><br />');
 		} elseif ($this->modData['WRITE'])	{
 				$this->modData['wizAction']='';
 			$this->modData['wizSubCmd']='';
@@ -158,7 +172,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				$this->makeFilesArray($this->saveKey);
 				$uploadArray = $this->makeUploadArray($this->saveKey,$this->fileArray);
 				$this->pObj->importExtFromRep(0,$this->modData['loc'],0,$uploadArray,0,0,1);
-			} else $content = $this->fw('<strong>Error:</strong> Please enter an extension key first!<BR><BR>');
+			} else $content = $this->fw('<strong>Error:</strong> Please enter an extension key first!<br /><br />');
 		} elseif ($this->modData['totalForm'])	{
 			$content = $this->totalForm();
 		} elseif ($this->modData['downloadAsFile'])	{
@@ -172,7 +186,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				Header('Content-Disposition: attachment; filename='.$filename);
 				echo $backUpData;
 				exit;
-			} else $content = $this->fw('<strong>Error:</strong> Please enter an extension key first!<BR><BR>');
+			} else $content = $this->fw('<strong>Error:</strong> Please enter an extension key first!<br /><br />');
 		} else {
 			$action = explode(':',$this->modData['wizAction']);
 			if ((string)$action[0]=='deleteEl')	{
@@ -194,14 +208,14 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				<td valign="top">'.$this->sidemenu().'</td>
 				<td>&nbsp;&nbsp;&nbsp;</td>
 				<td valign="top">'.$content.'
-					<input type="hidden" name="'.$this->piFieldName("wizArray_ser").'" value="'.htmlspecialchars(base64_encode(serialize($this->wizArray))).'" /><BR>';
+					<input type="hidden" name="'.$this->piFieldName("wizArray_ser").'" value="'.htmlspecialchars(base64_encode(serialize($this->wizArray))).'" /><br />';
 
 		if ((string)$this->modData['wizSubCmd'])	{
-			if ($wasContent)	$content.='<input name="update2" type="submit" value="Update..."> ';
+			if ($wasContent)	$content.='<input name="update2" type="submit" value="Update..." /> ';
 		}
 		$content.='
-					<input type="hidden" name="'.$this->piFieldName("wizAction").'" value="'.$this->modData["wizAction"].'">
-					<input type="hidden" name="'.$this->piFieldName("wizSubCmd").'" value="'.$this->modData["wizSubCmd"].'">
+					<input type="hidden" name="'.$this->piFieldName("wizAction").'" value="'.$this->modData["wizAction"].'" />
+					<input type="hidden" name="'.$this->piFieldName("wizSubCmd").'" value="'.$this->modData["wizSubCmd"].'" />
 					'.$this->cmdHiddenField().'
 				</td>
 			</tr>
@@ -213,6 +227,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 	/**
 	 * Get form content
+	 *
+	 * @return	HTML code of special section
 	 */
 	function getFormContent()	{
 
@@ -227,6 +243,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 	/**
 	 * Total form
+	 *
+	 * @return	HTML
 	 */
 	function totalForm()	{
 		$buf = array($this->printWOP,$this->dontPrintImages);
@@ -249,12 +267,14 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		$this->modData['wizAction']='';
 		list($this->printWOP,$this->dontPrintImages) = $buf;
 
-		$content = implode('<HR>',$lines);
+		$content = implode('<hr />',$lines);
 		return $content;
 	}
 
 	/**
 	 * Side menu
+	 *
+	 * @return	HTML code of the side menu
 	 */
 	function sidemenu()	{
 #debug($this->modData);
@@ -270,26 +290,26 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				foreach($items as $k2=>$conf)	{
 					$dummyTitle = t3lib_div::inList($singles,$k) ? '[Click to Edit]' : '<em>Item '.$k2.'</em>';
 					$isActive = !strcmp($k.':edit:'.$k2,$actionType);
-					$delIcon = $this->linkStr('<img src="'.$this->siteBackPath.'t3lib/gfx/garbage.gif" width="11" height="12" border="0" title="Remove item">','','deleteEl:'.$k.':'.$k2);
+					$delIcon = $this->linkStr('<img src="'.$this->siteBackPath.'t3lib/gfx/garbage.gif" width="11" height="12" border="0" title="Remove item" />','','deleteEl:'.$k.':'.$k2);
 					$iLines[]='<tr'.($isActive?$this->bgCol(2,-30):$this->bgCol(2)).'><td>'.$this->fw($this->linkStr($this->bwWithFlag($conf['title']?$conf['title']:$dummyTitle,$isActive),$k,'edit:'.$k2)).'</td><td>'.$delIcon.'</td></tr>';
 					$c=$k2;
 				}
 			}
 			if (!t3lib_div::inList($singles,$k) || !count($iLines))	{
 				$c++;
-				$addIcon = $this->linkStr('<img src="'.$this->siteBackPath.'t3lib/gfx/add.gif" width="12" height="12" border="0" title="Add item">',$k,'edit:'.$c);
+				$addIcon = $this->linkStr('<img src="'.$this->siteBackPath.'t3lib/gfx/add.gif" width="12" height="12" border="0" title="Add item" />',$k,'edit:'.$c);
 			} else {$addIcon = '';}
 
-			$lines[]='<tr'.$this->bgCol(1).'><td nowrap><strong>'.$this->fw($v[0]).'</strong></td><td>'.$addIcon.'</td></tr>';
+			$lines[]='<tr'.$this->bgCol(1).'><td nowrap="nowrap"><strong>'.$this->fw($v[0]).'</strong></td><td>'.$addIcon.'</td></tr>';
 			$lines = array_merge($lines,$iLines);
 		}
 
 		$lines[]='<tr><td>&nbsp;</td><td></td></tr>';
 
-		$lines[]='<tr><td width=150>
-		'.$this->fw('Enter extension key:').'<BR>
-		<input type="text" name="'.$this->piFieldName('wizArray_upd').'[save][extension_key]" value="'.$this->wizArray['save']['extension_key'].'">
-		'.($this->wizArray['save']['extension_key']?'':'<BR><a href="http://typo3.org/1382.0.html" target="_blank"><font color=red>Make sure to enter the right extension key from the beginning here!</font> You can register one here.</a>').'
+		$lines[]='<tr><td width="150">
+		'.$this->fw('Enter extension key:').'<br />
+		<input type="text" name="'.$this->piFieldName('wizArray_upd').'[save][extension_key]" value="'.$this->wizArray['save']['extension_key'].'" />
+		'.($this->wizArray['save']['extension_key']?'':'<br /><a href="http://typo3.org/1382.0.html" target="_blank"><font color="red">Make sure to enter the right extension key from the beginning here!</font> You can register one here.</a>').'
 		</td><td></td></tr>';
 # onClick="setFormAnchorPoint(\'_top\')"
 		$lines[]='<tr><td><input type="submit" value="Update..."></td><td></td></tr>';
@@ -299,7 +319,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			$lines[]='<tr><td><input type="submit" name="'.$this->piFieldName('viewResult').'" value="View result"></td><td></td></tr>';
 			$lines[]='<tr><td><input type="submit" name="'.$this->piFieldName('downloadAsFile').'" value="D/L as file"></td><td></td></tr>';
 			$lines[]='<tr><td>
-			<input type="hidden" name="'.$this->piFieldName('wizArray_upd').'[save][print_wop_comments]" value="0"><input type="checkbox" name="'.$this->piFieldName('wizArray_upd').'[save][print_wop_comments]" value="1" '.($this->wizArray['save']['print_wop_comments']?' CHECKED':'').'>'.$this->fw('Print WOP comments').'
+			<input type="hidden" name="'.$this->piFieldName('wizArray_upd').'[save][print_wop_comments]" value="0" /><input type="checkbox" name="'.$this->piFieldName('wizArray_upd').'[save][print_wop_comments]" value="1" '.($this->wizArray['save']['print_wop_comments']?' checked="checked"':'').' />'.$this->fw('Print WOP comments').'
 			</td><td></td></tr>';
 		}
 
@@ -310,12 +330,14 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			}
 		}
 
-		$content = '<table border=0 cellpadding=2 cellspacing=2>'.implode('',$lines).'</table>';
+		$content = '<table border="0" cellpadding="2" cellspacing="2">'.implode('',$lines).'</table>';
 		return $content;
 	}
 
 	/**
 	 * View result
+	 *
+	 * @return	HTML with filelist and fileview
 	 */
 	function view_result()	{
 		$this->makeFilesArray($this->saveKey);
@@ -355,7 +377,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				<td>' . $this->fw($fileName) . '</td>
 				<td>' . $this->fw(t3lib_div::formatSize($data['size'])) . '</td>
 				<td>' . $linkToFile . '</td>
-				<td><input type="checkbox" name="' . $this->piFieldName('wizArray_upd') . '[save][overwrite_files][]" value="' . $fileName . '" checked="checked"></td>
+				<td><input type="checkbox" name="' . $this->piFieldName('wizArray_upd') . '[save][overwrite_files][]" value="' . $fileName . '" checked="checked" /></td>
 			</tr>';
 			if (strstr($fileName,'/'))	{
 				$filesOverview2[]=$line;
@@ -364,27 +386,27 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			}
 		}
 
-		$content = '<table border=0 cellpadding=1 cellspacing=2>'.implode('',$filesOverview1).implode('',$filesOverview2).'</table>';
-		$content.= $this->fw('<BR><strong>Author name:</strong> '.$GLOBALS['BE_USER']->user['realName'].'
-							<BR><strong>Author email:</strong> '.$GLOBALS['BE_USER']->user['email']);
+		$content = '<table border="0" cellpadding="1" cellspacing="2">'.implode('',$filesOverview1).implode('',$filesOverview2).'</table>';
+		$content.= $this->fw('<br /><strong>Author name:</strong> '.$GLOBALS['BE_USER']->user['realName'].'
+							<br /><strong>Author email:</strong> '.$GLOBALS['BE_USER']->user['email']);
 
 
-		$content.= '<BR><BR>';
+		$content.= '<br /><br />';
 		if (!$this->EMmode)	{
-			$content.='<input type="submit" name="'.$this->piFieldName('WRITE').'" value="WRITE to \''.$this->saveKey.'\'">';
+			$content.='<input type="submit" name="'.$this->piFieldName('WRITE').'" value="WRITE to \''.$this->saveKey.'\'" />';
 		} else {
 			$content.='
-				<strong>'.$this->fw('Write to location:').'</strong><BR>
+				<strong>'.$this->fw('Write to location:').'</strong><br />
 				<select name="'.$this->piFieldName('loc').'">'.
 					($this->pObj->importAsType('G')?'<option value="G">Global: '.$this->pObj->typePaths['G'].$this->saveKey.'/'.(@is_dir(PATH_site.$this->pObj->typePaths['G'].$this->saveKey)?' (OVERWRITE)':' (empty)').'</option>':'').
 					($this->pObj->importAsType('L')?'<option value="L">Local: '.$this->pObj->typePaths['L'].$this->saveKey.'/'.(@is_dir(PATH_site.$this->pObj->typePaths['L'].$this->saveKey)?' (OVERWRITE)':' (empty)').'</option>':'').
 				'</select>
-				<input type="submit" name="'.$this->piFieldName('WRITE').'" value="WRITE" onClick="return confirm(\'If the setting in the selectorbox says OVERWRITE\nthen the current extension in that location WILL be overridden! Totally!\nPlease decide if you want to continue.\n\n(Remember, this is a *kickstarter* - not an editor!)\');">
+				<input type="submit" name="'.$this->piFieldName('WRITE').'" value="WRITE" onclick="return confirm(\'If the setting in the selectorbox says OVERWRITE\nthen the current extension in that location WILL be overridden! Totally!\nPlease decide if you want to continue.\n\n(Remember, this is a *kickstarter* - not an editor!)\');" />
 			';
 		}
 
 
-		$this->afterContent= '<BR><table border=0 cellpadding=1 cellspacing=2>'.implode('',$filesContent).'</table>';
+		$this->afterContent= '<br /><table border="0" cellpadding="1" cellspacing="2">'.implode('',$filesContent).'</table>';
 		return $content;
 	}
 
@@ -392,6 +414,9 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 	/**
 	 * Encodes extension upload array
+	 *
+	 * @param	array		$uploadArray: The data array that should be serialized
+	 * @return	string		serialized data prepended with md5 checksum
 	 */
 	function makeUploadDataFromArray($uploadArray)	{
 		if (is_array($uploadArray))	{
@@ -411,6 +436,10 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	}
 	/**
 	 * Make upload array out of extension
+	 *
+	 * @param	string		$extKey: extension key
+	 * @param	array		$files: array with filedata
+	 * @return	array of extension files
 	 */
 	function makeUploadArray($extKey,$files)	{
 		$uploadArray=array();
