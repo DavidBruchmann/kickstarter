@@ -68,9 +68,9 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 				// Admin only
 			$subContent =$this->resImg('cm.png');
 			$subContent.= $this->renderCheckBox($ffPrefix.'[second_level]',$piConf['second_level']).'Activate a second-level menu.<br />';
-			$subContent.= $this->renderCheckBox($ffPrefix.'[only_page]',$piConf['only_page']).'Add only if the click menu is on a 'Page' (example)<br />';
+			$subContent.= $this->renderCheckBox($ffPrefix.'[only_page]',$piConf['only_page']).'Add only if the click menu is on a \'Page\' (example)<br />';
 			$subContent.= $this->renderCheckBox($ffPrefix.'[only_if_edit]',$piConf['only_if_edit']).'Only active if item is editable.<br />';
-			$subContent.= $this->renderCheckBox($ffPrefix.'[remove_view]',$piConf['remove_view']).'Remove 'Show' element (example)<br />';
+			$subContent.= $this->renderCheckBox($ffPrefix.'[remove_view]',$piConf['remove_view']).'Remove \'Show\' element (example)<br />';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 		}
 
@@ -145,7 +145,7 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 				$localItems[]="spacer";
 				$localItems["moreoptions_'.$cN.'"]=$backRef->linkItem(
 					$GLOBALS["LANG"]->getLLL("cm'.$k.'_title_activate",$LL),
-					$backRef->excludeIcon(\'<img src="\'.t3lib_extMgm::extRelPath("'.$extKey.'").\''.$pathSuffix.'cm_icon_activate.gif" width="15" height="12" border="0" align='top" />\'),
+					$backRef->excludeIcon(\'<img src="\'.t3lib_extMgm::extRelPath("'.$extKey.'").\''.$pathSuffix.'cm_icon_activate.gif" width="15" height="12" border="0" align="top" />\'),
 					"top.loadTopMenu(\'".t3lib_div::linkThisScript()."&cmLevel=1&subname=moreoptions_'.$cN.'\');return false;",
 					0,
 					1

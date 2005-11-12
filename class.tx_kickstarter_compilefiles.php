@@ -120,7 +120,7 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 		if (count($this->ext_localconf))	{
 			$this->addFileToFileArray('ext_localconf.php',trim($this->wrapBody('
 				<?php
-				if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+				if (!defined (\'TYPO3_MODE\')) 	die (\'Access denied.\');
 					',
 				implode(chr(10),$this->ext_localconf),
 				'?>
@@ -130,7 +130,7 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 		if (count($this->ext_tables))	{
 			$this->addFileToFileArray('ext_tables.php',trim($this->wrapBody('
 				<?php
-				if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+				if (!defined (\'TYPO3_MODE\')) 	die (\'Access denied.\');
 
 				',implode(chr(10),$this->ext_tables),'
 				?>
@@ -140,7 +140,7 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 		if (count($this->ext_tca))	{
 			$this->addFileToFileArray('tca.php',trim($this->wrapBody('
 				<?php
-				if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+				if (!defined (\'TYPO3_MODE\')) 	die (\'Access denied.\');
 
 				',implode(chr(10),$this->ext_tca),'
 				?>
