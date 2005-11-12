@@ -34,6 +34,10 @@ require_once(PATH_t3lib."class.t3lib_extobjbase.php");
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_wizard.php');
 
 class tx_kickstarter_modfunc1 extends t3lib_extobjbase {
+	
+	/**
+	 * Main method of modfunc1
+	 */
 	function main()	{
 		$kickstarter = $this->initKickstarter();
 		$content = $kickstarter->mgm_wizard();
@@ -41,6 +45,11 @@ class tx_kickstarter_modfunc1 extends t3lib_extobjbase {
 		return '</form>'.$this->pObj->doc->section('Kickstarter wizard',$content,0,1).'<form>';
 	}
 
+	/**
+	 * Initializing the Kickstarter
+	 *
+	 * @return	Instance of kickstarter
+	 */
 	function initKickstarter() {
 		$kickstarter = t3lib_div::makeInstance('tx_kickstarter_wizard');
 		$kickstarter->color = array($this->pObj->doc->bgColor5,$this->pObj->doc->bgColor4,$this->pObj->doc->bgColor);
@@ -52,7 +61,13 @@ class tx_kickstarter_modfunc1 extends t3lib_extobjbase {
 	}
 }
 
+
 class tx_kickstarter_modfunc2 extends tx_kickstarter_modfunc1 {
+	
+	/**
+	 * Main method of modfunc2
+	 *
+	 */	
 	function main()	{
 		$kickstarter = $this->initKickstarter();
 		if(!$kickstarter->modData['wizArray_ser']) {
@@ -63,6 +78,11 @@ class tx_kickstarter_modfunc2 extends tx_kickstarter_modfunc1 {
 		return '</form>'.$this->pObj->doc->section('Kickstarter wizard',$content,0,1).'<form>';
 	}
 
+	/**
+	 * fetch form data from file (doc/wizard_form.dat) if it is present
+	 *
+	 * @return	Formdata if the file was found, otherwise an empty string
+	 */
 	function getWizardFormDat() {
 		list($list,$cat)=$this->pObj->getInstalledExtensions();
 		$absPath = $this->pObj->getExtPath($this->pObj->CMD['showExt'],$list[$this->pObj->CMD['showExt']]['type']);
