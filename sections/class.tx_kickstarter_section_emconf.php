@@ -27,7 +27,7 @@
 /**
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
- 
+
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
 
 class tx_kickstarter_section_emconf extends tx_kickstarter_sectionbase {
@@ -35,6 +35,8 @@ class tx_kickstarter_section_emconf extends tx_kickstarter_sectionbase {
 
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_emconf()
+	 *
+	 * @return	[type]		...
 	 */
 	function render_wizard() {
 		$lines=array();
@@ -55,12 +57,12 @@ class tx_kickstarter_section_emconf extends tx_kickstarter_sectionbase {
 			}
 
 				// Title
-			$subContent='<strong>Title:</strong><BR>'.
+			$subContent='<strong>Title:</strong><br />'.
 				$this->renderStringBox($ffPrefix.'[title]',$piConf['title']?$piConf['title']:$extKeyRec['title']);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Description
-			$subContent='<strong>Description:</strong><BR>'.
+			$subContent='<strong>Description:</strong><br />'.
 				$this->renderStringBox($ffPrefix.'[description]',$piConf['description']?$piConf['description']:$extKeyRec['description']);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
@@ -77,7 +79,7 @@ class tx_kickstarter_section_emconf extends tx_kickstarter_sectionbase {
 				'templates' => 'Templates',
 				'doc' => 'Documentation',
 			);
-			$subContent='<strong>Category:</strong><BR>'.
+			$subContent='<strong>Category:</strong><br />'.
 				$this->renderSelectBox($ffPrefix.'[category]',$piConf['category'],$optValues);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
@@ -92,12 +94,12 @@ class tx_kickstarter_section_emconf extends tx_kickstarter_sectionbase {
 				'experimental' => 'Experimental (Nobody knows if this is going anywhere yet...)',
 				'test' => 'Test (Test extension, demonstrates concepts etc.)',
 			);
-			$subContent='<strong>State</strong><BR>'.
+			$subContent='<strong>State</strong><br />'.
 				$this->renderSelectBox($ffPrefix.'[state]',$piConf['state'],$optValues);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Dependencies
-			$subContent='<strong>Dependencies (comma list of extkeys):</strong><BR>'.
+			$subContent='<strong>Dependencies (comma list of extkeys):</strong><br />'.
 				$this->renderStringBox($ffPrefix.'[dependencies]',$piConf['dependencies']);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
@@ -105,27 +107,35 @@ class tx_kickstarter_section_emconf extends tx_kickstarter_sectionbase {
 
 
 				// Author
-			$subContent='<strong>Author Name:</strong><BR>'.
+			$subContent='<strong>Author Name:</strong><br />'.
 				$this->renderStringBox($ffPrefix.'[author]',$piConf['author']?$piConf['author']:$GLOBALS['BE_USER']->user['realName']);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Author/Email
-			$subContent='<strong>Author email:</strong><BR>'.
+			$subContent='<strong>Author email:</strong><br />'.
 				$this->renderStringBox($ffPrefix.'[author_email]',$piConf['author_email']?$piConf['author_email']:$GLOBALS['BE_USER']->user['email']);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
 		if(is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['add_cat_emconf'])) {
-		  foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['add_cat_emconf'] as $_funcRef) {
-		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
-		  }
+			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['add_cat_emconf'] as $_funcRef) {
+				$lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
+			}
 		}
 
-		$content = '<table border=0 cellpadding=2 cellspacing=2>'.implode('',$lines).'</table>';
+		$content = '<table border="0" cellpadding="2" cellspacing="2">'.implode('',$lines).'</table>';
 		return $content;
 	}
 
+	/**
+	 * Do nothing !?
+	 *
+	 * @param	mixed		$k: ???
+	 * @param	mixed		$config: ???
+	 * @param	mixed		$extKey: ???
+	 * @return	mixed
+	 */
 	function render_extPart($k,$config,$extKey) {
 
 	}
