@@ -28,33 +28,35 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-require_once(t3lib_extMgm::extPath("kickstarter")."class.tx_kickstarter_sectionbase.php");
- 
+require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
+
 class tx_kickstarter_section_languages extends tx_kickstarter_sectionbase {
   var $sectionID = 'languages';
 
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_languages()
+	 *
+	 * @return	HTML
 	 */
 	function render_wizard() {
 		$lines=array();
 
-		$action = explode(":",$this->wizard->modData["wizAction"]);
-		if ($action[0]=="edit")	{
+		$action = explode(':',$this->wizard->modData['wizAction']);
+		if ($action[0]=='edit')	{
 			$action[1]=1;
 			$this->regNewEntry($this->sectionID,$action[1]);
 
-			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
+			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],'&nbsp;',$action[1]);
 			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 				// Admin only
-			$subContent ="";
+			$subContent ='';
 			reset($this->wizard->languages);
 			while(list($k,$v)=each($this->wizard->languages))	{
-				$subContent.= $this->renderCheckBox($ffPrefix."[".$k."]",$piConf[$k]).$v."<BR>";
+				$subContent.= $this->renderCheckBox($ffPrefix.'['.$k.']',$piConf[$k]).$v.'<br />';
 			}
-			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($this->textSetup("Enter which languages to setup:",$subContent)).'</td></tr>';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($this->textSetup('Enter which languages to setup:',$subContent)).'</td></tr>';
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
@@ -64,7 +66,7 @@ class tx_kickstarter_section_languages extends tx_kickstarter_sectionbase {
 		  }
 		}
 
-		$content = '<table border=0 cellpadding=2 cellspacing=2>'.implode("",$lines).'</table>';
+		$content = '<table border="0" cellpadding="2" cellspacing="2">'.implode('',$lines).'</table>';
 		return $content;
 	}
 
@@ -76,7 +78,12 @@ class tx_kickstarter_section_languages extends tx_kickstarter_sectionbase {
 
 
 	/**
-	 * Renders the extension PHP codee; this was 
+	 * Renders the extension PHP code; this was
+	 *
+	 * @param	mixed		$k: ???
+	 * @param	mixed		$config: ???
+	 * @param	mixed		$extKey: ???
+	 * @return	void
 	 */
 	function render_extPart($k,$config,$extKey) {
 

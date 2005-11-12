@@ -28,69 +28,71 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-require_once(t3lib_extMgm::extPath("kickstarter")."class.tx_kickstarter_sectionbase.php");
- 
+require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
+
 class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
   var $sectionID = 'module';
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_module()
+	 *
+	 * @return	HTML
 	 */
 	function render_wizard() {
 		$lines=array();
 
-		$action = explode(":",$this->wizard->modData["wizAction"]);
-		if ($action[0]=="edit")	{
+		$action = explode(':',$this->wizard->modData['wizAction']);
+		if ($action[0]=='edit')	{
 			$this->regNewEntry($this->sectionID,$action[1]);
-			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
+			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],'&nbsp;',$action[1]);
 			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 				// Enter title of the module
-			$subContent="<strong>Enter a title for the module:</strong><BR>".
-				$this->renderStringBox_lang("title",$ffPrefix,$piConf);
+			$subContent='<strong>Enter a title for the module:</strong><br />'.
+				$this->renderStringBox_lang('title',$ffPrefix,$piConf);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Description
-			$subContent="<strong>Enter a description:</strong><BR>".
-				$this->renderStringBox_lang("description",$ffPrefix,$piConf);
+			$subContent='<strong>Enter a description:</strong><br />'.
+				$this->renderStringBox_lang('description',$ffPrefix,$piConf);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Description
-			$subContent="<strong>Enter a tab label (shorter description):</strong><BR>".
-				$this->renderStringBox_lang("tablabel",$ffPrefix,$piConf);
+			$subContent='<strong>Enter a tab label (shorter description):</strong><br />'.
+				$this->renderStringBox_lang('tablabel',$ffPrefix,$piConf);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Position
 			$optValues = array(
-				"web" => "Sub in Web-module",
-				"file" => "Sub in File-module",
-				"user" => "Sub in User-module",
-				"tools" => "Sub in Tools-module",
-				"help" => "Sub in Help-module",
-				"_MAIN" => "New main module"
+				'web' => 'Sub in Web-module',
+				'file' => 'Sub in File-module',
+				'user' => 'Sub in User-module',
+				'tools' => 'Sub in Tools-module',
+				'help' => 'Sub in Help-module',
+				'_MAIN' => 'New main module'
 			);
-			$subContent="<strong>Sub- or main module?</strong><BR>".
-				$this->renderSelectBox($ffPrefix."[position]",$piConf["position"],$optValues).
-				$this->resImg("module.png");
+			$subContent='<strong>Sub- or main module?</strong><br />'.
+				$this->renderSelectBox($ffPrefix.'[position]',$piConf['position'],$optValues).
+				$this->resImg('module.png');
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Sub-position
 			$optValues = array(
-				"0" => "Bottom (default)",
-				"top" => "Top",
-				"web_after_page" => "If in Web-module, after Web>Page",
-				"web_before_info" => "If in Web-module, before Web>Info",
+				'0' => 'Bottom (default)',
+				'top' => 'Top',
+				'web_after_page' => 'If in Web-module, after Web>Page',
+				'web_before_info' => 'If in Web-module, before Web>Info',
 			);
-			$subContent="<strong>Position in module menu?</strong><BR>".
-				$this->renderSelectBox($ffPrefix."[subpos]",$piConf["subpos"],$optValues);
+			$subContent='<strong>Position in module menu?</strong><br />'.
+				$this->renderSelectBox($ffPrefix.'[subpos]',$piConf['subpos'],$optValues);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Admin only
-			$subContent = $this->renderCheckBox($ffPrefix."[admin_only]",$piConf["admin_only"])."Admin-only access!<BR>";
+			$subContent = $this->renderCheckBox($ffPrefix.'[admin_only]',$piConf['admin_only']).'Admin-only access!<br />';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Options
-			$subContent = $this->renderCheckBox($ffPrefix."[interface]",$piConf["interface"])."Allow other extensions to interface with function menu<BR>";
+			$subContent = $this->renderCheckBox($ffPrefix.'[interface]',$piConf['interface']).'Allow other extensions to interface with function menu<br />';
 #			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 		}
 
@@ -101,7 +103,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 		  }
 		}
 
-		$content = '<table border=0 cellpadding=2 cellspacing=2>'.implode("",$lines).'</table>';
+		$content = '<table border=0 cellpadding=2 cellspacing=2>'.implode('',$lines).'</table>';
 		return $content;
 	}
 
@@ -113,24 +115,29 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 
 
 	/**
-	 * Renders the extension PHP codee; this was 
+	 * Renders the extension PHP codee; this was
+	 *
+	 * @param	string		$k: module name key
+	 * @param	array		$config: module configuration
+	 * @param	string		$extKey: extension key
+	 * @return	void
 	 */
 	function render_extPart($k,$config,$extKey) {
-		$WOP="[module][".$k."]";
-		$mN = ($config["position"]!="_MAIN"?$config["position"]."_":"").$this->returnName($extKey,"module","M".$k);
-		$cN = $this->returnName($extKey,"class","module".$k);
-		$pathSuffix = "mod".$k."/";
+		$WOP='[module]['.$k.']';
+		$mN = ($config['position']!='_MAIN'?$config['position'].'_':'').$this->returnName($extKey,'module','M'.$k);
+		$cN = $this->returnName($extKey,'class','module'.$k);
+		$pathSuffix = 'mod'.$k.'/';
 
 			// Insert module:
-		switch($config["subpos"])	{
-			case "top":
-				$subPos="top";
+		switch($config['subpos'])	{
+			case 'top':
+				$subPos='top';
 			break;
-			case "web_after_page":
-				$subPos="after:layout";
+			case 'web_after_page':
+				$subPos='after:layout';
 			break;
-			case "web_before_info":
-				$subPos="before:info";
+			case 'web_before_info':
+				$subPos='before:info';
 			break;
 		}
 		$this->wizard->ext_tables[]=$this->sPS('
@@ -138,9 +145,9 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 			if (TYPO3_MODE=="BE")	{
 					'.$this->WOPcomment('1. and 2. parameter is WOP:'.$WOP.'[position] , 3. parameter is WOP:'.$WOP.'[subpos]').'
 				t3lib_extMgm::addModule("'.
-					($config["position"]!="_MAIN"?$config["position"]:$this->returnName($extKey,"module","M".$k)).
+					($config['position']!='_MAIN'?$config['position']:$this->returnName($extKey,'module','M'.$k)).
 					'","'.
-					($config["position"]!="_MAIN"?$this->returnName($extKey,"module","M".$k):"").
+					($config['position']!='_MAIN'?$this->returnName($extKey,'module','M'.$k):'').
 					'","'.
 					$subPos.
 					'",t3lib_extMgm::extPath($_EXTKEY)."'.$pathSuffix.'");
@@ -161,14 +168,14 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 			$MLANG[\'default\'][\'tabs_images\'][\'tab\'] = \'moduleicon.gif\';
 			$MLANG[\'default\'][\'ll_ref\']=\'LLL:EXT:'.$extKey.'/'.$pathSuffix.'locallang_mod.php\';
 		');
-		$this->wizard->EM_CONF_presets["module"][]=ereg_replace("\/$","",$pathSuffix);
+		$this->wizard->EM_CONF_presets['module'][]=ereg_replace('\/$','',$pathSuffix);
 
 
 		$ll=array();
-		$this->addLocalConf($ll,$config,"title","module",$k,1,0,"mlang_tabs_tab");
-		$this->addLocalConf($ll,$config,"description","module",$k,1,0,"mlang_labels_tabdescr");
-		$this->addLocalConf($ll,$config,"tablabel","module",$k,1,0,"mlang_labels_tablabel");
-		$this->addLocalLangFile($ll,$pathSuffix."locallang_mod.php",'Language labels for module "'.$mN.'" - header, description');
+		$this->addLocalConf($ll,$config,'title','module',$k,1,0,'mlang_tabs_tab');
+		$this->addLocalConf($ll,$config,'description','module',$k,1,0,'mlang_labels_tabdescr');
+		$this->addLocalConf($ll,$config,'tablabel','module',$k,1,0,'mlang_labels_tablabel');
+		$this->addLocalLangFile($ll,$pathSuffix.'locallang_mod.php','Language labels for module "'.$mN.'" - header, description');
 
 //			$MLANG["default"]["tabs"]["tab"] = "'.addslashes($config["title"]).'";	'.$this->WOPcomment('WOP:'.$WOP.'[title]').'
 //			$MLANG["default"]["labels"]["tabdescr"] = "'.addslashes($config["description"]).'";	'.$this->WOPcomment('WOP:'.$WOP.'[description]').'
@@ -195,21 +202,21 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 			?>
 		',0);
 
-		$this->addFileToFileArray($pathSuffix."conf.php",trim($content));
+		$this->addFileToFileArray($pathSuffix.'conf.php',trim($content));
 
 			// Add title to local lang file
 		$ll=array();
-		$this->addLocalConf($ll,$config,"title","module",$k,1);
-		$this->addLocalConf($ll,array("function1"=>"Function #1"),"function1","module",$k,1,1);
-		$this->addLocalConf($ll,array("function2"=>"Function #2"),"function2","module",$k,1,1);
-		$this->addLocalConf($ll,array("function3"=>"Function #3"),"function3","module",$k,1,1);
-		$this->addLocalLangFile($ll,$pathSuffix."locallang.php",'Language labels for module "'.$mN.'"');
+		$this->addLocalConf($ll,$config,'title','module',$k,1);
+		$this->addLocalConf($ll,array('function1'=>'Function #1'),'function1','module',$k,1,1);
+		$this->addLocalConf($ll,array('function2'=>'Function #2'),'function2','module',$k,1,1);
+		$this->addLocalConf($ll,array('function3'=>'Function #3'),'function3','module',$k,1,1);
+		$this->addLocalLangFile($ll,$pathSuffix.'locallang.php','Language labels for module "'.$mN.'"');
 
 			// Add clear.gif
-		$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/clear.gif"));
+		$this->addFileToFileArray($pathSuffix.'clear.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/clear.gif'));
 
 			// Add clear.gif
-		$this->addFileToFileArray($pathSuffix."moduleicon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound_module.gif"));
+		$this->addFileToFileArray($pathSuffix.'moduleicon.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/notfound_module.gif'));
 
 
 			// Make module index.php file:
@@ -231,7 +238,8 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 				var $pageinfo;
 
 				/**
-				 *
+				 * Initializes the Module
+				 * @return	void
 				 */
 				function init()	{
 					global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
@@ -247,6 +255,8 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 
 				/**
 				 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
+				 *
+				 * @return	void
 				 */
 				function menuConfig()	{
 					global $LANG;
@@ -260,9 +270,11 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 					parent::menuConfig();
 				}
 
-					// If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
 				/**
 				 * Main function of the module. Write the content to $this->content
+				 * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
+				 *
+				 * @return	[type]		...
 				 */
 				function main()	{
 					global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
@@ -291,11 +303,11 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 						$this->doc->postCode=\'
 							<script language="javascript" type="text/javascript">
 								script_ended = 1;
-								if (top.fsMod) top.fsMod.recentIds["web"] = \'.intval($this->id).\';
+								if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 							</script>
 						\';
 
-						$headerSection = $this->doc->getHeader("pages",$this->pageinfo,$this->pageinfo["_thePath"])."<br>".$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.path").": ".t3lib_div::fixed_lgd_pre($this->pageinfo["_thePath"],50);
+						$headerSection = $this->doc->getHeader("pages",$this->pageinfo,$this->pageinfo["_thePath"])."<br />".$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.path").": ".t3lib_div::fixed_lgd_pre($this->pageinfo["_thePath"],50);
 
 						$this->content.=$this->doc->startPage($LANG->getLL("title"));
 						$this->content.=$this->doc->header($LANG->getLL("title"));
@@ -329,6 +341,8 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 
 				/**
 				 * Prints out the module HTML
+				 *
+				 * @return	void
 				 */
 				function printContent()	{
 
@@ -338,16 +352,18 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 
 				/**
 				 * Generates the module content
+				 *
+				 * @return	void
 				 */
 				function moduleContent()	{
 					switch((string)$this->MOD_SETTINGS["function"])	{
 						case 1:
-							$content="<div align=center><strong>Hello World!</strong></div><BR>
+							$content="<div align=center><strong>Hello World!</strong></div><br />
 								The \'Kickstarter\' has made this module automatically, it contains a default framework for a backend module but apart from it does nothing useful until you open the script \'".substr(t3lib_extMgm::extPath("'.$extKey.'"),strlen(PATH_site))."'.$pathSuffix.'index.php\' and edit it!
 								<HR>
-								<BR>This is the GET/POST vars sent to the script:<BR>".
-								"GET:".t3lib_div::view_array($_GET)."<BR>".
-								"POST:".t3lib_div::view_array($_POST)."<BR>".
+								<br />This is the GET/POST vars sent to the script:<br />".
+								"GET:".t3lib_div::view_array($_GET)."<br />".
+								"POST:".t3lib_div::view_array($_POST)."<br />".
 								"";
 							$this->content.=$this->doc->section("Message #1:",$content,0,1);
 						break;
@@ -364,9 +380,9 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 			}
 		');
 
-		$SOBE_extras["firstLevel"]=0;
-		$SOBE_extras["include"]=1;
-		$this->addFileToFileArray($pathSuffix."index.php",$this->PHPclassFile($extKey,$pathSuffix."index.php",$indexContent,"Module '".$config["title"]."' for the '".$extKey."' extension.",$cN,$SOBE_extras));
+		$SOBE_extras['firstLevel']=0;
+		$SOBE_extras['include']=1;
+		$this->addFileToFileArray($pathSuffix.'index.php',$this->PHPclassFile($extKey,$pathSuffix.'index.php',$indexContent,"Module '".$config["title"]."' for the '".$extKey."' extension.",$cN,$SOBE_extras));
 
 	}
 
