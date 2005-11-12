@@ -28,53 +28,55 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-require_once(t3lib_extMgm::extPath("kickstarter")."class.tx_kickstarter_sectionbase.php");
- 
+require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
+
 class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
   var $sectionID = 'modulefunction';
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_modulefunction()
+	 *
+	 * @return	HTML
 	 */
 	function render_wizard() {
 		$lines=array();
 
-		$action = explode(":",$this->wizard->modData["wizAction"]);
-		if ($action[0]=="edit")	{
+		$action = explode(':',$this->wizard->modData['wizAction']);
+		if ($action[0]=='edit')	{
 			$this->regNewEntry($this->sectionID,$action[1]);
-			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
+			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],'&nbsp;',$action[1]);
 			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 				// Enter title of the module function
-			$subContent="<strong>Enter the title of function-menu item:</strong><BR>".
-				$this->renderStringBox_lang("title",$ffPrefix,$piConf);
+			$subContent='<strong>Enter the title of function-menu item:</strong><br />'.
+				$this->renderStringBox_lang('title',$ffPrefix,$piConf);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Position
 			$optValues = array(
-				"web_func" => "Web>Func",
-				"web_func_wizards" => "Web>Func, Wizards",
-				"web_info" => "Web>Info",
-				"web_ts" => "Web>Template",
-				"user_task" => "User>Task Center",
+				'web_func' => 'Web>Func',
+				'web_func_wizards' => 'Web>Func, Wizards',
+				'web_info' => 'Web>Info',
+				'web_ts' => 'Web>Template',
+				'user_task' => 'User>Task Center',
 			);
-			$subContent="<strong>Sub- or main module?</strong><BR>".
-				$this->renderSelectBox($ffPrefix."[position]",$piConf["position"],$optValues).
-				"<BR><BR>These images gives you an idea what the options above means:".
-				$this->resImg("modulefunc_task.png").
-				$this->resImg("modulefunc_func.png");
+			$subContent='<strong>Sub- or main module?</strong><br />'.
+				$this->renderSelectBox($ffPrefix.'[position]',$piConf['position'],$optValues).
+				'<br /><br />These images gives you an idea what the options above means:'.
+				$this->resImg('modulefunc_task.png').
+				$this->resImg('modulefunc_func.png');
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
 		if(is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['add_cat_moduleFunction'])) {
-		  foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['add_cat_moduleFunction'] as $_funcRef) {
-		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
-		  }
+			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['add_cat_moduleFunction'] as $_funcRef) {
+				$lines = t3lib_div::callUserFunction($_funcRef, $lines, $this);
+			}
 		}
 
-		$content = '<table border=0 cellpadding=2 cellspacing=2>'.implode("",$lines).'</table>';
+		$content = '<table border="0" cellpadding="2" cellspacing="2">'.implode('',$lines).'</table>';
 		return $content;
 	}
 
@@ -86,26 +88,31 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 
 
 	/**
-	 * Renders the extension PHP codee; this was 
+	 * Renders the extension PHP code; this was
+	 *
+	 * @param	string		$k: module name key
+	 * @param	array		$config: module configuration
+	 * @param	string		$extKey: extension key
+	 * @return	void
 	 */
 	function render_extPart($k,$config,$extKey) {
-		$WOP="[moduleFunction][".$k."]";
-		$cN = $this->returnName($extKey,"class","modfunc".$k);
-		$pathSuffix = "modfunc".$k."/";
+		$WOP='[moduleFunction]['.$k.']';
+		$cN = $this->returnName($extKey,'class','modfunc'.$k);
+		$pathSuffix = 'modfunc'.$k.'/';
 
-		$position =$config["position"];
-		$subPos="";
-		switch($config["position"])	{
-			case "user_task";
-				$this->wizard->EM_CONF_presets["dependencies"][]="taskcenter";
+		$position =$config['position'];
+		$subPos='';
+		switch($config['position'])	{
+			case 'user_task';
+				$this->wizard->EM_CONF_presets['dependencies'][]='taskcenter';
 			break;
-			case "web_ts";
-				$this->wizard->EM_CONF_presets["dependencies"][]="tstemplate";
+			case 'web_ts';
+				$this->wizard->EM_CONF_presets['dependencies'][]='tstemplate';
 			break;
-			case "web_func_wizards";
-				$this->wizard->EM_CONF_presets["dependencies"][]="func_wizards";
-				$position="web_func";
-				$subPos="wiz";
+			case 'web_func_wizards';
+				$this->wizard->EM_CONF_presets['dependencies'][]='func_wizards';
+				$position='web_func';
+				$subPos='wiz';
 			break;
 		}
 
@@ -124,15 +131,21 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 
 			// Add title to local lang file
 		$ll=array();
-		$this->addLocalConf($ll,$config,"title","module",$k,1);
-		$this->addLocalConf($ll,array("checklabel"=>"Check box #1"),"checklabel","modfunc",$k,1,1);
-		$this->addLocalLangFile($ll,$pathSuffix."locallang.php",'Language labels for module "'.$mN.'"');
+		$this->addLocalConf($ll,$config,'title','module',$k,1);
+		$this->addLocalConf($ll,array('checklabel'=>'Check box #1'),'checklabel','modfunc',$k,1,1);
+		$this->addLocalLangFile($ll,$pathSuffix.'locallang.php','Language labels for module "'.$mN.'"');
 
-		if ($position!="user_task")	{
+		if ($position!='user_task')	{
 			$indexContent.= $this->sPS('
-				require_once(PATH_t3lib."class.t3lib_extobjbase.php");
+				require_once(PATH_t3lib.\'class.t3lib_extobjbase.php\');
 
 				class '.$cN.' extends t3lib_extobjbase {
+
+					/**
+					 * Returns the module menu
+					 *
+					 * @return	Array with menuitems
+					 */
 					function modMenu()	{
 						global $LANG;
 
@@ -141,6 +154,11 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 						);
 					}
 
+					/**
+					 * Main method of the module
+					 *
+					 * @return	HTML
+					 */
 					function main()	{
 							// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 						global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
@@ -162,20 +180,41 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 				class '.$cN.' extends mod_user_task {
 					/**
 					 * Makes the content for the overview frame...
+					 *
+					 * @param	object		$pObj: parent module object
+					 * @return	HTML
 					 */
 					function overview_main(&$pObj)	{
 						$icon = \'<img src="\'.$this->wizard->backPath.t3lib_extMgm::extRelPath("'.$extKey.'").\'ext_icon.gif" width=18 height=16 class="absmiddle">\';
 						$content.=$pObj->doc->section($icon."&nbsp;".$this->headLink("'.$cN.'",0),$this->overviewContent(),1,1);
 						return $content;
 					}
+
+					/**
+					 * Main method
+					 *
+					 * @return	HTML
+					 */
 					function main() {
 						global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
 						return $this->mainContent();
 					}
+
+					/**
+					 * Returns content in overview frame
+					 *
+					 * @return	Content for overview frame
+					 */
 					function overviewContent()	{
 						return "Content in overview frame...";
 					}
+
+					/**
+					 * Main content method
+					 *
+					 * @return	Main content for the module
+					 */
 					function mainContent()	{
 						return "Content in main frame...";
 					}
@@ -183,7 +222,7 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 			');
 		}
 
-		$this->addFileToFileArray($pathSuffix."class.".$cN.".php",$this->PHPclassFile($extKey,$pathSuffix."class.".$cN.".php",$indexContent,"Module extension (addition to function menu) '".$config["title"]."' for the '".$extKey."' extension."));
+		$this->addFileToFileArray($pathSuffix.'class.'.$cN.'.php',$this->PHPclassFile($extKey,$pathSuffix.'class.'.$cN.'.php',$indexContent,'Module extension (addition to function menu) \''.$config['title'].'\' for the \''.$extKey.'\' extension.'));
 
 	}
 
