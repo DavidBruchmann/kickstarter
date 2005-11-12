@@ -1,3 +1,7 @@
+2005-11-12  Ingo Renner  <typo3@ingo-renner.com>
+
+	* Merged Version from TYPO3 v3.8.0 with CVS
+	
 2005-09-15  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed one more pair of quotes for SQL default values

@@ -609,7 +609,7 @@ class tx_kickstarter_sectionbase {
 			/***************************************************************
 			*  Copyright notice
 			*
-			*  (c) 2004 '.$this->userField("name").' ('.$this->userField("email").')
+			*  (c) 2005 '.$this->userField("name").' ('.$this->userField("email").')
 			*  All rights reserved
 			*
 			*  This script is part of the TYPO3 project. The TYPO3 project is
