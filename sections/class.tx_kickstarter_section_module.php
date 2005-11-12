@@ -150,16 +150,16 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 			// Make conf.php file:
 		$content = $this->sPS('
 				// DO NOT REMOVE OR CHANGE THESE 3 LINES:
-			define("TYPO3_MOD_PATH", "ext/'.$extKey.'/'.$pathSuffix.'");
-			$BACK_PATH="../../../";
-			$MCONF["name"]="'.$mN.'";
+			define(\'TYPO3_MOD_PATH\', \'ext/'.$extKey.'/'.$pathSuffix.'\');
+			$BACK_PATH=\'../../../\';
+			$MCONF[\'name\']=\''.$mN.'\';
 
 				'.$this->WOPcomment('WOP:'.$WOP.'[admin_only]: If the flag was set the value is "admin", otherwise "user,group"').'
-			$MCONF["access"]="'.($config["admin_only"]?"admin":"user,group").'";
-			$MCONF["script"]="index.php";
+			$MCONF[\'access\']=\''.($config['admin_only']?'admin':'user,group').'\';
+			$MCONF[\'script\']=\'index.php\';
 
-			$MLANG["default"]["tabs_images"]["tab"] = "moduleicon.gif";
-			$MLANG["default"]["ll_ref"]="LLL:EXT:'.$extKey.'/'.$pathSuffix.'locallang_mod.php";
+			$MLANG[\'default\'][\'tabs_images\'][\'tab\'] = \'moduleicon.gif\';
+			$MLANG[\'default\'][\'ll_ref\']=\'LLL:EXT:'.$extKey.'/'.$pathSuffix.'locallang_mod.php\';
 		');
 		$this->wizard->EM_CONF_presets["module"][]=ereg_replace("\/$","",$pathSuffix);
 
