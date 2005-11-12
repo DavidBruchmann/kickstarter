@@ -30,52 +30,54 @@
  * @author	Ingmar Schlecht <ingmars@web.de>
  */
 
-require_once(t3lib_extMgm::extPath("kickstarter")."class.tx_kickstarter_sectionbase.php");
- 
+require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
+
 class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 	var $sectionID = 'cm';
 
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_cm()
+	 *
+	 * @return	HTML code
 	 */
 	function render_wizard() {
 		$lines=array();
 
-		$action = explode(":",$this->wizard->modData["wizAction"]);
-		if ($action[0]=="edit")	{
+		$action = explode(':',$this->wizard->modData['wizAction']);
+		if ($action[0]=='edit')	{
 			$this->regNewEntry($this->sectionID,$action[1]);
-			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
+			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],'&nbsp;',$action[1]);
 			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 				// Enter title of the module function
-			$subContent="<strong>Title of the ClickMenu element:</strong><BR>".
-				$this->renderStringBox_lang("title",$ffPrefix,$piConf);
+			$subContent='<strong>Title of the ClickMenu element:</strong><br />'.
+				$this->renderStringBox_lang('title',$ffPrefix,$piConf);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Position
 			$optValues = array(
-				"bottom" => "Insert in bottom",
-				"top" => "Insert in top",
-				"before_delete" => "Insert before the 'Delete' item",
+				'bottom' => 'Insert in bottom',
+				'top' => 'Insert in top',
+				'before_delete' => 'Insert before the \'Delete\' item',
 			);
-			$subContent="<strong>Options</strong><BR>".
-				$this->renderSelectBox($ffPrefix."[options]",$piConf["options"],$optValues);
+			$subContent='<strong>Options</strong><br />'.
+				$this->renderSelectBox($ffPrefix.'[options]',$piConf['options'],$optValues);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Admin only
-			$subContent =$this->resImg("cm.png");
-			$subContent.= $this->renderCheckBox($ffPrefix."[second_level]",$piConf["second_level"])."Activate a second-level menu.<BR>";
-			$subContent.= $this->renderCheckBox($ffPrefix."[only_page]",$piConf["only_page"])."Add only if the click menu is on a 'Page' (example)<BR>";
-			$subContent.= $this->renderCheckBox($ffPrefix."[only_if_edit]",$piConf["only_if_edit"])."Only active if item is editable.<BR>";
-			$subContent.= $this->renderCheckBox($ffPrefix."[remove_view]",$piConf["remove_view"])."Remove 'Show' element (example)<BR>";
+			$subContent =$this->resImg('cm.png');
+			$subContent.= $this->renderCheckBox($ffPrefix.'[second_level]',$piConf['second_level']).'Activate a second-level menu.<br />';
+			$subContent.= $this->renderCheckBox($ffPrefix.'[only_page]',$piConf['only_page']).'Add only if the click menu is on a 'Page' (example)<br />';
+			$subContent.= $this->renderCheckBox($ffPrefix.'[only_if_edit]',$piConf['only_if_edit']).'Only active if item is editable.<br />';
+			$subContent.= $this->renderCheckBox($ffPrefix.'[remove_view]',$piConf['remove_view']).'Remove 'Show' element (example)<br />';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 		}
 
 
 		$this->process_hook('render_wizard', $lines);
 
-		$content = '<table border=0 cellpadding=2 cellspacing=2>'.implode("",$lines).'</table>';
+		$content = '<table border="0" cellpadding="2" cellspacing="2">'.implode('',$lines).'</table>';
 		return $content;
 	}
 
@@ -87,7 +89,12 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 
 
 	/**
-	 * Renders the extension PHP codee; this was 
+	 * Renders the extension PHP code; this was
+	 *
+	 * @param	string		$k: section key (???)
+	 * @param	array		$config: module configuration
+	 * @param	string		$extKey: extension key
+	 * @return	void
 	 */
 	function render_extPart($k,$config,$extKey) {
 		$WOP = '[' . $this->sectionID . '][' . $k .']';
@@ -106,13 +113,13 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 			}
 		');
 			// Add title to the locallang file.
-		$this->addLocalConf($this->wizard->ext_locallang,$config,"title","cm",$k);
+		$this->addLocalConf($this->wizard->ext_locallang,$config,'title','cm',$k);
 
 			// Add icon
-		$this->addFileToFileArray($pathSuffix."cm_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound_module.gif"));
+		$this->addFileToFileArray($pathSuffix.'cm_icon.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/notfound_module.gif'));
 
 			// 	Building class:
-		$content = "";
+		$content = '';
 		$content.=$this->sPS('
 				// Adds the regular item:
 			$LL = $this->includeLL();
@@ -122,23 +129,23 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 			$url = t3lib_extMgm::extRelPath("'.$extKey.'")."'.$pathSuffix.'index.php?id=".$uid;
 			$localItems[] = $backRef->linkItem(
 				$GLOBALS["LANG"]->getLLL("cm'.$k.'_title",$LL),
-				$backRef->excludeIcon(\'<img src="\'.t3lib_extMgm::extRelPath("'.$extKey.'").\''.$pathSuffix.'cm_icon.gif" width="15" height="12" border=0 align=top>\'),
+				$backRef->excludeIcon(\'<img src="\'.t3lib_extMgm::extRelPath("'.$extKey.'").\''.$pathSuffix.'cm_icon.gif" width="15" height="12" border="0" align="top" />\'),
 				$backRef->urlRefForCM($url),
 				1	// Disables the item in the top-bar. Set this to zero if you with the item to appear in the top bar!
 			);
 		');
-		if ($config["second_level"])	{
+		if ($config['second_level'])	{
 			$secondContent = $content;
 			$secondContent.=chr(10).'$menuItems=array_merge($menuItems,$localItems);';
 
-			$content = "";
+			$content = '';
 			$content.=$this->sPS('
 				$LL = $this->includeLL();
 
 				$localItems[]="spacer";
 				$localItems["moreoptions_'.$cN.'"]=$backRef->linkItem(
 					$GLOBALS["LANG"]->getLLL("cm'.$k.'_title_activate",$LL),
-					$backRef->excludeIcon(\'<img src="\'.t3lib_extMgm::extRelPath("'.$extKey.'").\''.$pathSuffix.'cm_icon_activate.gif" width="15" height="12" border=0 align=top>\'),
+					$backRef->excludeIcon(\'<img src="\'.t3lib_extMgm::extRelPath("'.$extKey.'").\''.$pathSuffix.'cm_icon_activate.gif" width="15" height="12" border="0" align='top" />\'),
 					"top.loadTopMenu(\'".t3lib_div::linkThisScript()."&cmLevel=1&subname=moreoptions_'.$cN.'\');return false;",
 					0,
 					1
@@ -146,12 +153,12 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 			');
 
 				// Add activate title to the locallang file.
-			$this->addLocalConf($this->wizard->ext_locallang,array("title_activate"=>"...Second level ->"),"title_activate","cm",$k,0,1);
+			$this->addLocalConf($this->wizard->ext_locallang,array('title_activate'=>'...Second level ->'),'title_activate','cm',$k,0,1);
 				// Add activate icon
-			$this->addFileToFileArray($pathSuffix."cm_icon_activate.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound_module.gif"));
+			$this->addFileToFileArray($pathSuffix.'cm_icon_activate.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/notfound_module.gif'));
 		}
 
-		if ($config["only_page"])	$content=$this->sPS('
+		if ($config['only_page'])	$content=$this->sPS('
 				// Returns directly, because the clicked item was not from the pages table '.$this->WOPcomment('(WOP:'.$WOP.'[only_page])').'
 			if ($table!="pages")	return $menuItems;
 		').$content;
@@ -159,11 +166,11 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 		$content.=$this->sPS('
 			'.$this->WOPcomment('(WOP:'.$WOP.'[options] BEGIN) Inserts the item at the chosen location').'
 		');
-		if ($config["options"]=="top")	{	// In top:
+		if ($config['options']=='top')	{	// In top:
 			$content.=$this->sPS('
 				$menuItems=array_merge($localItems,$menuItems);
 			');
-		} elseif ($config["options"]=="before_delete")	{	// Just before "Delete" and its preceding divider line:
+		} elseif ($config['options']=='before_delete')	{	// Just before "Delete" and its preceding divider line:
 			$content.=$this->sPS('
 					// Find position of "delete" element:
 				reset($menuItems);
@@ -192,14 +199,14 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 			'.$this->WOPcomment('(WOP:'.$WOP.'[options] END)').'
 		');
 
-		if ($config["only_if_edit"])	$content=$this->wrapBody('
+		if ($config['only_if_edit'])	$content=$this->wrapBody('
 			if ($backRef->editOK)	{
 			',$content,'
 			}
 		');
 
 
-		if ($config["remove_view"])	$content.=$this->sPS('
+		if ($config['remove_view'])	$content.=$this->sPS('
 				// Removes the view-item from clickmenu  '.$this->WOPcomment('(WOP:'.$WOP.'[remove_view])').'
 			unset($menuItems["view"]);
 		');
@@ -210,7 +217,7 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 			}
 		');
 
-		if ($config["second_level"])	{
+		if ($config['second_level'])	{
 			$content.=$this->wrapBody('
 				else {
 				',$secondContent,'
@@ -244,11 +251,11 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 
 #		$this->printPre($content);
 
-		$this->addFileToFileArray($filename,$this->PHPclassFile($extKey,$filename,$content,"Addition of an item to the clickmenu"));
+		$this->addFileToFileArray($filename,$this->PHPclassFile($extKey,$filename,$content,'Addition of an item to the clickmenu'));
 
 
-		$cN = $this->returnName($extKey,"class","cm".$k);
-		$this->writeStandardBE_xMod($extKey,$config,$pathSuffix,$cN,$k,"cm");
+		$cN = $this->returnName($extKey,'class','cm'.$k);
+		$this->writeStandardBE_xMod($extKey,$config,$pathSuffix,$cN,$k,'cm');
 
 	}
 

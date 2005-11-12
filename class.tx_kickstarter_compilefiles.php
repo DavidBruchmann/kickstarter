@@ -30,7 +30,7 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-require_once(t3lib_extMgm::extPath("kickstarter")."class.tx_kickstarter_sectionbase.php");
+require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
 
 class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 
@@ -43,7 +43,7 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 	var $ext_locallang=array();
 	var $ext_locallang_db=array();
 
-	var $extKey="";
+	var $extKey='';
 
 	var $charMaxLng = 2;	// Varchars are created instead of chars when over this length.
 
@@ -73,9 +73,9 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 
 
 		/*
-		if (is_array($this->wizArray["tables"]))	{
-			reset($this->wizArray["tables"]);
-			while(list($k,$config)=each($this->wizArray["tables"]))	{
+		if (is_array($this->wizArray['tables']))	{
+			reset($this->wizArray['tables']);
+			while(list($k,$config)=each($this->wizArray['tables']))	{
 				$this->renderExtPart_tables($k,$config,$extKey);
 			}
 		}
@@ -99,69 +99,69 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 
 
 		/*
-		if (is_array($this->wizArray["pi"]))	{
-			reset($this->wizArray["pi"]);
-			while(list($k,$config)=each($this->wizArray["pi"]))	{
+		if (is_array($this->wizArray['pi']))	{
+			reset($this->wizArray['pi']);
+			while(list($k,$config)=each($this->wizArray['pi']))	{
 				$this->renderExtPart_PI($k,$config,$extKey);
-				$this->EM_CONF_presets["clearCacheOnLoad"]=1;
+				$this->EM_CONF_presets['clearCacheOnLoad']=1;
 			}
-			$this->EM_CONF_presets["dependencies"][]="cms";
+			$this->EM_CONF_presets['dependencies'][]='cms';
 		}
 		*/
 
-		if (is_array($this->wizArray["sv"]))	{
-			reset($this->wizArray["sv"]);
-			while(list($k,$config)=each($this->wizArray["sv"]))	{
-				$this->EM_CONF_presets["clearCacheOnLoad"]=1;
+		if (is_array($this->wizArray['sv']))	{
+			reset($this->wizArray['sv']);
+			while(list($k,$config)=each($this->wizArray['sv']))	{
+				$this->EM_CONF_presets['clearCacheOnLoad']=1;
 			}
 		}
 
 			// Write the ext_localconf.php file:
 		if (count($this->ext_localconf))	{
-			$this->addFileToFileArray("ext_localconf.php",trim($this->wrapBody("
+			$this->addFileToFileArray('ext_localconf.php',trim($this->wrapBody('
 				<?php
 				if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
-					",
+					',
 				implode(chr(10),$this->ext_localconf),
-				"?>
-			",0)));
+				'?>
+			',0)));
 		}
 			// Write the ext_tables.php file:
 		if (count($this->ext_tables))	{
-			$this->addFileToFileArray("ext_tables.php",trim($this->wrapBody("
+			$this->addFileToFileArray('ext_tables.php',trim($this->wrapBody('
 				<?php
 				if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
-				",implode(chr(10),$this->ext_tables),"
+				',implode(chr(10),$this->ext_tables),'
 				?>
-			",0)));
+			',0)));
 		}
 			// Write the tca.php file:
 		if (count($this->ext_tca))	{
-			$this->addFileToFileArray("tca.php",trim($this->wrapBody("
+			$this->addFileToFileArray('tca.php',trim($this->wrapBody('
 				<?php
 				if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
-				",implode(chr(10),$this->ext_tca),"
+				',implode(chr(10),$this->ext_tca),'
 				?>
-			",0)));
+			',0)));
 		}
 			// Write the ext_tables.sql file:
 		if (count($this->ext_tables_sql))	{
-			$this->addFileToFileArray("ext_tables.sql",trim($this->sPS(implode(chr(10),$this->ext_tables_sql))));
+			$this->addFileToFileArray('ext_tables.sql',trim($this->sPS(implode(chr(10),$this->ext_tables_sql))));
 		}
 			// Local lang file:
 		if (count($this->ext_locallang))	{
-			$this->addLocalLangFile($this->ext_locallang,"locallang.php",'Language labels for extension "'.$extKey.'"');
+			$this->addLocalLangFile($this->ext_locallang,'locallang.php','Language labels for extension \''.$extKey.'\'');
 		}
 			// Local lang DB file:
 		if (count($this->ext_locallang_db))	{
-			$this->addLocalLangFile($this->ext_locallang_db,"locallang_db.php",'Language labels for database tables/fields belonging to extension "'.$extKey.'"');
+			$this->addLocalLangFile($this->ext_locallang_db,'locallang_db.php','Language labels for database tables/fields belonging to extension \''.$extKey.'\'');
 		}
 
 			// The form used to generate the extension:
 		$this->dontPrintImages = 1;
-		$this->addFileToFileArray("doc/wizard_form.html",trim($this->sPS('
+		$this->addFileToFileArray('doc/wizard_form.html',trim($this->sPS('
 			<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
 			<html>
@@ -175,22 +175,22 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 			</body>
 			</html>
 		')));
-		$this->addFileToFileArray("doc/wizard_form.dat",serialize($this->wizArray));
+		$this->addFileToFileArray('doc/wizard_form.dat',serialize($this->wizArray));
 
-		$this->addFileToFileArray("ChangeLog",
+		$this->addFileToFileArray('ChangeLog',
 '(add new changes on top of this file)
 
-'.date("y-m-d").' '.$this->userField('name').'  <'.$this->userField('email').'>
+'.date('y-m-d').' '.$this->userField('name').'  <'.$this->userField('email').'>
 
 	* Initial release
 '		);
 
-		$this->addFileToFileArray("README.txt",'
+		$this->addFileToFileArray('README.txt','
 Feel free to add some documentation or simply add a link to the online manual.
 '		);
 
 			// icon:
-		$this->addFileToFileArray("ext_icon.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/notfound.gif"));
+		$this->addFileToFileArray('ext_icon.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/notfound.gif'));
 
 
 #		debug($this->wizArray);
@@ -203,8 +203,8 @@ Feel free to add some documentation or simply add a link to the online manual.
 }
 
 // Include extension?
-if (defined("TYPO3_MODE") && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/kickstarter/class.tx_kickstarter_compilefiles.php"]) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/kickstarter/class.tx_kickstarter_compilefiles.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/kickstarter/class.tx_kickstarter_compilefiles.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/kickstarter/class.tx_kickstarter_compilefiles.php']);
 }
 
 ?>
