@@ -28,34 +28,36 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-require_once(t3lib_extMgm::extPath("kickstarter")."class.tx_kickstarter_sectionbase.php");
- 
+require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
+
 class tx_kickstarter_section_tsconfig extends tx_kickstarter_sectionbase {
   var $sectionID = 'tsconfig';
 
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_()
+	 *
+	 * @return	string		...
 	 */
 	function render_wizard() {
 		$lines=array();
 
-		$action = explode(":",$this->wizard->modData["wizAction"]);
-		if ($action[0]=="edit")	{
+		$action = explode(':',$this->wizard->modData['wizAction']);
+		if ($action[0]=='edit')	{
 			$action[1]=1;
 			$this->regNewEntry($this->sectionID,$action[1]);
 
-			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],"&nbsp;",$action[1]);
+			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],'&nbsp;',$action[1]);
 			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
 				// Enter Page TSconfige
-			$subContent="<strong>Default Page TSconfig:</strong><BR>".
-				$this->renderTextareaBox($ffPrefix."[page_TSconfig]",$piConf["page_TSconfig"]);
+			$subContent='<strong>Default Page TSconfig:</strong><br />'.
+				$this->renderTextareaBox($ffPrefix.'[page_TSconfig]',$piConf['page_TSconfig']);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Enter User TSconfig
-			$subContent="<strong>Default User TSconfig:</strong><BR>".
-				$this->renderTextareaBox($ffPrefix."[user_TSconfig]",$piConf["user_TSconfig"]);
+			$subContent='<strong>Default User TSconfig:</strong><br />'.
+				$this->renderTextareaBox($ffPrefix.'[user_TSconfig]',$piConf['user_TSconfig']);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 		}
 
@@ -66,14 +68,17 @@ class tx_kickstarter_section_tsconfig extends tx_kickstarter_sectionbase {
 		  }
 		}
 
-		$content = '<table border=0 cellpadding=2 cellspacing=2>'.implode("",$lines).'</table>';
+		$content = '<table border="0" cellpadding="2" cellspacing="2">'.implode('',$lines).'</table>';
 		return $content;
 	}
 
-
-
 	/**
-	 * Renders the extension PHP codee; this was 
+	 * Renders the extension PHP codee; this was
+	 *
+	 * @param	[type]		$k: ...
+	 * @param	[type]		$config: ...
+	 * @param	[type]		$extKey: ...
+	 * @return	[type]		...
 	 */
 	function render_extPart($k,$config,$extKey) {
 

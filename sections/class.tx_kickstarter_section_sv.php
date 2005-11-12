@@ -28,13 +28,15 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-require_once(t3lib_extMgm::extPath("kickstarter")."class.tx_kickstarter_sectionbase.php");
- 
+require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
+
 class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
   var $sectionID = 'sv';
-  
+
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_()
+	 *
+	 * @return	string		wizard
 	 */
 	function render_wizard() {
 		$lines=array();
@@ -141,7 +143,12 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 
 
 	/**
-	 * Renders the extension PHP codee; this was 
+	 * Renders the extension PHP codee; this was
+	 *
+	 * @param	integer		key
+	 * @param	array		table configuration
+	 * @param	string		extension key
+	 * @return	void
 	 */
 	function render_extPart($k,$config,$extKey) {
 		$WOP='[sv]['.$k.']';
@@ -174,8 +181,10 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 		$innerMainContent = $this->sPS('
 
 			/**
-			 * [Put your description here]
-			 */
+ * [Put your description here]
+ *
+ * @return	[type]		...
+ */
 			function init()	{
 				$available = parent::init();
 
@@ -190,14 +199,14 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 			}
 
 			/**
-			 * [Put your description here]
-			 * performs the service processing
-			 *
-			 * @param	string 	Content which should be processed.
-			 * @param	string 	Content type
-			 * @param	array 	Configuration array
-			 * @return	boolean
-			 */
+ * [Put your description here]
+ * performs the service processing
+ *
+ * @param	string		Content which should be processed.
+ * @param	string		Content type
+ * @param	array		Configuration array
+ * @return	boolean
+ */
 			function process($content=\'\', $type=\'\', $conf=array())	{
 
 				// Depending on the service type there\'s not a process() function.
@@ -218,7 +227,7 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 				',$innerMainContent,'
 			}
 		');
-		$this->addFileToFileArray($pathSuffix."class.".$cN.".php",$this->PHPclassFile($extKey,$pathSuffix."class.".$cN.".php",$indexContent,"Service '".$config['title']."' for the '".$extKey."' extension."));
+		$this->addFileToFileArray($pathSuffix.'class.'.$cN.'.php',$this->PHPclassFile($extKey,$pathSuffix.'class.'.$cN.'.php',$indexContent,'Service "'.$config['title'].'" for the "'.$extKey.'" extension.'));
 
 	}
 

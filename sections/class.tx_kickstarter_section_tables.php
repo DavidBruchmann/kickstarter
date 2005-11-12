@@ -28,19 +28,21 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
-require_once(t3lib_extMgm::extPath("kickstarter")."sections/class.tx_kickstarter_section_fields.php");
+require_once(t3lib_extMgm::extPath('kickstarter').'sections/class.tx_kickstarter_section_fields.php');
 
 class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
   var $sectionID = 'tables';
 
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_tables()
+	 *
+	 * @return	string		wizard
 	 */
 	function render_wizard() {
 		$lines=array();
 
-		$action = explode(":",$this->wizard->modData['wizAction']);
-		if ($action[0]=="edit")	{
+		$action = explode(':',$this->wizard->modData['wizAction']);
+		if ($action[0]=='edit')	{
 			$this->regNewEntry($this->sectionID,$action[1]);
 			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],'&nbsp;',$action[1]);
 			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
@@ -228,6 +230,13 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		return $content;
 	}
 
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$addFields: ...
+	 * @param	[type]		$fArr: ...
+	 * @return	[type]		...
+	 */
 	function currentFields($addFields,$fArr)	{
 		if (is_array($fArr))	{
 			foreach($fArr as $k=>$v)	{
@@ -240,7 +249,13 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 	}
 
 	/**
+	 * renders field overview
+	 * 
 	 * @author	Luite van Zelst <luite@aegee.org>
+	 * @param	string		prefix (unused?)
+	 * @param	array		field configuration
+	 * @param	boolean		dontRemove (unused?)
+	 * @return	string		table row with field data	 * 
 	 */
 	function renderFieldOverview($prefix,$fConf,$dontRemove=0)	{
 			// Sorting
@@ -330,33 +345,13 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	/**
 	 * Renders the files to be created; this was renderExtPart_tables()
+	 *
+	 * @param	integer		key
+	 * @param	array		table configuration
+	 * @param	string		extension key
+	 * @return	void
 	 */
 	function render_extPart($k,$config,$extKey) {
 		$WOP='[tables]['.$k.']';
@@ -368,13 +363,13 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		$ctrl=array();
 		$enFields=array();
 
-//str_replace("\\'","'",addslashes($this->getSplitLabels($config,"title")))
+//str_replace("\\'","'",addslashes($this->getSplitLabels($config,'title')))
 		$ctrl[] = trim($this->sPS('
-			"title" => "' . $this->getSplitLabels_reference($config,'title',$tableName) . '",		' . $this->WOPcomment('WOP:'.$WOP.'[title]').'
-			"label" => "' . ($config["header_field"]?$config['header_field']:'uid') . '",	'.$this->WOPcomment('WOP:'.$WOP.'[header_field]').'
-			"tstamp" => "tstamp",
-			"crdate" => "crdate",
-			"cruser_id" => "cruser_id",
+			\'title\' => \'' . $this->getSplitLabels_reference($config,'title',$tableName) . '\',		' . $this->WOPcomment('WOP:'.$WOP.'[title]').'
+			\'label\' => \'' . ($config['header_field']?$config['header_field']:'uid') . '\',	'.$this->WOPcomment('WOP:'.$WOP.'[header_field]').'
+			\'tstamp\' => \'tstamp\',
+			\'crdate\' => \'crdate\',
+			\'cruser_id\' => \'cruser_id\',
 		',0));
 		$DBfields[] = trim($this->sPS('
 			uid int(11) NOT NULL auto_increment,
@@ -385,11 +380,11 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		',0));
 
 		if ($config['type_field'])	{
-			$ctrl[] = '"type" => "'.$config["type_field"].'",	'.$this->WOPcomment('WOP:'.$WOP.'[type_field]');
+			$ctrl[] = '\'type\' => \''.$config["type_field"].'\',	'.$this->WOPcomment('WOP:'.$WOP.'[type_field]');
 		}
 		if ($config['versioning'])	{
-			$ctrl[] = '"versioningWS" => TRUE, ' . $this->WOPcomment('WOP:'.$WOP.'[versioning]');
-			$ctrl[] = '"origUid" => "t3_origuid",';
+			$ctrl[] = '\'versioningWS\' => TRUE, ' . $this->WOPcomment('WOP:'.$WOP.'[versioning]');
+			$ctrl[] = '\'origUid\' => \'t3_origuid\',';
 			$DBfields[] = 't3ver_oid int(11) DEFAULT \'0\' NOT NULL,';
 			$DBfields[] = 't3ver_id int(11) DEFAULT \'0\' NOT NULL,';
 			$DBfields[] = 't3ver_wsid int(11) DEFAULT \'0\' NOT NULL,';
@@ -401,29 +396,29 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$DBfields[] = 't3_origuid int(11) DEFAULT \'0\' NOT NULL,';
 		}
 		if ($config["localization"])	{
-			$ctrl[] = '"languageField" => "sys_language_uid",	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
-			$ctrl[] = '"transOrigPointerField" => "l18n_parent",	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
-			$ctrl[] = '"transOrigDiffSourceField" => "l18n_diffsource",	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
+			$ctrl[] = '\'languageField\' => \'sys_language_uid\',	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
+			$ctrl[] = '\'transOrigPointerField\' => \'l18n_parent\',	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
+			$ctrl[] = '\'transOrigDiffSourceField\' => \'l18n_diffsource\',	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
 
 			$DBfields[] = 'sys_language_uid int(11) DEFAULT \'0\' NOT NULL,';
 			$DBfields[] = 'l18n_parent int(11) DEFAULT \'0\' NOT NULL,';
 			$DBfields[] = 'l18n_diffsource mediumblob NOT NULL,';
 
-			$columns['sys_language_uid'] = trim($this->sPS("
-				'sys_language_uid' => Array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
-					'exclude' => 1,
-					'label' => 'LLL:EXT:lang/locallang_general.php:LGL.language',
-					'config' => Array (
-						'type' => 'select',
-						'foreign_table' => 'sys_language',
-						'foreign_table_where' => 'ORDER BY sys_language.title',
-						'items' => Array(
-							Array('LLL:EXT:lang/locallang_general.php:LGL.allLanguages',-1),
-							Array('LLL:EXT:lang/locallang_general.php:LGL.default_value',0)
+			$columns['sys_language_uid'] = trim($this->sPS('
+				\'sys_language_uid\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[localization]').'
+					\'exclude\' => 1,
+					\'label\' => \'LLL:EXT:lang/locallang_general.php:LGL.language\',
+					\'config\' => array (
+						\'type\' => \'select\',
+						\'foreign_table\' => \'sys_language\',
+						\'foreign_table_where\' => \'ORDER BY sys_language.title\',
+						\'items\' => array(
+							array(\'LLL:EXT:lang/locallang_general.php:LGL.allLanguages\',-1),
+							array(\'LLL:EXT:lang/locallang_general.php:LGL.default_value\',0)
 						)
 					)
 				),
-			"));
+			'));
 
 			$columns['l18n_parent'] = trim($this->sPS("
 				'l18n_parent' => Array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
