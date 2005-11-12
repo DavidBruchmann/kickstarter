@@ -35,6 +35,8 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_fields()
+	 *
+	 * @return	HTML code
 	 */
 	function render_wizard() {
 		$lines=array();
@@ -67,11 +69,11 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				}
 			}
 
-			$subContent = '<strong>Which table:<BR></strong>'.
+			$subContent = '<strong>Which table:<br /></strong>'.
 					$this->renderSelectBox($ffPrefix.'[which_table]',$piConf['which_table'],$optValues).
 					$this->whatIsThis('Select the table which should be extended with these extra fields.');
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).
-				'<input type="hidden" name="' . $this->piFieldName('wizArray_upd') . $ffPrefix . '[title]" value="' . ($piConf['which_table']?$optValues[$piConf['which_table']]:'') . '"></td></tr>';
+				'<input type="hidden" name="' . $this->piFieldName('wizArray_upd') . $ffPrefix . '[title]" value="' . ($piConf['which_table']?$optValues[$piConf['which_table']]:'') . '" /></td></tr>';
 
 
 
@@ -105,7 +107,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 
-			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw('<BR><BR>Load preset fields: <BR>'.$selPresetBox).'</td></tr>';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw('<br /><br />Load preset fields: <br />'.$selPresetBox).'</td></tr>';
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
 		if(is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['add_cat_fields'])) {
@@ -114,13 +116,16 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		  }
 		}
 
-		$content = '<table border=0 cellpadding=2 cellspacing=2>'.implode('',$lines).'</table>';
+		$content = '<table border="0" cellpadding="2" cellspacing="2">'.implode('',$lines).'</table>';
 		return $content;
 	}
 
-
-
-
+	/**
+	 * Creates and returns a dropdown box for selecting presets
+	 *
+	 * @param	array		$piConfFields: PlugIn Configuration fields (PASSED BY REFERENCE)
+	 * @return	HTML code for select box
+	 */
 	function presetBox(&$piConfFields)	{
 		$_PRESETS = $this->wizard->modData['_PRESET'];
 
@@ -155,9 +160,18 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		if (count($ses_optValues))	{
 			$optValues = array_merge($optValues,count($optValues)?array('<option value=""></option>'):array(),array('<option value="">__Fields picked up in this session__:</option>'),$ses_optValues);
 		}
-		if (count($optValues))		$selPresetBox = '<select name="'.$this->piFieldName('_PRESET').'[]" size='.t3lib_div::intInRange(count($optValues),1,10).' multiple>'.implode('',$optValues).'</select>';
+		if (count($optValues))		$selPresetBox = '<select name="'.$this->piFieldName('_PRESET').'[]" size="'.t3lib_div::intInRange(count($optValues),1,10).'" multiple="multiple">'.implode('',$optValues).'</select>';
 		return $selPresetBox;
 	}
+
+	/**
+	 * Cleans fields and do commands
+	 *
+	 * @param	array		$fConf: current field configuration
+	 * @param	string		$catID: ID of current category
+	 * @param	string		$action: the action that should be performed
+	 * @return	New fieldconfiguration
+	 */
 	function cleanFieldsAndDoCommands($fConf,$catID,$action)	{
 		$newFConf=array();
 		$downFlag=0;
@@ -223,7 +237,12 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		return $newFConf;
 	}
 
-
+	/**
+	 * Adds a new table to the option values
+	 *
+	 * @param	array		$optValues: Option values
+	 * @return	modified option values
+	 */
 	function addOtherExtensionTables($optValues)	{
 		if (is_array($this->wizard->wizArray['tables']))	{
 			foreach($this->wizard->wizArray['tables'] as $k=>$info)	{
@@ -235,6 +254,13 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		}
 		return $optValues;
 	}
+
+	/**
+	 * Cleaning up fieldname from invalid characters (only alphanum is allowed)
+	 *
+	 * @param	string		$str: orginal fieldname
+	 * @return	cleaned up fieldname
+	 */
 	function cleanUpFieldName($str)	{
 		$fieldName = ereg_replace('[^[:alnum:]_]','',strtolower($str));
 		if (!$fieldName || t3lib_div::inList($this->wizard->reservedTypo3Fields.','.$this->wizard->mysql_reservedFields,$fieldName) || in_array($fieldName,$this->usedNames))	{
@@ -244,14 +270,21 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		return $fieldName;
 	}
 
-
+	/**
+	 * Renders a single field
+	 *
+	 * @param	string		$prefix: The prefix for the fieldname
+	 * @param	array		$fConf: field config
+	 * @param	boolean		$dontRemove: if true the field can't be removed (option link is not rendered)
+	 * @return	HTML code of the field
+	 */
 	function renderField($prefix,$fConf,$dontRemove=0)	{
 		$onCP = $this->getOnChangeParts($prefix.'[fieldname]');
 		$fieldName = $this->renderStringBox($prefix.'[fieldname]',$fConf['fieldname']).
 			(!$dontRemove?' (Remove:'.$this->renderCheckBox($prefix.'[_DELETE]',0).')'.
-				'<input type="image" hspace=2 src="'.$this->wizard->siteBackPath.TYPO3_mainDir.'gfx/pil2up.gif" name="'.$this->varPrefix.'_CMD_'.$fConf["fieldname"].'_UP" onClick="'.$onCP[1].'">'.
-				'<input type="image" hspace=2 src="'.$this->wizard->siteBackPath.TYPO3_mainDir.'gfx/pil2down.gif" name="'.$this->varPrefix.'_CMD_'.$fConf["fieldname"].'_DOWN" onClick="'.$onCP[1].'">'.
-				'<input type="image" hspace=2 src="'.$this->wizard->siteBackPath.TYPO3_mainDir.'gfx/savesnapshot.gif" name="'.$this->varPrefix.'_CMD_'.$fConf["fieldname"].'_SAVE" onClick="'.$onCP[1].'" title="Save this field setting as a preset.">':'');
+				'<input type="image" hspace="2" src="'.$this->wizard->siteBackPath.TYPO3_mainDir.'gfx/pil2up.gif" name="'.$this->varPrefix.'_CMD_'.$fConf["fieldname"].'_UP" onclick="'.$onCP[1].'" />'.
+				'<input type="image" hspace="2" src="'.$this->wizard->siteBackPath.TYPO3_mainDir.'gfx/pil2down.gif" name="'.$this->varPrefix.'_CMD_'.$fConf["fieldname"].'_DOWN" onclick="'.$onCP[1].'" />'.
+				'<input type="image" hspace="2" src="'.$this->wizard->siteBackPath.TYPO3_mainDir.'gfx/savesnapshot.gif" name="'.$this->varPrefix.'_CMD_'.$fConf["fieldname"].'_SAVE" onclick="'.$onCP[1].'" title="Save this field setting as a preset." />':'');
 
 		$fieldTitle = ((string)$fConf['type'] != 'passthrough') ? $this->renderStringBox_lang('title',$prefix,$fConf) : '';
 		$typeCfg = '';
@@ -279,22 +312,22 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			'passthrough' => '[Passthrough]',
 		);
 		$typeCfg.=$this->renderSelectBox($prefix.'[type]',$fConf['type'],$optValues);
-		$typeCfg.=$this->renderCheckBox($prefix.'[excludeField]',isset($fConf['excludeField'])?$fConf['excludeField']:1).' Is Exclude-field '.$this->whatIsThis('If a field is marked "Exclude-field", users can edit it ONLY if the field is specifically listed in one of the backend user groups of the user.\nIn other words, if a field is marked "Exclude-field" you can control which users can edit it and which cannot.').'<BR>';
+		$typeCfg.=$this->renderCheckBox($prefix.'[excludeField]',isset($fConf['excludeField'])?$fConf['excludeField']:1).' Is Exclude-field '.$this->whatIsThis('If a field is marked "Exclude-field", users can edit it ONLY if the field is specifically listed in one of the backend user groups of the user.\nIn other words, if a field is marked "Exclude-field" you can control which users can edit it and which cannot.').'<br />';
 
 		$fDetails='';
 		switch((string)$fConf['type'])	{
 			case 'input+':
 				$typeCfg.=$this->resImg('t_input.png','','');
 
-				$fDetails.=$this->renderStringBox($prefix.'[conf_size]',$fConf['conf_size'],50).' Field width (5-48 relative, 30 default)<BR>';
-				$fDetails.=$this->renderStringBox($prefix.'[conf_max]',$fConf['conf_max'],50).' Max characters<BR>';
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_required]',$fConf['conf_required']).'Required<BR>';
-				$fDetails.=$this->resImg('t_input_required.png','hspace=20','','<BR><BR>');
+				$fDetails.=$this->renderStringBox($prefix.'[conf_size]',$fConf['conf_size'],50).' Field width (5-48 relative, 30 default)<br />';
+				$fDetails.=$this->renderStringBox($prefix.'[conf_max]',$fConf['conf_max'],50).' Max characters<br />';
+				$fDetails.=$this->renderCheckBox($prefix.'[conf_required]',$fConf['conf_required']).'Required<br />';
+				$fDetails.=$this->resImg('t_input_required.png','hspace=20','','<br /><br />');
 
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_varchar]',$fConf['conf_varchar']).'Create VARCHAR, not TINYTEXT field (if not forced INT)<BR>';
+				$fDetails.=$this->renderCheckBox($prefix.'[conf_varchar]',$fConf['conf_varchar']).'Create VARCHAR, not TINYTEXT field (if not forced INT)<br />';
 
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_check]',$fConf['conf_check']).'Apply checkbox<BR>';
-				$fDetails.=$this->resImg('t_input_check.png','hspace=20','','<BR><BR>');
+				$fDetails.=$this->renderCheckBox($prefix.'[conf_check]',$fConf['conf_check']).'Apply checkbox<br />';
+				$fDetails.=$this->resImg('t_input_check.png','hspace=20','','<br /><br />');
 
 				$optValues = array(
 					'' => '',
@@ -310,40 +343,40 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					'upper' => 'Upper case',
 					'lower' => 'Lower case',
 				);
-				$fDetails.='<BR>Evaluate value to:<BR>'.$this->renderSelectBox($prefix.'[conf_eval]',$fConf['conf_eval'],$optValues).'<BR>';
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_stripspace]',$fConf['conf_stripspace']).'Strip space<BR>';
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_pass]',$fConf['conf_pass']).'Is password field<BR>';
-				$fDetails.=$this->resImg('t_input_password.png','hspace=20','','<BR><BR>');
+				$fDetails.='<br />Evaluate value to:<br />'.$this->renderSelectBox($prefix.'[conf_eval]',$fConf['conf_eval'],$optValues).'<br />';
+				$fDetails.=$this->renderCheckBox($prefix.'[conf_stripspace]',$fConf['conf_stripspace']).'Strip space<br />';
+				$fDetails.=$this->renderCheckBox($prefix.'[conf_pass]',$fConf['conf_pass']).'Is password field<br />';
+				$fDetails.=$this->resImg('t_input_password.png','hspace=20','','<br /><br />');
 
-				$fDetails.='<BR>';
-				$fDetails.=$this->renderRadioBox($prefix.'[conf_unique]',$fConf['conf_unique'],'G').'Unique in whole database<BR>';
-				$fDetails.=$this->renderRadioBox($prefix.'[conf_unique]',$fConf['conf_unique'],'L').'Unique inside parent page<BR>';
-				$fDetails.=$this->renderRadioBox($prefix.'[conf_unique]',$fConf['conf_unique'],'').'Not unique (default)<BR>';
-				$fDetails.='<BR>';
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_wiz_color]',$fConf['conf_wiz_color']).'Add colorpicker wizard<BR>';
-				$fDetails.=$this->resImg('t_input_colorwiz.png','hspace=20','','<BR><BR>');
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_wiz_link]',$fConf['conf_wiz_link']).'Add link wizard<BR>';
-				$fDetails.=$this->resImg('t_input_link2.png','hspace=20','','<BR><BR>');
+				$fDetails.='<br />';
+				$fDetails.=$this->renderRadioBox($prefix.'[conf_unique]',$fConf['conf_unique'],'G').'Unique in whole database<br />';
+				$fDetails.=$this->renderRadioBox($prefix.'[conf_unique]',$fConf['conf_unique'],'L').'Unique inside parent page<br />';
+				$fDetails.=$this->renderRadioBox($prefix.'[conf_unique]',$fConf['conf_unique'],'').'Not unique (default)<br />';
+				$fDetails.='<br />';
+				$fDetails.=$this->renderCheckBox($prefix.'[conf_wiz_color]',$fConf['conf_wiz_color']).'Add colorpicker wizard<br />';
+				$fDetails.=$this->resImg('t_input_colorwiz.png','hspace=20','','<br /><br />');
+				$fDetails.=$this->renderCheckBox($prefix.'[conf_wiz_link]',$fConf['conf_wiz_link']).'Add link wizard<br />';
+				$fDetails.=$this->resImg('t_input_link2.png','hspace=20','','<br /><br />');
 			break;
 			case 'input':
 				$typeCfg.=$this->resImg('t_input.png','','');
 
-				$fDetails.=$this->renderStringBox($prefix.'[conf_size]',$fConf['conf_size'],50).' Field width (5-48 relative, 30 default)<BR>';
-				$fDetails.=$this->renderStringBox($prefix.'[conf_max]',$fConf['conf_max'],50).' Max characters<BR>';
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_required]',$fConf['conf_required']).'Required<BR>';
-				$fDetails.=$this->resImg('t_input_required.png','hspace=20','','<BR><BR>');
+				$fDetails.=$this->renderStringBox($prefix.'[conf_size]',$fConf['conf_size'],50).' Field width (5-48 relative, 30 default)<br />';
+				$fDetails.=$this->renderStringBox($prefix.'[conf_max]',$fConf['conf_max'],50).' Max characters<br />';
+				$fDetails.=$this->renderCheckBox($prefix.'[conf_required]',$fConf['conf_required']).'Required<br />';
+				$fDetails.=$this->resImg('t_input_required.png','hspace=20','','<br /><br />');
 
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_varchar]',$fConf['conf_varchar']).'Create VARCHAR, not TINYTEXT field<BR>';
+				$fDetails.=$this->renderCheckBox($prefix.'[conf_varchar]',$fConf['conf_varchar']).'Create VARCHAR, not TINYTEXT field<br />';
 			break;
 			case 'textarea':
 			case 'textarea_nowrap':
 				$typeCfg.=$this->resImg('t_textarea.png','','');
 
-				$fDetails.=$this->renderStringBox($prefix.'[conf_cols]',$fConf['conf_cols'],50).' Textarea width (5-48 relative, 30 default)<BR>';
-				$fDetails.=$this->renderStringBox($prefix.'[conf_rows]',$fConf['conf_rows'],50).' Number of rows (height)<BR>';
-				$fDetails.='<BR>';
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_wiz_example]',$fConf['conf_wiz_example']).'Add wizard example<BR>';
-				$fDetails.=$this->resImg('t_textarea_wiz.png','hspace=20','','<BR><BR>');
+				$fDetails.=$this->renderStringBox($prefix.'[conf_cols]',$fConf['conf_cols'],50).' Textarea width (5-48 relative, 30 default)<br />';
+				$fDetails.=$this->renderStringBox($prefix.'[conf_rows]',$fConf['conf_rows'],50).' Number of rows (height)<br />';
+				$fDetails.='<br />';
+				$fDetails.=$this->renderCheckBox($prefix.'[conf_wiz_example]',$fConf['conf_wiz_example']).'Add wizard example<br />';
+				$fDetails.=$this->resImg('t_textarea_wiz.png','hspace=20','','<br /><br />');
 			break;
 			case 'textarea_rte':
 				$typeCfg.=$this->resImg($fConf['conf_rte']!='tt_content'?'t_rte.png':'t_rte2.png','','');
@@ -355,7 +388,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					'none' => 'No transformation at all',
 					'custom' => 'Custom'
 				);
-				$fDetails.='<BR>Rich Text Editor Mode:<BR>'.$this->renderSelectBox($prefix.'[conf_rte]',$fConf['conf_rte'],$optValues).'<BR>';
+				$fDetails.='<br />Rich Text Editor Mode:<br />'.$this->renderSelectBox($prefix.'[conf_rte]',$fConf['conf_rte'],$optValues).'<br />';
 				if ((string)$fConf['conf_rte']=='custom')	{
 					$optValues = array(
 						'cut' => array('Cut button'),
@@ -398,56 +431,56 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 							<td>'.$this->fw(htmlspecialchars($vv[1])).'</td>
 						</tr>';
 					}
-					$fDetails.='<table border=0 cellpadding=2 cellspacing=2>'.implode('',$subLines).'</table><BR>';
+					$fDetails.='<table border="0" cellpadding="2" cellspacing="2">'.implode('',$subLines).'</table><br />';
 
-					$fDetails.='<BR><strong>Define specific colors:</strong><BR>
-						<em>Notice: Use only HEX-values for colors ("blue" should be #0000ff etc.)</em><BR>';
+					$fDetails.='<br /><strong>Define specific colors:</strong><br />
+						<em>Notice: Use only HEX-values for colors ("blue" should be #0000ff etc.)</em><br />';
 					for($a=1;$a<4;$a++)	{
-						$fDetails.='Color #'.$a.': '.$this->renderStringBox($prefix.'[conf_rte_color'.$a.']',$fConf['conf_rte_color'.$a],70).'<BR>';
+						$fDetails.='Color #'.$a.': '.$this->renderStringBox($prefix.'[conf_rte_color'.$a.']',$fConf['conf_rte_color'.$a],70).'<br />';
 					}
-					$fDetails.=$this->resImg('t_rte_color.png','','','<BR><BR>');
+					$fDetails.=$this->resImg('t_rte_color.png','','','<br /><br />');
 
-					$fDetails.=$this->renderCheckBox($prefix.'[conf_rte_removecolorpicker]',$fConf['conf_rte_removecolorpicker']).'Hide colorpicker<BR>';
-					$fDetails.=$this->resImg('t_rte_colorpicker.png','hspace=20','','<BR><BR>');
+					$fDetails.=$this->renderCheckBox($prefix.'[conf_rte_removecolorpicker]',$fConf['conf_rte_removecolorpicker']).'Hide colorpicker<br />';
+					$fDetails.=$this->resImg('t_rte_colorpicker.png','hspace=20','','<br /><br />');
 
-					$fDetails.='<BR><strong>Define classes:</strong><BR>';
+					$fDetails.='<br /><strong>Define classes:</strong><br />';
 					for($a=1;$a<7;$a++)	{
 						$fDetails.='Class Title:'.$this->renderStringBox($prefix.'[conf_rte_class'.$a.']',$fConf['conf_rte_class'.$a],100).
-						  '<BR>CSS Style: {'.$this->renderStringBox($prefix.'[conf_rte_class'.$a.'_style]',$fConf['conf_rte_class'.$a.'_style'],250).'}'.
-						  '<BR>';
+						  '<br />CSS Style: {'.$this->renderStringBox($prefix.'[conf_rte_class'.$a.'_style]',$fConf['conf_rte_class'.$a.'_style'],250).'}'.
+						  '<br />';
 					}
-					$fDetails.=$this->resImg('t_rte_class.png','','','<BR><BR>');
+					$fDetails.=$this->resImg('t_rte_class.png','','','<br /><br />');
 
-#					$fDetails.=$this->renderCheckBox($prefix."[conf_rte_removePdefaults]",$fConf["conf_rte_removePdefaults"])."<BR>";
+#					$fDetails.=$this->renderCheckBox($prefix."[conf_rte_removePdefaults]",$fConf["conf_rte_removePdefaults"])."<br />";
 					$optValues = array(
 						'0' => '',
 						'1' => 'Hide Hx and PRE from Paragraph selector.',
 						'H2H3' => 'Hide all, but H2,H3,P,PRE',
 					);
-					$fDetails.='<BR>Hide Paragraph Items:<BR>'.$this->renderSelectBox($prefix.'[conf_rte_removePdefaults]',$fConf['conf_rte_removePdefaults'],$optValues).'<BR>';
-					$fDetails.=$this->resImg('t_rte_hideHx.png','hspace=20','','<BR><BR>');
+					$fDetails.='<br />Hide Paragraph Items:<br />'.$this->renderSelectBox($prefix.'[conf_rte_removePdefaults]',$fConf['conf_rte_removePdefaults'],$optValues).'<br />';
+					$fDetails.=$this->resImg('t_rte_hideHx.png','hspace=20','','<br /><br />');
 
-					$fDetails.='<BR><strong>Misc:</strong><BR>';
-//					$fDetails.=$this->renderCheckBox($prefix.'[conf_rte_custom_php_processing]',$fConf['conf_rte_custom_php_processing']).'Custom PHP processing of content<BR>';
-					$fDetails.=$this->renderCheckBox($prefix.'[conf_rte_div_to_p]',isset($fConf['conf_rte_div_to_p'])?$fConf['conf_rte_div_to_p']:1).htmlspecialchars('Convert all <DIV> to <P>').'<BR>';
+					$fDetails.='<br /><strong>Misc:</strong><br />';
+//					$fDetails.=$this->renderCheckBox($prefix.'[conf_rte_custom_php_processing]',$fConf['conf_rte_custom_php_processing']).'Custom PHP processing of content<br />';
+					$fDetails.=$this->renderCheckBox($prefix.'[conf_rte_div_to_p]',isset($fConf['conf_rte_div_to_p'])?$fConf['conf_rte_div_to_p']:1).htmlspecialchars('Convert all <DIV> to <P>').'<br />';
 				}
 
-				$fDetails.='<BR>';
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_rte_fullscreen]',isset($fConf['conf_rte_fullscreen'])?$fConf['conf_rte_fullscreen']:1).'Fullscreen link<BR>';
-				$fDetails.=$this->resImg('t_rte_fullscreen.png','hspace=20','','<BR><BR>');
+				$fDetails.='<br />';
+				$fDetails.=$this->renderCheckBox($prefix.'[conf_rte_fullscreen]',isset($fConf['conf_rte_fullscreen'])?$fConf['conf_rte_fullscreen']:1).'Fullscreen link<br />';
+				$fDetails.=$this->resImg('t_rte_fullscreen.png','hspace=20','','<br /><br />');
 
 				if (t3lib_div::inList('moderate,basic,custom',$fConf['conf_rte']))	{
-					$fDetails.='<BR>';
-					$fDetails.=$this->renderCheckBox($prefix.'[conf_rte_separateStorageForImages]',isset($fConf['conf_rte_separateStorageForImages'])?$fConf['conf_rte_separateStorageForImages']:1).'Storage of images in separate folder (in uploads/[extfolder]/rte/)<BR>';
+					$fDetails.='<br />';
+					$fDetails.=$this->renderCheckBox($prefix.'[conf_rte_separateStorageForImages]',isset($fConf['conf_rte_separateStorageForImages'])?$fConf['conf_rte_separateStorageForImages']:1).'Storage of images in separate folder (in uploads/[extfolder]/rte/)<br />';
 				}
 				if (t3lib_div::inList('moderate,custom',$fConf['conf_rte']))	{
-					$fDetails.='<BR>';
-					$fDetails.=$this->renderCheckBox($prefix.'[conf_mode_cssOrNot]',isset($fConf['conf_mode_cssOrNot'])?$fConf['conf_mode_cssOrNot']:1) . 'Use "ts_css" transformation instead of "ts_images-ts-reglinks"<BR>';
+					$fDetails.='<br />';
+					$fDetails.=$this->renderCheckBox($prefix.'[conf_mode_cssOrNot]',isset($fConf['conf_mode_cssOrNot'])?$fConf['conf_mode_cssOrNot']:1) . 'Use "ts_css" transformation instead of "ts_images-ts-reglinks"<br />';
 				}
 			break;
 			case 'check':
 				$typeCfg.=$this->resImg('t_input_link.png','','');
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_check_default]',$fConf['conf_check_default']).'Checked by default<BR>';
+				$fDetails.=$this->renderCheckBox($prefix.'[conf_check_default]',$fConf['conf_check_default']).'Checked by default<br />';
 			break;
 			case 'select':
 			case 'radio':
@@ -456,30 +489,30 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				} else	{
 					$typeCfg.=$this->resImg('t_sel.png','','');
 				}
-				$fDetails.='<BR><strong>Define values:</strong><BR>';
+				$fDetails.='<br /><strong>Define values:</strong><br />';
 				$subLines=array();
 					$subLines[]='<tr>
-						<td valign=top>'.$this->fw('Item label:').'</td>
-						<td valign=top>'.$this->fw('Item value:').'</td>
+						<td valign="top">'.$this->fw('Item label:').'</td>
+						<td valign="top">'.$this->fw('Item value:').'</td>
 					</tr>';
 				$nItems = $fConf['conf_select_items'] = isset($fConf['conf_select_items'])?t3lib_div::intInRange(intval($fConf['conf_select_items']),0,20):4;
 				for($a=0;$a<$nItems;$a++)	{
 					$subLines[]='<tr>
-						<td valign=top>'.$this->fw($this->renderStringBox_lang('conf_select_item_'.$a,$prefix,$fConf)).'</td>
-						<td valign=top>'.$this->fw($this->renderStringBox($prefix.'[conf_select_itemvalue_'.$a.']',isset($fConf['conf_select_itemvalue_'.$a])?$fConf['conf_select_itemvalue_'.$a]:$a,50)).'</td>
+						<td valign="top">'.$this->fw($this->renderStringBox_lang('conf_select_item_'.$a,$prefix,$fConf)).'</td>
+						<td valign="top">'.$this->fw($this->renderStringBox($prefix.'[conf_select_itemvalue_'.$a.']',isset($fConf['conf_select_itemvalue_'.$a])?$fConf['conf_select_itemvalue_'.$a]:$a,50)).'</td>
 					</tr>';
 				}
-				$fDetails.='<table border=0 cellpadding=2 cellspacing=2>'.implode('',$subLines).'</table><BR>';
-				$fDetails.=$this->renderStringBox($prefix.'[conf_select_items]',$fConf['conf_select_items'],50).' Number of values<BR>';
+				$fDetails.='<table border="0" cellpadding="2" cellspacing="2">'.implode('',$subLines).'</table><br />';
+				$fDetails.=$this->renderStringBox($prefix.'[conf_select_items]',$fConf['conf_select_items'],50).' Number of values<br />';
 
 				if ($fConf['type']=='select')	{
-					$fDetails.=$this->renderCheckBox($prefix.'[conf_select_icons]',$fConf['conf_select_icons']).'Add a dummy set of icons<BR>';
-					$fDetails.=$this->resImg('t_select_icons.png','hspace=20','','<BR><BR>');
+					$fDetails.=$this->renderCheckBox($prefix.'[conf_select_icons]',$fConf['conf_select_icons']).'Add a dummy set of icons<br />';
+					$fDetails.=$this->resImg('t_select_icons.png','hspace="20"','','<br /><br />');
 
-					$fDetails.=$this->renderStringBox($prefix.'[conf_relations]',t3lib_div::intInRange($fConf['conf_relations'],1,1000),50).' Max number of relations<BR>';
-					$fDetails.=$this->renderStringBox($prefix.'[conf_relations_selsize]',t3lib_div::intInRange($fConf['conf_relations_selsize'],1,50),50).' Size of selector box<BR>';
+					$fDetails.=$this->renderStringBox($prefix.'[conf_relations]',t3lib_div::intInRange($fConf['conf_relations'],1,1000),50).' Max number of relations<br />';
+					$fDetails.=$this->renderStringBox($prefix.'[conf_relations_selsize]',t3lib_div::intInRange($fConf['conf_relations_selsize'],1,50),50).' Size of selector box<br />';
 
-					$fDetails.=$this->renderCheckBox($prefix.'[conf_select_pro]',$fConf['conf_select_pro']).'Add pre-processing with PHP-function<BR>';
+					$fDetails.=$this->renderCheckBox($prefix.'[conf_select_pro]',$fConf['conf_select_pro']).'Add pre-processing with PHP-function<br />';
 				}
 			break;
 			case 'rel':
@@ -504,8 +537,8 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				);
 				if ($fConf['conf_rel_type']!='group')	{unset($optValues['_ALL']);}
 				$optValues = $this->addOtherExtensionTables($optValues);
-				$fDetails.='<BR>Create relation to table:<BR>'.$this->renderSelectBox($prefix.'[conf_rel_table]',$fConf['conf_rel_table'],$optValues).'<BR>';
-				if ($fConf['conf_rel_table']=='_CUSTOM')	$fDetails.='Custom table name: '.$this->renderStringBox($prefix.'[conf_custom_table_name]',$fConf['conf_custom_table_name'],200).'<BR>';
+				$fDetails.='<br />Create relation to table:<br />'.$this->renderSelectBox($prefix.'[conf_rel_table]',$fConf['conf_rel_table'],$optValues).'<br />';
+				if ($fConf['conf_rel_table']=='_CUSTOM')	$fDetails.='Custom table name: '.$this->renderStringBox($prefix.'[conf_custom_table_name]',$fConf['conf_custom_table_name'],200).'<br />';
 
 				$optValues = array(
 					'group' => 'Field with Element Browser',
@@ -514,22 +547,22 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					'select_root' => 'Selectorbox, select from root page',
 					'select_storage' => 'Selectorbox, select from storage page',
 				);
-				$fDetails.='<BR>Type:<BR>'.$this->renderSelectBox($prefix.'[conf_rel_type]',$fConf['conf_rel_type']?$fConf['conf_rel_type']:'group',$optValues).'<BR>';
+				$fDetails.='<br />Type:<br />'.$this->renderSelectBox($prefix.'[conf_rel_type]',$fConf['conf_rel_type']?$fConf['conf_rel_type']:'group',$optValues).'<br />';
 				if (t3lib_div::intInRange($fConf['conf_relations'],1,1000)==1 && $fConf['conf_rel_type']!='group')	{
-					$fDetails.=$this->renderCheckBox($prefix.'[conf_rel_dummyitem]',$fConf['conf_rel_dummyitem']).'Add a blank item to the selector<BR>';
+					$fDetails.=$this->renderCheckBox($prefix.'[conf_rel_dummyitem]',$fConf['conf_rel_dummyitem']).'Add a blank item to the selector<br />';
 				}
 
-				$fDetails.=$this->renderStringBox($prefix.'[conf_relations]',t3lib_div::intInRange($fConf['conf_relations'],1,1000),50).' Max number of relations<BR>';
-				$fDetails.=$this->renderStringBox($prefix.'[conf_relations_selsize]',t3lib_div::intInRange($fConf['conf_relations_selsize'],1,50),50).' Size of selector box<BR>';
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_relations_mm]',$fConf['conf_relations_mm']).'True M-M relations (otherwise commalist of values)<BR>';
+				$fDetails.=$this->renderStringBox($prefix.'[conf_relations]',t3lib_div::intInRange($fConf['conf_relations'],1,1000),50).' Max number of relations<br />';
+				$fDetails.=$this->renderStringBox($prefix.'[conf_relations_selsize]',t3lib_div::intInRange($fConf['conf_relations_selsize'],1,50),50).' Size of selector box<br />';
+				$fDetails.=$this->renderCheckBox($prefix.'[conf_relations_mm]',$fConf['conf_relations_mm']).'True M-M relations (otherwise commalist of values)<br />';
 
 
 				if ($fConf['conf_rel_type']!='group')	{
-					$fDetails.='<BR>';
-					$fDetails.=$this->renderCheckBox($prefix.'[conf_wiz_addrec]',$fConf['conf_wiz_addrec']).'Add "Add record" link<BR>';
-					$fDetails.=$this->renderCheckBox($prefix.'[conf_wiz_listrec]',$fConf['conf_wiz_listrec']).'Add "List records" link<BR>';
-					$fDetails.=$this->renderCheckBox($prefix.'[conf_wiz_editrec]',$fConf['conf_wiz_editrec']).'Add "Edit record" link<BR>';
-					$fDetails.=$this->resImg("t_rel_wizards.png",'hspace=20','','<BR><BR>');
+					$fDetails.='<br />';
+					$fDetails.=$this->renderCheckBox($prefix.'[conf_wiz_addrec]',$fConf['conf_wiz_addrec']).'Add "Add record" link<br />';
+					$fDetails.=$this->renderCheckBox($prefix.'[conf_wiz_listrec]',$fConf['conf_wiz_listrec']).'Add "List records" link<br />';
+					$fDetails.=$this->renderCheckBox($prefix.'[conf_wiz_editrec]',$fConf['conf_wiz_editrec']).'Add "Edit record" link<br />';
+					$fDetails.=$this->resImg("t_rel_wizards.png",'hspace="20"','','<br /><br />');
 				}
 			break;
 			case 'files':
@@ -546,15 +579,15 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					'webimages' => 'Web-imagefiles (gif,jpg,png)',
 					'all' => 'All files, except php/php3 extensions',
 				);
-				$fDetails.='<BR>Extensions:<BR>'.$this->renderSelectBox($prefix.'[conf_files_type]',$fConf['conf_files_type'],$optValues).'<BR>';
+				$fDetails.='<br />Extensions:<br />'.$this->renderSelectBox($prefix.'[conf_files_type]',$fConf['conf_files_type'],$optValues).'<br />';
 
-				$fDetails.=$this->renderStringBox($prefix.'[conf_files]',t3lib_div::intInRange($fConf['conf_files'],1,1000),50).' Max number of files<BR>';
-				$fDetails.=$this->renderStringBox($prefix.'[conf_max_filesize]',t3lib_div::intInRange($fConf['conf_max_filesize'],1,1000,500),50).' Max filesize allowed (kb)<BR>';
-				$fDetails.=$this->renderStringBox($prefix.'[conf_files_selsize]',t3lib_div::intInRange($fConf['conf_files_selsize'],1,50),50).' Size of selector box<BR>';
-				$fDetails.=$this->resImg('t_file_size.png','','','<BR><BR>');
-//				$fDetails.=$this->renderCheckBox($prefix.'[conf_files_mm]',$fConf['conf_files_mm']).'DB relations (very rare choice, normally the commalist is fine enough)<BR>';
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_files_thumbs]',$fConf['conf_files_thumbs']).'Show thumbnails<BR>';
-				$fDetails.=$this->resImg('t_file_thumb.png','hspace=20','','<BR><BR>');
+				$fDetails.=$this->renderStringBox($prefix.'[conf_files]',t3lib_div::intInRange($fConf['conf_files'],1,1000),50).' Max number of files<br />';
+				$fDetails.=$this->renderStringBox($prefix.'[conf_max_filesize]',t3lib_div::intInRange($fConf['conf_max_filesize'],1,1000,500),50).' Max filesize allowed (kb)<br />';
+				$fDetails.=$this->renderStringBox($prefix.'[conf_files_selsize]',t3lib_div::intInRange($fConf['conf_files_selsize'],1,50),50).' Size of selector box<br />';
+				$fDetails.=$this->resImg('t_file_size.png','','','<br /><br />');
+//				$fDetails.=$this->renderCheckBox($prefix.'[conf_files_mm]',$fConf['conf_files_mm']).'DB relations (very rare choice, normally the commalist is fine enough)<br />';
+				$fDetails.=$this->renderCheckBox($prefix.'[conf_files_thumbs]',$fConf['conf_files_thumbs']).'Show thumbnails<br />';
+				$fDetails.=$this->resImg('t_file_thumb.png','hspace="20"','','<br /><br />');
 			break;
 			case 'integer':
 				$typeCfg.=$this->resImg('t_integer.png','','');
@@ -567,10 +600,10 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$typeCfg.=$this->resImg('t_check10.png','','');
 				}
 				$nItems= t3lib_div::intInRange($fConf['conf_numberBoxes'],1,10,(string)$fConf['type']=='check_4'?4:10);
-				$fDetails.=$this->renderStringBox($prefix.'[conf_numberBoxes]',$nItems,50).' Number of checkboxes<BR>';
+				$fDetails.=$this->renderStringBox($prefix.'[conf_numberBoxes]',$nItems,50).' Number of checkboxes<br />';
 
 				for($a=0;$a<$nItems;$a++)	{
-					$fDetails.='<BR>Label '.($a+1).':<BR>'.$this->renderStringBox_lang('conf_boxLabel_'.$a,$prefix,$fConf);
+					$fDetails.='<br />Label '.($a+1).':<br />'.$this->renderStringBox_lang('conf_boxLabel_'.$a,$prefix,$fConf);
 				}
 			break;
 			case 'date':
@@ -586,10 +619,10 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 		if ($fConf['type'])	$typeCfg.=$this->textSetup('',$fDetails);
 
-		$content='<table border=0 cellpadding=0 cellspacing=0>
-			<tr><td valign=top>'.$this->fw('Field name:').'</td><td valign=top>'.$this->fw($fieldName).'</td></tr>
-			<tr><td valign=top>'.$this->fw('Field title:').'</td><td valign=top>'.$this->fw($fieldTitle).'</td></tr>
-			<tr><td valign=top>'.$this->fw('Field type:').'</td><td valign=top>'.$this->fw($typeCfg).'</td></tr>
+		$content='<table border="0" cellpadding="0" cellspacing="0">
+			<tr><td valign="top">'.$this->fw('Field name:').'</td><td valign="top">'.$this->fw($fieldName).'</td></tr>
+			<tr><td valign="top">'.$this->fw('Field title:').'</td><td valign="top">'.$this->fw($fieldTitle).'</td></tr>
+			<tr><td valign="top">'.$this->fw('Field type:').'</td><td valign="top">'.$this->fw($typeCfg).'</td></tr>
 		</table>';
 		return $content;
 	}
@@ -598,7 +631,12 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 
 	/**
-	 * Renders the extension PHP codee
+	 * Renders the extension PHP code
+	 *
+	 * @param	string		$k: fieldname (key)
+	 * @param	array		$config: pi config
+	 * @param	string		$extKey: extension key
+	 * @return	void
 	 */
 	function render_extPart($k,$config,$extKey) {
 		$WOP='[fields]['.$k.']';
@@ -662,10 +700,12 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		');
 	}
 
-
-
-
-
+	/**
+	 * Implode fields into a string for types -> showItem
+	 *
+	 * @param	array		$columns: array with fields
+	 * @return	string with imploded fields
+	 */
 	function implodeColumns($columns)	{
 		reset($columns);
 		$outems=array();
@@ -697,6 +737,18 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		}
 		return array(implode(', ',$outems),implode(', ',$paltems));
 	}
+
+	/**
+	 * Creates the TCA for fields
+	 *
+	 * @param	array		&$DBfields: array of fields (PASSED BY REFERENCE)
+	 * @param	array		$columns: $array of fields (PASSED BY REFERENCE)
+	 * @param	array		$fConf: field config
+	 * @param	string		$WOP: ???
+	 * @param	string		$table: tablename
+	 * @param	string		$extKey: extensionkey
+	 * @return	void
+	 */
 	function makeFieldTCA(&$DBfields,&$columns,$fConf,$WOP,$table,$extKey)	{
 		if (!(string)$fConf['type'])	return;
 		$id = $table.'_'.$fConf['fieldname'];
@@ -1449,6 +1501,13 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			',2));
 		}
 	}
+
+	/**
+	 * Return the uploadfolder for a extensionkey
+	 *
+	 * @param	string		$eKey: extension key
+	 * @return	string with path to uploadfolder
+	 */
 	function ulFolder($eKey)	{
 		return "uploads/tx_".str_replace("_","",$eKey)."/";
 	}
