@@ -759,7 +759,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		switch($t)	{
 			case 'input':
 			case 'input+':
-				$isString =1;
+				$isString = true;
 				$configL[]='"type" => "input",	' . $this->WOPcomment('WOP:'.$WOP.'[type]');
 				$configL[]='"size" => "' . t3lib_div::intInRange($fConf['conf_size'],5,48,30) . '",	' .$this->WOPcomment('WOP:'.$WOP.'[conf_size]');
 				if (intval($fConf['conf_max']))	$configL[]='"max" => "' . t3lib_div::intInRange($fConf['conf_max'],1,255).'",	'.$this->WOPcomment('WOP:'.$WOP.'[conf_max]');
@@ -768,7 +768,8 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				if ($fConf['conf_required'])	{$evalItems[0][] = 'required';			$evalItems[1][] = $WOP.'[conf_required]';}
 
 				if ($t=='input+')	{
-					$isString = !$fConf['conf_eval'] || t3lib_div::inList('alphanum,upper,lower',$fConf['conf_eval']);
+					$isString = (bool) !$fConf['conf_eval'] || t3lib_div::inList('alphanum,upper,lower',$fConf['conf_eval']);
+					$isDouble2 = (bool) !$fConf['conf_eval'] || t3lib_div::inList('double2',$fConf['conf_eval']);
 					if ($fConf['conf_varchar'] && $isString)		{$evalItems[0][] = 'trim';			$evalItems[1][] = $WOP.'[conf_varchar]';}
 					if ($fConf['conf_eval']=='int+')	{
 						$configL[]='"range" => Array ("lower"=>0,"upper"=>1000),	'.$this->WOPcomment('WOP:'.$WOP.'[conf_eval] = int+ results in a range setting');
@@ -824,8 +825,10 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 				if (count($evalItems))	$configL[]='"eval" => "'.implode(",",$evalItems[0]).'",	'.$this->WOPcomment('WOP:'.implode(" / ",$evalItems[1]));
 
-				if (!$isString)	{
+				if (!$isString && !$isDouble2)	{
 					$DBfields[] = $fConf['fieldname'] . ' int(11) DEFAULT \'0\' NOT NULL,';
+				} elseif (!$isString && $isDouble2) {
+					$DBfields[] = $fConf["fieldname"]." double(11,2) DEFAULT '0.00' NOT NULL,";
 				} elseif (!$fConf['conf_varchar'])		{
 					$DBfields[] = $fConf['fieldname'] . ' tinytext NOT NULL,';
 				} else {

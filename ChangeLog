@@ -1,3 +1,7 @@
+2006-01-27  Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Fixed bug #140: Selecting floating point input type doesn;t set the DB tables correctly
+
 2005-11-15  Ingo Renner  <typo3@ingo-renner.com>
 
 	* added recent translations from TER
