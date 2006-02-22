@@ -1,3 +1,8 @@
+2006-02-22  Kasper Skaarhoej
+
+	* Complies with new EM (function that writes extension to file system has changed in 4.0 EM)
+	* Fixed problem with path to images now that symlinks has been removed.
+
 2006-01-27  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed bug #140: Selecting floating point input type doesn;t set the DB tables correctly
