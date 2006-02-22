@@ -171,7 +171,10 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			if ($saveKey)	{
 				$this->makeFilesArray($this->saveKey);
 				$uploadArray = $this->makeUploadArray($this->saveKey,$this->fileArray);
-				$this->pObj->importExtFromRep(0,$this->modData['loc'],0,$uploadArray,0,0,1);
+#				$this->pObj->importExtFromRep(0,$this->modData['loc'],0,$uploadArray,0,0,1);
+
+					# New EM requires this:
+				$this->pObj->importExtFromRep('','',$this->modData['loc'],0,1,$uploadArray);
 			} else $content = $this->fw('<strong>Error:</strong> Please enter an extension key first!<br /><br />');
 		} elseif ($this->modData['totalForm'])	{
 			$content = $this->totalForm();
@@ -290,14 +293,14 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				foreach($items as $k2=>$conf)	{
 					$dummyTitle = t3lib_div::inList($singles,$k) ? '[Click to Edit]' : '<em>Item '.$k2.'</em>';
 					$isActive = !strcmp($k.':edit:'.$k2,$actionType);
-					$delIcon = $this->linkStr('<img src="'.$this->siteBackPath.'t3lib/gfx/garbage.gif" width="11" height="12" border="0" title="Remove item" />','','deleteEl:'.$k.':'.$k2);
+					$delIcon = $this->linkStr('<img src="'.$this->siteBackPath.TYPO3_mainDir.'gfx/garbage.gif" width="11" height="12" border="0" title="Remove item" />','','deleteEl:'.$k.':'.$k2);
 					$iLines[]='<tr'.($isActive?$this->bgCol(2,-30):$this->bgCol(2)).'><td>'.$this->fw($this->linkStr($this->bwWithFlag($conf['title']?$conf['title']:$dummyTitle,$isActive),$k,'edit:'.$k2)).'</td><td>'.$delIcon.'</td></tr>';
 					$c=$k2;
 				}
 			}
 			if (!t3lib_div::inList($singles,$k) || !count($iLines))	{
 				$c++;
-				$addIcon = $this->linkStr('<img src="'.$this->siteBackPath.'t3lib/gfx/add.gif" width="12" height="12" border="0" title="Add item" />',$k,'edit:'.$c);
+				$addIcon = $this->linkStr('<img src="'.$this->siteBackPath.TYPO3_mainDir.'gfx/add.gif" width="12" height="12" border="0" title="Add item" />',$k,'edit:'.$c);
 			} else {$addIcon = '';}
 
 			$lines[]='<tr'.$this->bgCol(1).'><td nowrap="nowrap"><strong>'.$this->fw($v[0]).'</strong></td><td>'.$addIcon.'</td></tr>';
