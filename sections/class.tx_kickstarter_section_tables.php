@@ -407,14 +407,14 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$columns['sys_language_uid'] = trim($this->sPS('
 				\'sys_language_uid\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[localization]').'
 					\'exclude\' => 1,
-					\'label\' => \'LLL:EXT:lang/locallang_general.php:LGL.language\',
+					\'label\' => \'LLL:EXT:lang/locallang_general.xml:LGL.language\',
 					\'config\' => array (
 						\'type\' => \'select\',
 						\'foreign_table\' => \'sys_language\',
 						\'foreign_table_where\' => \'ORDER BY sys_language.title\',
 						\'items\' => array(
-							array(\'LLL:EXT:lang/locallang_general.php:LGL.allLanguages\',-1),
-							array(\'LLL:EXT:lang/locallang_general.php:LGL.default_value\',0)
+							array(\'LLL:EXT:lang/locallang_general.xml:LGL.allLanguages\',-1),
+							array(\'LLL:EXT:lang/locallang_general.xml:LGL.default_value\',0)
 						)
 					)
 				),
@@ -424,7 +424,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 				'l18n_parent' => Array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
 					'displayCond' => 'FIELD:sys_language_uid:>:0',
 					'exclude' => 1,
-					'label' => 'LLL:EXT:lang/locallang_general.php:LGL.l18n_parent',
+					'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
 					'config' => Array (
 						'type' => 'select',
 						'items' => Array (
@@ -460,7 +460,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$columns["hidden"] = trim($this->sPS('
 				"hidden" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden]').'
 					"exclude" => 1,
-					"label" => "LLL:EXT:lang/locallang_general.php:LGL.hidden",
+					"label" => "LLL:EXT:lang/locallang_general.xml:LGL.hidden",
 					"config" => Array (
 						"type" => "check",
 						"default" => "0"
@@ -474,7 +474,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$columns["starttime"] = trim($this->sPS('
 				"starttime" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_starttime]').'
 					"exclude" => 1,
-					"label" => "LLL:EXT:lang/locallang_general.php:LGL.starttime",
+					"label" => "LLL:EXT:lang/locallang_general.xml:LGL.starttime",
 					"config" => Array (
 						"type" => "input",
 						"size" => "8",
@@ -492,7 +492,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$columns["endtime"] = trim($this->sPS('
 				"endtime" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_endtime]').'
 					"exclude" => 1,
-					"label" => "LLL:EXT:lang/locallang_general.php:LGL.endtime",
+					"label" => "LLL:EXT:lang/locallang_general.xml:LGL.endtime",
 					"config" => Array (
 						"type" => "input",
 						"size" => "8",
@@ -514,14 +514,14 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$columns["fe_group"] = trim($this->sPS('
 				"fe_group" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_access]').'
 					"exclude" => 1,
-					"label" => "LLL:EXT:lang/locallang_general.php:LGL.fe_group",
+					"label" => "LLL:EXT:lang/locallang_general.xml:LGL.fe_group",
 					"config" => Array (
 						"type" => "select",
 						"items" => Array (
 							Array("", 0),
-							Array("LLL:EXT:lang/locallang_general.php:LGL.hide_at_login", -1),
-							Array("LLL:EXT:lang/locallang_general.php:LGL.any_login", -2),
-							Array("LLL:EXT:lang/locallang_general.php:LGL.usergroups", "--div--")
+							Array("LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login", -1),
+							Array("LLL:EXT:lang/locallang_general.xml:LGL.any_login", -2),
+							Array("LLL:EXT:lang/locallang_general.xml:LGL.usergroups", "--div--")
 						),
 						"foreign_table" => "fe_groups"
 					)

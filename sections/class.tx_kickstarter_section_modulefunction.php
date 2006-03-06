@@ -133,7 +133,7 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 		$ll=array();
 		$this->addLocalConf($ll,$config,'title','module',$k,1);
 		$this->addLocalConf($ll,array('checklabel'=>'Check box #1'),'checklabel','modfunc',$k,1,1);
-		$this->addLocalLangFile($ll,$pathSuffix.'locallang.php','Language labels for module "'.$mN.'"');
+		$this->addLocalLangFile($ll,$pathSuffix.'locallang.xml','Language labels for module "'.$mN.'"');
 
 		if ($position!='user_task')	{
 			$indexContent.= $this->sPS('
@@ -163,13 +163,13 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 							// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 						global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
-						$theOutput.=$this->wizard->pObj->doc->spacer(5);
-						$theOutput.=$this->wizard->pObj->doc->section($LANG->getLL("title"),"Dummy content here...",0,1);
+						$theOutput.=$this->pObj->doc->spacer(5);
+						$theOutput.=$this->pObj->doc->section($LANG->getLL("title"),"Dummy content here...",0,1);
 
 						$menu=array();
 						$menu[]=t3lib_BEfunc::getFuncCheck($this->wizard->pObj->id,"SET['.$cN.'_check]",$this->wizard->pObj->MOD_SETTINGS["'.$cN.'_check"]).$LANG->getLL("checklabel");
-						$theOutput.=$this->wizard->pObj->doc->spacer(5);
-						$theOutput.=$this->wizard->pObj->doc->section("Menu",implode(" - ",$menu),0,1);
+						$theOutput.=$this->pObj->doc->spacer(5);
+						$theOutput.=$this->pObj->doc->section("Menu",implode(" - ",$menu),0,1);
 
 						return $theOutput;
 					}

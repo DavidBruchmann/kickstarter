@@ -366,7 +366,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			$data = $this->fileArray[$fileName];
 
 			$fI = pathinfo($fileName);
-			if (t3lib_div::inList('php,sql,txt',strtolower($fI['extension'])))	{
+			if (t3lib_div::inList('php,sql,txt,xml',strtolower($fI['extension'])))	{
 				$linkToFile='<strong><a href="#'.md5($fileName).'">'.$this->fw("&nbsp;View&nbsp;").'</a></strong>';
 				$filesContent[]='<tr' .$this->bgCol(1) .'>
 				<td><a name="' . md5($fileName) . '"></a><strong>' . $this->fw($fileName) . '</strong></td>

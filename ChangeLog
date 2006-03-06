@@ -1,5 +1,7 @@
+2006-03-06  Kasper Skaarhoej
+	* Kickstarter now produces llXML files (locallang-XML) instead of locallang*.php files.
+	
 2006-02-22  Kasper Skaarhoej
-
 	* Complies with new EM (function that writes extension to file system has changed in 4.0 EM)
 	* Fixed problem with path to images now that symlinks has been removed.
 

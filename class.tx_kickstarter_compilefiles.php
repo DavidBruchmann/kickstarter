@@ -53,8 +53,8 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 	 * 	- ext_tables.php
 	 * 	- tca.php
 	 * 	- ext_tables.sql
-	 * 	- locallang.php
-	 * 	- locallang_db.php
+	 * 	- locallang.xml
+	 * 	- locallang_db.xml
 	 * 	- doc/wizard_form.html
 	 * 	- doc/wizard_form.dat
 	 * 	- ChangeLog
@@ -152,11 +152,11 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 		}
 			// Local lang file:
 		if (count($this->ext_locallang))	{
-			$this->addLocalLangFile($this->ext_locallang,'locallang.php','Language labels for extension \''.$extKey.'\'');
+			$this->addLocalLangFile($this->ext_locallang,'locallang.xml','Language labels for extension \''.$extKey.'\'');
 		}
 			// Local lang DB file:
 		if (count($this->ext_locallang_db))	{
-			$this->addLocalLangFile($this->ext_locallang_db,'locallang_db.php','Language labels for database tables/fields belonging to extension \''.$extKey.'\'');
+			$this->addLocalLangFile($this->ext_locallang_db,'locallang_db.xml','Language labels for database tables/fields belonging to extension \''.$extKey.'\'','database');
 		}
 
 			// The form used to generate the extension:

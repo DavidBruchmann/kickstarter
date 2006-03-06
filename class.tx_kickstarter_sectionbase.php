@@ -512,7 +512,7 @@ class tx_kickstarter_sectionbase {
 				}
 			}
 		}
-		return 'LLL:EXT:'.$this->wizard->extKey.'/locallang_db.php:'.$LLkey;
+		return 'LLL:EXT:'.$this->wizard->extKey.'/locallang_db.xml:'.$LLkey;
 	}
 
 	/**
@@ -645,34 +645,55 @@ class tx_kickstarter_sectionbase {
 	 * @param	array		array with locallang labels
 	 * @param	string		locallang filename
 	 * @param	string		description for the locallang file
+	 * @param	string		llXML file type. Default is "module". Use "database" if its a locallang_db file!
 	 * @return	void
 	 */
-	function addLocalLangFile($arr,$filename,$description)	{
-		$lines=array();
-		reset($arr);
-		$lines[]='<?php';
-		$lines[]=trim($this->sPS('
-			/**
-			 * '.$description.'
-			 *
-			 * This file is detected by the translation tool.
-			 */
-		'));
-		$lines[]='';
-		$lines[]='$LOCAL_LANG = array (';
+	function addLocalLangFile($arr,$filename,$description,$fileType='module')	{
+		$outputArray = array();
+		
+		$outputArray['meta'] = array (
+			'type' => $fileType,
+			'description' => $description
+		);
+		
+		$outputArray['data'] = array();
 		while(list($lK,$labels)=each($arr))	{
 			if (is_array($labels))	{
-				$lines[]='	\''.$lK.'\' => array (';
 				while(list($l,$v)=each($labels))	{
-					if (strcmp($v[0],''))	$lines[]='		\''.$l.'\' => \''.addslashes($v[0]).'\',	'.$this->WOPcomment($v[1]);
+					if (strcmp($v[0],''))	$outputArray['data'][$lK][$l] = $v[0];
 				}
-				$lines[]='	),';
 			}
 		}
-		$lines[]=');';
-		$lines[]='?>';
-		$this->addFileToFileArray($filename,implode(chr(10),$lines));
+
+		$this->addFileToFileArray($filename,$this->createXML($outputArray));
 	}
+
+	/**
+	 * Creates llXML string from input array
+	 *
+	 * @param	array		locallang-XML array
+	 * @return	string		XML content
+	 */
+	function createXML($outputArray)	{
+
+			// Options:
+		$options = array(
+			#'useIndexTagForAssoc'=>'key',
+			'parentTagMap' => array(
+				'data' => 'languageKey',
+				'orig_hash' => 'languageKey',
+				'orig_text' => 'languageKey',
+				'labelContext' => 'label',
+				'languageKey' => 'label'
+			)
+		);
+
+			// Creating XML file from $outputArray:
+		$XML = '<?xml version="1.0" encoding="utf-8" standalone="yes" ?>'.chr(10);
+		$XML.= t3lib_div::array2xml($outputArray,'',0,'T3locallang',0,$options);
+
+		return $XML;
+	}	
 
 	/**
 	 * generates conf.php for BE modules
@@ -707,7 +728,7 @@ class tx_kickstarter_sectionbase {
 		$this->addLocalConf($ll,array("function1"=>"Function #1"),"function1",$k_prefix,$k,1,1);
 		$this->addLocalConf($ll,array("function2"=>"Function #2"),"function2",$k_prefix,$k,1,1);
 		$this->addLocalConf($ll,array("function3"=>"Function #3"),"function3",$k_prefix,$k,1,1);
-		$this->addLocalLangFile($ll,$pathSuffix."locallang.php",'Language labels for '.$extKey.' module '.$k_prefix.$k);
+		$this->addLocalLangFile($ll,$pathSuffix."locallang.xml",'Language labels for '.$extKey.' module '.$k_prefix.$k);
 
 			// Add clear.gif
 		$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/clear.gif"));
@@ -719,8 +740,7 @@ class tx_kickstarter_sectionbase {
 			require ('conf.php');
 			require (\$BACK_PATH.'init.php');
 			require (\$BACK_PATH.'template.php');
-			\$LANG->includeLLFile('EXT:".$extKey."/".$pathSuffix."locallang.php');
-			#include ('locallang.php');
+			\$LANG->includeLLFile('EXT:".$extKey."/".$pathSuffix."locallang.xml');
 			require_once (PATH_t3lib.'class.t3lib_scbase.php');
 				// ....(But no access check here...)
 				// DEFAULT initialization of a module [END]
@@ -775,7 +795,7 @@ class tx_kickstarter_sectionbase {
 							\$this->pageinfo=array('title' => '[root-level]','uid'=>0,'pid'=>0);
 						}
 
-						\$headerSection = \$this->doc->getHeader('pages',\$this->pageinfo,\$this->pageinfo['_thePath']).'<br>'.\$LANG->sL('LLL:EXT:lang/locallang_core.php:labels.path').': '.t3lib_div::fixed_lgd_pre(\$this->pageinfo['_thePath'],50);
+						\$headerSection = \$this->doc->getHeader('pages',\$this->pageinfo,\$this->pageinfo['_thePath']).'<br>'.\$LANG->sL('LLL:EXT:lang/locallang_core.xml:labels.path').': '.t3lib_div::fixed_lgd_pre(\$this->pageinfo['_thePath'],50);
 
 						\$this->content.=\$this->doc->startPage(\$LANG->getLL('title'));
 						\$this->content.=\$this->doc->header(\$LANG->getLL('title'));
@@ -841,20 +861,22 @@ class tx_kickstarter_sectionbase {
 	}
 
 	/**
-	 * generates function to get locallang.php
+	 * generates function to get locallang.xml
 	 *
 	 * @param	string		extension key
-	 * @return	string		function to get locallang.php
+	 * @return	string		function to get locallang.xml
 	 */
 	function addLLfunc($extKey)	{
 		return $this->sPS("
 			/**
- * Includes the [extDir]/locallang.php and returns the \$LOCAL_LANG array found in that file.
- *
- * @return	[type]		...
- */
+			 * Reads the [extDir]/locallang.xml and returns the \$LOCAL_LANG array found in that file.
+			 *
+			 * @return	[type]		...
+			 */
 			function includeLL()	{
-				include(t3lib_extMgm::extPath('".$extKey."').'locallang.php');
+				global \$LANG;
+
+				\$LOCAL_LANG = \$LANG->includeLLFile('EXT:".$extKey."/locallang.xml',FALSE);
 				return \$LOCAL_LANG;
 			}
 		");
@@ -872,28 +894,24 @@ class tx_kickstarter_sectionbase {
 		$this->addLocalConf($ll,
 			array(
 				"list_mode_1"=>"Mode 1",
-				"list_mode_1_dk"=>"Visning 1"
 			),
 			"list_mode_1","pi",$k,1,1
 		);
 		$this->addLocalConf($ll,
 			array(
 				"list_mode_2"=>"Mode 2",
-				"list_mode_2_dk"=>"Visning 2"
 			),
 			"list_mode_2","pi",$k,1,1
 		);
 		$this->addLocalConf($ll,
 			array(
 				"list_mode_3"=>"Mode 3",
-				"list_mode_3_dk"=>"Visning 3"
 			),
 			"list_mode_3","pi",$k,1,1
 		);
 		$this->addLocalConf($ll,
 			array(
 				"back"=>"Back",
-				"back_dk"=>"Tilbage"
 			),
 			"back","pi",$k,1,1
 		);
@@ -902,28 +920,24 @@ class tx_kickstarter_sectionbase {
 			$this->addLocalConf($ll,
 				array(
 					"pi_list_browseresults_prev"=>"< Previous",
-					"pi_list_browseresults_prev_dk"=>"< Forrige"
 				),
 				"pi_list_browseresults_prev","pi",$k,1,1
 			);
 			$this->addLocalConf($ll,
 				array(
 					"pi_list_browseresults_page"=>"Page",
-					"pi_list_browseresults_page_dk"=>"Side"
 				),
 				"pi_list_browseresults_page","pi",$k,1,1
 			);
 			$this->addLocalConf($ll,
 				array(
 					"pi_list_browseresults_next"=>"Next >",
-					"pi_list_browseresults_next_dk"=>"Næste >"
 				),
 				"pi_list_browseresults_next","pi",$k,1,1
 			);
 			$this->addLocalConf($ll,
 				array(
 					"pi_list_browseresults_displays"=>"Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>",
-					"pi_list_browseresults_displays_dk"=>"Viser resultaterne ###SPAN_BEGIN###%s til %s</span> ud af ###SPAN_BEGIN###%s</span>"
 				),
 				"pi_list_browseresults_displays","pi",$k,1,1
 			);
@@ -931,7 +945,6 @@ class tx_kickstarter_sectionbase {
 			$this->addLocalConf($ll,
 				array(
 					"pi_list_searchBox_search"=>"Search",
-					"pi_list_searchBox_search_dk"=>"Søg"
 				),
 				"pi_list_searchBox_search","pi",$k,1,1
 			);

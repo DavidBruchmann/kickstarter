@@ -423,7 +423,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							// Add title to local lang file
 						$ll = $this->addStdLocalLangConf($ll,$k);
 
-						$this->addLocalLangFile($ll,$pathSuffix.'locallang.php','Language labels for plugin "'.$cN.'"');
+						$this->addLocalLangFile($ll,$pathSuffix.'locallang.xml','Language labels for plugin "'.$cN.'"');
 
 
 						$innerMainContent = $this->sPS('
@@ -946,7 +946,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					$ll=$this->addStdLocalLangConf($ll,$k,1);
 					$this->addLocalConf($ll,array('submit_button_label'=>'Click here to submit value'),'submit_button_label','pi',$k,1,1);
 
-					$this->addLocalLangFile($ll,$pathSuffix.'locallang.php','Language labels for plugin "'.$cN.'"');
+					$this->addLocalLangFile($ll,$pathSuffix.'locallang.xml','Language labels for plugin "'.$cN.'"');
 
 
 					$innerMainContent = $this->sPS('
@@ -1230,12 +1230,14 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					}
 
 					/**
-					 * Includes the locallang.php file and returns the language array
+					 * Reads the [extDir]/locallang.xml and returns the \$LOCAL_LANG array found in that file.
 					 *
 					 * @return	The array with language labels
 					 */
 					function includeLocalLang()	{
-						include(t3lib_extMgm::extPath(\''.$extKey.'\').\'locallang.php\');
+						global $LANG;
+
+						$LOCAL_LANG = $LANG->includeLLFile(\'EXT:".$extKey."/locallang.xml\',FALSE);
 						return $LOCAL_LANG;
 					}
 				}

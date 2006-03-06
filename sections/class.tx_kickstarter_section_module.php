@@ -166,7 +166,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 			$MCONF[\'script\']=\'index.php\';
 
 			$MLANG[\'default\'][\'tabs_images\'][\'tab\'] = \'moduleicon.gif\';
-			$MLANG[\'default\'][\'ll_ref\']=\'LLL:EXT:'.$extKey.'/'.$pathSuffix.'locallang_mod.php\';
+			$MLANG[\'default\'][\'ll_ref\']=\'LLL:EXT:'.$extKey.'/'.$pathSuffix.'locallang_mod.xml\';
 		');
 		$this->wizard->EM_CONF_presets['module'][]=ereg_replace('\/$','',$pathSuffix);
 
@@ -175,7 +175,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 		$this->addLocalConf($ll,$config,'title','module',$k,1,0,'mlang_tabs_tab');
 		$this->addLocalConf($ll,$config,'description','module',$k,1,0,'mlang_labels_tabdescr');
 		$this->addLocalConf($ll,$config,'tablabel','module',$k,1,0,'mlang_labels_tablabel');
-		$this->addLocalLangFile($ll,$pathSuffix.'locallang_mod.php','Language labels for module "'.$mN.'" - header, description');
+		$this->addLocalLangFile($ll,$pathSuffix.'locallang_mod.xml','Language labels for module "'.$mN.'" - header, description');
 
 //			$MLANG["default"]["tabs"]["tab"] = "'.addslashes($config["title"]).'";	'.$this->WOPcomment('WOP:'.$WOP.'[title]').'
 //			$MLANG["default"]["labels"]["tabdescr"] = "'.addslashes($config["description"]).'";	'.$this->WOPcomment('WOP:'.$WOP.'[description]').'
@@ -210,7 +210,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 		$this->addLocalConf($ll,array('function1'=>'Function #1'),'function1','module',$k,1,1);
 		$this->addLocalConf($ll,array('function2'=>'Function #2'),'function2','module',$k,1,1);
 		$this->addLocalConf($ll,array('function3'=>'Function #3'),'function3','module',$k,1,1);
-		$this->addLocalLangFile($ll,$pathSuffix.'locallang.php','Language labels for module "'.$mN.'"');
+		$this->addLocalLangFile($ll,$pathSuffix.'locallang.xml','Language labels for module "'.$mN.'"');
 
 			// Add clear.gif
 		$this->addFileToFileArray($pathSuffix.'clear.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/clear.gif'));
@@ -226,8 +226,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 			require ("conf.php");
 			require ($BACK_PATH."init.php");
 			require ($BACK_PATH."template.php");
-			$LANG->includeLLFile("EXT:'.$extKey.'/'.$pathSuffix.'locallang.php");
-			#include ("locallang.php");
+			$LANG->includeLLFile("EXT:'.$extKey.'/'.$pathSuffix.'locallang.xml");
 			require_once (PATH_t3lib."class.t3lib_scbase.php");
 			$BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
 				// DEFAULT initialization of a module [END]
@@ -307,7 +306,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 							</script>
 						\';
 
-						$headerSection = $this->doc->getHeader("pages",$this->pageinfo,$this->pageinfo["_thePath"])."<br />".$LANG->sL("LLL:EXT:lang/locallang_core.php:labels.path").": ".t3lib_div::fixed_lgd_pre($this->pageinfo["_thePath"],50);
+						$headerSection = $this->doc->getHeader("pages",$this->pageinfo,$this->pageinfo["_thePath"])."<br />".$LANG->sL("LLL:EXT:lang/locallang_core.xml:labels.path").": ".t3lib_div::fixed_lgd_pre($this->pageinfo["_thePath"],50);
 
 						$this->content.=$this->doc->startPage($LANG->getLL("title"));
 						$this->content.=$this->doc->header($LANG->getLL("title"));
