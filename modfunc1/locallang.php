@@ -8,7 +8,6 @@
 $LOCAL_LANG = Array (
 	"default" => Array (
 		"title" => "Make new extension",	
-		"checklabel" => "Check box #1",	
 	),
 	"dk" => Array (
 	),
