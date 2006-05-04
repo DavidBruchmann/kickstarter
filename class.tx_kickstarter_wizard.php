@@ -2,8 +2,7 @@
 /***************************************************************
 *	Copyright notice
 *
-*	(c) 2001-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*	All rights reserved
+*	(c)	 2001-2006 Kasper Skaarhoj (kasperYYYY@typo3.com) 	All rights reserved
 *
 *	This script is part of the TYPO3 project. The TYPO3 project is
 *	free software; you can redistribute it and/or modify
@@ -404,7 +403,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 					($this->pObj->importAsType('G')?'<option value="G">Global: '.$this->pObj->typePaths['G'].$this->saveKey.'/'.(@is_dir(PATH_site.$this->pObj->typePaths['G'].$this->saveKey)?' (OVERWRITE)':' (empty)').'</option>':'').
 					($this->pObj->importAsType('L')?'<option value="L">Local: '.$this->pObj->typePaths['L'].$this->saveKey.'/'.(@is_dir(PATH_site.$this->pObj->typePaths['L'].$this->saveKey)?' (OVERWRITE)':' (empty)').'</option>':'').
 				'</select>
-				<input type="submit" name="'.$this->piFieldName('WRITE').'" value="WRITE" onclick="return confirm(\'If the setting in the selectorbox says OVERWRITE\nthen the current extension in that location WILL be overridden! Totally!\nPlease decide if you want to continue.\n\n(Remember, this is a *kickstarter* - not an editor!)\');" />
+				<input type="submit" name="'.$this->piFieldName('WRITE').'" value="WRITE" onclick="return confirm(\'If the setting in the selectorbox says OVERWRITE\nthen the marked files of the current extension in that location will be OVERRIDDEN! \nPlease decide if you want to continue.\n\n(Remember, this is a *kickstarter* - NOT AN editor!)\');" />
 			';
 		}
 

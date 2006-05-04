@@ -2,8 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2001-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  All rights reserved
+*  (c)  2001-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
@@ -114,7 +113,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 			if (!$piConf['addType'])	$piConf['addType']='list_type';
 			$subContent=$this->renderRadioBox($ffPrefix.'[addType]',$piConf['addType'],'list_type').
 				$this->textSetup(
-				'Add to \'Insert Plugin\' list in Content Elemen\'',
+				'Add to \'Insert Plugin\' list in Content Elements\'',
 				'Most frontend plugins should be added to the Plugin list of Content Element type \'Insert Plugin\'. This is what happens with most other plugins you know of.'.
 				$this->resImg('pi_pi.png').
 				'<br />'.$this->renderCheckBox($ffPrefix.'[plus_wiz]',$piConf['plus_wiz']).
@@ -1235,9 +1234,9 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					 * @return	The array with language labels
 					 */
 					function includeLocalLang()	{
-						global $LANG;
-
-						$LOCAL_LANG = $LANG->includeLLFile(\'EXT:".$extKey."/locallang.xml\',FALSE);
+						$llFile = t3lib_extMgm::extPath('.$extKey.').\'locallang.xml\';
+						$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS[\'LANG\']->lang);
+						
 						return $LOCAL_LANG;
 					}
 				}

@@ -1,3 +1,10 @@
+2006-05-05 Ingo Renner <typo3@ingo-renner.com>
+	* CHG changed require to require_once as requested in feature request #3395
+	* FIX fixed bug #3384: wrong Code in xxx_pi1_wizicon.php
+	* FIX fxed typo (bug #3377)
+	* CHG changed warning message before actually writing the extension (#1255)
+	* CHG changed year in copyright notices for all files
+
 2006-03-06  Kasper Skaarhoej
 	* Kickstarter now produces llXML files (locallang-XML) instead of locallang*.php files.
 	

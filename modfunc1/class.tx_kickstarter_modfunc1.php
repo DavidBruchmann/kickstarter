@@ -2,8 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2005 Daniel Bruen (dbruen@saltation.de)
-*  All rights reserved
+*  (c)  2005-2006 Daniel Bruen (dbruen@saltation.de)  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify

@@ -2,8 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c) 2001-2005 Kasper Skaarhoj (kasperYYYY@typo3.com)
-*  All rights reserved
+*  (c)  2001-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
@@ -223,11 +222,11 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 		$indexContent = $this->sPS('
 				// DEFAULT initialization of a module [BEGIN]
 			unset($MCONF);
-			require ("conf.php");
-			require ($BACK_PATH."init.php");
-			require ($BACK_PATH."template.php");
+			require_once("conf.php");
+			require_once($BACK_PATH."init.php");
+			require_once($BACK_PATH."template.php");
 			$LANG->includeLLFile("EXT:'.$extKey.'/'.$pathSuffix.'locallang.xml");
-			require_once (PATH_t3lib."class.t3lib_scbase.php");
+			require_once(PATH_t3lib."class.t3lib_scbase.php");
 			$BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
 				// DEFAULT initialization of a module [END]
 		');
