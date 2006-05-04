@@ -25,7 +25,7 @@
 
 	* Changed quotes for SQL default values
 
-2005-04-29  Kasper Skårhøj,,,  <kasper@typo3.com>
+2005-04-29  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Added "var $pi_checkCHash = TRUE;" in plugins when based on USER objects. See changelog of core for more explanation of this very important parameter for cached plugins.
 
@@ -37,7 +37,7 @@
 
 	* Made overwrite checkboxes finally work properly
 
-2005-04-06  Kasper Skårhøj,,,  <kasper@typo3.com>
+2005-04-06  Kasper Skårhøj  <kasper@typo3.com>
 
 	* Removed all "unsigned" keywords from produced SQL (non-DBAL compliant)
 
