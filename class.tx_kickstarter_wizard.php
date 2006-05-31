@@ -170,10 +170,16 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			if ($saveKey)	{
 				$this->makeFilesArray($this->saveKey);
 				$uploadArray = $this->makeUploadArray($this->saveKey,$this->fileArray);
-#				$this->pObj->importExtFromRep(0,$this->modData['loc'],0,$uploadArray,0,0,1);
+				
+				if (t3lib_div::int_from_ver(TYPO3_version) < t3lib_div::int_from_ver('4.0.0'))	{
+						// Syntax for TYPO3 3.8 and older
+					$this->pObj->importExtFromRep(0,$this->modData['loc'],0,$uploadArray,0,0,1);
+				} else {
+						// TYPO3 4.0+ syntax
+					$this->pObj->importExtFromRep('','',$this->modData['loc'],0,1,$uploadArray);
+				}
 
-					# New EM requires this:
-				$this->pObj->importExtFromRep('','',$this->modData['loc'],0,1,$uploadArray);
+
 			} else $content = $this->fw('<strong>Error:</strong> Please enter an extension key first!<br /><br />');
 		} elseif ($this->modData['totalForm'])	{
 			$content = $this->totalForm();

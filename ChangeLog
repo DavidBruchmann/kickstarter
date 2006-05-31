@@ -1,4 +1,7 @@
 2006-05-05 Ingo Renner <typo3@ingo-renner.com>
+	* FIX fixed bug #3144: Kickstater don't WRITE anything and the icons are missing (typo3 4RC3) - many thanks to Michael Stucki for the patch!
+
+2006-05-05 Ingo Renner <typo3@ingo-renner.com>
 	* CHG changed require to require_once as requested in feature request #3395
 	* FIX fixed bug #3384: wrong Code in xxx_pi1_wizicon.php
 	* FIX fxed typo (bug #3377)
