@@ -25,6 +25,7 @@
 ***************************************************************/
 /**
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Ingo Renner <typo3@ingo-renner.com>
  */
 
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
@@ -150,8 +151,8 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 	 * @return	void
 	 */
 	function render_extPart($k,$config,$extKey) {
-		$WOP='[sv]['.$k.']';
-		$cN = $this->returnName($extKey,'class','sv'.$k);
+		$WOP ='[sv]['.$k.']';
+		$cN  = $this->returnName($extKey,'class','sv'.$k);
 		$pathSuffix = 'sv'.$k.'/';
 
 		$this->wizard->ext_tables[]=$this->sPS('
@@ -215,10 +216,9 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 			}
 		');
 
-		$indexContent= $this->wrapBody('
-			require_once(PATH_t3lib.\'class.t3lib_svbase.php\');
-
-			class '.$cN.' extends t3lib_svbase {
+		$indexRequire = 'require_once(PATH_t3lib.\'class.t3lib_svbase.php\');';
+		$indexContent = $this->wrapBody(
+			'class '.$cN.' extends t3lib_svbase {
 				var $prefixId = \''.$cN.'\';		// Same as class name
 				var $scriptRelPath = \''.($pathSuffix.'class.'.$cN.'.php').'\';	// Path to this script relative to the extension dir.
 				var $extKey = \''.$extKey.'\';	// The extension key.
@@ -226,8 +226,18 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 				',$innerMainContent,'
 			}
 		');
-		$this->addFileToFileArray($pathSuffix.'class.'.$cN.'.php',$this->PHPclassFile($extKey,$pathSuffix.'class.'.$cN.'.php',$indexContent,'Service "'.$config['title'].'" for the "'.$extKey.'" extension.'));
-
+		$this->addFileToFileArray(
+			$pathSuffix.'class.'.$cN.'.php',
+			$this->PHPclassFile(
+				$extKey,
+				$pathSuffix.'class.'.$cN.'.php',
+				$indexContent,
+				'Service "'.$config['title'].'" for the "'.$extKey.'" extension.',
+				'',
+				'',
+				$indexRequire
+			)
+		);
 	}
 
 }

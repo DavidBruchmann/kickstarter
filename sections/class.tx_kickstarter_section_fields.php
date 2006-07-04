@@ -25,6 +25,7 @@
 ***************************************************************/
 /**
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Ingo Renner <typo3@ingo-renner.com>
  */
 
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
@@ -1261,24 +1262,34 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$cN = $this->returnName($extKey,'class',$id);
 					$configL[]='"itemsProcFunc" => "'.$cN.'->main",	'.$this->WOPcomment('WOP:'.$WOP.'[conf_select_pro]');
 
-					$classContent= $this->sPS('
-						class '.$cN.' {
+					$classContent = $this->sPS(
+						'class '.$cN.' {
 							function main(&$params,&$pObj)	{
-/*								debug("Hello World!",1);
-								debug("\$params:",1);
+/*								
+								debug(\'Hello World!\',1);
+								debug(\'$params:\',1);
 								debug($params);
-								debug("\$pObj:",1);
+								debug(\'$pObj:\',1);
 								debug($pObj);
-	*/
+*/
 									// Adding an item!
-								$params["items"][]=Array($pObj->sL("Added label by PHP function|Tilføjet Dansk tekst med PHP funktion"), 999);
+								$params[\'items\'][] = array($pObj->sL("Added label by PHP function|Tilføjet Dansk tekst med PHP funktion"), 999);
 
 								// No return - the $params and $pObj variables are passed by reference, so just change content in then and it is passed back automatically...
 							}
 						}
-					');
+					',
+					0);
 
-					$this->addFileToFileArray('class.'.$cN.'.php',$this->PHPclassFile($extKey,'class.'.$cN.'.php',$classContent,'Class/Function which manipulates the item-array for table/field '.$id.'.'));
+					$this->addFileToFileArray(
+						'class.'.$cN.'.php',
+						$this->PHPclassFile(
+							$extKey,
+							'class.'.$cN.'.php',
+							$classContent,
+							'Class/Function which manipulates the item-array for table/field '.$id.'.'
+						)
+					);
 
 					$this->wizard->ext_tables[]=$this->sPS('
 						'.$this->WOPcomment('WOP:'.$WOP.'[conf_select_pro]:').'

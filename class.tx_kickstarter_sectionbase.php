@@ -27,6 +27,7 @@
  * TYPO3 Extension Kickstarter
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Ingo Renner	<typo3@ingo-renner.com>
  */
  
 #vars that probably still need "wizard->" added: dontPrintImages printWOP
@@ -161,11 +162,11 @@ class tx_kickstarter_sectionbase {
 	 * @return	string		the complete localization field
 	 */
 	function renderStringBox_lang($fieldName,$ffPrefix,$piConf)	{
-		$content = $this->renderStringBox($ffPrefix."[".$fieldName."]",$piConf[$fieldName])." [English]";
+		$content = $this->renderStringBox($ffPrefix.'['.$fieldName.']',$piConf[$fieldName]).' [English]';
 		if (count($this->wizard->selectedLanguages))	{
 			$lines=array();
 			foreach($this->wizard->selectedLanguages as $k=>$v) {
-				$lines[]=$this->renderStringBox($ffPrefix."[".$fieldName."_".$k."]",$piConf[$fieldName."_".$k])." [".$v."]";
+				$lines[]=$this->renderStringBox($ffPrefix.'['.$fieldName.'_'.$k.']',$piConf[$fieldName.'_'.$k]).' ['.$v.']';
 			}
 			$content.=$this->textSetup('', implode('<br />', $lines));
 		}
@@ -209,7 +210,7 @@ class tx_kickstarter_sectionbase {
 	function resIcon($name,$p='')	{
 		if ($this->dontPrintImages)	return '';
 		$imgRel = $this->path_resources('icons/').$name;
-		if (!@is_file(PATH_site.$imgRel))	return "";
+		if (!@is_file(PATH_site.$imgRel))	return '';
 		$imgInfo = @getimagesize(PATH_site.$imgRel);
 		return '<img src="'.$this->wizard->siteBackPath.$imgRel.'" '.$imgInfo[3].($p?' '.$p:'').' />';
 	}
@@ -231,7 +232,7 @@ class tx_kickstarter_sectionbase {
 	 * @return	array		array with an anchor and a JS function call
 	 */
 	function getOnChangeParts($prefix)	{
-		$md5h=t3lib_div::shortMd5($this->piFieldName("wizArray_upd").$prefix);
+		$md5h=t3lib_div::shortMd5($this->piFieldName('wizArray_upd').$prefix);
 		return array('<a name="'.$md5h.'"></a>','setFormAnchorPoint(\''.$md5h.'\');');
 	}
 
@@ -242,7 +243,7 @@ class tx_kickstarter_sectionbase {
 	 * @return	string		title attribute with WOP comment
 	 */
 	function wop($prefix)	{
-		return ' title="'.htmlspecialchars("WOP: ".$prefix).'"';
+		return ' title="'.htmlspecialchars('WOP: '.$prefix).'"';
 	}
 
 	/**
@@ -289,7 +290,8 @@ class tx_kickstarter_sectionbase {
 	}
 
 	/**
-	 * adds 3 table rows with alternating colors, the first row containing a header and the third row as spacer
+	 * adds 3 table rows with alternating colors, the first row containing a 
+	 * header and the third row as spacer
 	 *
 	 * @param	array		array of lines
 	 * @param	string		field key
@@ -507,7 +509,7 @@ class tx_kickstarter_sectionbase {
 			reset($this->wizard->languages);
 			while(list($lk,$lv)=each($this->wizard->languages))	{
 				if (isset($this->wizard->selectedLanguages[$lk]))	{
-					$this->wizard->ext_locallang_db[$lk][$LLkey]=array(trim($config[$key."_".$lk]));
+					$this->wizard->ext_locallang_db[$lk][$LLkey]=array(trim($config[$key.'_'.$lk]));
 				}
 			}
 		}
@@ -559,7 +561,7 @@ class tx_kickstarter_sectionbase {
 	 * @param	integer		level of indention
 	 * @return	string		wrapped and indeted string
 	 */
-	function wrapBody($before,$content,$after,$indent=1)	{
+	function wrapBody($before, $content, $after, $indent=1)	{
 		$parts   = array();
 		$parts[] = $this->sPS($before,0);
 		$parts[] = $this->indentLines(rtrim($content),$indent);
@@ -723,17 +725,16 @@ class tx_kickstarter_sectionbase {
 
 			// Add title to local lang file
 		$ll=array();
-		$this->addLocalConf($ll,$config,"title",$k_prefix,$k,1);
-		$this->addLocalConf($ll,array("function1"=>"Function #1"),"function1",$k_prefix,$k,1,1);
-		$this->addLocalConf($ll,array("function2"=>"Function #2"),"function2",$k_prefix,$k,1,1);
-		$this->addLocalConf($ll,array("function3"=>"Function #3"),"function3",$k_prefix,$k,1,1);
-		$this->addLocalLangFile($ll,$pathSuffix."locallang.xml",'Language labels for '.$extKey.' module '.$k_prefix.$k);
+		$this->addLocalConf($ll,$config,'title',$k_prefix,$k,1);
+		$this->addLocalConf($ll,array('function1'=>'Function #1'),'function1',$k_prefix,$k,1,1);
+		$this->addLocalConf($ll,array('function2'=>'Function #2'),'function2',$k_prefix,$k,1,1);
+		$this->addLocalConf($ll,array('function3'=>'Function #3'),'function3',$k_prefix,$k,1,1);
+		$this->addLocalLangFile($ll,$pathSuffix.'locallang.xml','Language labels for '.$extKey.' module '.$k_prefix.$k);
 
 			// Add clear.gif
-		$this->addFileToFileArray($pathSuffix."clear.gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/clear.gif"));
+		$this->addFileToFileArray($pathSuffix.'clear.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/clear.gif'));
 
-			// Make module index.php file:
-		$indexContent = $this->sPS("
+		$indexRequire = $this->sPS("
 				// DEFAULT initialization of a module [BEGIN]
 			unset(\$MCONF);
 			require_once('conf.php');
@@ -744,9 +745,9 @@ class tx_kickstarter_sectionbase {
 				// ....(But no access check here...)
 				// DEFAULT initialization of a module [END]
 		");
-
-		$indexContent.= $this->sPS("
-			class ".$cN." extends t3lib_SCbase {
+			// Make module index.php file:
+		$indexContent = $this->sPS(
+				"class ".$cN." extends t3lib_SCbase {
 				/**
  * Adds items to the ->MOD_MENU array. Used for the function menu selector.
  *
@@ -856,7 +857,18 @@ class tx_kickstarter_sectionbase {
 			}
 		");
 
-		$this->addFileToFileArray($pathSuffix."index.php",$this->PHPclassFile($extKey,$pathSuffix."index.php",$indexContent,$extKey.' module '.$k_prefix.$k,$cN));
+		$this->addFileToFileArray(
+			$pathSuffix.'index.php',
+			$this->PHPclassFile(
+				$extKey,
+				$pathSuffix.'index.php',
+				$indexContent,
+				$extKey.' module '.$k_prefix.$k,
+				$cN,
+				'',
+				$indexRequire
+			)
+		);
 	}
 
 	/**
@@ -892,60 +904,60 @@ class tx_kickstarter_sectionbase {
 	function addStdLocalLangConf($ll,$k,$onlyMode=0)	{
 		$this->addLocalConf($ll,
 			array(
-				"list_mode_1"=>"Mode 1",
+				'list_mode_1'=>'Mode 1',
 			),
-			"list_mode_1","pi",$k,1,1
+			'list_mode_1','pi',$k,1,1
 		);
 		$this->addLocalConf($ll,
 			array(
-				"list_mode_2"=>"Mode 2",
+				'list_mode_2'=>'Mode 2',
 			),
-			"list_mode_2","pi",$k,1,1
+			'list_mode_2','pi',$k,1,1
 		);
 		$this->addLocalConf($ll,
 			array(
-				"list_mode_3"=>"Mode 3",
+				'list_mode_3'=>'Mode 3',
 			),
-			"list_mode_3","pi",$k,1,1
+			'list_mode_3','pi',$k,1,1
 		);
 		$this->addLocalConf($ll,
 			array(
-				"back"=>"Back",
+				'back'=>'Back',
 			),
-			"back","pi",$k,1,1
+			'back','pi',$k,1,1
 		);
 
 		if (!$onlyMode)	{
 			$this->addLocalConf($ll,
 				array(
-					"pi_list_browseresults_prev"=>"< Previous",
+					'pi_list_browseresults_prev'=>'< Previous',
 				),
-				"pi_list_browseresults_prev","pi",$k,1,1
+				'pi_list_browseresults_prev','pi',$k,1,1
 			);
 			$this->addLocalConf($ll,
 				array(
-					"pi_list_browseresults_page"=>"Page",
+					'pi_list_browseresults_page'=>'Page',
 				),
-				"pi_list_browseresults_page","pi",$k,1,1
+				'pi_list_browseresults_page','pi',$k,1,1
 			);
 			$this->addLocalConf($ll,
 				array(
-					"pi_list_browseresults_next"=>"Next >",
+					'pi_list_browseresults_next'=>'Next >',
 				),
-				"pi_list_browseresults_next","pi",$k,1,1
+				'pi_list_browseresults_next','pi',$k,1,1
 			);
 			$this->addLocalConf($ll,
 				array(
-					"pi_list_browseresults_displays"=>"Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>",
+					'pi_list_browseresults_displays'=>'Displaying results ###SPAN_BEGIN###%s to %s</span> out of ###SPAN_BEGIN###%s</span>',
 				),
-				"pi_list_browseresults_displays","pi",$k,1,1
+				'pi_list_browseresults_displays','pi',$k,1,1
 			);
 
 			$this->addLocalConf($ll,
 				array(
-					"pi_list_searchBox_search"=>"Search",
+					'pi_list_searchBox_search'=>'Search',
 				),
-				"pi_list_searchBox_search","pi",$k,1,1
+				'pi_list_searchBox_search','pi',$k,1,1
 			);
 		}
 
@@ -972,7 +984,7 @@ class tx_kickstarter_sectionbase {
 
 		$lArray['default'][$overruleKey] = array($confArray[$key],(!$noWOP?'WOP:['.$prefix.']['.$subPrefix.']['.$key.']':''));
 		while(list($k)=each($this->wizard->languages))	{
-			$lArray[$k][$overruleKey] = array(trim($confArray[$key."_".$k]),(!$noWOP?'WOP:['.$prefix.']['.$subPrefix.']['.$key."_".$k.']':''));
+			$lArray[$k][$overruleKey] = array(trim($confArray[$key.'_'.$k]),(!$noWOP?'WOP:['.$prefix.']['.$subPrefix.']['.$key.'_'.$k.']':''));
 		}
 		return $lArray;
 	}
@@ -986,9 +998,10 @@ class tx_kickstarter_sectionbase {
 	 * @param	string		class description
 	 * @param	[type]		$SOBE_class: ...
 	 * @param	[type]		$SOBE_extras: ...
+	 * @param	string		require and include definitions
 	 * @return	string		file content
 	 */
-	function PHPclassFile($extKey,$filename,$content,$desrc,$SOBE_class='',$SOBE_extras='')	{
+	function PHPclassFile($extKey, $filename, $content, $descr, $SOBE_class='', $SOBE_extras='', $require='')	{
 		$file = trim($this->sPS('
 			<?php
 			/***************************************************************
@@ -1013,16 +1026,24 @@ class tx_kickstarter_sectionbase {
 			*
 			*  This copyright notice MUST APPEAR in all copies of the script!
 			***************************************************************/
+		'));
+		
+		$file .= "\n\n".$require."\n\n\n";
+		
+		$file .=trim($this->sPS('
 			/**
-			 * '.$desrc.'
+			 * '.$descr.'
 			 *
 			 * @author	'.$this->userField('name').' <'.$this->userField('email').'>
-			 */
-		'));
+			 * @package	TYPO3
+			 * @subpackage	'. $this->returnName($extKey, 'class') .'
+			 */',
+			0
+		));
 
-		$file.="\n\n\n".$content."\n\n\n";
+		$file .= "\n".$content."\n\n\n";
 
-		$file.=trim($this->sPS('
+		$file .= trim($this->sPS('
 
 			if (defined(\'TYPO3_MODE\') && $TYPO3_CONF_VARS[TYPO3_MODE][\'XCLASS\'][\'ext/'.$extKey.'/'.$filename.'\'])	{
 				include_once($TYPO3_CONF_VARS[TYPO3_MODE][\'XCLASS\'][\'ext/'.$extKey.'/'.$filename.'\']);
@@ -1053,16 +1074,17 @@ class tx_kickstarter_sectionbase {
 	 *
 	 * @param	string		file name
 	 * @param	string		file content
-	 * @param	integer		mode: 1 appends, -1 prepends, 0 substitutes
+	 * @param	integer		mode: 1 append, -1 prepend, 0 (default) substitute
+	 * content
 	 * @return	void
 	 */
-	function addFileToFileArray($name,$content,$mode=0)	{
+	function addFileToFileArray($name, $content, $mode=0)	{
 		switch($mode)	{
-			case 1:	// Append
-				$this->wizard->fileArray[$name]=$this->makeFileArray($name,$this->wizard->fileArray[$name]["content"].chr(10).$content);
+			case 1:		// Append
+				$this->wizard->fileArray[$name]=$this->makeFileArray($name,$this->wizard->fileArray[$name]['content'].chr(10).$content);
 			break;
 			case -1:	// Prepend
-				$this->wizard->fileArray[$name]=$this->makeFileArray($name,$content.chr(10).$this->wizard->fileArray[$name]["content"]);
+				$this->wizard->fileArray[$name]=$this->makeFileArray($name,$content.chr(10).$this->wizard->fileArray[$name]['content']);
 			break;
 			default:	// Substitution:
 				$this->wizard->fileArray[$name]=$this->makeFileArray($name,$content);
@@ -1076,7 +1098,7 @@ class tx_kickstarter_sectionbase {
 	 * @param	string		prefix
 	 * @return	array		EMCONF
 	 */
-	function makeEMCONFpreset($prefix='')	{
+	function makeEMCONFpreset($prefix = '')	{
 		$this->wizard->_addArray = $this->wizard->wizArray['emconf'][1];
 		$EM_CONF=array();
 		$presetFields = explode(',','title,description,category,shy,dependencies,conflicts,priority,module,state,internal,uploadfolder,createDirs,modify_tables,clearCacheOnLoad,lockType,author,author_email,author_company,private,download_password,version');
@@ -1085,23 +1107,23 @@ class tx_kickstarter_sectionbase {
 		}
 
 
-		$EM_CONF[$prefix."uploadfolder"] = $this->wizard->EM_CONF_presets["uploadfolder"]?1:0;
-		$EM_CONF[$prefix."clearCacheOnLoad"] = $this->wizard->EM_CONF_presets["clearCacheOnLoad"]?1:0;
+		$EM_CONF[$prefix.'uploadfolder'] = $this->wizard->EM_CONF_presets['uploadfolder']?1:0;
+		$EM_CONF[$prefix.'clearCacheOnLoad'] = $this->wizard->EM_CONF_presets['clearCacheOnLoad']?1:0;
 
-		if (is_array($this->wizard->EM_CONF_presets["createDirs"]))	{
-			$EM_CONF[$prefix."createDirs"] = implode(",",array_unique($this->wizard->EM_CONF_presets["createDirs"]));
+		if (is_array($this->wizard->EM_CONF_presets['createDirs']))	{
+			$EM_CONF[$prefix.'createDirs'] = implode(',',array_unique($this->wizard->EM_CONF_presets['createDirs']));
 		}
 
-		if (is_array($this->wizard->EM_CONF_presets["dependencies"]) || $this->wizard->wizArray["emconf"][1]["dependencies"])	{
-			$aa= t3lib_div::trimExplode(",",strtolower($this->wizard->wizArray["emconf"][1]["dependencies"]),1);
-			$EM_CONF[$prefix."dependencies"] = implode(",",array_unique(array_merge($this->wizard->EM_CONF_presets["dependencies"],$aa)));
+		if (is_array($this->wizard->EM_CONF_presets['dependencies']) || $this->wizard->wizArray['emconf'][1]['dependencies'])	{
+			$aa = t3lib_div::trimExplode(',',strtolower($this->wizard->wizArray['emconf'][1]['dependencies']),1);
+			$EM_CONF[$prefix.'dependencies'] = implode(',',array_unique(array_merge($this->wizard->EM_CONF_presets['dependencies'],$aa)));
 		}
-		unset($this->wizard->_addArray["dependencies"]);
-		if (is_array($this->wizard->EM_CONF_presets["module"]))	{
-			$EM_CONF[$prefix."module"] = implode(",",array_unique($this->wizard->EM_CONF_presets["module"]));
+		unset($this->wizard->_addArray['dependencies']);
+		if (is_array($this->wizard->EM_CONF_presets['module']))	{
+			$EM_CONF[$prefix.'module'] = implode(',',array_unique($this->wizard->EM_CONF_presets['module']));
 		}
-		if (is_array($this->wizard->EM_CONF_presets["modify_tables"]))	{
-			$EM_CONF[$prefix."modify_tables"] = implode(",",array_unique($this->wizard->EM_CONF_presets["modify_tables"]));
+		if (is_array($this->wizard->EM_CONF_presets['modify_tables']))	{
+			$EM_CONF[$prefix.'modify_tables'] = implode(',',array_unique($this->wizard->EM_CONF_presets['modify_tables']));
 		}
 
 		return $EM_CONF;
@@ -1114,11 +1136,11 @@ class tx_kickstarter_sectionbase {
 	 * @return	string		user data
 	 */
 	function userField($k)	{
-		$v = "";
-		if($k == "name") {
-			$v = ($this->wizard->wizArray["emconf"][1]["author"] != "") ? $this->wizard->wizArray["emconf"][1]["author"] : $GLOBALS['BE_USER']->user['realName'];
-		} else if ($k == "email") {
-			$v = ($this->wizard->wizArray["emconf"][1]["author_email"] != "") ? $this->wizard->wizArray["emconf"][1]["author_email"] : $GLOBALS['BE_USER']->user['email'];
+		$v = '';
+		if($k == 'name') {
+			$v = ($this->wizard->wizArray['emconf'][1]['author'] != '') ? $this->wizard->wizArray['emconf'][1]['author'] : $GLOBALS['BE_USER']->user['realName'];
+		} else if ($k == 'email') {
+			$v = ($this->wizard->wizArray['emconf'][1]['author_email'] != '') ? $this->wizard->wizArray['emconf'][1]['author_email'] : $GLOBALS['BE_USER']->user['email'];
 		}
 		return $v;
 	}
@@ -1126,8 +1148,8 @@ class tx_kickstarter_sectionbase {
 
 
 // Include extension?
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/kickstarter/class.tx_kickstarter_sectionbase.php"]) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]["XCLASS"]["ext/kickstarter/class.tx_kickstarter_sectionbase.php"]);
+if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/kickstarter/class.tx_kickstarter_sectionbase.php']) {
+	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/kickstarter/class.tx_kickstarter_sectionbase.php']);
 }
 
 

@@ -236,14 +236,15 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 	 * @param	[type]		$fArr: ...
 	 * @return	[type]		...
 	 */
-	function currentFields($addFields,$fArr)	{
+	function currentFields($addFields, $fArr)	{
 		if (is_array($fArr))	{
-			foreach($fArr as $k=>$v)	{
+			foreach($fArr as $k => $v)	{
 				if ($v['type'] && trim($v['fieldname']))	{
-					$addFields[trim($v['fieldname'])]=$v['fieldname'].': '.$v['title'];
+					$addFields[trim($v['fieldname'])] = $v['fieldname'].': '.$v['title'];
 				}
 			}
 		}
+		
 		return $addFields;
 	}
 
@@ -254,49 +255,49 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 	 * @param	string		prefix (unused?)
 	 * @param	array		field configuration
 	 * @param	boolean		dontRemove (unused?)
-	 * @return	string		table row with field data	 * 
+	 * @return	string		table row with field data 
 	 */
-	function renderFieldOverview($prefix,$fConf,$dontRemove=0)	{
+	function renderFieldOverview($prefix, $fConf, $dontRemove=0)	{
 			// Sorting
 		$optTypes = array(
-			'' => '',
-			'input' => 'String input',
-			'input+' => 'String input, advanced',
-			'textarea' => 'Text area',
-			'textarea_rte' => 'Text area with RTE',
+			''                => '',
+			'input'           => 'String input',
+			'input+'          => 'String input, advanced',
+			'textarea'        => 'Text area',
+			'textarea_rte'    => 'Text area with RTE',
 			'textarea_nowrap' => 'Text area, No wrapping',
-			'check' => 'Checkbox, single',
-			'check_4' => 'Checkbox, 4 boxes in a row',
-			'check_10' => 'Checkbox, 10 boxes in two rows (max)',
-			'link' => 'Link',
-			'date' => 'Date',
-			'datetime' => 'Date and time',
-			'integer' => 'Integer, 10-1000',
-			'select' => 'Selectorbox',
-			'radio' => 'Radio buttons',
-			'rel' => 'Database relation',
-			'files' => 'Files',
+			'check'           => 'Checkbox, single',
+			'check_4'         => 'Checkbox, 4 boxes in a row',
+			'check_10'        => 'Checkbox, 10 boxes in two rows (max)',
+			'link'            => 'Link',
+			'date'            => 'Date',
+			'datetime'        => 'Date and time',
+			'integer'         => 'Integer, 10-1000',
+			'select'          => 'Selectorbox',
+			'radio'           => 'Radio buttons',
+			'rel'             => 'Database relation',
+			'files'           => 'Files',
 		);
 		$optEval = array(
-			'' => '',
-			'date' => 'Date (day-month-year)',
-			'time' => 'Time (hours, minutes)',
-			'timesec' => 'Time + seconds',
+			''         => '',
+			'date'     => 'Date (day-month-year)',
+			'time'     => 'Time (hours, minutes)',
+			'timesec'  => 'Time + seconds',
 			'datetime' => 'Date + Time',
-			'year' => 'Year',
-			'int' => 'Integer',
-			'int+' => 'Integer 0-1000',
-			'double2' => 'Floating point, x.xx',
+			'year'     => 'Year',
+			'int'      => 'Integer',
+			'int+'     => 'Integer 0-1000',
+			'double2'  => 'Floating point, x.xx',
 			'alphanum' => 'Alphanumeric only',
-			'upper' => 'Upper case',
-			'lower' => 'Lower case',
+			'upper'    => 'Upper case',
+			'lower'    => 'Lower case',
 		);
 		$optRte = array(
 			'tt_content' => 'Transform like "Bodytext"',
-			'basic' => 'Typical (based on CSS)',
-			'moderate' => 'Transform images / links',
-			'none' => 'No transform',
-			'custom' => 'Custom transform'
+			'basic'      => 'Typical (based on CSS)',
+			'moderate'   => 'Transform images / links',
+			'none'       => 'No transform',
+			'custom'     => 'Custom transform'
 		);
 
 		switch($fConf['type']) {
@@ -345,7 +346,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 	}
 
 	/**
-	 * Renders the files to be created; this was renderExtPart_tables()
+	 * Renders the files to be created
 	 *
 	 * @param	integer		key
 	 * @param	array		table configuration
@@ -620,7 +621,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 
 
 				// Add wizard icon
-			$this->addFileToFileArray($pathSuffix."icon_".$tableName.".gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/".$config["defIcon"]));
+			$this->addFileToFileArray('icon_'.$tableName.'.gif', t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/'.$config['defIcon']));
 
 	}
 

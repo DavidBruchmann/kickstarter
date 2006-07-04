@@ -23,14 +23,17 @@
 *
 *	This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-/**
- * TYPO3 Extension Repository
- *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- */
 
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_compilefiles.php');
 
+define('TYPO3_KICKSTARTER_EXTKEY_MAXLENGTH', 30);
+
+/**
+ * TYPO3 Extension Kickstarter
+ *
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Ingo Renner <typo3@ingo-renner.com>
+ */
 class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	var $varPrefix = 'kickstarter';		// redundant from 'extrep'
 	var $siteBackPath = '';
@@ -136,8 +139,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	}
 
 	/**
-	 * Switch between the basic operations. Calls the different modules and puts their
-	 * content into a basic framework.
+	 * Switch between the basic operations. Calls the different modules and puts 
+	 * their content into a basic framework.
 	 *
 	 * @return	HTML code for the kickstarter containing the module content
 	 */
@@ -154,7 +157,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			= substr(
 				strtolower(trim($this->wizArray['save']['extension_key'])),
 				0,
-				30
+				TYPO3_KICKSTARTER_EXTKEY_MAXLENGTH
 			);
 		$this->outputWOP = $this->wizArray['save']['print_wop_comments'] ? 1 : 0;
 
@@ -292,23 +295,23 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	function sidemenu()	{
 #debug($this->modData);
 		$actionType = $this->modData['wizSubCmd'].':'.$this->modData['wizAction'];
-		$singles = 'emconf,save,ts,TSconfig,languages';
-		$lines=array();
+		$singles    = 'emconf,save,TSconfig,languages';
+		$lines      = array();
 		foreach($this->options as $k => $v)	{
 			// Add items:
 			$items = $this->wizArray[$k];
-			$c=0;
-			$iLines=array();
+			$c = 0;
+			$iLines = array();
 			if (is_array($items))	{
 				foreach($items as $k2=>$conf)	{
-					$dummyTitle = t3lib_div::inList($singles,$k) ? '[Click to Edit]' : '<em>Item '.$k2.'</em>';
-					$isActive = !strcmp($k.':edit:'.$k2,$actionType);
-					$delIcon = $this->linkStr('<img src="'.$this->siteBackPath.TYPO3_mainDir.'gfx/garbage.gif" width="11" height="12" border="0" title="Remove item" />','','deleteEl:'.$k.':'.$k2);
-					$iLines[]='<tr'.($isActive?$this->bgCol(2,-30):$this->bgCol(2)).'><td>'.$this->fw($this->linkStr($this->bwWithFlag($conf['title']?$conf['title']:$dummyTitle,$isActive),$k,'edit:'.$k2)).'</td><td>'.$delIcon.'</td></tr>';
-					$c=$k2;
+					$dummyTitle = t3lib_div::inList($singles, $k) ? '[Click to Edit]' : '<em>Item '.$k2.'</em>';
+					$isActive   = !strcmp($k.':edit:'.$k2, $actionType);
+					$delIcon    = $this->linkStr('<img src="'.$this->siteBackPath.TYPO3_mainDir.'gfx/garbage.gif" width="11" height="12" border="0" title="Remove item" />','','deleteEl:'.$k.':'.$k2);
+					$iLines[]   = '<tr'.($isActive?$this->bgCol(2,-30):$this->bgCol(2)).'><td>'.$this->fw($this->linkStr($this->bwWithFlag($conf['title']?$conf['title']:$dummyTitle,$isActive),$k,'edit:'.$k2)).'</td><td>'.$delIcon.'</td></tr>';
+					$c = $k2;
 				}
 			}
-			if (!t3lib_div::inList($singles,$k) || !count($iLines))	{
+			if (!t3lib_div::inList($singles, $k) || !count($iLines))	{
 				$c++;
 				$addIcon = $this->linkStr('<img src="'.$this->siteBackPath.TYPO3_mainDir.'gfx/add.gif" width="12" height="12" border="0" title="Add item" />',$k,'edit:'.$c);
 			} else {$addIcon = '';}
@@ -321,7 +324,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 		$lines[]='<tr><td width="150">
 		'.$this->fw('Enter extension key:').'<br />
-		<input type="text" name="'.$this->piFieldName('wizArray_upd').'[save][extension_key]" value="'.$this->wizArray['save']['extension_key'].'" maxlength="30" />
+		<input type="text" name="'.$this->piFieldName('wizArray_upd').'[save][extension_key]" value="'.$this->wizArray['save']['extension_key'].'" maxlength="'.TYPO3_KICKSTARTER_EXTKEY_MAXLENGTH.'" />
 		'.($this->wizArray['save']['extension_key']?'':'<br /><a href="http://typo3.org/1382.0.html" target="_blank"><font color="red">Make sure to enter the right extension key from the beginning here!</font> You can register one here.</a>').'
 		</td><td></td></tr>';
 # onClick="setFormAnchorPoint(\'_top\')"
@@ -361,9 +364,9 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		$keyA = array_keys($this->fileArray);
 		asort($keyA);
 
-		$filesOverview1=array();
-		$filesOverview2=array();
-		$filesContent=array();
+		$filesOverview1 = array();
+		$filesOverview2 = array();
+		$filesContent   = array();
 
 		$filesOverview1[]= '<tr'.$this->bgCol(1).'>
 			<td><strong>' . $this->fw('Filename:') . '</strong></td>
@@ -390,7 +393,14 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				<td>' . $this->fw($fileName) . '</td>
 				<td>' . $this->fw(t3lib_div::formatSize($data['size'])) . '</td>
 				<td>' . $linkToFile . '</td>
-				<td><input type="checkbox" name="' . $this->piFieldName('wizArray_upd') . '[save][overwrite_files][]" value="' . $fileName . '" checked="checked" /></td>
+				<td><input type="checkbox" name="' . $this->piFieldName('wizArray_upd') . '[save][overwrite_files][]" value="' . $fileName . '" checked="checked" ';
+
+			if($fileName == 'doc/wizard_form.dat' 
+			|| $fileName == 'doc/wizard_form.html') {
+				$line .= 'disabled="disabled" ';
+			}
+
+			$line .= '/></td>
 			</tr>';
 			if (strstr($fileName,'/'))	{
 				$filesOverview2[]=$line;

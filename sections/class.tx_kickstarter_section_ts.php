@@ -25,6 +25,7 @@
 ***************************************************************/
 /**
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Ingo Renner	<typo3@ingo-renner.com>
  */
 
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
@@ -33,30 +34,46 @@ class tx_kickstarter_section_ts extends tx_kickstarter_sectionbase {
   var $sectionID = 'ts';
   
 	/**
-	 * Renders the form in the kickstarter; this was add_cat_()
+	 * Renders the form in the kickstarter
 	 *
 	 * @return	string		wizard
 	 */
 	function render_wizard() {
-		$lines=array();
+		$lines = array();
 
 		$action = explode(':',$this->wizard->modData['wizAction']);
-		if ($action[0]=='edit')	{
-			$action[1]=1;
-			$this->regNewEntry($this->sectionID,$action[1]);
-
-			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],'&nbsp;',$action[1]);
-			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
-			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
+		if ($action[0] == 'edit')	{
+			$this->regNewEntry($this->sectionID, $action[1]);
+			$lines = $this->catHeaderLines(
+				$lines,
+				$this->sectionID,
+				$this->wizard->options[$this->sectionID],
+				'&nbsp;',
+				$action[1]
+			);
+			$piConf   = $this->wizard->wizArray[$this->sectionID][$action[1]];
+			$ffPrefix ='['.$this->sectionID.']['.$action[1].']';
+			
+				// Enter title of the static extension template
+			$subContent='<strong>Enter a title for the static extension template:</strong><br />'.
+				#$this->renderStringBox('title',$ffPrefix,$piConf);
+				$this->renderStringBox($ffPrefix.'[title]',$piConf['title']);
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Enter constants
 			$subContent='<strong>Constants:</strong><br />'.
-				$this->renderTextareaBox($ffPrefix.'[constants]',$piConf['constants']);
+				$this->renderTextareaBox(
+					$ffPrefix.'[constants]',
+					$piConf['constants']
+				);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Enter setup
 			$subContent='<strong>Setup:</strong><br />'.
-				$this->renderTextareaBox($ffPrefix.'[setup]',$piConf['setup']);
+				$this->renderTextareaBox(
+					$ffPrefix.'[setup]',
+					$piConf['setup']
+				);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 		}
 
@@ -72,15 +89,33 @@ class tx_kickstarter_section_ts extends tx_kickstarter_sectionbase {
 	}
 
 	/**
-	 * Renders the extension PHP codee; this was
+	 * Renders the extension PHP code; this was
 	 *
-	 * @param	[type]		$k: ...
-	 * @param	[type]		$config: ...
-	 * @param	[type]		$extKey: ...
-	 * @return	[type]		...
+	 * @param	string		$k: module name key
+	 * @param	array		$config: module configuration
+	 * @param	string		$extKey: extension key
+	 * @return	void
 	 */
 	function render_extPart($k,$config,$extKey) {
 
+		$WOP = '[ts]['.$k.']';
+		$pathSuffix = 'static/'.$config['title'].'/';
+		
+		$this->addFileToFileArray(
+			$pathSuffix.'constants.txt', 
+			$config['constants']
+		);
+		$this->addFileToFileArray(
+			$pathSuffix.'setup.txt',
+			$config['setup']
+		);
+		
+		// add TS definition to ext_tables.php
+		$this->wizard->ext_tables[] = $this->sPS(
+			$this->WOPcomment('WOP:'.$WOP).chr(10).
+			't3lib_extMgm::addStaticFile($_EXTKEY,\''.$pathSuffix.'\', \''.$config['title'].'\');',
+			0
+		);
 	}
 
 }

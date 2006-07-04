@@ -25,6 +25,7 @@
 ***************************************************************/
 /**
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Ingo Renner <typo3@ingo-renner.com>
  */
 
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
@@ -218,21 +219,22 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 		$this->addFileToFileArray($pathSuffix.'moduleicon.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/notfound_module.gif'));
 
 
-			// Make module index.php file:
-		$indexContent = $this->sPS('
+		$indexRequire = $this->sPS('
 				// DEFAULT initialization of a module [BEGIN]
 			unset($MCONF);
-			require_once("conf.php");
-			require_once($BACK_PATH."init.php");
-			require_once($BACK_PATH."template.php");
-			$LANG->includeLLFile("EXT:'.$extKey.'/'.$pathSuffix.'locallang.xml");
-			require_once(PATH_t3lib."class.t3lib_scbase.php");
+			require_once(\'conf.php\');
+			require_once($BACK_PATH.\'init.php\');
+			require_once($BACK_PATH.\'template.php\');
+
+			$LANG->includeLLFile(\'EXT:'.$extKey.'/'.$pathSuffix.'locallang.xml\');
+			require_once(PATH_t3lib.\'class.t3lib_scbase.php\');
 			$BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
 				// DEFAULT initialization of a module [END]
 		');
-
-		$indexContent.= $this->sPS('
-			class '.$cN.' extends t3lib_SCbase {
+		
+			// Make module index.php file:
+		$indexContent = $this->sPS(
+				'class  '.$cN.' extends t3lib_SCbase {
 				var $pageinfo;
 
 				/**
@@ -245,8 +247,8 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 					parent::init();
 
 					/*
-					if (t3lib_div::_GP("clear_all_cache"))	{
-						$this->include_once[]=PATH_t3lib."class.t3lib_tcemain.php";
+					if (t3lib_div::_GP(\'clear_all_cache\'))	{
+						$this->include_once[] = PATH_t3lib.\'class.t3lib_tcemain.php\';
 					}
 					*/
 				}
@@ -259,10 +261,10 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 				function menuConfig()	{
 					global $LANG;
 					$this->MOD_MENU = Array (
-						"function" => Array (
-							"1" => $LANG->getLL("function1"),
-							"2" => $LANG->getLL("function2"),
-							"3" => $LANG->getLL("function3"),
+						\'function\' => Array (
+							\'1\' => $LANG->getLL(\'function1\'),
+							\'2\' => $LANG->getLL(\'function2\'),
+							\'3\' => $LANG->getLL(\'function3\'),
 						)
 					);
 					parent::menuConfig();
@@ -282,10 +284,10 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 					$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 					$access = is_array($this->pageinfo) ? 1 : 0;
 
-					if (($this->id && $access) || ($BE_USER->user["admin"] && !$this->id))	{
+					if (($this->id && $access) || ($BE_USER->user[\'admin\'] && !$this->id))	{
 
 							// Draw the header.
-						$this->doc = t3lib_div::makeInstance("mediumDoc");
+						$this->doc = t3lib_div::makeInstance(\'mediumDoc\');
 						$this->doc->backPath = $BACK_PATH;
 						$this->doc->form=\'<form action="" method="POST">\';
 
@@ -305,12 +307,12 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 							</script>
 						\';
 
-						$headerSection = $this->doc->getHeader("pages",$this->pageinfo,$this->pageinfo["_thePath"])."<br />".$LANG->sL("LLL:EXT:lang/locallang_core.xml:labels.path").": ".t3lib_div::fixed_lgd_pre($this->pageinfo["_thePath"],50);
+						$headerSection = $this->doc->getHeader(\'pages\',$this->pageinfo,$this->pageinfo[\'_thePath\']).\'<br />\'.$LANG->sL(\'LLL:EXT:lang/locallang_core.xml:labels.path\').\': \'.t3lib_div::fixed_lgd_pre($this->pageinfo[\'_thePath\'],50);
 
-						$this->content.=$this->doc->startPage($LANG->getLL("title"));
-						$this->content.=$this->doc->header($LANG->getLL("title"));
+						$this->content.=$this->doc->startPage($LANG->getLL(\'title\'));
+						$this->content.=$this->doc->header($LANG->getLL(\'title\'));
 						$this->content.=$this->doc->spacer(5);
-						$this->content.=$this->doc->section("",$this->doc->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->id,"SET[function]",$this->MOD_SETTINGS["function"],$this->MOD_MENU["function"])));
+						$this->content.=$this->doc->section(\'\',$this->doc->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->id,\'SET[function]\',$this->MOD_SETTINGS[\'function\'],$this->MOD_MENU[\'function\'])));
 						$this->content.=$this->doc->divider(5);
 
 
@@ -320,18 +322,18 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 
 						// ShortCut
 						if ($BE_USER->mayMakeShortcut())	{
-							$this->content.=$this->doc->spacer(20).$this->doc->section("",$this->doc->makeShortcutIcon("id",implode(",",array_keys($this->MOD_MENU)),$this->MCONF["name"]));
+							$this->content.=$this->doc->spacer(20).$this->doc->section(\'\',$this->doc->makeShortcutIcon(\'id\',implode(\',\',array_keys($this->MOD_MENU)),$this->MCONF[\'name\']));
 						}
 
 						$this->content.=$this->doc->spacer(10);
 					} else {
 							// If no access or if ID == zero
 
-						$this->doc = t3lib_div::makeInstance("mediumDoc");
+						$this->doc = t3lib_div::makeInstance(\'mediumDoc\');
 						$this->doc->backPath = $BACK_PATH;
 
-						$this->content.=$this->doc->startPage($LANG->getLL("title"));
-						$this->content.=$this->doc->header($LANG->getLL("title"));
+						$this->content.=$this->doc->startPage($LANG->getLL(\'title\'));
+						$this->content.=$this->doc->header($LANG->getLL(\'title\'));
 						$this->content.=$this->doc->spacer(5);
 						$this->content.=$this->doc->spacer(10);
 					}
@@ -354,34 +356,45 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 				 * @return	void
 				 */
 				function moduleContent()	{
-					switch((string)$this->MOD_SETTINGS["function"])	{
+					switch((string)$this->MOD_SETTINGS[\'function\'])	{
 						case 1:
-							$content="<div align=center><strong>Hello World!</strong></div><br />
+							$content=\'<div align=center><strong>Hello World!</strong></div><br />
 								The \'Kickstarter\' has made this module automatically, it contains a default framework for a backend module but apart from it does nothing useful until you open the script \'".substr(t3lib_extMgm::extPath("'.$extKey.'"),strlen(PATH_site))."'.$pathSuffix.'index.php\' and edit it!
 								<HR>
-								<br />This is the GET/POST vars sent to the script:<br />".
-								"GET:".t3lib_div::view_array($_GET)."<br />".
-								"POST:".t3lib_div::view_array($_POST)."<br />".
-								"";
-							$this->content.=$this->doc->section("Message #1:",$content,0,1);
+								<br />This is the GET/POST vars sent to the script:<br />\'.
+								\'GET:\'.t3lib_div::view_array($_GET).\'<br />\'.
+								\'POST:\'.t3lib_div::view_array($_POST).\'<br />\'.
+								\'\';
+							$this->content.=$this->doc->section(\'Message #1:\',$content,0,1);
 						break;
 						case 2:
-							$content="<div align=center><strong>Menu item #2...</strong></div>";
-							$this->content.=$this->doc->section("Message #2:",$content,0,1);
+							$content=\'<div align=center><strong>Menu item #2...</strong></div>\';
+							$this->content.=$this->doc->section(\'Message #2:\',$content,0,1);
 						break;
 						case 3:
-							$content="<div align=center><strong>Menu item #3...</strong></div>";
-							$this->content.=$this->doc->section("Message #3:",$content,0,1);
+							$content=\'<div align=center><strong>Menu item #3...</strong></div>\';
+							$this->content.=$this->doc->section(\'Message #3:\',$content,0,1);
 						break;
 					}
 				}
 			}
-		');
+		',
+		0);
 
 		$SOBE_extras['firstLevel']=0;
 		$SOBE_extras['include']=1;
-		$this->addFileToFileArray($pathSuffix.'index.php',$this->PHPclassFile($extKey,$pathSuffix.'index.php',$indexContent,"Module '".$config["title"]."' for the '".$extKey."' extension.",$cN,$SOBE_extras));
-
+		$this->addFileToFileArray(
+			$pathSuffix.'index.php',
+			$this->PHPclassFile(
+				$extKey,
+				$pathSuffix.'index.php',
+				$indexContent,
+				"Module '".$config["title"]."' for the '".$extKey."' extension.",
+				$cN,
+				$SOBE_extras,
+				$indexRequire
+			)
+		);
 	}
 
 }

@@ -25,6 +25,7 @@
 ***************************************************************/
 /**
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Ingo Renner	<typo3@ingo-renner.com>
  */
 
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
@@ -42,10 +43,16 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 		$action = explode(':',$this->wizard->modData['wizAction']);
 		if ($action[0]=='edit')	{
-			$this->regNewEntry($this->sectionID,$action[1]);
-			$lines = $this->catHeaderLines($lines,$this->sectionID,$this->wizard->options[$this->sectionID],'<strong>Edit Plugin #'.$action[1].'</strong>',$action[1]);
-			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
-			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
+			$this->regNewEntry($this->sectionID, $action[1]);
+			$lines = $this->catHeaderLines(
+				$lines,
+				$this->sectionID,
+				$this->wizard->options[$this->sectionID],
+				'<strong>Edit Plugin #'.$action[1].'</strong>',
+				$action[1]
+			);
+			$piConf   = $this->wizard->wizArray[$this->sectionID][$action[1]];
+			$ffPrefix = '['.$this->sectionID.']['.$action[1].']';
 
 
 				// Enter title of the plugin
@@ -293,7 +300,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 		if ($setType && !t3lib_div::inList('typotags,includeLib',$setType))	{
 			$this->wizard->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[addType]')."
-				t3lib_extMgm::addPlugin(Array('".addslashes($this->getSplitLabels_reference($config,'title','tt_content.'.$setType.'_pi'.$k))."', \$_EXTKEY.'_pi".$k."'),'".$setType."');
+				t3lib_extMgm::addPlugin(array('".addslashes($this->getSplitLabels_reference($config,'title','tt_content.'.$setType.'_pi'.$k))."', \$_EXTKEY.'_pi".$k."'),'".$setType."');
 			");
 		}
 
@@ -307,23 +314,23 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 						$ll=array();
 
-						$theLines = Array();
-						$theLines['getListRow']=Array();
-						$theLines['getListHeader']=Array();
-						$theLines['getFieldContent']=Array();
-						$theLines['getFieldHeader']=Array();
-						$theLines['singleRows']=Array();
-						$theLines['listItemRows']=Array();
-						$theLines['singleRows_section']=Array();
-						$P_classes=array();
+						$theLines = array();
+						$theLines['getListRow']         = array();
+						$theLines['getListHeader']      = array();
+						$theLines['getFieldContent']    = array();
+						$theLines['getFieldHeader']     = array();
+						$theLines['singleRows']         = array();
+						$theLines['listItemRows']       = array();
+						$theLines['singleRows_section'] = array();
+						$P_classes = array();
 
-						$theLines['searchFieldList']=Array();
-						$theLines['orderByList']=Array();
+						$theLines['searchFieldList']    = array();
+						$theLines['orderByList']        = array();
 
-						$tcol='uid';
+						$tcol = 'uid';
 						$theLines['getListRow'][$tcol] = '<td><p>\'.$this->getFieldContent(\''.$tcol.'\').\'</p></td>';
 						$theLines['getListHeader'][$tcol] = '<td><p>\'.$this->getFieldHeader_sortLink(\''.$tcol.'\').\'</p></td>';
-						$theLines['orderByList'][$tcol]=$tcol;
+						$theLines['orderByList'][$tcol] = $tcol;
 
 						if (is_array($tempTableConf['fields']))	{
 							reset($tempTableConf['fields']);
@@ -363,7 +370,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 									$this->addLocalConf($ll,array('listFieldHeader_'.$tcol=>$fC['title']),'listFieldHeader_'.$tcol,'pi',$k,1,1);
 
-									if ($tcol=='title')	{
+									if ($tcol == 'title')	{
 										$theLines['getFieldContent'][$tcol] = trim($this->sPS('
 												case "'.$tcol.'":
 														// This will wrap the title in a link.
@@ -452,7 +459,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							}
 						');
 
-						$innerMainContent.= $this->sPS('
+						$innerMainContent .= $this->sPS('
 							/**
 							 * Shows a list of database entries
 							 *
@@ -521,7 +528,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 
 						if ($config['list_default_listmode'])	{
-							$innerMainContent.= $this->wrapBody('
+							$innerMainContent .= $this->wrapBody('
 								/**
 								 * Creates a list from a database query
 								 *
@@ -529,7 +536,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								 * @return	A HTML list if result items
 								 */
 								function makelist($res)	{
-									$items=Array();
+									$items=array();
 										// Make list table rows
 									while($this->internal[\'currentRow\'] = $GLOBALS[\'TYPO3_DB\']->sql_fetch_assoc($res))	{
 										$items[]=$this->makeListItem();
@@ -705,7 +712,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 
 
-						$CSS_editor_code='';
+						$CSS_editor_code = '';
 						$pCSSSel = str_replace('_','-',$cN);
 
 						if ($config['list_default_listmode'])	{
@@ -1185,9 +1192,9 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				');
 			break;
 		}
-		$indexContent= $this->wrapBody('
-			require_once(PATH_tslib.\'class.tslib_pibase.php\');
-
+		
+		$indexRequire = 'require_once(PATH_tslib.\'class.tslib_pibase.php\');';
+		$indexContent = $this->wrapBody('
 			class '.$cN.' extends tslib_pibase {
 				var $prefixId = \''.$cN.'\';		// Same as class name
 				var $scriptRelPath = \''.($pathSuffix."class.".$cN.".php").'\';	// Path to this script relative to the extension dir.
@@ -1197,15 +1204,26 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				',$innerMainContent,'
 			}
 		');
-		$this->addFileToFileArray($pathSuffix.'class.'.$cN.'.php',$this->PHPclassFile($extKey,$pathSuffix.'class.'.$cN.'.php',$indexContent,'Plugin \''.$config['title'].'\' for the \''.$extKey.'\' extension.'));
+		$this->addFileToFileArray(
+			$pathSuffix.'class.'.$cN.'.php',
+			$this->PHPclassFile(
+				$extKey,
+				$pathSuffix.'class.'.$cN.'.php',
+				$indexContent,
+				'Plugin \''.$config['title'].'\' for the \''.$extKey.'\' extension.',
+				'',
+				'',
+				$indexRequire
+			)
+		);
 
 			// Add wizard?
 		if ($config['plus_wiz'] && $config['addType']=='list_type')	{
 			$this->addLocalConf($this->wizard->ext_locallang,$config,'title','pi',$k);
 			$this->addLocalConf($this->wizard->ext_locallang,$config,'plus_wiz_description','pi',$k);
 
-			$indexContent= $this->sPS('
-				class '.$cN.'_wizicon {
+			$indexContent = $this->sPS(
+				'class '.$cN.'_wizicon {
 
 					/**
 					 * Processing the wizard items array
@@ -1229,7 +1247,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					}
 
 					/**
-					 * Reads the [extDir]/locallang.xml and returns the \$LOCAL_LANG array found in that file.
+					 * Reads the [extDir]/locallang.xml and returns the $LOCAL_LANG array found in that file.
 					 *
 					 * @return	The array with language labels
 					 */
@@ -1240,8 +1258,18 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 						return $LOCAL_LANG;
 					}
 				}
-			');
-			$this->addFileToFileArray($pathSuffix.'class.'.$cN.'_wizicon.php',$this->PHPclassFile($extKey,$pathSuffix.'class.'.$cN.'_wizicon.php',$indexContent,'Class that adds the wizard icon.'));
+			',
+			0);
+			
+			$this->addFileToFileArray(
+				$pathSuffix.'class.'.$cN.'_wizicon.php',
+				$this->PHPclassFile(
+					$extKey,
+					$pathSuffix.'class.'.$cN.'_wizicon.php',
+					$indexContent,
+					'Class that adds the wizard icon.'
+				)
+			);
 
 				// Add wizard icon
 			$this->addFileToFileArray($pathSuffix.'ce_wiz.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/wiz.gif'));

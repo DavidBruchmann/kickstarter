@@ -1,3 +1,9 @@
+2006-07-02 Ingo Renner <typo3@ingo-renner.com>
+	* ADD new feature: kickstarter can now create TS files in the static folder of an extension
+	* FIX the previous mentioned feature also fixes bug #1158: The kickstarter doesn't create config files
+	* ADD feature request: doc/wizard_form.dat and doc/wizard_form.html are always overwritten now
+	* ADD feature request: 2247: Kickstarter should add @package/@subpackage PhpDoc tags
+
 2006-06-12 Ingo Renner <typo3@ingo-renner.com>
 	* FIX fixed bugs #455, #822, #977: Extension key was allowed to be longer than 30 chars and uppercase
 

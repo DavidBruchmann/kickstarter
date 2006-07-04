@@ -25,6 +25,7 @@
 ***************************************************************/
 /**
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Ingo Renner <typo3@ingo-renner.com>
  */
 
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
@@ -95,21 +96,21 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 	 * @return	void
 	 */
 	function render_extPart($k,$config,$extKey) {
-		$WOP='[moduleFunction]['.$k.']';
-		$cN = $this->returnName($extKey,'class','modfunc'.$k);
+		$WOP ='[moduleFunction]['.$k.']';
+		$cN  = $this->returnName($extKey,'class','modfunc'.$k);
 		$pathSuffix = 'modfunc'.$k.'/';
 
 		$position =$config['position'];
 		$subPos='';
 		switch($config['position'])	{
 			case 'user_task';
-				$this->wizard->EM_CONF_presets['dependencies'][]='taskcenter';
+				$this->wizard->EM_CONF_presets['dependencies'][] = 'taskcenter';
 			break;
 			case 'web_ts';
-				$this->wizard->EM_CONF_presets['dependencies'][]='tstemplate';
+				$this->wizard->EM_CONF_presets['dependencies'][] = 'tstemplate';
 			break;
 			case 'web_func_wizards';
-				$this->wizard->EM_CONF_presets['dependencies'][]='func_wizards';
+				$this->wizard->EM_CONF_presets['dependencies'][] = 'func_wizards';
 				$position='web_func';
 				$subPos='wiz';
 			break;
@@ -134,11 +135,12 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 		$this->addLocalConf($ll,array('checklabel'=>'Check box #1'),'checklabel','modfunc',$k,1,1);
 		$this->addLocalLangFile($ll,$pathSuffix.'locallang.xml','Language labels for module "'.$mN.'"');
 
-		if ($position!='user_task')	{
-			$indexContent.= $this->sPS('
+		if ($position != 'user_task')	{
+			$indexRequire = $this->sPS('
 				require_once(PATH_t3lib.\'class.t3lib_extobjbase.php\');
-
-				class '.$cN.' extends t3lib_extobjbase {
+			');
+			$indexContent = $this->sPS(
+				'class '.$cN.' extends t3lib_extobjbase {
 
 					/**
 					 * Returns the module menu
@@ -173,10 +175,12 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 						return $theOutput;
 					}
 				}
-			');
+			',
+			0);
 		} else {
-			$indexContent.= $this->sPS('
-				class '.$cN.' extends mod_user_task {
+			$indexRequire = '';
+			$indexContent = $this->sPS(
+				'class '.$cN.' extends mod_user_task {
 					/**
 					 * Makes the content for the overview frame...
 					 *
@@ -218,10 +222,23 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 						return "Content in main frame...";
 					}
 				}
-			');
+			',
+			0);
 		}
 
-		$this->addFileToFileArray($pathSuffix.'class.'.$cN.'.php',$this->PHPclassFile($extKey,$pathSuffix.'class.'.$cN.'.php',$indexContent,'Module extension (addition to function menu) \''.$config['title'].'\' for the \''.$extKey.'\' extension.'));
+		$this->addFileToFileArray(
+			$pathSuffix.'class.'.$cN.'.php',
+			$this->PHPclassFile(
+				$extKey,
+				$pathSuffix.'class.'.$cN.'.php',
+				$indexContent,
+				'Module extension (addition to function menu) \''.$config['title'].'\' for the \''.$extKey.'\' extension.',
+				'',
+				'',
+				$indexRequire
+			
+			)
+		);
 
 	}
 

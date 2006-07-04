@@ -27,6 +27,7 @@
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Daniel Brün <dbruen@saltation.de>
  * @author	Ingmar Schlecht <ingmars@web.de>
+ * @author	Ingo Renner <typo3@ingo-renner.com>
  */
 
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
@@ -224,9 +225,6 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 			');
 		}
 
-
-
-
 			// Now wrap the function body around this:
 		$content=$this->wrapBody('
 			function main(&$backRef,$menuItems,$table,$uid)	{
@@ -241,8 +239,8 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 		$content.=$this->addLLFunc($extKey);
 
 			// Now wrap the function body around this:
-		$content=$this->wrapBody('
-			class '.$cN.' {
+		$content=$this->wrapBody(
+			'class '.$cN.' {
 				',$content,'
 			}
 		');
@@ -250,8 +248,15 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 
 #		$this->printPre($content);
 
-		$this->addFileToFileArray($filename,$this->PHPclassFile($extKey,$filename,$content,'Addition of an item to the clickmenu'));
-
+		$this->addFileToFileArray(
+			$filename,
+			$this->PHPclassFile(
+				$extKey,
+				$filename,
+				$content,
+				'Addition of an item to the clickmenu'
+			)
+		);
 
 		$cN = $this->returnName($extKey,'class','cm'.$k);
 		$this->writeStandardBE_xMod($extKey,$config,$pathSuffix,$cN,$k,'cm');
