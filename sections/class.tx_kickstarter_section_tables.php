@@ -628,13 +628,15 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		$this->wizard->ext_tca[]=chr(10).$tca_file.chr(10);
 
 			// Finalize ext_tables.php:
+		$feInterface = $columns;
+		unset($feInterface['t3ver_label']);
 		$this->wizard->ext_tables[]=$this->wrapBody('
 			$TCA["'.$tableName.'"] = array (
 				"ctrl" => array (
 			', implode(chr(10),$ctrl),'
 				),
 				"feInterface" => array (
-					"fe_admin_fieldList" => "'.implode(", ",array_keys($columns)).'",
+					"fe_admin_fieldList" => "'.implode(", ",array_keys($feInterface)).'",
 				)
 			);
 		',2);

@@ -716,6 +716,9 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		$titleDivFlag=0;
 		while(list($fN)=each($columns))	{
 			if (!$hiddenFlag || !t3lib_div::inList('starttime,endtime,fe_group',$fN))	{
+				if($fN == 't3ver_label') {
+					continue;
+				}
 				$outTem = array($fN,'','','','');
 				$outTem[3] = $this->wizard->_typeP[$fN];
 				if ($c==0)	$outTem[4]='1-1-1';
@@ -736,7 +739,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$paltems[]=$fN;
 			}
 		}
-		return array(implode(', ',$outems),implode(', ',$paltems));
+		return array(implode(', ',$outems), implode(', ',$paltems));
 	}
 
 	/**
