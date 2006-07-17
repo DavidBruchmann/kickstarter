@@ -605,11 +605,13 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			// Finalize tca.php:
 		$tca_file="";
 		list($typeList,$palList) = $this->implodeColumns($columns);
+		$showRecordFieldList = $columns;
+		unset($showRecordFieldList['t3ver_label']);
 		$tca_file.=$this->wrapBody('
 			$TCA["'.$tableName.'"] = array (
 				"ctrl" => $TCA["'.$tableName.'"]["ctrl"],
 				"interface" => array (
-					"showRecordFieldList" => "'.implode(",",array_keys($columns)).'"
+					"showRecordFieldList" => "'.implode(',',array_keys($showRecordFieldList)).'"
 				),
 				"feInterface" => $TCA["'.$tableName.'"]["feInterface"],
 				"columns" => array (
