@@ -380,7 +380,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		',0));
 
 		if ($config['type_field'])	{
-			$ctrl[] = '\'type\' => \''.$config["type_field"].'\',	'.$this->WOPcomment('WOP:'.$WOP.'[type_field]');
+			$ctrl[] = '\'type\' => \''.$config['type_field'].'\',	'.$this->WOPcomment('WOP:'.$WOP.'[type_field]');
 		}
 		if ($config['versioning'])	{
 			$ctrl[] = '\'versioningWS\' => TRUE, ' . $this->WOPcomment('WOP:'.$WOP.'[versioning]');
@@ -394,8 +394,19 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$DBfields[] = 't3ver_count int(11) DEFAULT \'0\' NOT NULL,';
 			$DBfields[] = 't3ver_tstamp int(11) DEFAULT \'0\' NOT NULL,';
 			$DBfields[] = 't3_origuid int(11) DEFAULT \'0\' NOT NULL,';
+			
+			$columns['t3ver_label'] = trim($this->sPS('
+				\'t3ver_label\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[versioning]').'
+					\'label\' => \'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel\',
+					\'config\' => array (
+						\'type\' => \'input\',
+						\'size\' => \'30\',
+						\'max\' => \'30\',
+					)
+				),
+			'));
 		}
-		if ($config["localization"])	{
+		if ($config['localization'])	{
 			$ctrl[] = '\'languageField\' => \'sys_language_uid\',	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
 			$ctrl[] = '\'transOrigPointerField\' => \'l18n_parent\',	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
 			$ctrl[] = '\'transOrigDiffSourceField\' => \'l18n_diffsource\',	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
@@ -421,14 +432,14 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			'));
 
 			$columns['l18n_parent'] = trim($this->sPS("
-				'l18n_parent' => Array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
+				'l18n_parent' => array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
 					'displayCond' => 'FIELD:sys_language_uid:>:0',
 					'exclude' => 1,
 					'label' => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
-					'config' => Array (
+					'config' => array (
 						'type' => 'select',
-						'items' => Array (
-							Array('', 0),
+						'items' => array (
+							array('', 0),
 						),
 						'foreign_table' => '".$tableName."',
 						'foreign_table_where' => 'AND ".$tableName.".pid=###CURRENT_PID### AND ".$tableName.".sys_language_uid IN (-1,0)',
@@ -436,94 +447,94 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 				),
 			"));
 
-			$columns["l18n_diffsource"] = trim($this->sPS("
-				'l18n_diffsource' => Array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
-					'config' => Array (
+			$columns['l18n_diffsource'] = trim($this->sPS("
+				'l18n_diffsource' => array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
+					'config' => array (
 						'type' => 'passthrough'
 					)
 				),
 			"));
 		}
-		if ($config["sorting"])	{
-			$ctrl[] = '"sortby" => "sorting",	'.$this->WOPcomment('WOP:'.$WOP.'[sorting]');
+		if ($config['sorting'])	{
+			$ctrl[] = '\'sortby\' => \'sorting\',	'.$this->WOPcomment('WOP:'.$WOP.'[sorting]');
 			$DBfields[] = "sorting int(10) DEFAULT '0' NOT NULL,";
 		} else {
-			$ctrl[] = '"default_sortby" => "ORDER BY '.trim($config["sorting_field"].' '.($config["sorting_desc"]?"DESC":"")).'",	'.$this->WOPcomment('WOP:'.$WOP.'[sorting] / '.$WOP.'[sorting_field] / '.$WOP.'[sorting_desc]');
+			$ctrl[] = '\'default_sortby\' => "ORDER BY '.trim($config["sorting_field"].' '.($config["sorting_desc"]?"DESC":"")).'",	'.$this->WOPcomment('WOP:'.$WOP.'[sorting] / '.$WOP.'[sorting_field] / '.$WOP.'[sorting_desc]');
 		}
-		if ($config["add_deleted"])	{
-			$ctrl[] = '"delete" => "deleted",	'.$this->WOPcomment('WOP:'.$WOP.'[add_deleted]');
+		if ($config['add_deleted'])	{
+			$ctrl[] = '\'delete\' => \'deleted\',	'.$this->WOPcomment('WOP:'.$WOP.'[add_deleted]');
 			$DBfields[] = "deleted tinyint(4) DEFAULT '0' NOT NULL,";
 		}
 		if ($config["add_hidden"])	{
-			$enFields[] = '"disabled" => "hidden",	'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden]');
+			$enFields[] = '\'disabled\' => \'hidden\',	'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden]');
 			$DBfields[] = "hidden tinyint(4) DEFAULT '0' NOT NULL,";
 			$columns["hidden"] = trim($this->sPS('
-				"hidden" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden]').'
-					"exclude" => 1,
-					"label" => "LLL:EXT:lang/locallang_general.xml:LGL.hidden",
-					"config" => Array (
-						"type" => "check",
-						"default" => "0"
+				\'hidden\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden]').'
+					\'exclude\' => 1,
+					\'label\' => \'LLL:EXT:lang/locallang_general.xml:LGL.hidden\',
+					\'config\' => array (
+						\'type\' => \'check\',
+						\'default\' => \'0\'
 					)
 				),
 			'));
 		}
 		if ($config["add_starttime"])	{
-			$enFields[] = '"starttime" => "starttime",	'.$this->WOPcomment('WOP:'.$WOP.'[add_starttime]');
+			$enFields[] = '\'starttime\' => \'starttime\',	'.$this->WOPcomment('WOP:'.$WOP.'[add_starttime]');
 			$DBfields[] = "starttime int(11) DEFAULT '0' NOT NULL,";
 			$columns["starttime"] = trim($this->sPS('
-				"starttime" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_starttime]').'
-					"exclude" => 1,
-					"label" => "LLL:EXT:lang/locallang_general.xml:LGL.starttime",
-					"config" => Array (
-						"type" => "input",
-						"size" => "8",
-						"max" => "20",
-						"eval" => "date",
-						"default" => "0",
-						"checkbox" => "0"
+				\'starttime\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_starttime]').'
+					\'exclude\' => 1,
+					\'label\' => \'LLL:EXT:lang/locallang_general.xml:LGL.starttime\',
+					\'config\' => array (
+						\'type\' => \'input\',
+						\'size\' => \'8\',
+						\'max\' => \'20\',
+						\'eval\' => \'date\',
+						\'default\' => \'0\',
+						\'checkbox\' => \'0\'
 					)
 				),
 			'));
 		}
 		if ($config["add_endtime"])	{
-			$enFields[] = '"endtime" => "endtime",	'.$this->WOPcomment('WOP:'.$WOP.'[add_endtime]');
+			$enFields[] = '\'endtime\' => \'endtime\',	'.$this->WOPcomment('WOP:'.$WOP.'[add_endtime]');
 			$DBfields[] = "endtime int(11) DEFAULT '0' NOT NULL,";
 			$columns["endtime"] = trim($this->sPS('
-				"endtime" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_endtime]').'
-					"exclude" => 1,
-					"label" => "LLL:EXT:lang/locallang_general.xml:LGL.endtime",
-					"config" => Array (
-						"type" => "input",
-						"size" => "8",
-						"max" => "20",
-						"eval" => "date",
-						"checkbox" => "0",
-						"default" => "0",
-						"range" => Array (
-							"upper" => mktime(0,0,0,12,31,2020),
-							"lower" => mktime(0,0,0,date("m")-1,date("d"),date("Y"))
+				\'endtime\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_endtime]').'
+					\'exclude\' => 1,
+					\'label\' => \'LLL:EXT:lang/locallang_general.xml:LGL.endtime\',
+					\'config\' => array (
+						\'type\' => \'input\',
+						\'size\' => \'8\',
+						\'max\' => \'20\',
+						\'eval\' => \'date\',
+						\'checkbox\' => \'0\',
+						\'default\' => \'0\',
+						\'range\' => array (
+							\'upper\' => mktime(0,0,0,12,31,2020),
+							\'lower\' => mktime(0,0,0,date(\'m\')-1,date(\'d\'),date(\'Y\'))
 						)
 					)
 				),
 			'));
 		}
 		if ($config["add_access"])	{
-			$enFields[] = '"fe_group" => "fe_group",	'.$this->WOPcomment('WOP:'.$WOP.'[add_access]');
+			$enFields[] = '\'fe_group\' => \'fe_group\',	'.$this->WOPcomment('WOP:'.$WOP.'[add_access]');
 			$DBfields[] = "fe_group int(11) DEFAULT '0' NOT NULL,";
 			$columns["fe_group"] = trim($this->sPS('
-				"fe_group" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_access]').'
-					"exclude" => 1,
-					"label" => "LLL:EXT:lang/locallang_general.xml:LGL.fe_group",
-					"config" => Array (
-						"type" => "select",
-						"items" => Array (
-							Array("", 0),
-							Array("LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login", -1),
-							Array("LLL:EXT:lang/locallang_general.xml:LGL.any_login", -2),
-							Array("LLL:EXT:lang/locallang_general.xml:LGL.usergroups", "--div--")
+				\'fe_group\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_access]').'
+					\'exclude\' => 1,
+					\'label\' => \'LLL:EXT:lang/locallang_general.xml:LGL.fe_group\',
+					\'config\' => array (
+						\'type\' => \'select\',
+						\'items\' => array (
+							array(\'\', 0),
+							array(\'LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login\', -1),
+							array(\'LLL:EXT:lang/locallang_general.xml:LGL.any_login\', -2),
+							array(\'LLL:EXT:lang/locallang_general.xml:LGL.usergroups\', \'--div--\')
 						),
-						"foreign_table" => "fe_groups"
+						\'foreign_table\' => \'fe_groups\'
 					)
 				),
 			'));
@@ -531,25 +542,25 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			// Add enable fields in header:
 		if (is_array($enFields) && count($enFields))	{
 			$ctrl[]=trim($this->wrapBody('
-				"enablecolumns" => Array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden] / '.$WOP.'[add_starttime] / '.$WOP.'[add_endtime] / '.$WOP.'[add_access]').'
+				\'enablecolumns\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden] / '.$WOP.'[add_starttime] / '.$WOP.'[add_endtime] / '.$WOP.'[add_access]').'
 				',implode(chr(10),$enFields),'
 				),
 			'));
 		}
 			// Add dynamic config file.
-		$ctrl[]= '"dynamicConfigFile" => t3lib_extMgm::extPath($_EXTKEY)."tca.php",';
-		$ctrl[]= '"iconfile" => t3lib_extMgm::extRelPath($_EXTKEY)."icon_'.$tableName.'.gif",';
+		$ctrl[]= '\'dynamicConfigFile\' => t3lib_extMgm::extPath($_EXTKEY).\'tca.php\',';
+		$ctrl[]= '\'iconfile\' => t3lib_extMgm::extRelPath($_EXTKEY).\'icon_'.$tableName.'.gif\',';
 
 		if ($config["allow_on_pages"])	{
 			$this->wizard->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[allow_on_pages]').'
-				t3lib_extMgm::allowTableOnStandardPages("'.$tableName.'");
+				t3lib_extMgm::allowTableOnStandardPages(\''.$tableName.'\');
 			');
 		}
 		if ($config["allow_ce_insert_records"])	{
 			$this->wizard->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[allow_ce_insert_records]').'
-				t3lib_extMgm::addToInsertRecords("'.$tableName.'");
+				t3lib_extMgm::addToInsertRecords(\''.$tableName.'\');
 			');
 		}
 		if ($config["save_and_new"])	{
@@ -595,20 +606,20 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		$tca_file="";
 		list($typeList,$palList) = $this->implodeColumns($columns);
 		$tca_file.=$this->wrapBody('
-			$TCA["'.$tableName.'"] = Array (
+			$TCA["'.$tableName.'"] = array (
 				"ctrl" => $TCA["'.$tableName.'"]["ctrl"],
-				"interface" => Array (
+				"interface" => array (
 					"showRecordFieldList" => "'.implode(",",array_keys($columns)).'"
 				),
 				"feInterface" => $TCA["'.$tableName.'"]["feInterface"],
-				"columns" => Array (
+				"columns" => array (
 			', trim(implode(chr(10),$columns)),'
 				),
-				"types" => Array (
-					"0" => Array("showitem" => "'.$typeList.'")
+				"types" => array (
+					"0" => array("showitem" => "'.$typeList.'")
 				),
-				"palettes" => Array (
-					"1" => Array("showitem" => "'.$palList.'")
+				"palettes" => array (
+					"1" => array("showitem" => "'.$palList.'")
 				)
 			);
 		',2);
@@ -616,11 +627,11 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 
 			// Finalize ext_tables.php:
 		$this->wizard->ext_tables[]=$this->wrapBody('
-			$TCA["'.$tableName.'"] = Array (
-				"ctrl" => Array (
+			$TCA["'.$tableName.'"] = array (
+				"ctrl" => array (
 			', implode(chr(10),$ctrl),'
 				),
-				"feInterface" => Array (
+				"feInterface" => array (
 					"fe_admin_fieldList" => "'.implode(", ",array_keys($columns)).'",
 				)
 			);
