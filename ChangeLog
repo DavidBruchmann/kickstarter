@@ -1,3 +1,6 @@
+2006-07-17 Ingo Renner <typo3@ingo-renner.com>
+	* FIX fixed bug #3816: The files wizard_form.dat and wizard_form.html is not saved
+
 2006-07-02 Ingo Renner <typo3@ingo-renner.com>
 	* ADD new feature: kickstarter can now create TS files in the static folder of an extension
 	* FIX the previous mentioned feature also fixes bug #1158: The kickstarter doesn't create config files

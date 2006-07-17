@@ -23,17 +23,14 @@
 *
 *	This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+/**
+ * TYPO3 Extension Repository
+ *
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ */
 
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_compilefiles.php');
 
-define('TYPO3_KICKSTARTER_EXTKEY_MAXLENGTH', 30);
-
-/**
- * TYPO3 Extension Kickstarter
- *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
- * @author	Ingo Renner <typo3@ingo-renner.com>
- */
 class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	var $varPrefix = 'kickstarter';		// redundant from 'extrep'
 	var $siteBackPath = '';
@@ -157,7 +154,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			= substr(
 				strtolower(trim($this->wizArray['save']['extension_key'])),
 				0,
-				TYPO3_KICKSTARTER_EXTKEY_MAXLENGTH
+				30
 			);
 		$this->outputWOP = $this->wizArray['save']['print_wop_comments'] ? 1 : 0;
 
@@ -324,7 +321,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 		$lines[]='<tr><td width="150">
 		'.$this->fw('Enter extension key:').'<br />
-		<input type="text" name="'.$this->piFieldName('wizArray_upd').'[save][extension_key]" value="'.$this->wizArray['save']['extension_key'].'" maxlength="'.TYPO3_KICKSTARTER_EXTKEY_MAXLENGTH.'" />
+		<input type="text" name="'.$this->piFieldName('wizArray_upd').'[save][extension_key]" value="'.$this->wizArray['save']['extension_key'].'" maxlength="30" />
 		'.($this->wizArray['save']['extension_key']?'':'<br /><a href="http://typo3.org/1382.0.html" target="_blank"><font color="red">Make sure to enter the right extension key from the beginning here!</font> You can register one here.</a>').'
 		</td><td></td></tr>';
 # onClick="setFormAnchorPoint(\'_top\')"
@@ -393,14 +390,17 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				<td>' . $this->fw($fileName) . '</td>
 				<td>' . $this->fw(t3lib_div::formatSize($data['size'])) . '</td>
 				<td>' . $linkToFile . '</td>
-				<td><input type="checkbox" name="' . $this->piFieldName('wizArray_upd') . '[save][overwrite_files][]" value="' . $fileName . '" checked="checked" ';
+				<td>';
 
 			if($fileName == 'doc/wizard_form.dat' 
 			|| $fileName == 'doc/wizard_form.html') {
-				$line .= 'disabled="disabled" ';
+				$line .= '<input type="hidden" name="' . $this->piFieldName('wizArray_upd') . '[save][overwrite_files][]" value="' . $fileName . '" />';
+			} else {
+				$line .= '<input type="checkbox" name="' . $this->piFieldName('wizArray_upd') . '[save][overwrite_files][]" value="' . $fileName . '" checked="checked" />';
+			
 			}
 
-			$line .= '/></td>
+			$line .= '</td>
 			</tr>';
 			if (strstr($fileName,'/'))	{
 				$filesOverview2[]=$line;
