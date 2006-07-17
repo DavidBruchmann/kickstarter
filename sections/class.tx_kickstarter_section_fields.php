@@ -346,6 +346,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$fDetails.='<br />Evaluate value to:<br />'.$this->renderSelectBox($prefix.'[conf_eval]',$fConf['conf_eval'],$optValues).'<br />';
 				$fDetails.=$this->renderCheckBox($prefix.'[conf_stripspace]',$fConf['conf_stripspace']).'Strip space<br />';
 				$fDetails.=$this->renderCheckBox($prefix.'[conf_pass]',$fConf['conf_pass']).'Is password field<br />';
+				$fDetails.=$this->renderCheckBox($prefix.'[conf_md5]',$fConf['conf_md5']).'Save as MD5<br />';
 				$fDetails.=$this->resImg('t_input_password.png','hspace=20','','<br /><br />');
 
 				$fDetails.='<br />';
@@ -780,7 +781,8 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 					if ($fConf['conf_stripspace'])		{$evalItems[0][] = 'nospace';			$evalItems[1][] = $WOP.'[conf_stripspace]';}
 					if ($fConf['conf_pass'])		{$evalItems[0][] = 'password';			$evalItems[1][] = $WOP.'[conf_pass]';}
-					if ($fConf['conf_unique'])	{
+					if ($fConf['conf_md5'])		{$evalItems[0][] = 'md5';			$evalItems[1][] = $WOP.'[conf_md5]';}
+ 					if ($fConf['conf_unique'])	{
 						if ($fConf['conf_unique']=='L')		{$evalItems[0][] = 'uniqueInPid';			$evalItems[1][] = $WOP.'[conf_unique] = Local (unique in this page (PID))';}
 						if ($fConf['conf_unique']=='G')		{$evalItems[0][] = 'unique';			$evalItems[1][] = $WOP.'[conf_unique] = Global (unique in whole database)';}
 					}
@@ -1522,7 +1524,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 * @return	string with path to uploadfolder
 	 */
 	function ulFolder($eKey)	{
-		return "uploads/tx_".str_replace("_","",$eKey)."/";
+		return 'uploads/tx_'.str_replace('_','',$eKey).'/';
 	}
 
 
