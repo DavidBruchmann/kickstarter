@@ -570,9 +570,16 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 
 
 			// Finalize tables.sql:
-		$DBfields[]=$this->sPS('
-			PRIMARY KEY (uid),
-			KEY parent (pid)
+		$keys = '
+				PRIMARY KEY (uid),
+				KEY parent (pid)';
+			
+		if ($config['versioning'])	{
+			$keys .= ',
+				KEY t3ver_oid (t3ver_oid,t3ver_wsid)				
+			';			
+		}		
+		$DBfields[]=$this->sPS( $keys.'
 		');
 		$createTable = $this->wrapBody('
 			#
