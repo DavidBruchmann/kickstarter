@@ -527,7 +527,7 @@ class tx_kickstarter_sectionbase {
 	}
 
 	/**
-	 * prepands $content with $number of tab characters 
+	 * prepands $content with $number of tab characters
 	 *
 	 * @param	string		content to indent
 	 * @param	integer		level of indention
@@ -651,17 +651,23 @@ class tx_kickstarter_sectionbase {
 	 */
 	function addLocalLangFile($arr,$filename,$description,$fileType='module')	{
 		$outputArray = array();
-		
+
 		$outputArray['meta'] = array (
 			'type' => $fileType,
 			'description' => $description
 		);
-		
+
 		$outputArray['data'] = array();
 		while(list($lK,$labels)=each($arr))	{
 			if (is_array($labels))	{
 				while(list($l,$v)=each($labels))	{
-					if (strcmp($v[0],''))	$outputArray['data'][$lK][$l] = $v[0];
+					if(strcmp($v[0], '')) {
+						$outputArray['data'][$lK][$l] = 
+							$GLOBALS['LANG']->csConvObj->utf8_encode(
+								$v[0],
+								$GLOBALS['LANG']->charSet
+							);
+					}	
 				}
 			}
 		}

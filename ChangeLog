@@ -1,3 +1,6 @@
+2006-07-20 Ingo Renner <typo3@ingo-renner.com>
+	* FIX fixed bugs #1815, #2943, #3273, #3545: Umlauts and special characters where not written correctly in locallang xml files
+
 2006-07-17 Ingo Renner <typo3@ingo-renner.com>
 	* FIX fixed bug #3816: The files wizard_form.dat and wizard_form.html is not saved
 	* FIX fixed bug #3715: Enable versioning: ext_tables.sql incompletely?
