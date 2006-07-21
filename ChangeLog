@@ -1,3 +1,6 @@
+2006-07-21 Ingo Renner <typo3@ingo-renner.com>
+	* FIX fixed bug #156: Not all BE languages available in languages setup
+
 2006-07-20 Ingo Renner <typo3@ingo-renner.com>
 	* FIX fixed bugs #1815, #2943, #3273, #3545: Umlauts and special characters where not written correctly in locallang xml files
 

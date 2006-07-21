@@ -47,50 +47,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 	var $afterContent;
 
-	var $languages = array(
-		'dk' => 'Danish',
-		'de' => 'German',
-		'no' => 'Norwegian',
-		'it' => 'Italian',
-		'fr' => 'French',
-		'es' => 'Spanish',
-		'nl' => 'Dutch',
-		'cz' => 'Czech',
-		'pl' => 'Polish',
-		'si' => 'Slovenian',
-		'fi' => 'Finnish',
-		'tr' => 'Turkish',
-		'se' => 'Swedish',
-		'pt' => 'Portuguese',
-		'ru' => 'Russian',
-		'ro' => 'Romanian',
-		'ch' => 'Chinese',
-		'sk' => 'Slovak',
-		'lt' => 'Lithuanian',
-		'is' => 'Icelandic',
-		'hr' => 'Croatian',
-		'hu' => 'Hungarian',
-		'gl' => 'Greenlandic',
-		'th' => 'Thai',
-		'gr' => 'Greek',
-		'hk' => 'Chinese (Trad)',
-		'eu' => 'Basque',
-		'bg' => 'Bulgarian',
-		'br' => 'Brazilian Portuguese',
-		'et' => 'Estonian',
-		'ar' => 'Arabic',
-		'he' => 'Hebrew',
-		'ua' => 'Ukrainian',
-		'lv' => 'Latvian',
-		'jp' => 'Japanese',
-		'vn' => 'Vietnamese',
-		'ca' => 'Catalan',
-		'ba' => 'Bosnian',
-		'kr' => 'Korean',
-		'eo' => 'Esperanto',
-		'my' => 'Bahasa Malaysia',
-		'hi' => 'Hindi',
-	);
+	var $languages = array();
 	var $reservedTypo3Fields='uid,pid,endtime,starttime,sorting,fe_group,hidden,deleted,cruser_id,crdate,tstamp';
 	var $mysql_reservedFields='data,table,field,key,desc';
 
@@ -111,6 +68,18 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	 */
 	function tx_kickstarter_wizard() {
 		$this->modData = t3lib_div::_POST($this->varPrefix);
+				
+		//getting the available languages
+		$theLanguages = t3lib_div::trimExplode('|', TYPO3_languages);
+		$llFile = t3lib_extMgm::extPath('setup').'/mod/locallang.xml';
+		$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, 'default');
+		foreach($theLanguages as $val) {
+			if ($val != 'default') {
+				$localLabel = htmlspecialchars($LOCAL_LANG['default']['lang_'.$val]);
+				$this->languages[$val] = $localLabel;
+			}
+		}
+		ksort($this->languages);
 	}
 
 	/**
