@@ -27,6 +27,7 @@
  * TYPO3 Extension Repository
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Ingo Renner <typo3@ingo-renner.com>
  */
 
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_compilefiles.php');
