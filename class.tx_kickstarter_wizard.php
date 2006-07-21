@@ -80,7 +80,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				$this->languages[$val] = $localLabel;
 			}
 		}
-		ksort($this->languages);
+		asort($this->languages);
 	}
 
 	/**
