@@ -142,15 +142,15 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 		}
 		$this->wizard->ext_tables[]=$this->sPS('
 			'.$this->WOPcomment('WOP:'.$WOP).'
-			if (TYPO3_MODE=="BE")	{
+			if (TYPO3_MODE == \'BE\')	{
 					'.$this->WOPcomment('1. and 2. parameter is WOP:'.$WOP.'[position] , 3. parameter is WOP:'.$WOP.'[subpos]').'
-				t3lib_extMgm::addModule("'.
+				t3lib_extMgm::addModule(\''.
 					($config['position']!='_MAIN'?$config['position']:$this->returnName($extKey,'module','M'.$k)).
-					'","'.
+					'\',\''.
 					($config['position']!='_MAIN'?$this->returnName($extKey,'module','M'.$k):'').
-					'","'.
+					'\',\''.
 					$subPos.
-					'",t3lib_extMgm::extPath($_EXTKEY)."'.$pathSuffix.'");
+					'\',t3lib_extMgm::extPath($_EXTKEY).\''.$pathSuffix.'\');
 			}
 		');
 
