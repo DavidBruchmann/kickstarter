@@ -359,7 +359,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 					switch((string)$this->MOD_SETTINGS[\'function\'])	{
 						case 1:
 							$content=\'<div align=center><strong>Hello World!</strong></div><br />
-								The \'Kickstarter\' has made this module automatically, it contains a default framework for a backend module but apart from it does nothing useful until you open the script \'".substr(t3lib_extMgm::extPath("'.$extKey.'"),strlen(PATH_site))."'.$pathSuffix.'index.php\' and edit it!
+								The "Kickstarter" has made this module automatically, it contains a default framework for a backend module but apart from it does nothing useful until you open the script \'.substr(t3lib_extMgm::extPath(\''.$extKey.'\'),strlen(PATH_site)).\''.$pathSuffix.'index.php and edit it!
 								<HR>
 								<br />This is the GET/POST vars sent to the script:<br />\'.
 								\'GET:\'.t3lib_div::view_array($_GET).\'<br />\'.
