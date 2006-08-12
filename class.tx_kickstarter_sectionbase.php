@@ -45,7 +45,7 @@ class tx_kickstarter_sectionbase {
 
 	/* Variable-Prefix used for the generation of input-fields */
 	var $varPrefix = 'kickstarter';
-
+	
 	/* renders the wizard for this section */
 	function render_wizard() {
 	}

@@ -32,7 +32,7 @@
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
 
 class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
-
+	
 		// Internal:
 	var $fileArray=array();
 	var $ext_tables=array();

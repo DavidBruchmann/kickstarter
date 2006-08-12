@@ -1196,10 +1196,10 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 		$indexRequire = 'require_once(PATH_tslib.\'class.tslib_pibase.php\');';
 		$indexContent = $this->wrapBody('
 			class '.$cN.' extends tslib_pibase {
-				var $prefixId = \''.$cN.'\';		// Same as class name
+				var $prefixId      = \''.$cN.'\';		// Same as class name
 				var $scriptRelPath = \''.($pathSuffix."class.".$cN.".php").'\';	// Path to this script relative to the extension dir.
-				var $extKey = \''.$extKey.'\';	// The extension key.
-				'.($cache ? 'var $pi_checkCHash = TRUE;
+				var $extKey        = \''.$extKey.'\';	// The extension key.
+				'.($cache ? 'var $pi_checkCHash = true;
 				' : '').'
 				',$innerMainContent,'
 			}

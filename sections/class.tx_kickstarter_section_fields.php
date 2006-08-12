@@ -931,14 +931,14 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			break;
 			case 'textarea_rte':
 				$DBfields[] = $fConf['fieldname'].' text NOT NULL,';
-				$configL[]='"type" => "text",';
-				$configL[]='"cols" => "30",';
-				$configL[]='"rows" => "5",';
+				$configL[]  = '"type" => "text",';
+				$configL[]  = '"cols" => "30",';
+				$configL[]  = '"rows" => "5",';
 				if ($fConf['conf_rte_fullscreen'])	{
 					$wizards =array();
 					$wizards[] = trim($this->sPS('
 						'.$this->WOPcomment('WOP:'.$WOP.'[conf_rte_fullscreen]').'
-						"RTE" => Array(
+						"RTE" => array(
 							"notNewRecords" => 1,
 							"RTEonly" => 1,
 							"type" => "script",

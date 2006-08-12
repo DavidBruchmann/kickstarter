@@ -8,6 +8,14 @@ $TYPO3_CONF_VARS['EXTCONF']['kickstarter']['sections']['emconf'] = array(
 	'description' => 'Enter general information about the extension here: Title, description, category, author...',
 );
 
+//languages
+$TYPO3_CONF_VARS['EXTCONF']['kickstarter']['sections']['languages'] = array(
+	'classname'   => 'tx_kickstarter_section_languages',
+	'filepath'    => 'EXT:kickstarter/sections/class.tx_kickstarter_section_languages.php',
+	'title'       => 'Setup languages',
+	'description' => 'Start here by entering the number of system languages you want to use in your extension.',
+);
+
 //tables
 $TYPO3_CONF_VARS['EXTCONF']['kickstarter']['sections']['tables'] = array(
 	'classname'   => 'tx_kickstarter_section_tables',
@@ -81,12 +89,5 @@ $TYPO3_CONF_VARS['EXTCONF']['kickstarter']['sections']['tsconfig'] = array(
 	'description' => 'Adds default Page-TSconfig or User-TSconfig. Can be used to preset options inside TYPO3.',
 );
 
-//languages
-$TYPO3_CONF_VARS['EXTCONF']['kickstarter']['sections']['languages'] = array(
-	'classname'   => 'tx_kickstarter_section_languages',
-	'filepath'    => 'EXT:kickstarter/sections/class.tx_kickstarter_section_languages.php',
-	'title'       => 'Setup languages',
-	'description' => 'Start here by entering the number of system languages you want to use in your extension.',
-);
 
 ?>
