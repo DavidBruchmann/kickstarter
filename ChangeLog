@@ -1,3 +1,6 @@
+2006-11-02 Ingo Renner <typo3@ingo-renner.com>
+	* FIX fixed a bug with generated BE module code, thanks to Manuel Montoya for the hint
+
 2006-08-12 Ingo Renner <typo3@ingo-renner.com>
 	* CHG moved the languages section to be right below the general information section
 	* ADD made the local extension directory the default for the write location

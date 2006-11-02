@@ -371,8 +371,9 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			|| $fileName == 'doc/wizard_form.html') {
 				$line .= '<input type="hidden" name="' . $this->piFieldName('wizArray_upd') . '[save][overwrite_files][]" value="' . $fileName . '" />';
 			} else {
-				$checked = '';
-				if (in_array($fileName, $this->wizArray['save']['overwrite_files'])) {
+				$checked = '';				
+				if (!is_array($this->wizArray['save']['overwrite_files']) // check for first time call of "View Result"
+				||  in_array($fileName, $this->wizArray['save']['overwrite_files'])) {
 					$checked = ' checked="checked"';
 				}	
 				$line .= '<input type="checkbox" name="' . $this->piFieldName('wizArray_upd') . '[save][overwrite_files][]" value="' . $fileName . '"'.$checked.' />';
