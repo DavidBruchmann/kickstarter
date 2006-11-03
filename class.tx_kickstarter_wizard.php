@@ -376,8 +376,9 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				$checked = '';				
 
 				if(!is_array($this->wizArray['save']['overwrite_files']) // check for first time call of "View Result"
-				|| (isset($this->wizArray['save']['overwrite_files'][$fileName]) && $this->wizArray['save']['overwrite_files'][$fileName] == '1')
-				|| !isset($this->wizArray['save']['overwrite_files'][$fileName])) {
+				|| (isset($this->wizArray['save']['overwrite_files'][$fileName]) && $this->wizArray['save']['overwrite_files'][$fileName] == '1') // if selected
+				|| !isset($this->wizArray['save']['overwrite_files'][$fileName]) // if new
+				) {
 					$checked = ' checked="checked"';
 				}
 
