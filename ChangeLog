@@ -4,7 +4,7 @@
 	* FIX wrong author and author email was shown in the result overview
 	* ADD added an update button after the result overview
 	* CHG made the selector boxes which determine which files get written more intelligent
-	* CHG when extending an existing table in the drop down the labels are inverted and sorted by table name
+	* CHG when extending an existing table, the drop down with the available tables now shows the labels inverted and sorted by table name
 	* RMV removed references to tt_news and tt_address in sections/class.tx_kickstarter_section_fields.php
 	* RMV removed several debug() calls to clean up the code
 
