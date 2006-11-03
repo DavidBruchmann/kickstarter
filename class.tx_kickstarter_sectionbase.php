@@ -1126,8 +1126,27 @@ class tx_kickstarter_sectionbase {
 		}
 
 		if (is_array($this->wizard->EM_CONF_presets['dependencies']) || $this->wizard->wizArray['emconf'][1]['dependencies'])	{
-			$aa = t3lib_div::trimExplode(',',strtolower($this->wizard->wizArray['emconf'][1]['dependencies']),1);
-			$EM_CONF[$prefix.'dependencies'] = implode(',',array_unique(array_merge($this->wizard->EM_CONF_presets['dependencies'],$aa)));
+			
+			if(!is_array($this->wizard->EM_CONF_presets['dependencies'])) {
+				// if dependencies haven't been preset 
+				// in section_fields or section_modulefunction
+				$this->wizard->EM_CONF_presets['dependencies'] = array();
+			}
+			
+			$aa = t3lib_div::trimExplode(
+				',',
+				strtolower($this->wizard->wizArray['emconf'][1]['dependencies']),
+				1
+			);
+			$EM_CONF[$prefix.'dependencies'] = implode(
+				',',
+				array_unique(
+					array_merge(
+						$this->wizard->EM_CONF_presets['dependencies'],
+						$aa
+					)
+				)
+			);
 		}
 		unset($this->wizard->_addArray['dependencies']);
 		if (is_array($this->wizard->EM_CONF_presets['module']))	{

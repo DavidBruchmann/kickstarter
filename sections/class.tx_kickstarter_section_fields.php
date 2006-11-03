@@ -53,21 +53,20 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 				// Header field
 			$optValues = array(
-				'tt_content' => 'Content (tt_content)',
-				'fe_users' => 'Frontend Users (fe_users)',
-				'fe_groups' => 'Frontend Groups (fe_groups)',
-				'be_users' => 'Backend Users (be_users)',
-				'be_groups' => 'Backend Groups (be_groups)',
-				'tt_news' => 'News (tt_news)',
-				'tt_address' => 'Address (tt_address)',
-				'pages' => 'Pages (pages)',
+				'tt_content' => 'tt_content (Content)',
+				'fe_users' => 'fe_users (Frontend Users)',
+				'fe_groups' => 'fe_groups (Frontend Groups)',
+				'be_users' => 'be_users (Backend Users)',
+				'be_groups' => 'be_groups (Backend Groups)',
+				'pages' => 'pages (Pages)',
 			);
 
 			foreach($GLOBALS['TCA'] as $tablename => $tableTCA) {
 				if(!$optValues[$tablename]) {
-					$optValues[$tablename] = $GLOBALS['LANG']->sL($tableTCA['ctrl']['title']).' ('.$tablename.')';
+					$optValues[$tablename] = $tablename.' ('.$GLOBALS['LANG']->sL($tableTCA['ctrl']['title']).')';
 				}
 			}
+			asort($optValues);
 
 			$subContent = '<strong>Which table:<br /></strong>'.
 					$this->renderSelectBox($ffPrefix.'[which_table]',$piConf['which_table'],$optValues).
@@ -227,13 +226,12 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			  //				unset($fConf[$k]);
 			}
 		}
-		//		debug($newFConf);
+
 		$this->wizard->wizArray[$catID][$action]['fields'] = $newFConf;
 		$sesdat = $GLOBALS['BE_USER']->getSessionData('kickstarter');
 		$sesdat['presets'][$this->wizard->extKey.'-'.$catID.'-'.$action]=$newFConf;
 		$GLOBALS['BE_USER']->setAndSaveSessionData('kickstarter',$sesdat);
 
-#debug($newFConf);
 		return $newFConf;
 	}
 
@@ -640,8 +638,8 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 * @return	void
 	 */
 	function render_extPart($k,$config,$extKey) {
-		$WOP='[fields]['.$k.']';
-		$tableName=$config['which_table'];
+		$WOP = '[fields]['.$k.']';
+		$tableName = $config['which_table'];
 	#	$tableName = $this->returnName($extKey,'fields',$tableName);
 #		$prefix = 'tx_'.str_replace('_','',$extKey).'_';
 		$prefix = $this->returnName($extKey,'fields').'_';
@@ -659,9 +657,9 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			}
 		}
 
-		if ($tableName=='tt_address')	$this->wizard->EM_CONF_presets['dependencies'][]='tt_address';
-		if ($tableName=='tt_news')	$this->wizard->EM_CONF_presets['dependencies'][]='tt_news';
-		if (t3lib_div::inList('tt_content,fe_users,fe_groups',$tableName))	$this->wizard->EM_CONF_presets['dependencies'][]='cms';
+		if (t3lib_div::inList('tt_content,fe_users,fe_groups',$tableName)) {
+			$this->wizard->EM_CONF_presets['dependencies'][] = 'cms';
+		}
 
 		$createTable = $this->wrapBody('
 			#
@@ -756,7 +754,6 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	function makeFieldTCA(&$DBfields,&$columns,$fConf,$WOP,$table,$extKey)	{
 		if (!(string)$fConf['type'])	return;
 		$id = $table.'_'.$fConf['fieldname'];
-#debug($fConf);
 
 		$configL=array();
 		$t = (string)$fConf['type'];

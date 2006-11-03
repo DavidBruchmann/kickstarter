@@ -209,7 +209,6 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 		$cN = $this->returnName($extKey,'class','pi'.$k);
 		$pathSuffix = 'pi'.$k.'/';
 
-#debug($config);
 		$setType='';
 		switch($config['addType'])	{
 			case 'list_type':

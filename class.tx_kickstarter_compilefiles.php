@@ -24,9 +24,10 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * TYPO3 Extension Repository
+ * TYPO3 Extension Kickstarter
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Ingo Renner <typo3@ingo-renner.com>
  */
 
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
@@ -191,9 +192,6 @@ Feel free to add some documentation or simply add a link to the online manual.
 			// icon:
 		$this->addFileToFileArray('ext_icon.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/notfound.gif'));
 
-
-#		debug($this->wizArray);
-#		debug ($this->fileArray);
 #		return $dataArr;
 	}
 
