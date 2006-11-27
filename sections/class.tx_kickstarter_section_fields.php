@@ -81,7 +81,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				// PRESETS:
 			$selPresetBox=$this->presetBox($piConf['fields']);
 
-				// FIelds
+				// Fields
 			$c=array(0);
 			$this->usedNames=array();
 			if (is_array($piConf['fields']))	{
@@ -289,30 +289,30 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 			// Sorting
 		$optValues = array(
-			'' => '',
-			'input' => 'String input',
-			'input+' => 'String input, advanced',
-			'textarea' => 'Text area',
-			'textarea_rte' => 'Text area with RTE',
+			''                => '',
+			'input'           => 'String input',
+			'input+'          => 'String input, advanced',
+			'textarea'        => 'Text area',
+			'textarea_rte'    => 'Text area with RTE',
 			'textarea_nowrap' => 'Text area, No wrapping',
-			'check' => 'Checkbox, single',
-			'check_4' => 'Checkbox, 4 boxes in a row',
-			'check_10' => 'Checkbox, 10 boxes in two rows (max)',
-			'link' => 'Link',
-			'date' => 'Date',
-			'datetime' => 'Date and time',
-			'integer' => 'Integer, 10-1000',
-			'select' => 'Selectorbox',
-			'radio' => 'Radio buttons',
-			'rel' => 'Database relation',
-			'files' => 'Files',
-			'none' => 'Not editable, only displayed',
-			'passthrough' => '[Passthrough]',
+			'check'           => 'Checkbox, single',
+			'check_4'         => 'Checkbox, 4 boxes in a row',
+			'check_10'        => 'Checkbox, 10 boxes in two rows (max)',
+			'link'            => 'Link',
+			'date'            => 'Date',
+			'datetime'        => 'Date and time',
+			'integer'         => 'Integer, 10-1000',
+			'select'          => 'Selectorbox',
+			'radio'           => 'Radio buttons',
+			'rel'             => 'Database relation',
+			'files'           => 'Files',
+			'none'            => 'Not editable, only displayed',
+			'passthrough'     => '[Passthrough]',
 		);
-		$typeCfg.=$this->renderSelectBox($prefix.'[type]',$fConf['type'],$optValues);
-		$typeCfg.=$this->renderCheckBox($prefix.'[excludeField]',isset($fConf['excludeField'])?$fConf['excludeField']:1).' Is Exclude-field '.$this->whatIsThis('If a field is marked "Exclude-field", users can edit it ONLY if the field is specifically listed in one of the backend user groups of the user.\nIn other words, if a field is marked "Exclude-field" you can control which users can edit it and which cannot.').'<br />';
+		$typeCfg .= $this->renderSelectBox($prefix.'[type]',$fConf['type'],$optValues);
+		$typeCfg .= $this->renderCheckBox($prefix.'[excludeField]',isset($fConf['excludeField'])?$fConf['excludeField']:1).' Is Exclude-field '.$this->whatIsThis('If a field is marked "Exclude-field", users can edit it ONLY if the field is specifically listed in one of the backend user groups of the user.\nIn other words, if a field is marked "Exclude-field" you can control which users can edit it and which cannot.').'<br />';
 
-		$fDetails='';
+		$fDetails = '';
 		switch((string)$fConf['type'])	{
 			case 'input+':
 				$typeCfg.=$this->resImg('t_input.png','','');
@@ -329,17 +329,17 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 				$optValues = array(
 					'' => '',
-					'date' => 'Date (day-month-year)',
-					'time' => 'Time (hours, minutes)',
-					'timesec' => 'Time + seconds',
+					'date'     => 'Date (day-month-year)',
+					'time'     => 'Time (hours, minutes)',
+					'timesec'  => 'Time + seconds',
 					'datetime' => 'Date + Time',
-					'year' => 'Year',
-					'int' => 'Integer',
-					'int+' => 'Integer 0-1000',
-					'double2' => 'Floating point, x.xx',
+					'year'     => 'Year',
+					'int'      => 'Integer',
+					'int+'     => 'Integer 0-1000',
+					'double2'  => 'Floating point, x.xx',
 					'alphanum' => 'Alphanumeric only',
-					'upper' => 'Upper case',
-					'lower' => 'Lower case',
+					'upper'    => 'Upper case',
+					'lower'    => 'Lower case',
 				);
 				$fDetails.='<br />Evaluate value to:<br />'.$this->renderSelectBox($prefix.'[conf_eval]',$fConf['conf_eval'],$optValues).'<br />';
 				$fDetails.=$this->renderCheckBox($prefix.'[conf_stripspace]',$fConf['conf_stripspace']).'Strip space<br />';
@@ -527,12 +527,12 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 
 				$optValues = array(
-					'pages' => 'Pages table, (pages)',
-					'fe_users' => 'Frontend Users, (fe_users)',
-					'fe_groups' => 'Frontend Usergroups, (fe_groups)',
+					'pages'      => 'Pages table, (pages)',
+					'fe_users'   => 'Frontend Users, (fe_users)',
+					'fe_groups'  => 'Frontend Usergroups, (fe_groups)',
 					'tt_content' => 'Content elements, (tt_content)',
-					'_CUSTOM' => 'Custom table (enter name below)',
-					'_ALL' => 'All tables allowed!',
+					'_CUSTOM'    => 'Custom table (enter name below)',
+					'_ALL'       => 'All tables allowed!',
 				);
 				if ($fConf['conf_rel_type']!='group')	{unset($optValues['_ALL']);}
 				$optValues = $this->addOtherExtensionTables($optValues);
@@ -540,10 +540,10 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				if ($fConf['conf_rel_table']=='_CUSTOM')	$fDetails.='Custom table name: '.$this->renderStringBox($prefix.'[conf_custom_table_name]',$fConf['conf_custom_table_name'],200).'<br />';
 
 				$optValues = array(
-					'group' => 'Field with Element Browser',
-					'select' => 'Selectorbox, select global',
-					'select_cur' => 'Selectorbox, select from current page',
-					'select_root' => 'Selectorbox, select from root page',
+					'group'          => 'Field with Element Browser',
+					'select'         => 'Selectorbox, select global',
+					'select_cur'     => 'Selectorbox, select from current page',
+					'select_root'    => 'Selectorbox, select from root page',
 					'select_storage' => 'Selectorbox, select from storage page',
 				);
 				$fDetails.='<br />Type:<br />'.$this->renderSelectBox($prefix.'[conf_rel_type]',$fConf['conf_rel_type']?$fConf['conf_rel_type']:'group',$optValues).'<br />';
@@ -574,9 +574,9 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				}
 
 				$optValues = array(
-					'images' => 'Imagefiles',
+					'images'    => 'Imagefiles',
 					'webimages' => 'Web-imagefiles (gif,jpg,png)',
-					'all' => 'All files, except php/php3 extensions',
+					'all'       => 'All files, except php/php3 extensions',
 				);
 				$fDetails.='<br />Extensions:<br />'.$this->renderSelectBox($prefix.'[conf_files_type]',$fConf['conf_files_type'],$optValues).'<br />';
 
@@ -644,10 +644,10 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 #		$prefix = 'tx_'.str_replace('_','',$extKey).'_';
 		$prefix = $this->returnName($extKey,'fields').'_';
 
-		$DBfields=array();
-		$columns=array();
-		$ctrl=array();
-		$enFields=array();
+		$DBfields = array();
+		$columns  = array();
+		$ctrl     = array();
+		$enFields = array();
 
 		if (is_array($config['fields']))	{
 			reset($config['fields']);
@@ -840,19 +840,19 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			break;
 			case 'link':
 				$DBfields[] = $fConf['fieldname'].' tinytext NOT NULL,';
-				$configL[]=trim($this->sPS('
-					"type" => "input",
-					"size" => "15",
-					"max" => "255",
+				$configL[]  = trim($this->sPS('
+					"type"     => "input",
+					"size"     => "15",
+					"max"      => "255",
 					"checkbox" => "",
-					"eval" => "trim",
-					"wizards" => Array(
+					"eval"     => "trim",
+					"wizards"  => array(
 						"_PADDING" => 2,
-						"link" => Array(
-							"type" => "popup",
-							"title" => "Link",
-							"icon" => "link_popup.gif",
-							"script" => "browse_links.php?mode=wizard",
+						"link"     => array(
+							"type"         => "popup",
+							"title"        => "Link",
+							"icon"         => "link_popup.gif",
+							"script"       => "browse_links.php?mode=wizard",
 							"JSopenParams" => "height=300,width=500,status=0,menubar=0,scrollbars=1"
 						)
 					)
@@ -862,23 +862,23 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			case 'date':
 				$DBfields[] = $fConf['fieldname'].' int(11) DEFAULT \'0\' NOT NULL,';
 				$configL[]=trim($this->sPS('
-					"type" => "input",
-					"size" => "'.($t=="datetime"?12:8).'",
-					"max" => "20",
-					"eval" => "'.$t.'",
+					"type"     => "input",
+					"size"     => "'.($t=="datetime"?12:8).'",
+					"max"      => "20",
+					"eval"     => "'.$t.'",
 					"checkbox" => "0",
-					"default" => "0"
+					"default"  => "0"
 				'));
 			break;
 			case 'integer':
 				$DBfields[] = $fConf['fieldname'] . ' int(11) DEFAULT \'0\' NOT NULL,';
 				$configL[]=trim($this->sPS('
-					"type" => "input",
-					"size" => "4",
-					"max" => "4",
-					"eval" => "int",
+					"type"     => "input",
+					"size"     => "4",
+					"max"      => "4",
+					"eval"     => "int",
 					"checkbox" => "0",
-					"range" => Array (
+					"range"    => Array (
 						"upper" => "1000",
 						"lower" => "10"
 					),
