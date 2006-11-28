@@ -49,8 +49,6 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	var $afterContent;
 
 	var $languages = array();
-	var $reservedTypo3Fields='uid,pid,endtime,starttime,sorting,fe_group,hidden,deleted,cruser_id,crdate,tstamp';
-	var $mysql_reservedFields='data,table,field,key,desc';
 
 		// Internal:
 	var $selectedLanguages = array();
