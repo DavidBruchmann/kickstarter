@@ -113,7 +113,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		$this->wizard =& $this;
 		$this->initWizArray();
 		$this->sections = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['sections'];
-
+        $this->cleanFormFieldInput();
+        
 		foreach($this->sections as $k => $v) {
 			$this->options[$k] = array($v['title'],$v['description']);
 		}
@@ -482,8 +483,33 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		
 		return $uploadArray;
 	}
+    /**
+    * Cleaning functions for the extension key form field and the TS title fields.
+    * TS title field: returns a string where any character not matching [.a-zA-Z0-9_-] is substituted by '_'
+    * Extension key field: same substitution options as TS title field, plus key cannot start or end with 0-9 and '_', plus keys less than 3 characters get prefixed with 'ext_'
+    *
+    * @return void
+    */
+    function cleanFormFieldInput() {
+    	$cls = t3lib_div::makeInstanceClassName('t3lib_basicFileFunctions');
+    	if (class_exists($cls)) {
+    		$fileFunction = t3lib_div::makeInstance('t3lib_basicFileFunctions');
+    		$fileFunction->init($GLOBALS['FILEMOUNTS'], $TYPO3_CONF_VARS['BE']['fileExtensions']);
 
-
+    		if ($this->wizArray['ts']) {
+    			foreach($this->wizArray['ts'] as $key => $val) {
+    				$this->wizArray['ts'][$key]['title'] = $fileFunction->cleanFileName($this->wizArray['ts'][$key]['title']);
+    			}
+    		}
+    		if ($this->wizArray['save']['extension_key']) {
+    			$this->wizArray['save']['extension_key'] = $fileFunction->cleanFileName($this->wizArray['save']['extension_key']);
+    			$this->wizArray['save']['extension_key'] = preg_replace('/^[_0-9\/\. ]*|[_0-9\/\. ]*$/', '', $this->wizArray['save']['extension_key']);
+    			if (strlen($this->wizArray['save']['extension_key'] ) < 3) {
+    				$this->wizArray['save']['extension_key'] = str_pad ($this->wizArray['save']['extension_key'] , (4+strlen($this->wizArray['save']['extension_key'] )), 'ext_', STR_PAD_LEFT);
+    			}
+    		}
+    	}
+    }
 }
 
 // Include extension?
