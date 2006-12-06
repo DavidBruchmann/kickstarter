@@ -23,15 +23,16 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+#vars that probably still need "wizard->" added: dontPrintImages printWOP
+
+
 /**
  * TYPO3 Extension Kickstarter
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Ingo Renner	<typo3@ingo-renner.com>
  */
- 
-#vars that probably still need "wizard->" added: dontPrintImages printWOP
-
 class tx_kickstarter_sectionbase {
 
 	/* instance of the main Kickstarter Wizard class (class.tx_kickstarter_wizard.php) */
