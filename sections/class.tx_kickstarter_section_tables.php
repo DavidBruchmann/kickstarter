@@ -184,7 +184,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 
 			$subContent = '<strong>Notice on fieldnames:<BR></strong>'.
 				'Don\'t use fieldnames from this list of reserved names/words: <BR>
-				<blockquote><em>' . implode(', ',explode(',',$this->wizard->reservedTypo3Fields . ',' . $this->wizard->mysql_reservedFields)).'</em></blockquote>';
+				<blockquote><em>' . implode(', ', $this->wizard->reservedWords).'</em></blockquote>';
 			$lines[] = '<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 

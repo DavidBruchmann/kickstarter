@@ -1,4 +1,13 @@
+2006-12-05 Ingo Renner <typo3@ingo-renner.com>
+
+	* thanks a lot to Peter Foerger for a lot of work contributed to these fixes
+
+	* FIX fixed bug 0004258: TS setup title allows spaces
+	* FIX fixed bug 0002176: Kickstarter should check for mysql reserved words.
+	* FIX fixed bug 0004601: Extending module Task Center fails
+
 2006-11-02 Ingo Renner <typo3@ingo-renner.com>
+
 	* FIX fixed a bug with generated BE module code, thanks to Manuel Montoya for the hint
 	* FIX fixed warnings concerning not set extension dependency presets
 	* FIX wrong author and author email was shown in the result overview
@@ -9,34 +18,42 @@
 	* RMV removed several debug() calls to clean up the code
 
 2006-08-12 Ingo Renner <typo3@ingo-renner.com>
+
 	* CHG moved the languages section to be right below the general information section
 	* ADD made the local extension directory the default for the write location
 
 2006-07-21 Ingo Renner <typo3@ingo-renner.com>
+
 	* FIX fixed bug #156: Not all BE languages available in languages setup, thanks to Karsten for the useful hint!
 
 2006-07-20 Ingo Renner <typo3@ingo-renner.com>
+
 	* FIX fixed bugs #1815, #2943, #3273, #3545: Umlauts and special characters where not written correctly in locallang xml files
 
 2006-07-17 Ingo Renner <typo3@ingo-renner.com>
+
 	* FIX fixed bug #3816: The files wizard_form.dat and wizard_form.html is not saved
 	* FIX fixed bug #3715: Enable versioning: ext_tables.sql incompletely?
 	* ADD addded missing eval method "md5" for TCA generation (bug #3792), thanks to Jan-Hendrik 
 	* FIX fixed bug #3743: created tca.php: add field "t3ver_label" if versioning enabled
 
 2006-07-02 Ingo Renner <typo3@ingo-renner.com>
+
 	* ADD new feature: kickstarter can now create TS files in the static folder of an extension
 	* FIX the previous mentioned feature also fixes bug #1158: The kickstarter doesn't create config files
 	* ADD feature request: doc/wizard_form.dat and doc/wizard_form.html are always overwritten now
 	* ADD feature request: 2247: Kickstarter should add @package/@subpackage PhpDoc tags
 
 2006-06-12 Ingo Renner <typo3@ingo-renner.com>
+
 	* FIX fixed bugs #455, #822, #977: Extension key was allowed to be longer than 30 chars and uppercase
 
 2006-06-01 Ingo Renner <typo3@ingo-renner.com>
+
 	* FIX fixed bug #3144: Kickstater don't WRITE anything and the icons are missing (typo3 4RC3) - many thanks to Michael Stucki for the patch!
 
 2006-05-05 Ingo Renner <typo3@ingo-renner.com>
+
 	* CHG changed require to require_once as requested in feature request #3395
 	* FIX fixed bug #3384: wrong Code in xxx_pi1_wizicon.php
 	* FIX fxed typo (bug #3377)
@@ -44,9 +61,11 @@
 	* CHG changed year in copyright notices for all files
 
 2006-03-06  Kasper Skaarhoej
+
 	* Kickstarter now produces llXML files (locallang-XML) instead of locallang*.php files.
 	
 2006-02-22  Kasper Skaarhoej
+
 	* Complies with new EM (function that writes extension to file system has changed in 4.0 EM)
 	* Fixed problem with path to images now that symlinks has been removed.
 

@@ -23,15 +23,17 @@
 *
 *	This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+$pathKickstarter = t3lib_extMgm::extPath('kickstarter');
+require_once($pathKickstarter.'class.tx_kickstarter_compilefiles.php');
+require_once($pathKickstarter.'class.tx_kickstarter_reservedwords.php');
+
 /**
  * TYPO3 Extension Kickstarter
  *
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Ingo Renner <typo3@ingo-renner.com>
  */
-
-require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_compilefiles.php');
-
 class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	var $varPrefix = 'kickstarter';		// redundant from 'extrep'
 	var $siteBackPath = '';
@@ -48,17 +50,16 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 	var $afterContent;
 
-	var $languages = array();
-	var $reservedTypo3Fields='uid,pid,endtime,starttime,sorting,fe_group,hidden,deleted,cruser_id,crdate,tstamp';
-	var $mysql_reservedFields='data,table,field,key,desc';
+	var $languages     = array();
+	var $reservedWords = array();
 
 		// Internal:
 	var $selectedLanguages = array();
-	var $usedNames=array();
-	var $fileArray=array();
-	var $ext_tables=array();
-	var $ext_localconf=array();
-	var $ext_locallang=array();
+	var $usedNames         = array();
+	var $fileArray         = array();
+	var $ext_tables        = array();
+	var $ext_localconf     = array();
+	var $ext_locallang     = array();
 
 	var $color = array('#C8D0B3','#FEE7B5','#EEEEEE');
 
@@ -70,7 +71,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	function tx_kickstarter_wizard() {
 		$this->modData = t3lib_div::_POST($this->varPrefix);
 				
-		//getting the available languages
+		// getting the available languages
 		$theLanguages = t3lib_div::trimExplode('|', TYPO3_languages);
 		$llFile = t3lib_extMgm::extPath('setup').'/mod/locallang.xml';
 		$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, 'default');
@@ -81,6 +82,10 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			}
 		}
 		asort($this->languages);
+		
+		// init reserved words
+		$resWords = t3lib_div::makeInstance('tx_kickstarter_reservedWords');
+		$this->reservedWords = $resWords->getReservedWords();
 	}
 
 	/**

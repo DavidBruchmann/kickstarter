@@ -29,6 +29,7 @@
  */
 
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
+require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 class tx_kickstarter_section_ts extends tx_kickstarter_sectionbase {
   var $sectionID = 'ts';
@@ -99,7 +100,8 @@ class tx_kickstarter_section_ts extends tx_kickstarter_sectionbase {
 	function render_extPart($k,$config,$extKey) {
 
 		$WOP = '[ts]['.$k.']';
-		$pathSuffix = 'static/'.$config['title'].'/';
+		$tsPath = t3lib_basicFileFunctions::cleanFileName($config['title']);		
+		$pathSuffix = 'static/'.$tsPath.'/';
 		
 		$this->addFileToFileArray(
 			$pathSuffix.'constants.txt', 

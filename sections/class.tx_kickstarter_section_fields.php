@@ -255,13 +255,14 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 	/**
 	 * Cleaning up fieldname from invalid characters (only alphanum is allowed)
+	 * and chechking for reserved words
 	 *
 	 * @param	string		$str: orginal fieldname
 	 * @return	cleaned up fieldname
 	 */
 	function cleanUpFieldName($str)	{
 		$fieldName = ereg_replace('[^[:alnum:]_]','',strtolower($str));
-		if (!$fieldName || t3lib_div::inList($this->wizard->reservedTypo3Fields.','.$this->wizard->mysql_reservedFields,$fieldName) || in_array($fieldName,$this->usedNames))	{
+		if (!$fieldName || in_array($fieldName, $this->wizard->reservedWords) || in_array($fieldName, $this->usedNames))	{
 			$fieldName.=($fieldName?'_':'').t3lib_div::shortmd5(microtime());
 		}
 		$this->usedNames[]=$fieldName;
