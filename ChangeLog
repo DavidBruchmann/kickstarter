@@ -1,3 +1,7 @@
+2006-12-19 Peter Foerger <p.foerger@vke-design.de>
+
+	* FIX fixed bug 0004563: kickstarter uses .php instead of .xml lang files
+
 2006-12-05 Ingo Renner <typo3@ingo-renner.com>
 
 	* thanks a lot to Peter Foerger for a lot of work contributed to these fixes
