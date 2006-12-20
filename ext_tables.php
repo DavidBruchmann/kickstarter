@@ -6,13 +6,13 @@ if (TYPO3_MODE=="BE")	{
 		"tools_em",		
 		"tx_kickstarter_modfunc1",
 		t3lib_extMgm::extPath($_EXTKEY)."modfunc1/class.tx_kickstarter_modfunc1.php",
-		"LLL:EXT:kickstarter/locallang_db.php:moduleFunction.tx_kickstarter_modfunc1"
+		"LLL:EXT:kickstarter/locallang_db.xml:moduleFunction.tx_kickstarter_modfunc1"
 	);
 	t3lib_extMgm::insertModuleFunction(
 		"tools_em",		
 		"tx_kickstarter_modfunc2",
 		t3lib_extMgm::extPath($_EXTKEY)."modfunc1/class.tx_kickstarter_modfunc1.php",
-		"LLL:EXT:kickstarter/locallang_db.php:moduleFunction.tx_kickstarter_modfunc2",
+		"LLL:EXT:kickstarter/locallang_db.xml:moduleFunction.tx_kickstarter_modfunc2",
 		'singleDetails'
 	);
 }
