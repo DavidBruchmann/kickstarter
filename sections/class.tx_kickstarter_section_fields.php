@@ -1500,7 +1500,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					"type" => "passthrough",
 				'));
 			break;
-			case 'inline':
+			case 'inline': 
 			      $DBfields=array_merge($DBfields, $this->getInlineDBfields($fConf));
 			      $configL=array_merge($configL, $this->getInlineTCAconfig($fConf));
 			break;
@@ -1559,62 +1559,109 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
     		$optValues = $this->addOtherExtensionTables($optValues);
     		$fDetails.='<br /><strong>Create relation to table:</strong><br />'.$this->renderSelectBox($prefix.'[conf_inline_table]',$fConf['conf_inline_table'],$optValues).'<br />';
     		if($fConf['conf_inline_table']=='blank') {
-    		$fDetails.='<strong>Required!</strong> There is no type "inline" without a foreign table.<br />';
+    		$fDetails.='<strong><span style="color:red">Required!</span></strong> There is no type "inline" without a foreign table.<br />';
             }
     		if ($fConf['conf_inline_table']=='_CUSTOM')	$fDetails.='Custom table name: '.$this->renderStringBox($prefix.'[conf_custom_table_name]',$fConf['conf_custom_table_name'],200).'<br />';
                 // FIXME: Custom table must be configured in $TCA
             if($fConf['conf_inline_table'] !='blank' && $fConf['conf_inline_table'] !='_CUSTOM' || $fConf['conf_custom_table_name'] !=''){
-            $ERmodel = array(
-                '1:n'=>'1:n relation',
-                'm:n'=>'m:n relation',
-                'm:m'=>'MM relation',
-                );
-                $fDetails.= '<br /><strong>Relation model:</strong><br />'.$this->renderSelectBox($prefix.'[conf_inline_model]',$fConf['conf_inline_model'],$ERmodel).'<br />';
-
-                if($fConf['conf_inline_model'] == 'm:n'){
+            
+                $fDetails.='<br>The following settings are optional.<br /> For a detailed description have a look at the TYPO3 Core API for type "inline".<br />';
+                $fDetails.='<br />'.$this->renderCheckBox($prefix.'[conf_ff]',$fConf['conf_ff']).'<strong> Foreign Field in Foreign Table</strong><br />';    
+                if ($fConf['conf_ff']) {
+              
                 $fDetails.='<br /><strong>Foreign field:</strong><br />'.$this->renderStringBox($prefix.'[conf_foreign_field]',$fConf['conf_foreign_field'],200);
-                $fDetails.='<br><strong>Required!</strong> Field to store the uid of the parent record<br />';
+                $fDetails.='<br>Field to store the uid of the parent record.<br />';
                 $fDetails.='<br /><strong>Foreign table field:</strong><br />'.$this->renderStringBox($prefix.'[conf_foreign_table_field]',$fConf['conf_foreign_table_field'],200);
                 $fDetails.='<br />If set together with <i>"foreign_field"</i> the child record knows about his parent.<br />';
                 $fDetails.='<br /><strong>Foreign sortby:</strong><br />'.$this->renderStringBox($prefix.'[conf_foreign_field_sortby]',$fConf['conf_foreign_field_sortby'],200);
-                    //Foreign label does not work for me yet
-                //$fDetails.='<br />Foreign field label:<br />'.$this->renderStringBox($prefix.'[conf_foreign_field_label]',$fConf['conf_foreign_field_label'],200).'<br />';
-                $fDetails.='<br /><strong>Foreign selector:<br />'.$this->renderStringBox($prefix.'[conf_foreign_selector]',$fConf['conf_foreign_selector'],200);                $fDetails.='<br />Foreign unique:<br />'.$this->renderStringBox($prefix.'[conf_foreign_unique]',$fConf['conf_foreign_unique'],200);
+                $fDetails.='<br />Field which stores the sorting information.<br />';  
+                $fDetails.='<br /><strong>Foreign field label:</strong><br />'.$this->renderStringBox($prefix.'[conf_foreign_field_label]',$fConf['conf_foreign_field_label'],200);
+                $fDetails.='<br />Overrides the label in TCA for the inline view.<br />';
+
+                $fDetails.='<br /><strong>Foreign selector:</strong><br />'.$this->renderStringBox($prefix.'[conf_foreign_selector]',$fConf['conf_foreign_selector'],200);                
+                $fDetails.='<br />Points to a field of the foreign_table that is responsible for providing a selectbox. Type is usually set to <i>"select"</i> and there is also a <i>"foreign_table"</i> defined.<br />';  
                 $fDetails.='<br /><strong>Foreign unique:</strong><br />'.$this->renderStringBox($prefix.'[conf_foreign_unique]',$fConf['conf_foreign_unique'],200);
+                $fDetails.='<br />Field which must be unique for all children of a parent record.<br />';
+                
+                $fDetails.='<br /><strong>Intermediate table:</strong><br />'.$this->renderStringBox($prefix.'[conf_foreign_table_mm]',$fConf['conf_foreign_table_mm'],200);
+                $fDetails.='<br />Intermediate table, like it\'s also done for MM-Relations.<br />';
+                 
                     // option for using symetric intermediate table
                     // provide a checkbox
-                $fDetails.='<br />'.$this->renderCheckBox($prefix.'[conf_symetric]',$fConf['conf_symetric']).'Symetric relations<br />';    
+                $fDetails.='<br />'.$this->renderCheckBox($prefix.'[conf_symetric]',$fConf['conf_symetric']).'<strong>Symetric relations</strong><br />';    
                 if ($fConf['conf_symetric']) {
                 $fDetails.='<br /><strong>Symmetric field:</strong><br />'.$this->renderStringBox($prefix.'[conf_symmetric_filed]',$fConf['conf_symmetric_field'],200);
+                $fDetails.='<br />This works like <i>"foreign_field"</i>, but in case of using symmetric relations.<br />';
                 $fDetails.='<br /><strong>Symmetric label:</strong><br />'.$this->renderStringBox($prefix.'[conf_symmetric_label]',$fConf['conf_symmetric_label'],200);
+                $fDetails.='<br />Overrrides the label set in TCA for the inline view and only if looking to a symmetric relation from the <i>"other"</i>side.<br />'; 
                 $fDetails.='<br /><strong>Symmetric sortby:</strong><br />'.$this->renderStringBox($prefix.'[conf_symmetric_sortby]',$fConf['conf_symmetric_sortby'],200);
+                $fDetails.='<br />This works like <i>"foreign_sortby"</i>, but in case of using symmetric relations.<br />'; 
                 }
                 }
-                if($fConf['conf_inline_model'] == 'm:m'){
-                   $fDetails.='<br /><strong>FIXME. Not quite sure how to handle this</strong>';  
                 }
-                }
-            
-
 	      return $fDetails;
 	}
-	  ##".$fConf['conf_foreign_field_sortby'] ? $fConf['conf_foreign_field_sortby']. tinytext NOT NULL," : ''"
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$fConf: ...
+	 * @return	[type]		...
+	 */
 	function getInlineDBfields ($fConf){
-	    if($fConf['conf_inline_model'] == '1:n') $DBfields[] = $fConf['fieldname'].' blob NOT NULL,';
-	    if($fConf['conf_inline_method'] == 'm:n') {
-	        $DBfields[] = $fConf['fieldname'].' tinytext NOT NULL,';
-	        $sortby = $fConf['conf_foreign_field_sortby'] ? $fConf['conf_foreign_field_sortby'].' tinytext NOT NULL,':'';
-	         $updateTable = $this->sPS("
-					#
-					# Update structure for table '".$fConf['conf_inline_table']."'
-					# ".$this->WOPcomment('WOP:'.$WOP.'[conf_inline_table')."
-					CREATE TABLE ".$fConf['conf_inline_table']." (
-					".$fConf['conf_foreign_field']." tinytext NOT NULL,
-					".$sortby."
-					);
-				");
-				$this->wizard->ext_tables_sql[]=chr(10).$updateTable.chr(10);
-        }
+	    debug($fConf['conf_symmetric']);
+	        if(!$fConf['conf_foreign_table_mm'] || $fConf['conf_symmetric'] == 1){
+	        $DBfields[] = $fConf['fieldname'].' blob NOT NULL,';
+            }
+            if($fConf['conf_foreign_field']){  
+            $createSQL = $this->sPS("
+        				 #
+        				 # Update structure of foreign table '".$fConf['conf_inline_table']."'
+        				 # ".$this->WOPcomment('WOP:'.$WOP.'[conf_inline_table]')."
+        				 CREATE TABLE ".$fConf['conf_inline_table']." (
+        			     ");
+                //check for new fields and put them into the array
+	        $createSQL .= ltrim($this->sPS($fConf['conf_foreign_field'].' tinytext NOT NULL,')); 
+	        
+	        if($fConf['conf_foreign_table_field']){ 
+	          $createSQL .= ltrim($this->sPS($fConf['conf_foreign_table_field'].' tinytext NOT NULL,'));
+	        }
+	        if($fConf['conf_foreign_field_sortby']){ 
+	          $createSQL .= ltrim($this->sPS($fConf['conf_foreign_field_sortby'].' int(10) NOT NULL,'));
+	        }
+	        if($fConf['conf_foreign_selector']){ 
+	          $createSQL .= ltrim($this->sPS($fConf['conf_foreign_selector'].' tinytext NOT NULL,'));
+	        }
+	        if($fConf['conf_foreign_unique']){ 
+	          $createSQL .= ltrim($this->sPS($fConf['conf_foreign_unique'].' tinytext NOT NULL,'));
+	        }
+	           
+	        $createSQL .= ltrim($this->sPS(');'));
+        
+        	$this->wizard->ext_tables_sql[]=chr(10).$createSQL.chr(10);  
+
+	        if($fConf['conf_foreign_table_mm']){ 
+	          $intermediateTable = $this->sPS("
+    					#
+    					# Table structure for intermediate table '".$fConf['conf_inline_table']."_".$fConf['conf_foreign_table_mm']."_mm'
+    					# ".$this->WOPcomment('WOP:'.$WOP.'[conf_foreign_table_mm]')."
+    					CREATE TABLE ".$fConf['conf_inline_table']."_".$fConf['conf_foreign_table_mm']."_mm (
+    					uid_local int(11) NOT NULL,
+    					uid_foreign int(11) NOT NULL,
+    					sorting int(10) NOT NULL,
+    					);
+    				");
+    				$this->wizard->ext_tables_sql[]=chr(10).$intermediateTable.chr(10);
+    		   $DBfields[] = $fConf['fieldname'].' int(10) NOT NULL,';
+	        }
+	        if ($fConf['conf_symetric']){
+	        if($fConf['conf_symmetric_field']){ 
+	         $DBfields[] = $fConf['conf_symmetric_field'].' tinytext NOT NULL,';
+	        }
+	         if($fConf['conf_symmetric_sortby']){ 
+    	      $DBfields[] = $fConf['conf_symmetric_sortby'].' tinytext NOT NULL,';
+    	     }
+    	    }
+	    }
 	    return $DBfields;
 
 	}
