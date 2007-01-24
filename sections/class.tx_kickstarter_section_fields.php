@@ -313,7 +313,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		$typeCfg.=$this->renderCheckBox($prefix.'[excludeField]',isset($fConf['excludeField'])?$fConf['excludeField']:1).' Is Exclude-field '.$this->whatIsThis('If a field is marked "Exclude-field", users can edit it ONLY if the field is specifically listed in one of the backend user groups of the user.\nIn other words, if a field is marked "Exclude-field" you can control which users can edit it and which cannot.').'<br />';
 		$fDetails='';
 		switch((string)$fConf['type'])	{
-		    case 'inline':
+		    case 'inline':  
 		    $fDetails.=$this->renderInlineFields($prefix,$fConf);
 			break;
 			case 'input+':
@@ -650,7 +650,6 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		$columns=array();
 		$ctrl=array();
 		$enFields=array();
-
 		if (is_array($config['fields']))	{
 			reset($config['fields']);
 			while(list($i,$fConf)=each($config['fields']))	{
@@ -1501,8 +1500,9 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				'));
 			break;
 			case 'inline': 
-			      $DBfields=array_merge($DBfields, $this->getInlineDBfields($fConf));
-			      $configL=array_merge($configL, $this->getInlineTCAconfig($fConf));
+				#$DBfields=$this->getInlineDBfields($fConf);
+				if ($DBfields) $DBfields=array_merge($DBfields, $this->getInlineDBfields($table, $fConf));
+				$configL=$this->getInlineTCAconfig($table, $fConf);
 			break;
 			default:
 				debug("Unknown type: ".(string)$fConf["type"]);
@@ -1541,164 +1541,266 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	}
 
 	/**
-	 * [Describe function...]
+	 * Renders input fields of type 'inline'
+	 * Refers to the new IRRE (Inline Relational Record Editing) concept coming up on TYPO3 4.1
 	 *
-	 * @param	[type]		$prefix: ...
-	 * @param	[type]		$fConf: ...
-	 * @return	[type]		...
+	 * @param	string		$prefix: The prefix for the fieldname
+ 	 * @param	array		$fConf: field config
+	 * @return	array		
 	 */
 	function renderInlineFields ($prefix,$fConf){
 	     $optValues = array(
     		    'blank' =>'',
-    			'pages' => 'Pages table, (pages)',
-    			'fe_users' => 'Frontend Users, (fe_users)',
-    			'fe_groups' => 'Frontend Usergroups, (fe_groups)',
-    			'tt_content' => 'Content elements, (tt_content)',
-    			'_CUSTOM' => 'Custom table (enter name below)',
     		);
     		$optValues = $this->addOtherExtensionTables($optValues);
-    		$fDetails.='<br /><strong>Create relation to table:</strong><br />'.$this->renderSelectBox($prefix.'[conf_inline_table]',$fConf['conf_inline_table'],$optValues).'<br />';
-    		if($fConf['conf_inline_table']=='blank') {
+    		$fDetails.='<br /><strong>Create relation to table:</strong><br />'.$this->renderSelectBox($prefix.'[foreign_table]',$fConf['foreign_table'],$optValues).'<br />';
+    		if($fConf['foreign_table']=='blank') {
     		$fDetails.='<strong><span style="color:red">Required!</span></strong> There is no type "inline" without a foreign table.<br />';
             }
-    		if ($fConf['conf_inline_table']=='_CUSTOM')	$fDetails.='Custom table name: '.$this->renderStringBox($prefix.'[conf_custom_table_name]',$fConf['conf_custom_table_name'],200).'<br />';
-                // FIXME: Custom table must be configured in $TCA
-            if($fConf['conf_inline_table'] !='blank' && $fConf['conf_inline_table'] !='_CUSTOM' || $fConf['conf_custom_table_name'] !=''){
+    		if ($fConf['foreign_table']=='_CUSTOM')	$fDetails.='Custom table name: '.$this->renderStringBox($prefix.'[conf_custom_table_name]',$fConf['conf_custom_table_name'],200).'<br />';
+             
+            if($fConf['foreign_table'] !='blank' && $fConf['foreign_table'] !='_CUSTOM' || $fConf['conf_custom_table_name'] !=''){
             
-                $fDetails.='<br>The following settings are optional.<br /> For a detailed description have a look at the TYPO3 Core API for type "inline".<br />';
-                $fDetails.='<br />'.$this->renderCheckBox($prefix.'[conf_ff]',$fConf['conf_ff']).'<strong> Foreign Field in Foreign Table</strong><br />';    
+                $fDetails.='<br>The following settings are optional.<br /> For a detailed description have a look at the TYPO3 Core API of type "inline".<br />';
+                $fDetails.='<br />'.$this->renderCheckBox($prefix.'[conf_ff]',$fConf['conf_ff']).'<strong>Optional settings</strong><br />';    
                 if ($fConf['conf_ff']) {
               
-                $fDetails.='<br /><strong>Foreign field:</strong><br />'.$this->renderStringBox($prefix.'[conf_foreign_field]',$fConf['conf_foreign_field'],200);
+                $fDetails.='<br /><strong>Foreign field:</strong><br />'.$this->renderStringBox($prefix.'[foreign_field]',$fConf['foreign_field'],200);
                 $fDetails.='<br>Field to store the uid of the parent record.<br />';
-                $fDetails.='<br /><strong>Foreign table field:</strong><br />'.$this->renderStringBox($prefix.'[conf_foreign_table_field]',$fConf['conf_foreign_table_field'],200);
+                $fDetails.='*Field will be created by kickstarter.*<br />';
+                $fDetails.='<br /><strong>Foreign table field:</strong><br />'.$this->renderStringBox($prefix.'[foreign_table_field]',$fConf['foreign_table_field'],200);
                 $fDetails.='<br />If set together with <i>"foreign_field"</i> the child record knows about his parent.<br />';
-                $fDetails.='<br /><strong>Foreign sortby:</strong><br />'.$this->renderStringBox($prefix.'[conf_foreign_field_sortby]',$fConf['conf_foreign_field_sortby'],200);
-                $fDetails.='<br />Field which stores the sorting information.<br />';  
-                $fDetails.='<br /><strong>Foreign field label:</strong><br />'.$this->renderStringBox($prefix.'[conf_foreign_field_label]',$fConf['conf_foreign_field_label'],200);
+                $fDetails.='*Field will be created by kickstarter.*<br />';
+                $fDetails.='<br /><strong>Foreign sortby:</strong><br />'.$this->renderStringBox($prefix.'[foreign_sortby]',$fConf['foreign_sortby'],200);
+                $fDetails.='<br />Field which stores the sorting information.<br />';
+                $fDetails.='*Field will be created by kickstarter.*<br />';  
+                $fDetails.='<br /><strong>Foreign field label:</strong><br />'.$this->renderStringBox($prefix.'[foreign_label]',$fConf['foreign_label'],200);
                 $fDetails.='<br />Overrides the label in TCA for the inline view.<br />';
 
-                $fDetails.='<br /><strong>Foreign selector:</strong><br />'.$this->renderStringBox($prefix.'[conf_foreign_selector]',$fConf['conf_foreign_selector'],200);                
+                $fDetails.='<br /><strong>Foreign selector:</strong><br />'.$this->renderStringBox($prefix.'[foreign_selector]',$fConf['foreign_selector'],200);                
                 $fDetails.='<br />Points to a field of the foreign_table that is responsible for providing a selectbox. Type is usually set to <i>"select"</i> and there is also a <i>"foreign_table"</i> defined.<br />';  
-                $fDetails.='<br /><strong>Foreign unique:</strong><br />'.$this->renderStringBox($prefix.'[conf_foreign_unique]',$fConf['conf_foreign_unique'],200);
+                $fDetails.='*Field will be created by kickstarter.*<br />';
+                $fDetails.='<br /><strong>Foreign unique:</strong><br />'.$this->renderStringBox($prefix.'[foreign_unique]',$fConf['foreign_unique'],200);
                 $fDetails.='<br />Field which must be unique for all children of a parent record.<br />';
+                $fDetails.='*Field will be created by kickstarter.*<br />';
                 
-                $fDetails.='<br /><strong>Intermediate table:</strong><br />'.$this->renderStringBox($prefix.'[conf_foreign_table_mm]',$fConf['conf_foreign_table_mm'],200);
+                $fDetails.='<br /><strong>Intermediate table:</strong><br />'.$this->renderStringBox($prefix.'[MM]',$fConf['MM'],200);
                 $fDetails.='<br />Intermediate table, like it\'s also done for MM-Relations.<br />';
+                $fDetails.='Table name will look like <strong>\'parent_child_mm\'</strong>.<br />Three fields \'uid_local,uid_foreign,sorting\' are created to hold the values.<br />';
+
                  
                     // option for using symetric intermediate table
                     // provide a checkbox
-                $fDetails.='<br />'.$this->renderCheckBox($prefix.'[conf_symetric]',$fConf['conf_symetric']).'<strong>Symetric relations</strong><br />';    
-                if ($fConf['conf_symetric']) {
+                $fDetails.='<br />'.$this->renderCheckBox($prefix.'[conf_symmetric]',$fConf['conf_symmetric']).'<strong>Symmetric relations</strong><br />';    
+                if ($fConf['conf_symmetric']) {
                 $fDetails.='<br /><strong>Symmetric field:</strong><br />'.$this->renderStringBox($prefix.'[conf_symmetric_filed]',$fConf['conf_symmetric_field'],200);
                 $fDetails.='<br />This works like <i>"foreign_field"</i>, but in case of using symmetric relations.<br />';
+                $fDetails.='*Field will be created by kickstarter.*<br />';
                 $fDetails.='<br /><strong>Symmetric label:</strong><br />'.$this->renderStringBox($prefix.'[conf_symmetric_label]',$fConf['conf_symmetric_label'],200);
                 $fDetails.='<br />Overrrides the label set in TCA for the inline view and only if looking to a symmetric relation from the <i>"other"</i>side.<br />'; 
                 $fDetails.='<br /><strong>Symmetric sortby:</strong><br />'.$this->renderStringBox($prefix.'[conf_symmetric_sortby]',$fConf['conf_symmetric_sortby'],200);
-                $fDetails.='<br />This works like <i>"foreign_sortby"</i>, but in case of using symmetric relations.<br />'; 
+                $fDetails.='<br />This works like <i>"foreign_sortby"</i>, but in case of using symmetric relations.<br />';
+                $fDetails.='*Field will be created by kickstarter.*<br />'; 
                 }
                 }
                 }
 	      return $fDetails;
 	}
 	/**
-	 * [Describe function...]
+	 * Create SQL definitions according to the appropriate input values
 	 *
-	 * @param	[type]		$fConf: ...
-	 * @return	[type]		...
+	 * @param	string		current table name 
+	 * @param	array		$fConf: array holding field configuration values    
+	 * @return	array		DB fields definition
 	 */
-	function getInlineDBfields ($fConf){
-	    debug($fConf['conf_symmetric']);
-	        if(!$fConf['conf_foreign_table_mm'] || $fConf['conf_symmetric'] == 1){
+	function getInlineDBfields ($table, $fConf){ 
+				// field type set to 'blob' to fit csv values
+	        if($fConf['conf_ff'] == 0){
 	        $DBfields[] = $fConf['fieldname'].' blob NOT NULL,';
             }
-            if($fConf['conf_foreign_field']){  
-            $createSQL = $this->sPS("
-        				 #
-        				 # Update structure of foreign table '".$fConf['conf_inline_table']."'
-        				 # ".$this->WOPcomment('WOP:'.$WOP.'[conf_inline_table]')."
-        				 CREATE TABLE ".$fConf['conf_inline_table']." (
-        			     ");
-                //check for new fields and put them into the array
-	        $createSQL .= ltrim($this->sPS($fConf['conf_foreign_field'].' tinytext NOT NULL,')); 
+            elseif ($fConf['MM']){
+                $DBfields[] = $fConf['fieldname'].' int(10) DEFAULT \'0\' NOT NULL,';
+            }
+            else{
+			$DBfields[] = $fConf['fieldname'].' tinytext NOT NULL,';
+			}
+			
+			    // FIXME: put the following case statments into separate function
+            if($fConf['foreign_field']){
+	        foreach ($this->wizard->wizArray['tables'] as $k => $v){
+	            $count='';
+	            if (preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['foreign_table'])){
+                       foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field){
+                           if (preg_match('/'.$fConf['foreign_field'].'/', $field['fieldname'], $match)){
+                             print_r('Error: Field name already exists!');  
+                           }
+                           $count++; 
+                       }
+                       if(!count($match)){
+                          $this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_field'],'type'=>'passthrough'); 
+                       }
+                   }
+	       		}
+            }
+             
+	        if($fConf['foreign_table_field']){ 
+	            foreach ($this->wizard->wizArray['tables'] as $k => $v){
+	                $count='';
+    	            if (preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['foreign_table'])){
+                           foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field){
+                               if (preg_match('/'.$fConf['foreign_table_field'].'/', $field['fieldname'], $match)){
+                                 print_r('Error: Field name already exists!');  
+                               }
+                               $count++; 
+                           }
+                           if(!count($match)){
+                              $this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_table_field'],'type'=>'passthrough'); 
+                           }
+    	            }      
+	            }
+	        }
 	        
-	        if($fConf['conf_foreign_table_field']){ 
-	          $createSQL .= ltrim($this->sPS($fConf['conf_foreign_table_field'].' tinytext NOT NULL,'));
+	        if($fConf['foreign_sortby']){ 
+	            foreach ($this->wizard->wizArray['tables'] as $k => $v){
+	                $count='';
+    	            if (preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['foreign_table'])){
+                           foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field){
+                               if (preg_match('/'.$fConf['foreign_sortby'].'/', $field['fieldname'], $match)){
+                                 print_r('Error: Field name already exists!');  
+                               }
+                               $count++; 
+                           }
+                           if(!count($match)){
+                              $this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_sortby'],'type'=>'passthrough'); 
+                           }
+    	            }      
+	            }
 	        }
-	        if($fConf['conf_foreign_field_sortby']){ 
-	          $createSQL .= ltrim($this->sPS($fConf['conf_foreign_field_sortby'].' int(10) NOT NULL,'));
+	        
+	        if($fConf['foreign_selector']){ 
+	            foreach ($this->wizard->wizArray['tables'] as $k => $v){
+	                $count='';
+    	            if (preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['foreign_selector'])){
+                           foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field){
+                               if (preg_match('/'.$fConf['foreign_selector'].'/', $field['fieldname'], $match)){
+                                 print_r('Error: Field name already exists!');  
+                               }
+                               $count++; 
+                           }
+                           if(!count($match)){
+                              $this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_selector'],'type'=>'select'); 
+                           }
+    	            }      
+	            }
 	        }
-	        if($fConf['conf_foreign_selector']){ 
-	          $createSQL .= ltrim($this->sPS($fConf['conf_foreign_selector'].' tinytext NOT NULL,'));
-	        }
-	        if($fConf['conf_foreign_unique']){ 
-	          $createSQL .= ltrim($this->sPS($fConf['conf_foreign_unique'].' tinytext NOT NULL,'));
-	        }
-	           
-	        $createSQL .= ltrim($this->sPS(');'));
-        
-        	$this->wizard->ext_tables_sql[]=chr(10).$createSQL.chr(10);  
-
-	        if($fConf['conf_foreign_table_mm']){ 
+	        
+	        if($fConf['foreign_unique']){ 
+	            foreach ($this->wizard->wizArray['tables'] as $k => $v){
+	                $count='';
+    	            if (preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['foreign_unique'])){
+                           foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field){
+                               if (preg_match('/'.$fConf['foreign_unique'].'/', $field['fieldname'], $match)){
+                                 print_r('Error: Field name already exists!');  
+                               }
+                               $count++; 
+                           }
+                           if(!count($match)){
+                              $this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_unique'],'type'=>'select'); 
+                           }
+    	            }      
+	            }
+	        } 
+              
+	        if($fConf['MM']){ 
 	          $intermediateTable = $this->sPS("
     					#
-    					# Table structure for intermediate table '".$fConf['conf_inline_table']."_".$fConf['conf_foreign_table_mm']."_mm'
-    					# ".$this->WOPcomment('WOP:'.$WOP.'[conf_foreign_table_mm]')."
-    					CREATE TABLE ".$fConf['conf_inline_table']."_".$fConf['conf_foreign_table_mm']."_mm (
+    					# Table structure for intermediate table '".$table."_".$fConf['MM']."_mm'
+    					#
+    					CREATE TABLE ".$table."_".$fConf['MM']."_mm (
     					uid_local int(11) NOT NULL,
     					uid_foreign int(11) NOT NULL,
     					sorting int(10) NOT NULL,
     					);
-    				");
+    				"); 
     				$this->wizard->ext_tables_sql[]=chr(10).$intermediateTable.chr(10);
-    		   $DBfields[] = $fConf['fieldname'].' int(10) NOT NULL,';
 	        }
-	        if ($fConf['conf_symetric']){
-	        if($fConf['conf_symmetric_field']){ 
-	         $DBfields[] = $fConf['conf_symmetric_field'].' tinytext NOT NULL,';
-	        }
-	         if($fConf['conf_symmetric_sortby']){ 
-    	      $DBfields[] = $fConf['conf_symmetric_sortby'].' tinytext NOT NULL,';
-    	     }
+	        
+	        if ($fConf['conf_symmetric']){
+	            if($fConf['conf_symmetric_field']){ 
+    	            foreach ($this->wizard->wizArray['tables'] as $k => $v){
+    	                $count='';
+        	            if (preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['conf_symmetric_field'])){
+                               foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field){
+                                   if (preg_match('/'.$fConf['conf_symmetric_field'].'/', $field['fieldname'], $match)){
+                                     print_r('Error: Field name already exists!');  
+                                   }
+                                   $count++; 
+                               }
+                               if(!count($match)){
+                                  $this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['conf_symmetric_field'],'type'=>'select'); 
+                               }
+        	            }      
+    	            }
+    	        }
+    	        
+	             if($fConf['conf_symmetric_sortby']){ 
+        	         foreach ($this->wizard->wizArray['tables'] as $k => $v){
+     	                $count='';
+         	            if (preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['conf_symmetric_sortby'])){
+                                foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field){
+                                    if (preg_match('/'.$fConf['conf_symmetric_sortby'].'/', $field['fieldname'], $match)){
+                                      print_r('Error: Field name already exists!');  
+                                    }
+                                    $count++; 
+                                }
+                                if(!count($match)){
+                                   $this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['conf_symmetric_sortby'],'type'=>'passthrough'); 
+                                }
+         	            }      
+     	            }
+        	     }  
     	    }
-	    }
 	    return $DBfields;
-
 	}
 
 	/**
-	 * [Describe function...]
+	 * Field configuration for setting up the correct TCA description.
 	 *
-	 * @param	[type]		$fConf: ...
-	 * @return	[type]		...
+	 * @param	string  	current table name
+	 * @param	array		$fConf: array holding field configuration values
+	 * @return	array		keys/values that become the table TCA definition
 	 */
-	function getInlineTCAconfig ($fConf){
-           $configL[]='\'type\' => \'inline\',   '.$this->WOPcomment('WOP:'.$WOP.'[conf_inline_type]');
-           $configL[]='\'foreign_table\' => \''.$fConf['conf_inline_table'].'\',';
-           if($fConf['conf_inline_method'] == 'ff') {
-               $configL[]='\'foreign_field\' => \''.$fConf['conf_foreign_field'].'\',';
-               if($fConf['conf_foreign_field_sortby']){
-                $configL[]='\'foreign_sortby\' => \''.$fConf['conf_foreign_field_sortby'].'\',';
-                }
-                if($fConf['conf_foreign_field_label']){
-                    $configL[]='\'foreign_label\' => \''.$fConf['conf_foreign_field_label'].'\',';
-                }
-           }
-                // maybe configurable later on
-            $configL[]='\'minitems\' => \'0\',';
-            $configL[]='\'maxitems\' => \'10\',';
-            $configL[]='\'appearance\' => Array(
-                \'collapseAll\' => \'1\',
-                \'expandSingle\' => \'1\',
-                \'useSortable\' => \'1\',
-                \'newRecordLinkAddTitle\' => \'1\',
-                \'newRecordLinkPosition\' => \'top\',
-                \'useCombination\' => \'0\',
-                )';
-
+	function getInlineTCAconfig ($table,$fConf){
+           $configL[]='\'type\' => \'inline\',';
+				foreach ($fConf as $k => $v){
+					if ($v && $v !=1 && ereg('^foreign',$k)) {
+					$configL[]='\''.$k.'\' => \''.$fConf[''.$k.''].'\','; 	
+					}
+					/*
+					if (ereg('^MM',$k)) {
+					 $configL[]='\''.$k.'\' => \''.$table.'_'.$fConf[''.$k.''].'_mm\',';  
+					} 
+					*/
+					if ($k == 'conf_symmetric_label' && $fConf[''.$k.'']){
+					    $configL[]='\'symmetric_label\' => \''.$fConf[''.$k.''].'\',';
+					}
+				}
+ 		
+                    // maybe configurable later on. Depends on the options supplied by IRRE
+                $configL[]='\'minitems\' => \'0\',';
+                $configL[]='\'maxitems\' => \'10\',';
+                                                         
+                $configL[]='\'appearance\' => Array(
+                            \'collapseAll\' => \'1\',
+                            \'expandSingle\' => \'1\',
+                            \'useSortable\' => \'1\',
+                            \'newRecordLinkAddTitle\' => \'1\',
+                            \'newRecordLinkPosition\' => \'top\',
+                            \'useCombination\' => \'0\',
+                            )';            
+               
           return $configL;
        }
-
 
 }
 
