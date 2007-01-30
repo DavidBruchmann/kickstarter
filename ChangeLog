@@ -1,3 +1,7 @@
+2007-01-30 Ingo Renner <typo3@ingo-renner.com>
+
+	* path for TS files is now lowercased
+	
 2006-12-19 Peter Foerger <p.foerger@vke-design.de>
 
 	* FIX fixed bug 0004563: kickstarter uses .php instead of .xml lang files
