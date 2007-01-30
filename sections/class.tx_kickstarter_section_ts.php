@@ -100,7 +100,7 @@ class tx_kickstarter_section_ts extends tx_kickstarter_sectionbase {
 	function render_extPart($k,$config,$extKey) {
 
 		$WOP = '[ts]['.$k.']';
-		$tsPath = t3lib_basicFileFunctions::cleanFileName($config['title']);		
+		$tsPath = strtolower(t3lib_basicFileFunctions::cleanFileName($config['title']));		
 		$pathSuffix = 'static/'.$tsPath.'/';
 		
 		$this->addFileToFileArray(
