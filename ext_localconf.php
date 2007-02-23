@@ -13,7 +13,7 @@ $TYPO3_CONF_VARS['EXTCONF']['kickstarter']['sections']['languages'] = array(
 	'classname'   => 'tx_kickstarter_section_languages',
 	'filepath'    => 'EXT:kickstarter/sections/class.tx_kickstarter_section_languages.php',
 	'title'       => 'Setup languages',
-	'description' => 'Start here by entering the number of system languages you want to use in your extension.',
+	'description' => 'Select the system languages you want to use in your extension.',
 );
 
 //tables

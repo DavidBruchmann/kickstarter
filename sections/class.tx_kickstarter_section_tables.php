@@ -609,20 +609,20 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		$showRecordFieldList = $columns;
 		unset($showRecordFieldList['t3ver_label']);
 		$tca_file.=$this->wrapBody('
-			$TCA["'.$tableName.'"] = array (
-				"ctrl" => $TCA["'.$tableName.'"]["ctrl"],
-				"interface" => array (
-					"showRecordFieldList" => "'.implode(',',array_keys($showRecordFieldList)).'"
+			$TCA[\''.$tableName.'\'] = array (
+				\'ctrl\' => $TCA[\''.$tableName.'\'][\'ctrl\'],
+				\'interface\' => array (
+					\'showRecordFieldList\' => \''.implode(',',array_keys($showRecordFieldList)).'\'
 				),
-				"feInterface" => $TCA["'.$tableName.'"]["feInterface"],
-				"columns" => array (
+				\'feInterface\' => $TCA[\''.$tableName.'\'][\'feInterface\'],
+				\'columns\' => array (
 			', trim(implode(chr(10),$columns)),'
 				),
-				"types" => array (
-					"0" => array("showitem" => "'.$typeList.'")
+				\'types\' => array (
+					\'0\' => array(\'showitem\' => \''.$typeList.'\')
 				),
-				"palettes" => array (
-					"1" => array("showitem" => "'.$palList.'")
+				\'palettes\' => array (
+					\'1\' => array(\'showitem\' => \''.$palList.'\')
 				)
 			);
 		',2);
@@ -632,12 +632,12 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		$feInterface = $columns;
 		unset($feInterface['t3ver_label']);
 		$this->wizard->ext_tables[]=$this->wrapBody('
-			$TCA["'.$tableName.'"] = array (
-				"ctrl" => array (
+			$TCA[\''.$tableName.'\'] = array (
+				\'ctrl\' => array (
 			', implode(chr(10),$ctrl),'
 				),
-				"feInterface" => array (
-					"fe_admin_fieldList" => "'.implode(", ",array_keys($feInterface)).'",
+				\'feInterface\' => array (
+					\'fe_admin_fieldList\' => \''.implode(', ',array_keys($feInterface)).'\',
 				)
 			);
 		',2);

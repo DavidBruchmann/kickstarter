@@ -55,7 +55,7 @@ class tx_kickstarter_section_languages extends tx_kickstarter_sectionbase {
 			while(list($k,$v)=each($this->wizard->languages))	{
 				$subContent.= $this->renderCheckBox($ffPrefix.'['.$k.']',$piConf[$k]).$v.'<br />';
 			}
-			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($this->textSetup('Enter which languages to setup:',$subContent)).'</td></tr>';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($this->textSetup('Select which languages to setup:',$subContent)).'</td></tr>';
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */

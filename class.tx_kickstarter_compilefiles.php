@@ -178,11 +178,9 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 		$this->addFileToFileArray('doc/wizard_form.dat',serialize($this->wizArray));
 
 		$this->addFileToFileArray('ChangeLog',
-'(add new changes on top of this file)
+date('Y-m-d').' '.$this->userField('name').'  <'.$this->userField('email').'>
 
-'.date('y-m-d').' '.$this->userField('name').'  <'.$this->userField('email').'>
-
-	* Initial release
+	* initial code generated with kickstarter
 '		);
 
 		$this->addFileToFileArray('README.txt','

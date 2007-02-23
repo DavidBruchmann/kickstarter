@@ -60,10 +60,10 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				$this->renderStringBox_lang('title',$ffPrefix,$piConf);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
-			$subContent = $this->renderCheckBox($ffPrefix.'[plus_user_obj]',$piConf['plus_user_obj']).'USER cObjects are cached. Make it a non-cached USER_INT instead<br />';
+			$subContent = $this->renderCheckBox($ffPrefix.'[plus_user_obj]',$piConf['plus_user_obj']).'Plugins are generated as cachable USER cObjects by default. Check this checkbox to generate an uncached USER_INT cObject.<br />';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
-			$subContent = $this->renderCheckBox($ffPrefix.'[plus_not_staticTemplate]',$piConf['plus_not_staticTemplate']).'Enable this option if you want the TypoScript code to be set by default. Otherwise the code will go into a static template file which must be included in the template record (recommended is to <em>not</em> set this option).<br />';
+			$subContent = $this->renderCheckBox($ffPrefix.'[plus_not_staticTemplate]',$piConf['plus_not_staticTemplate']).'Enable this option if you want the TypoScript code to be set by default. Otherwise the code will go into a static template file which must be included in the template record (it\'s <em>NOT</em> recommended to set this option).<br />';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 
@@ -1014,7 +1014,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 					if (!$config['plus_not_staticTemplate'])	{
 						$this->wizard->ext_tables[]=$this->sPS('
-							t3lib_extMgm::addStaticFile($_EXTKEY,"'.$pathSuffix.'static/","'.addslashes(trim($config['title'])).'");
+							t3lib_extMgm::addStaticFile($_EXTKEY, \''.$pathSuffix.'static/\', \''.addslashes(trim($config['title'])).'\');
 						');
 					}
 				}
@@ -1278,7 +1278,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 			$this->wizard->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[plus_wiz]:').'
-				if (TYPO3_MODE=="BE")	$TBE_MODULES_EXT["xMOD_db_new_content_el"]["addElClasses"]["'.$cN.'_wizicon"] = t3lib_extMgm::extPath($_EXTKEY).\'pi'.$k.'/class.'.$cN.'_wizicon.php\';
+				if (TYPO3_MODE==\'BE\')	$TBE_MODULES_EXT[\'xMOD_db_new_content_el\'][\'addElClasses\'][\''.$cN.'_wizicon\'] = t3lib_extMgm::extPath($_EXTKEY).\'pi'.$k.'/class.'.$cN.'_wizicon.php\';
 			');
 		}
 	}
