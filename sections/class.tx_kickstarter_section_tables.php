@@ -627,9 +627,6 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 				\'ctrl\' => array (
 			', implode(chr(10),$ctrl),'
 				),
-				\'feInterface\' => array (
-					\'fe_admin_fieldList\' => \''.implode(', ',array_keys($feInterface)).'\',
-				)
 			);
 		',2);
 

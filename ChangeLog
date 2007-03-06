@@ -1,8 +1,9 @@
 2007-03-06 Ingo Renner <typo3@ingo-renner.com>
 
-	* RMV 0002491: Remove commented-out code from the kickstarter, thanks to Oliver Klee and Peter Foerger 
-	* ADD 0004539: Manage flex fields, thanks to Jean-Baptiste Rio and Peter foerger
-
+	* Lots of thanks to Peter Foerger for the help with this update
+	* RMV 0002491: Remove commented-out code from the kickstarter, thanks to Oliver Klee 
+	* ADD 0004539: Manage flex fields, thanks to Jean-Baptiste Rio
+	* UPD 0003723: ['feInterface'] section is depricated
 
 2007-02-22 Ingo Renner <typo3@ingo-renner.com>
 
