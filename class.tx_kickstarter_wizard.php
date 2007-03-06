@@ -269,7 +269,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	 */
 	function sidemenu()	{
 		$actionType = $this->modData['wizSubCmd'].':'.$this->modData['wizAction'];
-		$singles    = 'emconf,save,TSconfig,languages';
+		$singles    = $this->getSingles();
 		$lines      = array();
 		foreach($this->options as $k => $v)	{
 			// Add items:
@@ -322,6 +322,23 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 		$content = '<table border="0" cellpadding="2" cellspacing="2">'.implode('',$lines).'</table>';
 		return $content;
+	}
+	
+	/**
+	 * gets single items as a comma separated list
+	 * 
+	 * @return string comma separated list of single items
+	 */
+	function getSingles() {
+		$singles = array('save');
+		
+		foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['sections'] as $sectionName => $sectionConf) {
+			if($sectionConf['singleItem']) {
+				$singles[] = $sectionName;
+			}			
+		}
+		
+		return implode(',', $singles);
 	}
 
 	/**

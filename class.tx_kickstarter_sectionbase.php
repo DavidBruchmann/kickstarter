@@ -323,7 +323,7 @@ class tx_kickstarter_sectionbase {
 				$c=$k;
 			}
 		}
-		if (!t3lib_div::inList('save,ts,TSconfig,languages',$cat) || !count($lines))	{
+		if (!t3lib_div::inList($this->wizard->getSingles(), $cat) || !count($lines))	{
 			$c++;
 			if (count($lines))	$lines[]='';
 			$lines[]=$this->linkStr('Add new item',$cat,'edit:'.$c);
