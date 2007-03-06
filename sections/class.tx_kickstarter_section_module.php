@@ -93,7 +93,6 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 
 				// Options
 			$subContent = $this->renderCheckBox($ffPrefix.'[interface]',$piConf['interface']).'Allow other extensions to interface with function menu<br />';
-#			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 		}
 
 		/* HOOK: Place a hook here, so additional output can be integrated */
@@ -106,13 +105,6 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 		$content = '<table border=0 cellpadding=2 cellspacing=2>'.implode('',$lines).'</table>';
 		return $content;
 	}
-
-
-
-
-
-
-
 
 	/**
 	 * Renders the extension PHP codee; this was
@@ -177,25 +169,6 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 		$this->addLocalConf($ll,$config,'tablabel','module',$k,1,0,'mlang_labels_tablabel');
 		$this->addLocalLangFile($ll,$pathSuffix.'locallang_mod.xml','Language labels for module "'.$mN.'" - header, description');
 
-//			$MLANG["default"]["tabs"]["tab"] = "'.addslashes($config["title"]).'";	'.$this->WOPcomment('WOP:'.$WOP.'[title]').'
-//			$MLANG["default"]["labels"]["tabdescr"] = "'.addslashes($config["description"]).'";	'.$this->WOPcomment('WOP:'.$WOP.'[description]').'
-//			$MLANG["default"]["labels"]["tablabel"] = "'.addslashes($config["tablabel"]).'";	'.$this->WOPcomment('WOP:'.$WOP.'[tablabel]').'
-
-/*
-		if (count($this->selectedLanguages))	{
-			reset($this->selectedLanguages);
-			while(list($lk,$lv)=each($this->selectedLanguages))	{
-				if ($lv)	{
-					$content.= $this->sPS('
-							// '.$this->languages[$lk].' language:
-						$MLANG["'.$lk.'"]["tabs"]["tab"] = "'.addslashes($config["title_".$lk]).'";	'.$this->WOPcomment('WOP:'.$WOP.'[title_'.$lk.']').'
-						$MLANG["'.$lk.'"]["labels"]["tabdescr"] = "'.addslashes($config["description_".$lk]).'";	'.$this->WOPcomment('WOP:'.$WOP.'[description_'.$lk.']').'
-						$MLANG["'.$lk.'"]["labels"]["tablabel"] = "'.addslashes($config["tablabel_".$lk]).'";	'.$this->WOPcomment('WOP:'.$WOP.'[tablabel_'.$lk.']').'
-					');
-				}
-			}
-		}
-*/
 		$content=$this->wrapBody('
 			<?php
 			',$content,'

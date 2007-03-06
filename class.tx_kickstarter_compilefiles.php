@@ -70,17 +70,6 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 		$this->ext_tables=array();
 		$this->fileArray=array();
 
-
-
-		/*
-		if (is_array($this->wizArray['tables']))	{
-			reset($this->wizArray['tables']);
-			while(list($k,$config)=each($this->wizArray['tables']))	{
-				$this->renderExtPart_tables($k,$config,$extKey);
-			}
-		}
-		*/
-
 		foreach($this->wizArray as $catID=>$catData)	{
 			if($this->sections[$catID]) {
 				$path = t3lib_div::getFileAbsFileName($this->sections[$catID]['filepath']);
@@ -95,19 +84,6 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 				}
 			}
 		}
-
-
-
-		/*
-		if (is_array($this->wizArray['pi']))	{
-			reset($this->wizArray['pi']);
-			while(list($k,$config)=each($this->wizArray['pi']))	{
-				$this->renderExtPart_PI($k,$config,$extKey);
-				$this->EM_CONF_presets['clearCacheOnLoad']=1;
-			}
-			$this->EM_CONF_presets['dependencies'][]='cms';
-		}
-		*/
 
 		if (is_array($this->wizArray['sv']))	{
 			reset($this->wizArray['sv']);
@@ -189,8 +165,6 @@ Feel free to add some documentation or simply add a link to the online manual.
 
 			// icon:
 		$this->addFileToFileArray('ext_icon.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/notfound.gif'));
-
-#		return $dataArr;
 	}
 
 

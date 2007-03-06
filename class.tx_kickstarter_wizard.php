@@ -301,7 +301,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		<input type="text" name="'.$this->piFieldName('wizArray_upd').'[save][extension_key]" value="'.$this->wizArray['save']['extension_key'].'" maxlength="30" />
 		'.($this->wizArray['save']['extension_key']?'':'<br /><a href="http://typo3.org/1382.0.html" target="_blank"><font color="red">Make sure to enter the right extension key from the beginning here!</font> You can register one here.</a>').'
 		</td><td></td></tr>';
-# onClick="setFormAnchorPoint(\'_top\')"
+
 		$lines[]='<tr><td><input type="submit" value="Update..." /></td><td></td></tr>';
 		$lines[]='<tr><td><input type="submit" name="'.$this->piFieldName('totalForm').'" value="Total form" /></td><td></td></tr>';
 
@@ -439,13 +439,8 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			$md5 = md5($serialized);
 
 			$content=$md5.':';
-/*			if ($this->gzcompress)	{
-				$content.='gzcompress:';
-				$content.=gzcompress($serialized);
-			} else {
-	*/			$content.=':';
-				$content.=$serialized;
-//			}
+			$content.=':';
+			$content.=$serialized;
 		}
 		return $content;
 	}

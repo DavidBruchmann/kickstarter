@@ -1,3 +1,8 @@
+2007-03-06 Ingo Renner <typo3@ingo-renner.com>
+
+	* RMV 0002491: Remove commented-out code from the kickstarter, thanks to Peter Foerger and Oliver Klee
+
+
 2007-02-22 Ingo Renner <typo3@ingo-renner.com>
 
 	* CHG more single quotes

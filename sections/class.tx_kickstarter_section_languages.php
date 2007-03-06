@@ -69,13 +69,6 @@ class tx_kickstarter_section_languages extends tx_kickstarter_sectionbase {
 		return $content;
 	}
 
-
-
-
-
-
-
-
 	/**
 	 * Renders the extension PHP code; this was
 	 *

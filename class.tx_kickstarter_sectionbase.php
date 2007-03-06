@@ -24,7 +24,6 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
-#vars that probably still need "wizard->" added: dontPrintImages printWOP
 
 
 /**
@@ -451,17 +450,6 @@ class tx_kickstarter_sectionbase {
 						);
 	}
 
-
-
-
-
-
-
-
-
-
-
-
 ######### Functions from compilefiles #########
 
 	/**
@@ -594,7 +582,6 @@ class tx_kickstarter_sectionbase {
 	 * @return	array		meta data array
 	 */
 	function makeFileArray($name,$content)	{
-	#	echo '<HR><strong>'.$name.'</strong><HR><pre>'.htmlspecialchars($content).'</pre>';
 
 		return array(
 			'name' => $name,
@@ -686,7 +673,6 @@ class tx_kickstarter_sectionbase {
 
 			// Options:
 		$options = array(
-			#'useIndexTagForAssoc'=>'key',
 			'parentTagMap' => array(
 				'data' => 'languageKey',
 				'orig_hash' => 'languageKey',

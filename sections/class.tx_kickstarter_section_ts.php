@@ -57,8 +57,7 @@ class tx_kickstarter_section_ts extends tx_kickstarter_sectionbase {
 			
 				// Enter title of the static extension template
 			$subContent='<strong>Enter a title for the static extension template:</strong><br />'.
-				#$this->renderStringBox('title',$ffPrefix,$piConf);
-				$this->renderStringBox($ffPrefix.'[title]',$piConf['title']);
+			$this->renderStringBox($ffPrefix.'[title]',$piConf['title']);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Enter constants

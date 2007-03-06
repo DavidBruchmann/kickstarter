@@ -85,21 +85,8 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 				}
 			}
-
-/*				// Enter title of the plugin
-			$subContent="<strong>Enter a 'key'-string for the plugin:</strong><br />".
-				$this->renderStringBox($ffPrefix."[keystring]",$piConf["keystring"]).
-				"<br />(<em>A key string is used as a sub-prefix to the class name, in the database as identification of the plugin etc. If you don't specify any, the wizard will make one based on the title above.<br />
-					Example: If your extension has the extension key 'my_extension' and you enter the key value 'crazymenu', then the class, additional fields etc. will be named 'tx_myextension_crazymenu'<br />
-					Use a-z characters only.</em>)"
-				;
-			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
-*/
-
-
-
-
-				// Insert Plugin
+			
+   			// Insert Plugin
 			if (is_array($this->wizard->wizArray['tables']))	{
 				$optValues = array(
 					'0' => '',
@@ -150,14 +137,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				$this->textSetup('Add as a totally new Content Element type',
 					'You can also take the plunge into a whole new content element type! Scarry eh?'.
 					$this->resImg('pi_ce.png').
-/*					$this->renderCheckBox($ffPrefix."[plus_rte]",$piConf["plus_rte"])."Enable Rich Text editing for the bodytext field<br />".
-					$this->renderCheckBox($ffPrefix."[plus_images]",$piConf["plus_images"])."Enable images-field<br />".
-					$this->renderCheckBox($ffPrefix."[plus_no_header]",$piConf["plus_images"])."Disable header rendering<br />".
-					$this->renderCheckBox($ffPrefix."[plus_insert_check]",$piConf["plus_insert_check"])."Insert a custom checkbox field<br />".
-					$this->renderCheckBox($ffPrefix."[plus_insert_select]",$piConf["plus_insert_select"])."Insert a custom select field<br />".
-					$this->renderCheckBox($ffPrefix."[plus_insert_string]",$piConf["plus_insert_string"])."Insert a custom text string field<br />".
-					$this->renderCheckBox($ffPrefix."[plus_insert_file]",$piConf["plus_insert_file"])."Insert a custom file field<br />".
-	*/				''
+				''
 				);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
@@ -705,11 +685,6 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								return $this->pi_linkTP_keepPIvars($this->getFieldHeader($fN),array(\'sort\'=>$fN.\':\'.($this->internal[\'descFlag\']?0:1)));
 							}
 						');
-
-
-
-
-
 
 						$CSS_editor_code = '';
 						$pCSSSel = str_replace('_','-',$cN);

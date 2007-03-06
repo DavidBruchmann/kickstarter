@@ -127,18 +127,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 */
 	function presetBox(&$piConfFields)	{
 		$_PRESETS = $this->wizard->modData['_PRESET'];
-
 		$optValues = array();
-
-		/* Static Presets from DB-Table are disabled. Just leave the code in here for possible future use */
-		//		$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('*', 'kickstarter_static_presets', '');
-		//		while($presetRow = $GLOBALS['TYPO3_DB']->sql_fetch_assoc($res))	{
-		//			$optValues[] = '<option value="'.htmlspecialchars($presetRow["fieldname"]).'">'.htmlspecialchars($presetRow["title"]." (".$presetRow["fieldname"].", type: ".$presetRow["type"].")").'</option>';
-		//			if (is_array($_PRESETS) && in_array($presetRow["fieldname"],$_PRESETS))	{
-		//				if (!is_array($piConfFields))	$piConfFields=array();
-		//				$piConfFields[] = unserialize($presetRow["appdata"]);
-		//			}
-		//		}
 
 			// Session presets:
 		$ses_optValues=array();
@@ -206,32 +195,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						$downFlag=1;
 					}
 				}
-
-					// PRESET:
-				//				if (t3lib_div::_GP($this->varPrefix.'_CMD_'.$v["fieldname"].'_SAVE_x'))	{
-				//					$datArr=array(
-				//						"fieldname" => $v["fieldname"],
-				//						"title" => $v["title"],
-// 						"type" => $v["type"],
-// 						"appdata" => serialize($v),
-// 						"tstamp" => time()
-// 					);
-
-// 					$res = $GLOBALS['TYPO3_DB']->exec_SELECTquery('fieldname', 'kickstarter_static_presets', 'fieldname="'.$GLOBALS['TYPO3_DB']->quoteStr($v['fieldname'], 'kickstarter_static_presets').'"');
-// 					if ($GLOBALS['TYPO3_DB']->sql_num_rows($res) || $v["_DELETE"])	{
-// 						if ($v["_DELETE"])	{
-// 							$GLOBALS['TYPO3_DB']->exec_DELETEquery('kickstarter_static_presets', 'fieldname="'.$GLOBALS['TYPO3_DB']->quoteStr($v['fieldname'], 'kickstarter_static_presets').'"');
-// 						} else {
-// 							$GLOBALS['TYPO3_DB']->exec_UPDATEquery('kickstarter_static_presets', 'fieldname="'.$GLOBALS['TYPO3_DB']->quoteStr($v['fieldname'], 'kickstarter_static_presets').'"', $datArr);
-// 						}
-// 					} else {
-// 						$GLOBALS['TYPO3_DB']->exec_INSERTquery("kickstarter_static_presets", $datArr);
-// 					}
-// 				}
-			} else {
-			  //				unset($this->wizArray[$catID][$action]["fields"][$k]);
-			  //				unset($fConf[$k]);
-			}
+			} 
 		}
 
 		$this->wizard->wizArray[$catID][$action]['fields'] = $newFConf;
@@ -458,7 +422,6 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					}
 					$fDetails.=$this->resImg('t_rte_class.png','','','<br /><br />');
 
-#					$fDetails.=$this->renderCheckBox($prefix."[conf_rte_removePdefaults]",$fConf["conf_rte_removePdefaults"])."<br />";
 					$optValues = array(
 						'0' => '',
 						'1' => 'Hide Hx and PRE from Paragraph selector.',
@@ -468,7 +431,6 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$fDetails.=$this->resImg('t_rte_hideHx.png','hspace=20','','<br /><br />');
 
 					$fDetails.='<br /><strong>Misc:</strong><br />';
-//					$fDetails.=$this->renderCheckBox($prefix.'[conf_rte_custom_php_processing]',$fConf['conf_rte_custom_php_processing']).'Custom PHP processing of content<br />';
 					$fDetails.=$this->renderCheckBox($prefix.'[conf_rte_div_to_p]',isset($fConf['conf_rte_div_to_p'])?$fConf['conf_rte_div_to_p']:1).htmlspecialchars('Convert all <DIV> to <P>').'<br />';
 				}
 
@@ -592,7 +554,6 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$fDetails.=$this->renderStringBox($prefix.'[conf_max_filesize]',t3lib_div::intInRange($fConf['conf_max_filesize'],1,1000,500),50).' Max filesize allowed (kb)<br />';
 				$fDetails.=$this->renderStringBox($prefix.'[conf_files_selsize]',t3lib_div::intInRange($fConf['conf_files_selsize'],1,50),50).' Size of selector box<br />';
 				$fDetails.=$this->resImg('t_file_size.png','','','<br /><br />');
-//				$fDetails.=$this->renderCheckBox($prefix.'[conf_files_mm]',$fConf['conf_files_mm']).'DB relations (very rare choice, normally the commalist is fine enough)<br />';
 				$fDetails.=$this->renderCheckBox($prefix.'[conf_files_thumbs]',$fConf['conf_files_thumbs']).'Show thumbnails<br />';
 				$fDetails.=$this->resImg('t_file_thumb.png','hspace="20"','','<br /><br />');
 			break;
@@ -648,8 +609,6 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	function render_extPart($k,$config,$extKey) {
 		$WOP = '[fields]['.$k.']';
 		$tableName = $config['which_table'];
-	#	$tableName = $this->returnName($extKey,'fields',$tableName);
-#		$prefix = 'tx_'.str_replace('_','',$extKey).'_';
 		$prefix = $this->returnName($extKey,'fields').'_';
 
 		$DBfields = array();
@@ -1232,10 +1191,8 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				if ($t=='check_4' || $t=='check_10')	{
 					$configL[]='\'cols\' => 4,';
 					$cItems=array();
-#					$aMax = ($t=="check_4"?4:10);
 					$aMax = intval($fConf["conf_numberBoxes"]);
 					for($a=0;$a<$aMax;$a++)	{
-//						$cItems[]='array("'.($fConf["conf_boxLabel_".$a]?str_replace("\\'","'",addslashes($this->getSplitLabels($fConf,"conf_boxLabel_".$a))):'English Label '.($a+1).'|Danish Label '.($a+1).'|German Label '.($a+1).'| etc...').'", ""),';
 						$cItems[]='array(\''.addslashes($this->getSplitLabels_reference($fConf,"conf_boxLabel_".$a,$table.".".$fConf["fieldname"].".I.".$a)).'\', \'\'),';
 					}
 					$configL[]=trim($this->wrapBody('
@@ -1259,7 +1216,6 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 										// Add wizard icon
 						$this->addFileToFileArray("selicon_".$id."_".$a.".gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/wiz.gif"));
 					} else $icon="";
-//					$cItems[]='array("'.str_replace("\\'","'",addslashes($this->getSplitLabels($fConf,"conf_select_item_".$a))).'", "'.addslashes($val).'"'.$icon.'),';
 					$cItems[]='array(\''.addslashes($this->getSplitLabels_reference($fConf,"conf_select_item_".$a,$table.".".$fConf["fieldname"].".I.".$a)).'\', \''.addslashes($val).'\''.$icon.'),';
 				}
 				$configL[]=trim($this->wrapBody('

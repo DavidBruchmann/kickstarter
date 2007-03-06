@@ -85,7 +85,6 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 
 				// Do it for real...
 				$lines[] = '<tr'.$this->bgCol(1).'><td><strong> Fields Overview </strong></td></tr>';
-//				$lines[] = '<tr'.$this->bgCol(2).'><td>'.$this->fw($v[1]).'</td></tr>';
 				$lines[] = '<tr><td></td></tr>';
 
 				$subContent ='<tr '.$this->bgCol(2).'>
@@ -103,11 +102,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			}
 
 			$lines[] = '<tr'.$this->bgCol(1).'><td><strong> Edit Fields </strong></td></tr>';
-//			$lines[] = '<tr'.$this->bgCol(2).'><td>'.$this->fw($v[1]).'</td></tr>';
 			$lines[] = '<tr><td></td></tr>';
-
-
-
 
 				// Admin only
 			$subContent  = '';
@@ -186,8 +181,6 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 				'Don\'t use fieldnames from this list of reserved names/words: <BR>
 				<blockquote><em>' . implode(', ', $this->wizard->reservedWords).'</em></blockquote>';
 			$lines[] = '<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
-
-
 
 				// PRESETS:
 			$selPresetBox = $this->presetBox($piConf["fields"]);
@@ -363,7 +356,6 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		$ctrl     = array();
 		$enFields = array();
 
-//str_replace("\\'","'",addslashes($this->getSplitLabels($config,'title')))
 		$ctrl[] = trim($this->sPS('
 			\'title\'     => \'' . $this->getSplitLabels_reference($config,'title',$tableName) . '\',		' . $this->WOPcomment('WOP:'.$WOP.'[title]').'
 			\'label\'     => \'' . ($config['header_field']?$config['header_field']:'uid') . '\',	'.$this->WOPcomment('WOP:'.$WOP.'[header_field]').'
@@ -579,8 +571,6 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			}
 		}
 
-
-
 			// Finalize tables.sql:
 		$keys = '
 				PRIMARY KEY (uid),
@@ -641,7 +631,6 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 				)
 			);
 		',2);
-
 
 				// Add wizard icon
 			$this->addFileToFileArray('icon_'.$tableName.'.gif', t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/'.$config['defIcon']));

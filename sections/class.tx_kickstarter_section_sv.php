@@ -108,7 +108,6 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 				'' => 'no special dependency',
 				'unix' => 'Unix only',
 				'win' => 'Windows only',
-//				'unix,win' => 'Unix or Windows',
 			);
 
 			$lines[]='<tr><td>&nbsp;</td><td></td></tr>';
@@ -134,13 +133,6 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 		$content = '<table border="0" cellpadding="2" cellspacing="2">'.implode('',$lines).'</table>';
 		return $content;
 	}
-
-
-
-
-
-
-
 
 	/**
 	 * Renders the extension PHP codee; this was
