@@ -270,6 +270,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			'radio'           => 'Radio buttons',
 			'rel'             => 'Database relation',
 			'files'           => 'Files',
+			'flex'            => 'Flex',
 		);
 		$optEval = array(
 			''         => '',

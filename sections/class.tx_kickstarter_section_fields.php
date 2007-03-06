@@ -278,6 +278,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			'radio'           => 'Radio buttons',
 			'rel'             => 'Database relation',
 			'files'           => 'Files',
+			'flex'            => 'Flex',
 			'none'            => 'Not editable, only displayed',
 			'passthrough'     => '[Passthrough]',
 		);
@@ -582,6 +583,12 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			break;
 			case 'link':
 				$typeCfg.=$this->resImg('t_link.png','','');
+			break;
+			case 'flex':
+				if($this->wizard->wizArray['save']['extension_key']){
+					$extKey = $this->wizard->wizArray['save']['extension_key'];
+					$fDetails.='<strong>FILE:EXT:'.$extKey.'/flexform_'.$fConf['fieldname'].'.xml</strong> will be created.';
+				}
 			break;
 		}
 
@@ -1442,6 +1449,19 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$configL[]='\'maxitems\' => '.t3lib_div::intInRange($fConf["conf_files"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files]');
 
 				$DBfields[] = $fConf["fieldname"]." blob NOT NULL,";
+			break;
+			case 'flex': 
+				$DBfields[] = $fConf['fieldname'] . ' mediumtext NOT NULL,';
+				$configL[]  = trim($this->sPS('
+					\'type\' => \'flex\',
+		\'ds\' => array (
+			\'default\' => \'FILE:EXT:'.$extKey.'/flexform_'.$table.'_'.$fConf['fieldname'].'.xml\',
+		),
+				'));
+				$this->addFileToFileArray(
+        			'flexform_'.$table.'_'.$fConf['fieldname'].'.xml',
+        			$this->createFlexForm()
+        		);
 			break;
 			case "none":
 				$DBfields[] = $fConf["fieldname"]." tinytext NOT NULL,";

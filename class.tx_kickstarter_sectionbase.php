@@ -1161,6 +1161,47 @@ class tx_kickstarter_sectionbase {
 		}
 		return $v;
 	}
+	
+	/**
+	 * Creates a simple flexform datastructure to provide some dummy content.
+	 *	
+	 * @return	string		file content
+	 */
+	function createFlexForm()	{
+		$file =trim($this->sPS('
+        <T3DataStructure>
+			<meta>
+				<langDisable>1</langDisable>
+			</meta>
+			<ROOT>
+				<type>array</type>
+				<el>
+					<xmlTitle>
+						<TCEforms>
+							<label>The Title:</label>
+							<config>
+								<type>input</type>
+								<size>30</size>
+							</config>
+						</TCEforms>
+					</xmlTitle>
+					<xmlText>
+						<TCEforms>
+							<label>Bodytext:</label>
+							<config>
+								<type>text</type>
+								<size>48</size>
+							</config>
+						</TCEforms>
+					</xmlText>
+				</el>
+			</ROOT>
+		</T3DataStructure>
+		'));
+		
+		return $file;
+	}
+
 }
 
 
