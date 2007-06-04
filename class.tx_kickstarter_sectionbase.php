@@ -24,12 +24,13 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 
+#vars that probably still need "wizard->" added: dontPrintImages printWOP
 
 
 /**
  * TYPO3 Extension Kickstarter
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skrhj <kasperYYYY@typo3.com>
  * @author	Ingo Renner	<typo3@ingo-renner.com>
  */
 class tx_kickstarter_sectionbase {
@@ -584,12 +585,12 @@ class tx_kickstarter_sectionbase {
 	function makeFileArray($name,$content)	{
 
 		return array(
-			'name' => $name,
-			'size' => strlen($content),
-			'mtime' => time(),
+			'name'          => $name,
+			'size'          => strlen($content),
+			'mtime'         => time(),
 			'is_executable' => 0,
-			'content' => $content,
-			'content_md5' => md5($content)
+			'content'       => $content,
+			'content_md5'   => md5($content)
 		);
 	}
 
@@ -674,11 +675,11 @@ class tx_kickstarter_sectionbase {
 			// Options:
 		$options = array(
 			'parentTagMap' => array(
-				'data' => 'languageKey',
-				'orig_hash' => 'languageKey',
-				'orig_text' => 'languageKey',
+				'data'         => 'languageKey',
+				'orig_hash'    => 'languageKey',
+				'orig_text'    => 'languageKey',
 				'labelContext' => 'label',
-				'languageKey' => 'label'
+				'languageKey'  => 'label'
 			)
 		);
 
@@ -876,19 +877,16 @@ class tx_kickstarter_sectionbase {
 	 * @return	string		function to get locallang.xml
 	 */
 	function addLLfunc($extKey)	{
-		return $this->sPS("
+		return $this->sPS('
 			/**
 			 * Reads the [extDir]/locallang.xml and returns the \$LOCAL_LANG array found in that file.
 			 *
 			 * @return	[type]		...
 			 */
 			function includeLL()	{
-				global \$LANG;
-
-				\$LOCAL_LANG = \$LANG->includeLLFile('EXT:".$extKey."/locallang.xml',FALSE);
-				return \$LOCAL_LANG;
+				return $GLOBALS[\'LANG\']->includeLLFile(\'EXT:'.$extKey.'/locallang.xml\', false);
 			}
-		");
+		');
 	}
 
 	/**

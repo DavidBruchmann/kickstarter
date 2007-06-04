@@ -1,3 +1,11 @@
+2007-06-04 Ingo Renner	<typo3@ingo-renner.com>
+
+	* FIX fixed bug 5733: Code generated for localization contains simple quoting bug
+
+2007-03-15 Ingo Renner <typo3@ingo-renner.com>
+
+	* CHG changed some text in the language section
+
 2007-03-06 Ingo Renner <typo3@ingo-renner.com>
 
 	* Lots of thanks to Peter Foerger for the help with this update
@@ -14,6 +22,10 @@
 2007-01-30 Ingo Renner <typo3@ingo-renner.com>
 
 	* FIX path for TS files is now lowercased
+
+2007-01-24 Peter Foerger <p.foerger@vke-design.de>
+
+	* ADD new feature: initial release of the IRRE integration
 	
 2006-12-19 Peter Foerger <p.foerger@vke-design.de>
 
@@ -110,7 +122,7 @@
 
 	* Changed quotes for SQL default values
 
-2005-04-29  Kasper Skårhøj  <kasper@typo3.com>
+2005-04-29  Kasper Skrhj  <kasper@typo3.com>
 
 	* Added "var $pi_checkCHash = TRUE;" in plugins when based on USER objects. See changelog of core for more explanation of this very important parameter for cached plugins.
 
@@ -122,7 +134,7 @@
 
 	* Made overwrite checkboxes finally work properly
 
-2005-04-06  Kasper Skårhøj  <kasper@typo3.com>
+2005-04-06  Kasper Skrhj  <kasper@typo3.com>
 
 	* Removed all "unsigned" keywords from produced SQL (non-DBAL compliant)
 
