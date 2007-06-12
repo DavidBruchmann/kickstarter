@@ -1,3 +1,7 @@
+2007-07-12 Peter Foerger	<p.foerger@vke-design.de>
+
+	* FIX fixed bug 5525: Reserved fieldnames @ extending a table
+
 2007-06-04 Ingo Renner	<typo3@ingo-renner.com>
 
 	* FIX fixed bug 5733: Code generated for localization contains simple quoting bug
