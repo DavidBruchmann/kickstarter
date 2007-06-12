@@ -85,7 +85,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			$c=array(0);
 			$this->usedNames=array();
 			if (is_array($piConf['fields']))	{
-				$piConf['fields'] = $this->cleanFieldsAndDoCommands($piConf['fields'],$this->sectionID,$action[1]);
+				$piConf['fields'] = $this->cleanFieldsAndDoCommands($piConf['fields'],$this->sectionID,$action[1],$piConf['which_table']?$piConf['which_table']:'');
 
 					// Do it for real...
 				reset($piConf['fields']);
@@ -165,14 +165,15 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 * @param	array		$fConf: current field configuration
 	 * @param	string		$catID: ID of current category
 	 * @param	string		$action: the action that should be performed
+	 * @param	string		$table: referring table
 	 * @return	New fieldconfiguration
 	 */
-	function cleanFieldsAndDoCommands($fConf,$catID,$action)	{
+	function cleanFieldsAndDoCommands($fConf,$catID,$action,$table)	{
 		$newFConf=array();
 		$downFlag=0;
 		foreach($fConf as $k=>$v)	{
 			if ($v['type'] && trim($v['fieldname']))	{
-				$v['fieldname'] = $this->cleanUpFieldName($v['fieldname']);
+				$v['fieldname'] = $this->cleanUpFieldName($v['fieldname'],$table);
 
 				if (!$v['_DELETE'])	{
 					$newFConf[$k]=$v;
@@ -229,11 +230,16 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 * and chechking for reserved words
 	 *
 	 * @param	string		$str: orginal fieldname
+	 * @param	string		$table: referring table
 	 * @return	cleaned up fieldname
 	 */
-	function cleanUpFieldName($str)	{
+	function cleanUpFieldName($str, $table)	{
+		$passthrough = 0;
+		foreach($GLOBALS['TCA'] as $tablename => $cols){
+			if ($tablename == $table) $passthrough = 1;
+		}
 		$fieldName = ereg_replace('[^[:alnum:]_]','',strtolower($str));
-		if (!$fieldName || in_array($fieldName, $this->wizard->reservedWords) || in_array($fieldName, $this->usedNames))	{
+		if ((!$fieldName || in_array($fieldName, $this->wizard->reservedWords) || in_array($fieldName, $this->usedNames)) && $passthrough==0)	{
 			$fieldName.=($fieldName?'_':'').t3lib_div::shortmd5(microtime());
 		}
 		$this->usedNames[]=$fieldName;
