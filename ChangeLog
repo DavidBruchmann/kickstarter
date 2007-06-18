@@ -1,3 +1,8 @@
+2007-07-18 Peter Foerger	<p.foerger@vke-design.de>
+
+	* FIX fixed bug 4991: table definition for TEXT and BLOB not compliant with MySQL 5.0 strict mode
+	* Thanks to Steffen Mueller for applying the initial patch
+
 2007-07-12 Peter Foerger	<p.foerger@vke-design.de>
 
 	* FIX fixed bug 5458: Kickstarter reports the wrong path after adding back-end functionality.

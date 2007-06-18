@@ -812,14 +812,14 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				} elseif (!$isString && $isDouble2) {
 					$DBfields[] = $fConf["fieldname"]." double(11,2) DEFAULT '0.00' NOT NULL,";
 				} elseif (!$fConf['conf_varchar'])		{
-					$DBfields[] = $fConf['fieldname'] . ' tinytext NOT NULL,';
+					$DBfields[] = $fConf['fieldname'] . ' tinytext,';
 				} else {
 					$varCharLn = (intval($fConf['conf_max'])?t3lib_div::intInRange($fConf['conf_max'],1,255):255);
 					$DBfields[] = $fConf['fieldname'] . ' ' . ($varCharLn>$this->wizard->charMaxLng?'var':'') . 'char(' . $varCharLn .') DEFAULT \'\' NOT NULL,';
 				}
 			break;
 			case 'link':
-				$DBfields[] = $fConf['fieldname'].' tinytext NOT NULL,';
+				$DBfields[] = $fConf['fieldname'].' tinytext,';
 				$configL[]  = trim($this->sPS('
 					\'type\'     => \'input\',
 					\'size\'     => \'15\',
@@ -867,7 +867,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			break;
 			case 'textarea':
 			case 'textarea_nowrap':
-				$DBfields[] = $fConf['fieldname'].' text NOT NULL,';
+				$DBfields[] = $fConf['fieldname'].' text,';
 				$configL[]='\'type\' => \'text\',';
 				if ($t=='textarea_nowrap')	{
 					$configL[]='\'wrap\' => \'OFF\',';
@@ -907,7 +907,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				}
 			break;
 			case 'textarea_rte':
-				$DBfields[] = $fConf['fieldname'].' text NOT NULL,';
+				$DBfields[] = $fConf['fieldname'].' text,';
 				$configL[]  = '\'type\' => \'text\',';
 				$configL[]  = '\'cols\' => \'30\',';
 				$configL[]  = '\'rows\' => \'5\',';
@@ -1286,7 +1286,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					if ($numberOfRelations*4 < 256)	{
 						$DBfields[] = $fConf["fieldname"]." varchar(".($numberOfRelations*4).") DEFAULT '' NOT NULL,";
 					} else {
-						$DBfields[] = $fConf["fieldname"]." text NOT NULL,";
+						$DBfields[] = $fConf["fieldname"]." text,";
 					}
 				} elseif ($notIntVal)	{
 					$varCharLn = t3lib_div::intInRange(max($len),1);
@@ -1364,7 +1364,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					");
 					$this->wizard->ext_tables_sql[]=chr(10).$createTable.chr(10);
 				} elseif (t3lib_div::intInRange($fConf["conf_relations"],1,100)>1 || $fConf["conf_rel_type"]=="group") {
-					$DBfields[] = $fConf["fieldname"]." blob NOT NULL,";
+					$DBfields[] = $fConf["fieldname"]." blob,";
 				} else {
 					$DBfields[] = $fConf["fieldname"].' int(11) DEFAULT \'0\' NOT NULL,';
 				}
@@ -1454,10 +1454,10 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$configL[]='\'minitems\' => 0,';
 				$configL[]='\'maxitems\' => '.t3lib_div::intInRange($fConf["conf_files"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files]');
 
-				$DBfields[] = $fConf["fieldname"]." blob NOT NULL,";
+				$DBfields[] = $fConf["fieldname"]." blob,";
 			break;
 			case 'flex': 
-				$DBfields[] = $fConf['fieldname'] . ' mediumtext NOT NULL,';
+				$DBfields[] = $fConf['fieldname'] . ' mediumtext,';
 				$configL[]  = trim($this->sPS('
 					\'type\' => \'flex\',
 		\'ds\' => array (
@@ -1470,13 +1470,13 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
         		);
 			break;
 			case "none":
-				$DBfields[] = $fConf["fieldname"]." tinytext NOT NULL,";
+				$DBfields[] = $fConf["fieldname"]." tinytext,";
 				$configL[]=trim($this->sPS('
 					\'type\' => \'none\',
 				'));
 			break;
 			case "passthrough":
-				$DBfields[] = $fConf["fieldname"]." tinytext NOT NULL,";
+				$DBfields[] = $fConf["fieldname"]." tinytext,";
 				$configL[]=trim($this->sPS('
 					\'type\' => \'passthrough\',
 				'));

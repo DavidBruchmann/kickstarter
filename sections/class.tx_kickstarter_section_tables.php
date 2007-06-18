@@ -407,7 +407,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 
 			$DBfields[] = 'sys_language_uid int(11) DEFAULT \'0\' NOT NULL,';
 			$DBfields[] = 'l18n_parent int(11) DEFAULT \'0\' NOT NULL,';
-			$DBfields[] = 'l18n_diffsource mediumblob NOT NULL,';
+			$DBfields[] = 'l18n_diffsource mediumblob,';
 
 			$columns['sys_language_uid'] = trim($this->sPS('
 				\'sys_language_uid\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[localization]').'
