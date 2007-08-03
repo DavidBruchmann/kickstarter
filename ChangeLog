@@ -1,3 +1,7 @@
+2007-08-03 Ingo Renner	<typo3@ingo-renner.com>
+
+	* added initial version of IRRE support and vaious other smaller code clean ups from T3DD07, thanks to Peter and Olly!
+
 2007-07-18 Peter Foerger	<p.foerger@vke-design.de>
 
 	* FIX fixed bug 4991: table definition for TEXT and BLOB not compliant with MySQL 5.0 strict mode
