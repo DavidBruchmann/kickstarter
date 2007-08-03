@@ -39,13 +39,13 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	var $siteBackPath = '';
 	var $EMmode=1;	// If run from Extension Manager, set to 1.
 
-	var $wizArray=array();
+	var $wizArray = array();
 
 	var $extKey_nusc = 'myext';
-	var $extKey = 'my_ext';
-	var $printWOP=0;
-	var $outputWOP=0;
-	var $saveKey='';
+	var $extKey      = 'my_ext';
+	var $printWOP    = 0;
+	var $outputWOP   = 0;
+	var $saveKey     = '';
 	var $pObj;
 
 	var $afterContent;
@@ -323,7 +323,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		$content = '<table border="0" cellpadding="2" cellspacing="2">'.implode('',$lines).'</table>';
 		return $content;
 	}
-	
+
 	/**
 	 * gets single items as a comma separated list
 	 * 
@@ -455,9 +455,9 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			$serialized = serialize($uploadArray);
 			$md5 = md5($serialized);
 
-			$content=$md5.':';
-			$content.=':';
-			$content.=$serialized;
+			$content  = $md5.':';
+			$content .= ':';
+			$content .= $serialized;
 		}
 		return $content;
 	}

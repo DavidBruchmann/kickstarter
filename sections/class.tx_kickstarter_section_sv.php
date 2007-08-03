@@ -105,9 +105,9 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 
 				// OS Dependencies
 			$optValues = Array(
-				'' => 'no special dependency',
+				''     => 'no special dependency',
 				'unix' => 'Unix only',
-				'win' => 'Windows only',
+				'win'  => 'Windows only',
 			);
 
 			$lines[]='<tr><td>&nbsp;</td><td></td></tr>';

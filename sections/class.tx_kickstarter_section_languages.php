@@ -49,7 +49,6 @@ class tx_kickstarter_section_languages extends tx_kickstarter_sectionbase {
 			$piConf = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix='['.$this->sectionID.']['.$action[1].']';
 
-				// Admin only
 			$subContent ='';
 			reset($this->wizard->languages);
 			while(list($k,$v)=each($this->wizard->languages))	{

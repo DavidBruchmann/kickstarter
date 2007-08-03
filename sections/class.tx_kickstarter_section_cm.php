@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c)  2001-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)  All rights reserved
+*  (c)  2001-2007 Kasper Skårhøj (kasperYYYY@typo3.com)  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
@@ -23,15 +23,16 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
+
+
 /**
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Daniel Brün <dbruen@saltation.de>
  * @author	Ingmar Schlecht <ingmars@web.de>
  * @author	Ingo Renner <typo3@ingo-renner.com>
  */
-
-require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
-
 class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 	var $sectionID = 'cm';
 
@@ -98,10 +99,10 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 			// This will make sure our item is inserted in the clickmenu!
 		$this->wizard->ext_tables[]=$this->sPS('
 			'.$this->WOPcomment('WOP:'.$WOP.':').'
-			if (TYPO3_MODE=="BE")	{
-				$GLOBALS["TBE_MODULES_EXT"]["xMOD_alt_clickmenu"]["extendCMclasses"][]=array(
-					"name" => "'.$cN.'",
-					"path" => t3lib_extMgm::extPath($_EXTKEY)."'.$filename.'"
+			if (TYPO3_MODE == \'BE\')	{
+				$GLOBALS[\'TBE_MODULES_EXT\'][\'xMOD_alt_clickmenu\'][\'extendCMclasses\'][] = array(
+					\'name\' => \''.$cN.'\',
+					\'path\' => t3lib_extMgm::extPath($_EXTKEY).\''.$filename.'\'
 				);
 			}
 		');
@@ -119,7 +120,7 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 
 				// Repeat this (below) for as many items you want to add!
 				// Remember to add entries in the localconf.php file for additional titles.
-			$url = t3lib_extMgm::extRelPath("'.$extKey.'")."'.$pathSuffix.'index.php?id=".$uid;
+			$url = t3lib_extMgm::extRelPath(\''.$extKey.'\').\''.$pathSuffix.'index.php?id=\'.$uid;
 			$localItems[] = $backRef->linkItem(
 				$GLOBALS["LANG"]->getLLL("cm'.$k.'_title",$LL),
 				$backRef->excludeIcon(\'<img src="\'.t3lib_extMgm::extRelPath("'.$extKey.'").\''.$pathSuffix.'cm_icon.gif" width="15" height="12" border="0" align="top" />\'),

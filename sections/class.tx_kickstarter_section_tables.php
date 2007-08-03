@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c)  2001-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)  All rights reserved
+*  (c)  2001-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
@@ -52,19 +52,19 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			if (is_array($this->wizard->wizArray[$this->sectionID]))	{
 				foreach($this->wizard->wizArray[$this->sectionID] as $kk => $vv)	{
 					if (!strcmp($action[1],$kk))	{
-						if (count($table_suffixes) && t3lib_div::inList(implode(',',$table_suffixes),$vv['tablename'].'Z'))	{
+						if (count($table_suffixes) && t3lib_div::inList(implode(',',$table_suffixes),trim($vv['tablename']).'Z'))	{
 							$piConf['tablename'] .= $kk;
 						}
 						break;
 					}
-					$table_suffixes[] = $vv['tablename'].'Z';
+					$table_suffixes[] = trim($vv['tablename']).'Z';
 				}
 			}
 
 
 				// Enter title of the table
 			$subContent = '<strong>Tablename:</strong><BR>'.
-				$this->returnName($this->wizard->extKey,'tables').'_'.$this->renderStringBox($ffPrefix.'[tablename]',$piConf['tablename']).
+				$this->returnName($this->wizard->extKey,'tables').'_'.$this->renderStringBox($ffPrefix.'[tablename]',trim($piConf['tablename'])).
 				'<BR><strong>Notice:</strong> Use characters a-z0-9 only. Only lowercase, no spaces.<BR>
 				This becomes the table name in the database. ';
 			$lines[] = '<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
@@ -104,7 +104,6 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$lines[] = '<tr'.$this->bgCol(1).'><td><strong> Edit Fields </strong></td></tr>';
 			$lines[] = '<tr><td></td></tr>';
 
-				// Admin only
 			$subContent  = '';
 			$subContent .= $this->renderCheckBox($ffPrefix.'[add_deleted]',$piConf['add_deleted'],1).'Add "Deleted" field '.$this->whatIsThis('Whole system: If a table has a deleted column, records are never really deleted, just "marked deleted" . Thus deleted records can actually be restored by clearing a deleted-flag later.\nNotice that all attached files are also not deleted from the server, so if you expect the table to hold some heavy size uploads, maybe you should not set this...') . '<BR>';
 			$subContent .= $this->renderCheckBox($ffPrefix . '[add_hidden]', $piConf['add_hidden'],1) . 'Add "Hidden" flag ' . $this->whatIsThis('Frontend: The "Hidden" flag will prevent the record from being displayed on the frontend.') . '<BR>' . $this->resImg('t_flag_hidden.png','hspace=20','','<BR><BR>');
@@ -271,6 +270,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			'rel'             => 'Database relation',
 			'files'           => 'Files',
 			'flex'            => 'Flex',
+			'inline'          => 'Inine relation', 
 		);
 		$optEval = array(
 			''         => '',
@@ -349,7 +349,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 	 */
 	function render_extPart($k,$config,$extKey) {
 		$WOP       = '[tables]['.$k.']';
-		$tableName = $config['tablename'];
+		$tableName = trim($config['tablename']);
 		$tableName = $this->returnName($extKey,'tables',$tableName);
 
 		$DBfields = array();

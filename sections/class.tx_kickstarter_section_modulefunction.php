@@ -110,7 +110,7 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 		}
 
 		$this->wizard->ext_tables[]=$this->sPS('
-			if (TYPO3_MODE==\'BE\')	{
+			if (TYPO3_MODE == \'BE\')	{
 				t3lib_extMgm::insertModuleFunction(
 					\''.$position.'\',		'.$this->WOPcomment('WOP:'.$WOP.'[position]').'
 					\''.$cN.'\',

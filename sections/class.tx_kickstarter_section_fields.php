@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c)  2001-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)  All rights reserved
+*  (c)  2001-2007 Kasper Skaarhoj (kasperYYYY@typo3.com)  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
@@ -23,20 +23,22 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
+
+require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
+
+
 /**
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Ingo Renner <typo3@ingo-renner.com>
  */
-
-require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionbase.php');
-
 class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
   var $sectionID = 'fields';
 
 	/**
 	 * Renders the form in the kickstarter; this was add_cat_fields()
 	 *
-	 * @return	HTML code
+	 * @return	string		HTML code
 	 */
 	function render_wizard() {
 		$lines=array();
@@ -123,7 +125,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 * Creates and returns a dropdown box for selecting presets
 	 *
 	 * @param	array		$piConfFields: PlugIn Configuration fields (PASSED BY REFERENCE)
-	 * @return	HTML code for select box
+	 * @return	string		HTML code for select box
 	 */
 	function presetBox(&$piConfFields)	{
 		$_PRESETS = $this->wizard->modData['_PRESET'];
@@ -166,7 +168,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 * @param	string		$catID: ID of current category
 	 * @param	string		$action: the action that should be performed
 	 * @param	string		$table: referring table
-	 * @return	New fieldconfiguration
+	 * @return	array		new fieldconfiguration
 	 */
 	function cleanFieldsAndDoCommands($fConf,$catID,$action,$table)	{
 		$newFConf=array();
@@ -196,7 +198,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						$downFlag=1;
 					}
 				}
-			} 
+			}
 		}
 
 		$this->wizard->wizArray[$catID][$action]['fields'] = $newFConf;
@@ -211,7 +213,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 * Adds a new table to the option values
 	 *
 	 * @param	array		$optValues: Option values
-	 * @return	modified option values
+	 * @return	array		modified option values
 	 */
 	function addOtherExtensionTables($optValues)	{
 		if (is_array($this->wizard->wizArray['tables']))	{
@@ -224,6 +226,29 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		}
 		return $optValues;
 	}
+	
+	/**
+	 *
+	 */
+	function getFieldsFromTable($tableName) {
+		$optionValues = array();
+		
+		if (is_array($this->wizard->wizArray['tables']))	{
+			foreach($this->wizard->wizArray['tables'] as $k=>$info)	{
+				$tempTableName = $this->returnName($this->wizard->extKey,'tables',trim($info['tablename']));
+
+				if($tableName == $tempTableName) {
+					foreach($info['fields'] as $field) {
+						if(!empty($field['fieldname'])) {
+							$optionValues[$field['fieldname']] = $tableName.'.'.$field['fieldname'].' ('.$field['title'].')';
+						}
+					}
+				}
+			}
+		}
+		
+		return $optionValues;
+	}
 
 	/**
 	 * Cleaning up fieldname from invalid characters (only alphanum is allowed)
@@ -231,7 +256,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 *
 	 * @param	string		$str: orginal fieldname
 	 * @param	string		$table: referring table
-	 * @return	cleaned up fieldname
+	 * @return	string		cleaned up fieldname
 	 */
 	function cleanUpFieldName($str, $table)	{
 		$passthrough = 0;
@@ -252,7 +277,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 * @param	string		$prefix: The prefix for the fieldname
 	 * @param	array		$fConf: field config
 	 * @param	boolean		$dontRemove: if true the field can't be removed (option link is not rendered)
-	 * @return	HTML code of the field
+	 * @return	string		HTML code of the field
 	 */
 	function renderField($prefix,$fConf,$dontRemove=0)	{
 		$onCP = $this->getOnChangeParts($prefix.'[fieldname]');
@@ -283,6 +308,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			'select'          => 'Selectorbox',
 			'radio'           => 'Radio buttons',
 			'rel'             => 'Database relation',
+			'inline'          => 'Inline relation',
 			'files'           => 'Files',
 			'flex'            => 'Flex',
 			'none'            => 'Not editable, only displayed',
@@ -293,21 +319,24 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 		$fDetails = '';
 		switch((string)$fConf['type'])	{
+		    case 'inline':  
+		    	$fDetails .= $this->renderInlineField($prefix,$fConf);
+				break;
 			case 'input+':
-				$typeCfg.=$this->resImg('t_input.png','','');
+				$typeCfg .= $this->resImg('t_input.png','','');
 
-				$fDetails.=$this->renderStringBox($prefix.'[conf_size]',$fConf['conf_size'],50).' Field width (5-48 relative, 30 default)<br />';
-				$fDetails.=$this->renderStringBox($prefix.'[conf_max]',$fConf['conf_max'],50).' Max characters<br />';
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_required]',$fConf['conf_required']).'Required<br />';
-				$fDetails.=$this->resImg('t_input_required.png','hspace=20','','<br /><br />');
+				$fDetails .= $this->renderStringBox($prefix.'[conf_size]',$fConf['conf_size'],50).' Field width (5-48 relative, 30 default)<br />';
+				$fDetails .= $this->renderStringBox($prefix.'[conf_max]',$fConf['conf_max'],50).' Max characters<br />';
+				$fDetails .= $this->renderCheckBox($prefix.'[conf_required]',$fConf['conf_required']).'Required<br />';
+				$fDetails .= $this->resImg('t_input_required.png','hspace=20','','<br /><br />');
 
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_varchar]',$fConf['conf_varchar']).'Create VARCHAR, not TINYTEXT field (if not forced INT)<br />';
+				$fDetails .= $this->renderCheckBox($prefix.'[conf_varchar]',$fConf['conf_varchar']).'Create VARCHAR, not TINYTEXT field (if not forced INT)<br />';
 
-				$fDetails.=$this->renderCheckBox($prefix.'[conf_check]',$fConf['conf_check']).'Apply checkbox<br />';
-				$fDetails.=$this->resImg('t_input_check.png','hspace=20','','<br /><br />');
+				$fDetails .= $this->renderCheckBox($prefix.'[conf_check]',$fConf['conf_check']).'Apply checkbox<br />';
+				$fDetails .= $this->resImg('t_input_check.png','hspace=20','','<br /><br />');
 
 				$optValues = array(
-					'' => '',
+					''         => '',
 					'date'     => 'Date (day-month-year)',
 					'time'     => 'Time (hours, minutes)',
 					'timesec'  => 'Time + seconds',
@@ -335,7 +364,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$fDetails.=$this->resImg('t_input_colorwiz.png','hspace=20','','<br /><br />');
 				$fDetails.=$this->renderCheckBox($prefix.'[conf_wiz_link]',$fConf['conf_wiz_link']).'Add link wizard<br />';
 				$fDetails.=$this->resImg('t_input_link2.png','hspace=20','','<br /><br />');
-			break;
+				break;
 			case 'input':
 				$typeCfg.=$this->resImg('t_input.png','','');
 
@@ -345,7 +374,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$fDetails.=$this->resImg('t_input_required.png','hspace=20','','<br /><br />');
 
 				$fDetails.=$this->renderCheckBox($prefix.'[conf_varchar]',$fConf['conf_varchar']).'Create VARCHAR, not TINYTEXT field<br />';
-			break;
+				break;
 			case 'textarea':
 			case 'textarea_nowrap':
 				$typeCfg.=$this->resImg('t_textarea.png','','');
@@ -355,7 +384,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$fDetails.='<br />';
 				$fDetails.=$this->renderCheckBox($prefix.'[conf_wiz_example]',$fConf['conf_wiz_example']).'Add wizard example<br />';
 				$fDetails.=$this->resImg('t_textarea_wiz.png','hspace=20','','<br /><br />');
-			break;
+				break;
 			case 'textarea_rte':
 				$typeCfg.=$this->resImg($fConf['conf_rte']!='tt_content'?'t_rte.png':'t_rte2.png','','');
 
@@ -453,11 +482,11 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$fDetails.='<br />';
 					$fDetails.=$this->renderCheckBox($prefix.'[conf_mode_cssOrNot]',isset($fConf['conf_mode_cssOrNot'])?$fConf['conf_mode_cssOrNot']:1) . 'Use "ts_css" transformation instead of "ts_images-ts-reglinks"<br />';
 				}
-			break;
+				break;
 			case 'check':
 				$typeCfg.=$this->resImg('t_input_link.png','','');
 				$fDetails.=$this->renderCheckBox($prefix.'[conf_check_default]',$fConf['conf_check_default']).'Checked by default<br />';
-			break;
+				break;
 			case 'select':
 			case 'radio':
 				if ($fConf['type']=='radio')	{
@@ -490,7 +519,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 					$fDetails.=$this->renderCheckBox($prefix.'[conf_select_pro]',$fConf['conf_select_pro']).'Add pre-processing with PHP-function<br />';
 				}
-			break;
+				break;
 			case 'rel':
 				if ($fConf['conf_rel_type']=='group' || !$fConf['conf_rel_type'])	{
 					$typeCfg.=$this->resImg('t_rel_group.png','','');
@@ -540,7 +569,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$fDetails.=$this->renderCheckBox($prefix.'[conf_wiz_editrec]',$fConf['conf_wiz_editrec']).'Add "Edit record" link<br />';
 					$fDetails.=$this->resImg("t_rel_wizards.png",'hspace="20"','','<br /><br />');
 				}
-			break;
+				break;
 			case 'files':
 				if ($fConf['conf_files_type']=='images')	{
 					$typeCfg.=$this->resImg('t_file_img.png','','');
@@ -563,10 +592,10 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$fDetails.=$this->resImg('t_file_size.png','','','<br /><br />');
 				$fDetails.=$this->renderCheckBox($prefix.'[conf_files_thumbs]',$fConf['conf_files_thumbs']).'Show thumbnails<br />';
 				$fDetails.=$this->resImg('t_file_thumb.png','hspace="20"','','<br /><br />');
-			break;
+				break;
 			case 'integer':
 				$typeCfg.=$this->resImg('t_integer.png','','');
-			break;
+				break;
 			case 'check_4':
 			case 'check_10':
 				if ((string)$fConf['type']=='check_4')	{
@@ -580,27 +609,29 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				for($a=0;$a<$nItems;$a++)	{
 					$fDetails.='<br />Label '.($a+1).':<br />'.$this->renderStringBox_lang('conf_boxLabel_'.$a,$prefix,$fConf);
 				}
-			break;
+				break;
 			case 'date':
 				$typeCfg.=$this->resImg('t_date.png','','');
-			break;
+				break;
 			case 'datetime':
 				$typeCfg.=$this->resImg('t_datetime.png','','');
-			break;
+				break;
 			case 'link':
 				$typeCfg.=$this->resImg('t_link.png','','');
-			break;
+				break;
 			case 'flex':
-				if($this->wizard->wizArray['save']['extension_key']){
+				if($this->wizard->wizArray['save']['extension_key']) {
 					$extKey = $this->wizard->wizArray['save']['extension_key'];
 					$fDetails.='<strong>FILE:EXT:'.$extKey.'/flexform_'.$fConf['fieldname'].'.xml</strong> will be created.';
 				}
-			break;
+				break;
 		}
 
-		if ($fConf['type'])	$typeCfg.=$this->textSetup('',$fDetails);
+		if($fConf['type']) {
+			$typeCfg .= $this->textSetup('',$fDetails);
+		}
 
-		$content='<table border="0" cellpadding="0" cellspacing="0">
+		$content = '<table border="0" cellpadding="0" cellspacing="0">
 			<tr><td valign="top">'.$this->fw('Field name:').'</td><td valign="top">'.$this->fw($fieldName).'</td></tr>
 			<tr><td valign="top">'.$this->fw('Field title:').'</td><td valign="top">'.$this->fw($fieldTitle).'</td></tr>
 			<tr><td valign="top">'.$this->fw('Field type:').'</td><td valign="top">'.$this->fw($typeCfg).'</td></tr>
@@ -683,7 +714,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 * Implode fields into a string for types -> showItem
 	 *
 	 * @param	array		$columns: array with fields
-	 * @return	string with imploded fields
+	 * @return	string		string with imploded fields
 	 */
 	function implodeColumns($columns)	{
 		reset($columns);
@@ -805,7 +836,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					if ($fConf['conf_varchar'])		{$evalItems[0][] = 'trim';			$evalItems[1][] = $WOP.'[conf_varchar]';}
 				}
 
-				if (count($evalItems))	$configL[]='\'eval\' => \''.implode(",",$evalItems[0]).'\',	'.$this->WOPcomment('WOP:'.implode(" / ",$evalItems[1]));
+				if (count($evalItems))	$configL[]='\'eval\' => \''.implode(",",$evalItems[0]).'\',	'.$this->WOPcomment('WOP:'.implode(' / ',$evalItems[1]));
 
 				if (!$isString && !$isDouble2)	{
 					$DBfields[] = $fConf['fieldname'] . ' int(11) DEFAULT \'0\' NOT NULL,';
@@ -841,7 +872,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			case 'datetime':
 			case 'date':
 				$DBfields[] = $fConf['fieldname'].' int(11) DEFAULT \'0\' NOT NULL,';
-				$configL[]=trim($this->sPS('
+				$configL[] = trim($this->sPS('
 					\'type\'     => \'input\',
 					\'size\'     => \''.($t=="datetime"?12:8).'\',
 					\'max\'      => \'20\',
@@ -879,11 +910,11 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$wizards[] = trim($this->sPS('
 						'.$this->WOPcomment('WOP:'.$WOP.'[conf_wiz_example]').'
 						\'example\' => array(
-							\'title\' => \'Example Wizard:\',
-							\'type\' => \'script\',
+							\'title\'         => \'Example Wizard:\',
+							\'type\'          => \'script\',
 							\'notNewRecords\' => 1,
-							\'icon\' => t3lib_extMgm::extRelPath(\''.$extKey.'\').\''.$id.'/wizard_icon.gif\',
-							\'script\' => t3lib_extMgm::extRelPath(\''.$extKey.'\').\''.$id.'/index.php\',
+							\'icon\'          => t3lib_extMgm::extRelPath(\''.$extKey.'\').\''.$id.'/wizard_icon.gif\',
+							\'script\'        => t3lib_extMgm::extRelPath(\''.$extKey.'\').\''.$id.'/index.php\',
 						),
 					'));
 
@@ -917,11 +948,11 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						'.$this->WOPcomment('WOP:'.$WOP.'[conf_rte_fullscreen]').'
 						\'RTE\' => array(
 							\'notNewRecords\' => 1,
-							\'RTEonly\' => 1,
-							\'type\' => \'script\',
-							\'title\' => \'Full screen Rich Text Editing|Formatteret redigering i hele vinduet\',
-							\'icon\' => \'wizard_rte2.gif\',
-							\'script\' => \'wizard_rte.php\',
+							\'RTEonly\'       => 1,
+							\'type\'          => \'script\',
+							\'title\'         => \'Full screen Rich Text Editing|Formatteret redigering i hele vinduet\',
+							\'icon\'          => \'wizard_rte2.gif\',
+							\'script\'        => \'wizard_rte.php\',
 						),
 					'));
 					$configL[]=trim($this->wrapBody('
@@ -1217,7 +1248,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			break;
 			case 'radio':
 			case 'select':
-				$configL[]='\'type\' => \''.($t=="select"?"select":"radio").'\',';
+				$configL[]='\'type\' => \''.($t == 'select' ? 'select' : 'radio').'\',';
 				$notIntVal=0;
 				$len=array();
 				for($a=0;$a<t3lib_div::intInRange($fConf["conf_select_items"],1,20);$a++)	{
@@ -1225,10 +1256,11 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$notIntVal+= t3lib_div::testInt($val)?0:1;
 					$len[]=strlen($val);
 					if ($fConf["conf_select_icons"] && $t=="select")	{
-						$icon = ', t3lib_extMgm::extRelPath(\''.$extKey.'\').\''."selicon_".$id."_".$a.".gif".'\'';
+						$icon = ', t3lib_extMgm::extRelPath(\''.$extKey.'\').\''.'selicon_'.$id.'_'.$a.'.gif'.'\'';
 										// Add wizard icon
 						$this->addFileToFileArray("selicon_".$id."_".$a.".gif",t3lib_div::getUrl(t3lib_extMgm::extPath("kickstarter")."res/wiz.gif"));
 					} else $icon="";
+//					$cItems[]='Array("'.str_replace("\\'","'",addslashes($this->getSplitLabels($fConf,"conf_select_item_".$a))).'", "'.addslashes($val).'"'.$icon.'),';
 					$cItems[]='array(\''.addslashes($this->getSplitLabels_reference($fConf,"conf_select_item_".$a,$table.".".$fConf["fieldname"].".I.".$a)).'\', \''.addslashes($val).'\''.$icon.'),';
 				}
 				$configL[]=trim($this->wrapBody('
@@ -1243,8 +1275,16 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 					$classContent = $this->sPS(
 						'class '.$cN.' {
+
+	/**
+	 * [Describe function...]
+	 *
+	 * @param	[type]		$$params: ...
+	 * @param	[type]		$pObj: ...
+	 * @return	[type]		...
+	 */
 							function main(&$params,&$pObj)	{
-/*								
+/*
 								debug(\'Hello World!\',1);
 								debug(\'$params:\',1);
 								debug($params);
@@ -1252,7 +1292,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 								debug($pObj);
 */
 									// Adding an item!
-								$params[\'items\'][] = array($pObj->sL(\'Added label by PHP function|Tilføjet Dansk tekst med PHP funktion\'), 999);
+								$params[\'items\'][] = array($pObj->sL(\'Added label by PHP function|Tilfjet Dansk tekst med PHP funktion\'), 999);
 
 								// No return - the $params and $pObj variables are passed by reference, so just change content in then and it is passed back automatically...
 							}
@@ -1272,12 +1312,14 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 					$this->wizard->ext_tables[]=$this->sPS('
 						'.$this->WOPcomment('WOP:'.$WOP.'[conf_select_pro]:').'
-						if (TYPO3_MODE==\'BE\')	include_once(t3lib_extMgm::extPath(\''.$extKey.'\').\''.'class.'.$cN.'.php\');
+						if (TYPO3_MODE == \'BE\')	{
+							include_once(t3lib_extMgm::extPath(\''.$extKey.'\').\''.'class.'.$cN.'.php\');
+						}
 					');
 				}
 
 				$numberOfRelations = t3lib_div::intInRange($fConf["conf_relations"],1,100);
-				if ($t=="select")	{
+				if ($t == 'select')	{
 					$configL[]='\'size\' => '.t3lib_div::intInRange($fConf["conf_relations_selsize"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_relations_selsize]');
 					$configL[]='\'maxitems\' => '.$numberOfRelations.',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_relations]');
 				}
@@ -1295,7 +1337,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$DBfields[] = $fConf["fieldname"].' int(11) DEFAULT \'0\' NOT NULL,';
 				}
 			break;
-			case "rel":
+			case 'rel':
 				if ($fConf["conf_rel_type"]=="group")	{
 					$configL[]='\'type\' => \'group\',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_rel_type]');
 					$configL[]='\'internal_type\' => \'db\',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_rel_type]');
@@ -1376,12 +1418,12 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						$wizards[] = trim($this->sPS('
 							'.$this->WOPcomment('WOP:'.$WOP.'[conf_wiz_addrec]').'
 							\'add\' => array(
-								\'type\' => \'script\',
-								\'title\' => \'Create new record\',
-								\'icon\' => \'add.gif\',
+								\'type\'   => \'script\',
+								\'title\'  => \'Create new record\',
+								\'icon\'   => \'add.gif\',
 								\'params\' => array(
-									\'table\'=>\''.$wTable.'\',
-									\'pid\' => \'###CURRENT_PID###\',
+									\'table\'    => \''.$wTable.'\',
+									\'pid\'      => \'###CURRENT_PID###\',
 									\'setValue\' => \'prepend\'
 								),
 								\'script\' => \'wizard_add.php\',
@@ -1392,12 +1434,12 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						$wizards[] = trim($this->sPS('
 							'.$this->WOPcomment('WOP:'.$WOP.'[conf_wiz_listrec]').'
 							\'list\' => array(
-								\'type\' => \'script\',
-								\'title\' => \'List\',
-								\'icon\' => \'list.gif\',
+								\'type\'   => \'script\',
+								\'title\'  => \'List\',
+								\'icon\'   => \'list.gif\',
 								\'params\' => array(
-									\'table\'=>\''.$wTable.'\',
-									\'pid\' => \'###CURRENT_PID###\',
+									\'table\' => \''.$wTable.'\',
+									\'pid\'   => \'###CURRENT_PID###\',
 								),
 								\'script\' => \'wizard_list.php\',
 							),
@@ -1407,19 +1449,19 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						$wizards[] = trim($this->sPS('
 							'.$this->WOPcomment('WOP:'.$WOP.'[conf_wiz_editrec]').'
 							\'edit\' => array(
-								\'type\' => \'popup\',
-								\'title\' => \'Edit\',
-								\'script\' => \'wizard_edit.php\',
+								\'type\'                     => \'popup\',
+								\'title\'                    => \'Edit\',
+								\'script\'                   => \'wizard_edit.php\',
 								\'popup_onlyOpenIfSelected\' => 1,
-								\'icon\' => \'edit2.gif\',
-								\'JSopenParams\' => \'height=350,width=580,status=0,menubar=0,scrollbars=1\',
+								\'icon\'                     => \'edit2.gif\',
+								\'JSopenParams\'             => \'height=350,width=580,status=0,menubar=0,scrollbars=1\',
 							),
 						'));
 					}
 					if (count($wizards))	{
-						$configL[]=trim($this->wrapBody('
+						$configL[] = trim($this->wrapBody('
 							\'wizards\' => array(
-								\'_PADDING\' => 2,
+								\'_PADDING\'  => 2,
 								\'_VERTICAL\' => 1,
 								',implode(chr(10),$wizards),'
 							),
@@ -1428,31 +1470,33 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				}
 			break;
 			case "files":
-				$configL[]='\'type\' => \'group\',';
-				$configL[]='\'internal_type\' => \'file\',';
+				$configL[] = '\'type\' => \'group\',';
+				$configL[] = '\'internal_type\' => \'file\',';
 				switch($fConf["conf_files_type"])	{
 					case "images":
 						$configL[]='\'allowed\' => $GLOBALS[\'TYPO3_CONF_VARS\'][\'GFX\'][\'imagefile_ext\'],	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files_type]');
 					break;
 					case "webimages":
-						$configL[]='\'allowed\' => \'gif,png,jpeg,jpg\',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files_type]');
+						$configL[]='\'allowed\' => \'gif,png,jpeg,jpg\',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files_type]'); // TODO use web images definition from install tool
 					break;
 					case "all":
-						$configL[]='\'allowed\' => \'\',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files_type]');
-						$configL[]='\'disallowed\' => \'php,php3\',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files_type]');
+						$configL[] = '\'allowed\' => \'\',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files_type]');
+						$configL[] = '\'disallowed\' => \'php,php3\',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files_type]');
 					break;
 				}
-				$configL[]='\'max_size\' => '.t3lib_div::intInRange($fConf["conf_max_filesize"],1,1000,500).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_max_filesize]');
+				$configL[] = '\'max_size\' => '.t3lib_div::intInRange($fConf["conf_max_filesize"],1,1000,500).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_max_filesize]');
 
 				$this->wizard->EM_CONF_presets["uploadfolder"]=1;
 
-				$ulFolder = 'uploads/tx_'.str_replace("_","",$extKey);
-				$configL[]='\'uploadfolder\' => \''.$ulFolder.'\',';
-				if ($fConf["conf_files_thumbs"])	$configL[]='\'show_thumbs\' => 1,	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files_thumbs]');
+				$ulFolder  = 'uploads/tx_'.str_replace("_","",$extKey);
+				$configL[] = '\'uploadfolder\' => \''.$ulFolder.'\',';
+				if($fConf['conf_files_thumbs']) {
+					$configL[] = '\'show_thumbs\' => 1,	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files_thumbs]');
+				}
 
-				$configL[]='\'size\' => '.t3lib_div::intInRange($fConf["conf_files_selsize"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files_selsize]');
-				$configL[]='\'minitems\' => 0,';
-				$configL[]='\'maxitems\' => '.t3lib_div::intInRange($fConf["conf_files"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files]');
+				$configL[] = '\'size\' => '.t3lib_div::intInRange($fConf["conf_files_selsize"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files_selsize]');
+				$configL[] = '\'minitems\' => 0,';
+				$configL[] = '\'maxitems\' => '.t3lib_div::intInRange($fConf["conf_files"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files]');
 
 				$DBfields[] = $fConf["fieldname"]." blob,";
 			break;
@@ -1480,6 +1524,13 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$configL[]=trim($this->sPS('
 					\'type\' => \'passthrough\',
 				'));
+			break;
+			case 'inline': 
+	#$DBfields=$this->getInlineDBfields($fConf);
+				if ($DBfields) {
+					$DBfields=array_merge($DBfields, $this->getInlineDBfields($table, $fConf));
+				}
+				$configL = $this->getInlineTCAconfig($table, $fConf);
 			break;
 			default:
 				debug("Unknown type: ".(string)$fConf["type"]);
@@ -1511,19 +1562,370 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 * Return the uploadfolder for a extensionkey
 	 *
 	 * @param	string		$eKey: extension key
-	 * @return	string with path to uploadfolder
+	 * @return	string		path to uploadfolder
 	 */
 	function ulFolder($eKey)	{
 		return 'uploads/tx_'.str_replace('_','',$eKey).'/';
 	}
 
+	/**
+	 * Renders input fields of type 'inline'
+	 * Refers to the new IRRE (Inline Relational Record Editing) concept coming up on TYPO3 4.1
+	 *
+	 * @param	string		$prefix: The prefix for the fieldname
+ 	 * @param	array		$fConf: field config
+	 * @return	array		
+	 */
+	function renderInlineField($prefix,$fConf) {
+	     $optValues = array(
+		    'blank' => '',
+		);
+		
+		$optValues = $this->addOtherExtensionTables($optValues);
+		$fDetails .= '<br /><strong>Create relation to table:</strong><br />'
+			.$this->renderSelectBox(
+			  	$prefix.'[foreign_table]',
+			  	$fConf['foreign_table'],
+			  	$optValues
+			)
+			.'<br />';
+		
+		if($fConf['foreign_table'] == 'blank') {
+			$fDetails .= '<strong><span style="color:red">Required!</span></strong> There is no type "inline" without a foreign table.<br />';
+        }
+		
+		if($fConf['foreign_table'] == '_CUSTOM') {
+			$fDetails .= 'Custom table name: '
+				.$this->renderStringBox(
+					$prefix.'[conf_custom_table_name]',
+					$fConf['conf_custom_table_name'],
+					200
+				)
+				.'<br />';			
+		}
+
+		if($fConf['foreign_table'] !='blank' && $fConf['foreign_table'] !='_CUSTOM' || $fConf['conf_custom_table_name'] !='') {
+
+			$fDetails .= '<br /><strong>Relation Type:</strong><br />'
+				.$this->renderSelectBox(
+				  	$prefix.'[relation_type]',
+				  	$fConf['relation_type'],
+				  	array(
+						'1-n' => '1:N',
+						'm-n' => 'M:N'
+					)
+				)
+				.'<br />';
+
+ 			$fDetails .= '<br /><strong>Foreign field:</strong><br />'
+			.$this->renderSelectBox(
+				$prefix.'[foreign_field]',
+				$fConf['foreign_field'],
+				$this->getFieldsFromTable($fConf['foreign_table'])
+				);
+			$fDetails .= '<br />Field to store the uid of the parent record.<br />';
+
+
+
+            
+            $fDetails .= '<br /><strong>Foreign table field:</strong><br />'
+            	.$this->renderStringBox(
+            		$prefix.'[foreign_table_field]',
+            		$fConf['foreign_table_field'],
+            		200
+            	);
+            $fDetails .= '<br />If set together with <i>"foreign_field"</i> the child record knows about his parent.<br />';
+
+
+
+
+
+
+
+			$fDetails .= '<br /><strong>Foreign sortby:</strong><br />'
+				.$this->renderStringBox(
+					$prefix.'[foreign_sortby]',
+					$fConf['foreign_sortby'],
+					200
+				);
+			$fDetails .= '<br />Field which stores the sorting information.<br />';
+            
+			$fDetails .= '<br /><strong>Foreign field label:</strong><br />'
+				.$this->renderStringBox(
+					$prefix.'[foreign_label]',
+					$fConf['foreign_label'],
+					200
+				);
+			$fDetails .= '<br />Overrides the label in TCA for the inline view.<br />';
+
+        	$fDetails .= '<br /><strong>Foreign selector:</strong><br />'
+        		.$this->renderStringBox(
+        			$prefix.'[foreign_selector]',
+        			$fConf['foreign_selector'],
+        			200
+        		);                
+			$fDetails .= '<br />Points to a field of the foreign_table that is responsible for providing a selectbox. Type is usually set to <i>"select"</i> and there is also a <i>"foreign_table"</i> defined.<br />';  
+        
+			$fDetails .= '<br /><strong>Foreign unique:</strong><br />'
+				.$this->renderStringBox(
+					$prefix.'[foreign_unique]',
+					$fConf['foreign_unique'],
+					200
+				);
+			$fDetails .= '<br />Field which must be unique for all children of a parent record.<br />';
+        
+			$fDetails .= '<br /><strong>Intermediate table:</strong><br />'
+				.$this->renderStringBox(
+					$prefix.'[MM]',
+					$fConf['MM'],
+					200
+				);
+			$fDetails .= '<br />Intermediate table, like it\'s also done for MM-Relations.<br />';
+			$fDetails .= 'Table name will look like <strong>\'parent_child_mm\'</strong>.<br />Three fields \'uid_local,uid_foreign,sorting\' are created to hold the values.<br />';
+
+                // option for using symetric intermediate table
+                // provide a checkbox
+			$fDetails .= '<br />'
+				.$this->renderCheckBox(
+					$prefix.'[conf_symmetric]',
+					$fConf['conf_symmetric']
+				)
+				.'<strong>Symmetric relations</strong><br />';    
+
+			if ($fConf['conf_symmetric']) {
+				$fDetails .= '<br /><strong>Symmetric field:</strong><br />'
+					.$this->renderStringBox(
+						$prefix.'[conf_symmetric_filed]',
+						$fConf['conf_symmetric_field'],
+						200
+					);
+				$fDetails .= '<br />This works like <i>"foreign_field"</i>, but in case of using symmetric relations.<br />';
+				
+				$fDetails .= '<br /><strong>Symmetric label:</strong><br />'
+					.$this->renderStringBox(
+						$prefix.'[conf_symmetric_label]',
+						$fConf['conf_symmetric_label'],
+						200
+					);
+				$fDetails .= '<br />Overrrides the label set in TCA for the inline view and only if looking to a symmetric relation from the <i>"other"</i>side.<br />'; 
+				
+				$fDetails .= '<br /><strong>Symmetric sortby:</strong><br />'
+					.$this->renderStringBox(
+						$prefix.'[conf_symmetric_sortby]',
+						$fConf['conf_symmetric_sortby'],
+						200
+					);
+				$fDetails .= '<br />This works like <i>"foreign_sortby"</i>, but in case of using symmetric relations.<br />'; 
+        	}
+		}
+		
+		return $fDetails;
+	}
+
+	/**
+	 * Create SQL definitions according to the appropriate input values
+	 *
+	 * @param	string		$table: current table name 
+	 * @param	array		$fConf: array holding field configuration values    
+	 * @return	array		DB fields definition
+	 */
+	function getInlineDBfields ($table, $fConf) { 
+			// field type set to 'blob' to fit csv values
+		if($fConf['conf_ff'] == 0) {
+			$DBfields[] = $fConf['fieldname'].' blob NOT NULL,';
+		} elseif ($fConf['MM']) {
+			$DBfields[] = $fConf['fieldname'].' int(10) DEFAULT \'0\' NOT NULL,';
+		} else {
+			$DBfields[] = $fConf['fieldname'].' tinytext NOT NULL,';
+		}
+
+			// FIXME: put the following case statments into separate function
+		if($fConf['foreign_field']) {
+			foreach($this->wizard->wizArray['tables'] as $k => $v) {
+				$count = '';
+				if(preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['foreign_table'])) {
+					foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field) {
+						if(preg_match('/'.$fConf['foreign_field'].'/', $field['fieldname'], $match)) {
+							print_r('Error: Field name already exists!');  
+						}
+						$count++; 
+					}
+
+					if(!count($match)) {
+						$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_field'],'type'=>'passthrough'); 
+					}
+				}
+			}
+		}
+             
+		if($fConf['foreign_table_field']) {
+			foreach ($this->wizard->wizArray['tables'] as $k => $v) {
+				$count='';
+
+				if(preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['foreign_table'])) {
+					foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field) {
+						if(preg_match('/'.$fConf['foreign_table_field'].'/', $field['fieldname'], $match)) {
+							print_r('Error: Field name already exists!');  
+						}
+						$count++; 
+					}
+
+					if(!count($match)) {
+						$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_table_field'],'type'=>'passthrough'); 
+					}
+				}
+			}
+		}
+
+		if($fConf['foreign_sortby']) {
+			foreach($this->wizard->wizArray['tables'] as $k => $v) {
+				$count='';
+
+				if(preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['foreign_table'])) {
+					foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field) {
+						if(preg_match('/'.$fConf['foreign_sortby'].'/', $field['fieldname'], $match)) {
+							print_r('Error: Field name already exists!');  
+						}
+						$count++; 
+					}
+					if(!count($match)) {
+						$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_sortby'],'type'=>'passthrough'); 
+					}
+				}
+			}
+		}
+
+		if($fConf['foreign_selector']) {
+			foreach($this->wizard->wizArray['tables'] as $k => $v) {
+				$count = '';
+
+				if(preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['foreign_selector'])) {
+					foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field) {
+						if (preg_match('/'.$fConf['foreign_selector'].'/', $field['fieldname'], $match)) {
+							print_r('Error: Field name already exists!');  
+						}
+						$count++; 
+					}
+					if(!count($match)) {
+						$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_selector'],'type'=>'select'); 
+					}
+				}
+			}
+		}
+
+		if($fConf['foreign_unique']) { 
+			foreach ($this->wizard->wizArray['tables'] as $k => $v) {
+				$count='';
+
+				if (preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['foreign_unique'])) {
+					foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field) {
+						if (preg_match('/'.$fConf['foreign_unique'].'/', $field['fieldname'], $match)) {
+							print_r('Error: Field name already exists!');  
+						}
+						$count++; 
+					}
+					if(!count($match)) {
+						$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_unique'],'type'=>'select'); 
+					}
+				}
+			}
+		}
+
+		if($fConf['MM']) { 
+			$intermediateTable = $this->sPS("
+				#
+				# Table structure for intermediate table '".$table."_".$fConf['MM']."_mm'
+				#
+				CREATE TABLE ".$table."_".$fConf['MM']."_mm (
+					uid_local int(11) NOT NULL,
+					uid_foreign int(11) NOT NULL,
+					sorting int(10) NOT NULL,
+				);
+			"); 
+			$this->wizard->ext_tables_sql[] = chr(10).$intermediateTable.chr(10);
+		}
+
+		if($fConf['conf_symmetric']) {
+ 			if($fConf['conf_symmetric_field']) { 
+				foreach ($this->wizard->wizArray['tables'] as $k => $v) {
+					$count='';
+
+					if(preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['conf_symmetric_field'])) {
+						foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field) {
+							if (preg_match('/'.$fConf['conf_symmetric_field'].'/', $field['fieldname'], $match)) {
+								print_r('Error: Field name already exists!');  
+							}
+							$count++; 
+						}
+						if(!count($match)) {
+							$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['conf_symmetric_field'],'type'=>'select'); 
+						}
+					}
+				}
+			}
+
+			if($fConf['conf_symmetric_sortby']) { 
+				foreach ($this->wizard->wizArray['tables'] as $k => $v) {
+					$count = '';
+
+					if (preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['conf_symmetric_sortby'])) {
+						foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field) {
+							if (preg_match('/'.$fConf['conf_symmetric_sortby'].'/', $field['fieldname'], $match)) {
+								print_r('Error: Field name already exists!');  
+							}
+							$count++; 
+						}
+						if(!count($match)) {
+							$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['conf_symmetric_sortby'],'type'=>'passthrough'); 
+						}
+					} 
+				}
+			}
+		}
+
+		return $DBfields;
+	}
+
+	/**
+	 * Field configuration for setting up the correct TCA description.
+	 *
+	 * @param	string  	current table name
+	 * @param	array		$fConf: array holding field configuration values
+	 * @return	array		keys/values that become the table TCA definition
+	 */
+	function getInlineTCAconfig($table,$fConf) {
+		$configL[] = '\'type\' => \'inline\',';
+			foreach($fConf as $k => $v) {
+				if($v && $v !=1 && ereg('^foreign',$k)) {
+					$configL[] = '\''.$k.'\' => \''.$fConf[''.$k.''].'\','; 	
+				}
+
+				if($k == 'conf_symmetric_label' && $fConf[''.$k.'']) {
+					$configL[] = '\'symmetric_label\' => \''.$fConf[''.$k.''].'\',';
+				}
+			}
+
+				// maybe configurable later on. Depends on the options supplied by IRRE
+			$configL[] = '\'minitems\'   => \'0\',';
+			$configL[] = '\'maxitems\'   => \'10\',';
+
+			$configL[] = '\'appearance\' => array(
+				\'collapseAll\'           => \'1\',
+				\'expandSingle\'          => \'1\',
+				\'useSortable\'           => \'1\',
+				\'newRecordLinkAddTitle\' => \'1\',
+				\'newRecordLinkPosition\' => \'top\',
+				\'useCombination\'        => \'0\',
+			)';
+
+		return $configL;
+	}
 
 }
 
-// Include ux_class extension?
+	// Include ux_class extension?
 if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/kickstarter/sections/class.tx_kickstarter_section_fields.php']) {
 	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/kickstarter/sections/class.tx_kickstarter_section_fields.php']);
 }
-
 
 ?>

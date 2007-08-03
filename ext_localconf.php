@@ -14,7 +14,7 @@ $TYPO3_CONF_VARS['EXTCONF']['kickstarter']['sections']['languages'] = array(
 	'classname'   => 'tx_kickstarter_section_languages',
 	'filepath'    => 'EXT:kickstarter/sections/class.tx_kickstarter_section_languages.php',
 	'title'       => 'Setup languages',
-	'description' => 'Select the system languages you want to use in your extension.',
+	'description' => 'Select the system languages you want to use in your extension. English is TYPO3\'s default language, therefore you don\'t need to select it anymore.',
 	'singleItem'  => true,
 );
 

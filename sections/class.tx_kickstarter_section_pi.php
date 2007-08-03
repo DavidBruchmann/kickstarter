@@ -60,7 +60,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				$this->renderStringBox_lang('title',$ffPrefix,$piConf);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
-			$subContent = $this->renderCheckBox($ffPrefix.'[plus_user_obj]',$piConf['plus_user_obj']).'Plugins are generated as cachable USER cObjects by default. Check this checkbox to generate an uncached USER_INT cObject.<br />';
+			$subContent = $this->renderCheckBox($ffPrefix.'[plus_user_obj]',$piConf['plus_user_obj']).'By default plugins are generated as cachable USER cObjects. Check this checkbox to generate an uncached USER_INT cObject.<br />';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 			$subContent = $this->renderCheckBox($ffPrefix.'[plus_not_staticTemplate]',$piConf['plus_not_staticTemplate']).'Enable this option if you want the TypoScript code to be set by default. Otherwise the code will go into a static template file which must be included in the template record (it\'s <em>NOT</em> recommended to set this option).<br />';
@@ -85,8 +85,8 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 				}
 			}
-			
-   			// Insert Plugin
+
+				// Insert Plugin
 			if (is_array($this->wizard->wizArray['tables']))	{
 				$optValues = array(
 					'0' => '',
@@ -136,8 +136,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 			$subContent=$this->renderRadioBox($ffPrefix.'[addType]',$piConf['addType'],'ce').
 				$this->textSetup('Add as a totally new Content Element type',
 					'You can also take the plunge into a whole new content element type! Scarry eh?'.
-					$this->resImg('pi_ce.png').
-				''
+					$this->resImg('pi_ce.png')
 				);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
@@ -419,20 +418,20 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							 * @param	array		$conf: The PlugIn Configuration
 							 * @return	The content that should be displayed on the website
 							 */
-							function main($content,$conf)	{
+							function main($content, $conf)	{
 								switch((string)$conf[\'CMD\'])	{
 									case \'singleView\':
 										list($t) = explode(\':\',$this->cObj->currentRecord);
 										$this->internal[\'currentTable\']=$t;
 										$this->internal[\'currentRow\']=$this->cObj->data;
-										return $this->pi_wrapInBaseClass($this->singleView($content,$conf));
+										return $this->pi_wrapInBaseClass($this->singleView($content, $conf));
 									break;
 									default:
 										if (strstr($this->cObj->currentRecord,\'tt_content\'))	{
 											$conf[\'pidList\'] = $this->cObj->data[\'pages\'];
 											$conf[\'recursive\'] = $this->cObj->data[\'recursive\'];
 										}
-										return $this->pi_wrapInBaseClass($this->listView($content,$conf));
+										return $this->pi_wrapInBaseClass($this->listView($content, $conf));
 									break;
 								}
 							}
@@ -446,7 +445,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							 * @param	array		$conf: PlugIn Configuration
 							 * @return	HTML list of table entries
 							 */
-							function listView($content,$conf)	{
+							function listView($content, $conf)	{
 								$this->conf=$conf;		// Setting the TypoScript passed to this function in $this->conf
 								$this->pi_setPiVarDefaults();
 								$this->pi_loadLL();		// Loading the LOCAL_LANG values
@@ -457,7 +456,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 									$this->internal[\'currentTable\'] = \''.$tableName.'\';
 									$this->internal[\'currentRow\'] = $this->pi_getRecord(\''.$tableName.'\',$this->piVars[\'showUid\']);
 
-									$content = $this->singleView($content,$conf);
+									$content = $this->singleView($content, $conf);
 									return $content;
 								} else {
 									$items=array(
@@ -551,7 +550,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								 * @param	array		$conf: The PlugIn configuration
 								 * @return	HTML of a single database entry
 								 */
-								function singleView($content,$conf)	{
+								function singleView($content, $conf)	{
 									$this->conf=$conf;
 									$this->pi_setPiVarDefaults();
 									$this->pi_loadLL();
@@ -578,7 +577,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								 * @param	array		$conf: The PlugIn configuration
 								 * @return	HTML of a single database entry
 								 */
-								function singleView($content,$conf)	{
+								function singleView($content, $conf)	{
 									$this->conf=$conf;
 									$this->pi_setPiVarDefaults();
 									$this->pi_loadLL();
@@ -937,7 +936,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 						 * @param	array		$conf: The PlugIn configuration
 						 * @return	The content that is displayed on the website
 						 */
-						function main($content,$conf)	{
+						function main($content, $conf)	{
 							$this->conf=$conf;
 							$this->pi_setPiVarDefaults();
 							$this->pi_loadLL();
@@ -1012,7 +1011,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					 * @param	array		$conf: The PlugIn configuration
 					 * @return	The content that is displayed on the website (Textbox)
 					 */
-					function main($content,$conf)	{
+					function main($content, $conf)	{
 
 							// Processes the image-field content:
 							// $conf[\'IMAGEcObject.\'] is passed to the getImage() function as TypoScript
@@ -1067,7 +1066,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					 * @param	array		$conf: The PlugIn configuration
 					 * @return	The content that is displayed on the website (Header)
 					 */
-					function main($content,$conf)	{
+					function main($content, $conf)	{
 						return \'<H1>\'.$this->cObj->data[\'header\'].\'</H1>\';
 					}
 				');
@@ -1082,7 +1081,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					 * @param	array		$conf: The PlugIn configuration
 					 * @return	The content that is displayed on the website (Menu)
 					 */
-					function main($content,$conf)	{
+					function main($content, $conf)	{
 							// Get the PID from which to make the menu.
 							// If a page is set as reference in the \'Startingpoint\' field, use that
 							// Otherwise use the page\'s id-number from TSFE
@@ -1133,7 +1132,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					 * @param	array		$conf: The PlugIn configuration
 					 * @return	The content that is displayed on the website (TypoTag)
 					 */
-					function main($content,$conf)	{
+					function main($content, $conf)	{
 						$tag_content = $this->cObj->getCurrentVal();
 						return \'<b>\'.$this->tellWhatToDo(strtoupper($tag_content)).\'</b>\';
 					}
@@ -1158,7 +1157,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					 * @param	array		$conf: The PlugIn configuration
 					 * @return	The content that is displayed on the website
 					 */
-					function main($content,$conf)	{
+					function main($content, $conf)	{
 						return \'Hello World!<HR>
 							Here is the TypoScript passed to the method:\'.
 									t3lib_div::view_array($conf);
@@ -1253,7 +1252,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 			$this->wizard->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[plus_wiz]:').'
-				if (TYPO3_MODE==\'BE\')	$TBE_MODULES_EXT[\'xMOD_db_new_content_el\'][\'addElClasses\'][\''.$cN.'_wizicon\'] = t3lib_extMgm::extPath($_EXTKEY).\'pi'.$k.'/class.'.$cN.'_wizicon.php\';
+				if (TYPO3_MODE == \'BE\')	$TBE_MODULES_EXT[\'xMOD_db_new_content_el\'][\'addElClasses\'][\''.$cN.'_wizicon\'] = t3lib_extMgm::extPath($_EXTKEY).\'pi'.$k.'/class.'.$cN.'_wizicon.php\';
 			');
 		}
 	}
