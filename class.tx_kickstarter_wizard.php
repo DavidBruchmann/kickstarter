@@ -121,6 +121,15 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		$this->initWizArray();
 		$this->sections = $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['sections'];
 
+
+		/* HOOK: Place a hook here, so additional things can be done */
+		if(is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['wizard_beforeSectionsHook'])) {
+			foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['wizard_beforeSectionsHook'] as $_funcRef) {
+				$conf = array('pObj' => $this);
+				t3lib_div::callUserFunction($_funcRef, $conf, $this);
+			}
+		}
+
 		foreach($this->sections as $k => $v) {
 			$this->options[$k] = array($v['title'],$v['description']);
 		}

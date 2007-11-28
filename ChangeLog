@@ -1,3 +1,7 @@
+2007-11-28 Ingmar Schlecht  <ingmar@typo3.org>
+
+	* Added hook "wizard_beforeSectionsHook" in class.tx_kickstarter_wizard.php
+
 2007-08-03 Ingo Renner	<typo3@ingo-renner.com>
 
 	* added initial version of IRRE support and vaious other smaller code clean ups from T3DD07, thanks to Peter and Olly!
