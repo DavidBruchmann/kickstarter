@@ -1,3 +1,7 @@
+2008-02-14 Dmitry Dulepov  <dmitry@typo3.org>
+
+	* Fixed missing parameter error when updating table properties
+
 2007-11-28 Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Added hook "wizard_beforeSectionsHook" in class.tx_kickstarter_wizard.php
@@ -14,7 +18,7 @@
 2007-07-12 Peter Foerger	<p.foerger@vke-design.de>
 
 	* FIX fixed bug 5458: Kickstarter reports the wrong path after adding back-end functionality.
-	
+
 2007-07-12 Peter Foerger	<p.foerger@vke-design.de>
 
 	* FIX fixed bug 5525: Reserved fieldnames @ extending a table
@@ -30,7 +34,7 @@
 2007-03-06 Ingo Renner <typo3@ingo-renner.com>
 
 	* Lots of thanks to Peter Foerger for the help with this update
-	* RMV 0002491: Remove commented-out code from the kickstarter, thanks to Oliver Klee 
+	* RMV 0002491: Remove commented-out code from the kickstarter, thanks to Oliver Klee
 	* ADD 0004539: Manage flex fields, thanks to Jean-Baptiste Rio
 	* UPD 0003723: ['feInterface'] section is depricated
 	* ADD 0004850: sidemenu()::singles should be configurable
@@ -39,7 +43,7 @@
 
 	* CHG more single quotes
 	* ADD added TODO file
-	
+
 2007-01-30 Ingo Renner <typo3@ingo-renner.com>
 
 	* FIX path for TS files is now lowercased
@@ -47,7 +51,7 @@
 2007-01-24 Peter Foerger <p.foerger@vke-design.de>
 
 	* ADD new feature: initial release of the IRRE integration
-	
+
 2006-12-19 Peter Foerger <p.foerger@vke-design.de>
 
 	* FIX fixed bug 0004563: kickstarter uses .php instead of .xml lang files
@@ -88,7 +92,7 @@
 
 	* FIX fixed bug #3816: The files wizard_form.dat and wizard_form.html is not saved
 	* FIX fixed bug #3715: Enable versioning: ext_tables.sql incompletely?
-	* ADD addded missing eval method "md5" for TCA generation (bug #3792), thanks to Jan-Hendrik 
+	* ADD addded missing eval method "md5" for TCA generation (bug #3792), thanks to Jan-Hendrik
 	* FIX fixed bug #3743: created tca.php: add field "t3ver_label" if versioning enabled
 
 2006-07-02 Ingo Renner <typo3@ingo-renner.com>
@@ -117,7 +121,7 @@
 2006-03-06  Kasper Skaarhoej
 
 	* Kickstarter now produces llXML files (locallang-XML) instead of locallang*.php files.
-	
+
 2006-02-22  Kasper Skaarhoej
 
 	* Complies with new EM (function that writes extension to file system has changed in 4.0 EM)
@@ -130,11 +134,11 @@
 2005-11-15  Ingo Renner  <typo3@ingo-renner.com>
 
 	* added recent translations from TER
-	
+
 2005-11-12  Ingo Renner  <typo3@ingo-renner.com>
 
 	* Merged Version from TYPO3 v3.8.0 with CVS
-	
+
 2005-09-15  Ingmar Schlecht  <ingmar@typo3.org>
 
 	* Fixed one more pair of quotes for SQL default values

@@ -81,7 +81,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$c = array(0);
 			$this->usedNames = array();
 			if (is_array($piConf['fields']))	{
-				$piConf['fields'] = $this->cleanFieldsAndDoCommands($piConf['fields'],$this->sectionID,$action[1]);
+				$piConf['fields'] = $this->cleanFieldsAndDoCommands($piConf['fields'],$this->sectionID,$action[1], $piConf['tablename']);
 
 				// Do it for real...
 				$lines[] = '<tr'.$this->bgCol(1).'><td><strong> Fields Overview </strong></td></tr>';
@@ -236,18 +236,18 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 				}
 			}
 		}
-		
+
 		return $addFields;
 	}
 
 	/**
 	 * renders field overview
-	 * 
+	 *
 	 * @author	Luite van Zelst <luite@aegee.org>
 	 * @param	string		prefix (unused?)
 	 * @param	array		field configuration
 	 * @param	boolean		dontRemove (unused?)
-	 * @return	string		table row with field data 
+	 * @return	string		table row with field data
 	 */
 	function renderFieldOverview($prefix, $fConf, $dontRemove=0)	{
 			// Sorting
@@ -270,7 +270,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			'rel'             => 'Database relation',
 			'files'           => 'Files',
 			'flex'            => 'Flex',
-			'inline'          => 'Inine relation', 
+			'inline'          => 'Inine relation',
 		);
 		$optEval = array(
 			''         => '',
@@ -364,7 +364,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			\'crdate\'    => \'crdate\',
 			\'cruser_id\' => \'cruser_id\',
 		',0));
-		
+
 		$DBfields[] = trim($this->sPS('
 			uid int(11) NOT NULL auto_increment,
 			pid int(11) DEFAULT \'0\' NOT NULL,
@@ -388,7 +388,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$DBfields[] = 't3ver_count int(11) DEFAULT \'0\' NOT NULL,';
 			$DBfields[] = 't3ver_tstamp int(11) DEFAULT \'0\' NOT NULL,';
 			$DBfields[] = 't3_origuid int(11) DEFAULT \'0\' NOT NULL,';
-			
+
 			$columns['t3ver_label'] = trim($this->sPS('
 				\'t3ver_label\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[versioning]').'
 					\'label\'  => \'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel\',
@@ -576,12 +576,12 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		$keys = '
 				PRIMARY KEY (uid),
 				KEY parent (pid)';
-			
+
 		if ($config['versioning'])	{
 			$keys .= ',
-				KEY t3ver_oid (t3ver_oid,t3ver_wsid)				
-			';			
-		}		
+				KEY t3ver_oid (t3ver_oid,t3ver_wsid)
+			';
+		}
 		$DBfields[] = $this->sPS( $keys.'
 		');
 		$createTable = $this->wrapBody('
