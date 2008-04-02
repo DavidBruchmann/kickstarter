@@ -46,7 +46,7 @@ class tx_kickstarter_sectionbase {
 
 	/* Variable-Prefix used for the generation of input-fields */
 	var $varPrefix = 'kickstarter';
-	
+
 	/* renders the wizard for this section */
 	function render_wizard() {
 	}
@@ -291,7 +291,7 @@ class tx_kickstarter_sectionbase {
 	}
 
 	/**
-	 * adds 3 table rows with alternating colors, the first row containing a 
+	 * adds 3 table rows with alternating colors, the first row containing a
 	 * header and the third row as spacer
 	 *
 	 * @param	array		array of lines
@@ -651,12 +651,12 @@ class tx_kickstarter_sectionbase {
 			if (is_array($labels))	{
 				while(list($l,$v)=each($labels))	{
 					if(strcmp($v[0], '')) {
-						$outputArray['data'][$lK][$l] = 
+						$outputArray['data'][$lK][$l] =
 							$GLOBALS['LANG']->csConvObj->utf8_encode(
 								$v[0],
 								$GLOBALS['LANG']->charSet
 							);
-					}	
+					}
 				}
 			}
 		}
@@ -688,7 +688,7 @@ class tx_kickstarter_sectionbase {
 		$XML.= t3lib_div::array2xml($outputArray,'',0,'T3locallang',0,$options);
 
 		return $XML;
-	}	
+	}
 
 	/**
 	 * generates conf.php for BE modules
@@ -1022,10 +1022,16 @@ class tx_kickstarter_sectionbase {
 			*
 			*  This copyright notice MUST APPEAR in all copies of the script!
 			***************************************************************/
+			/**
+ 			 * [CLASS/FUNCTION INDEX of SCRIPT]
+ 			 *
+ 			 * Hint: use extdeveval to insert/update function index above.
+ 			 */
+
 		'));
-		
+
 		$file .= "\n\n".$require."\n\n\n";
-		
+
 		$file .=trim($this->sPS('
 			/**
 			 * '.$descr.'
@@ -1111,27 +1117,28 @@ class tx_kickstarter_sectionbase {
 		}
 
 		if (is_array($this->wizard->EM_CONF_presets['dependencies']) || $this->wizard->wizArray['emconf'][1]['dependencies'])	{
-			
+
 			if(!is_array($this->wizard->EM_CONF_presets['dependencies'])) {
-				// if dependencies haven't been preset 
+				// if dependencies haven't been preset
 				// in section_fields or section_modulefunction
 				$this->wizard->EM_CONF_presets['dependencies'] = array();
 			}
-			
+
 			$aa = t3lib_div::trimExplode(
 				',',
 				strtolower($this->wizard->wizArray['emconf'][1]['dependencies']),
 				1
 			);
-			$EM_CONF[$prefix.'dependencies'] = implode(
-				',',
-				array_unique(
+			$deps = array_unique(
 					array_merge(
 						$this->wizard->EM_CONF_presets['dependencies'],
 						$aa
 					)
-				)
-			);
+				);
+			$EM_CONF[$prefix.'dependencies'] = implode(',', $deps);
+			foreach ($deps as $dep) {
+				$EM_CONF[$prefix.'constraints']['depends'][$dep] = '';
+			}
 		}
 		unset($this->wizard->_addArray['dependencies']);
 		if (is_array($this->wizard->EM_CONF_presets['module']))	{
@@ -1159,15 +1166,15 @@ class tx_kickstarter_sectionbase {
 		}
 		return $v;
 	}
-	
+
 	/**
 	 * Creates a simple flexform datastructure to provide some dummy content.
-	 *	
+	 *
 	 * @return	string		file content
 	 */
 	function createFlexForm()	{
 		$file =trim($this->sPS('
-        <T3DataStructure>
+		<T3DataStructure>
 			<meta>
 				<langDisable>1</langDisable>
 			</meta>
@@ -1196,7 +1203,7 @@ class tx_kickstarter_sectionbase {
 			</ROOT>
 		</T3DataStructure>
 		'));
-		
+
 		return $file;
 	}
 
