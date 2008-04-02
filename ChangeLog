@@ -1,5 +1,9 @@
 2008-02-14 Dmitry Dulepov  <dmitry@typo3.org>
 
+	* Changed blob columns to text
+
+2008-02-14 Dmitry Dulepov  <dmitry@typo3.org>
+
 	* Fixed missing parameter error when updating table properties
 
 2007-11-28 Ingmar Schlecht  <ingmar@typo3.org>

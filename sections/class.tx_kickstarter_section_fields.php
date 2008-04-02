@@ -29,7 +29,7 @@ require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionb
 
 
 /**
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  * @author	Ingo Renner <typo3@ingo-renner.com>
  */
 class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
@@ -1406,7 +1406,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					");
 					$this->wizard->ext_tables_sql[]=chr(10).$createTable.chr(10);
 				} elseif (t3lib_div::intInRange($fConf["conf_relations"],1,100)>1 || $fConf["conf_rel_type"]=="group") {
-					$DBfields[] = $fConf["fieldname"]." blob,";
+					$DBfields[] = $fConf["fieldname"]." text,";
 				} else {
 					$DBfields[] = $fConf["fieldname"].' int(11) DEFAULT \'0\' NOT NULL,';
 				}
@@ -1498,7 +1498,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$configL[] = '\'minitems\' => 0,';
 				$configL[] = '\'maxitems\' => '.t3lib_div::intInRange($fConf["conf_files"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files]');
 
-				$DBfields[] = $fConf["fieldname"]." blob,";
+				$DBfields[] = $fConf["fieldname"]." text,";
 			break;
 			case 'flex': 
 				$DBfields[] = $fConf['fieldname'] . ' mediumtext,';
@@ -1730,9 +1730,9 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 * @return	array		DB fields definition
 	 */
 	function getInlineDBfields ($table, $fConf) { 
-			// field type set to 'blob' to fit csv values
+			// field type set to 'text' to fit csv values
 		if($fConf['conf_ff'] == 0) {
-			$DBfields[] = $fConf['fieldname'].' blob NOT NULL,';
+			$DBfields[] = $fConf['fieldname'].' text NOT NULL,';
 		} elseif ($fConf['MM']) {
 			$DBfields[] = $fConf['fieldname'].' int(10) DEFAULT \'0\' NOT NULL,';
 		} else {
