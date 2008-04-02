@@ -24,7 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  * @author	Ingo Renner	<typo3@ingo-renner.com>
  */
 
@@ -167,7 +167,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 		/* HOOK: Place a hook here, so additional output can be integrated */
 		if(is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['add_cat_pi'])) {
 		  foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['add_cat_pi'] as $_funcRef) {
-		    $lines = t3lib_div::callUserFunction($_funcRef, $lines, $this->wizard);
+			$lines = t3lib_div::callUserFunction($_funcRef, $lines, $this->wizard);
 		  }
 		}
 
@@ -200,13 +200,13 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					".($config['apply_extended']?"\$TCA['tt_content']['types']['list']['subtypes_addlist'][\$_EXTKEY.'_pi".$k."']='".$this->wizard->_apply_extended_types[$config['apply_extended']]."';":"")."
 				");
 
-				$this->wizard->ext_localconf[]=$this->sPS('
-					'.$this->WOPcomment('WOP:'.$WOP.'[addType] / '.$WOP.'[tag_name]')."
-					  ## Extending TypoScript from static template uid=43 to set up userdefined tag:
-					t3lib_extMgm::addTypoScript(\$_EXTKEY,'editorcfg','
-						tt_content.CSS_editor.ch.".$cN." = < plugin.".$cN.".CSS_editor
-					',43);
-				");
+//				$this->wizard->ext_localconf[]=$this->sPS('
+//					'.$this->WOPcomment('WOP:'.$WOP.'[addType] / '.$WOP.'[tag_name]')."
+//					  ## Extending TypoScript from static template uid=43 to set up userdefined tag:
+//					t3lib_extMgm::addTypoScript(\$_EXTKEY,'editorcfg','
+//						tt_content.CSS_editor.ch.".$cN." = < plugin.".$cN.".CSS_editor
+//					',43);
+//				");
 			break;
 			case 'textbox':
 				$setType='splash_layout';
@@ -445,11 +445,11 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							 * @param	array		$conf: PlugIn Configuration
 							 * @return	HTML list of table entries
 							 */
-							function listView($content, $conf)	{
-								$this->conf=$conf;		// Setting the TypoScript passed to this function in $this->conf
+							function listView($content, $conf) {
+								$this->conf = $conf;		// Setting the TypoScript passed to this function in $this->conf
 								$this->pi_setPiVarDefaults();
 								$this->pi_loadLL();		// Loading the LOCAL_LANG values
-								'.(!$cache ? '$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
+								'.(!$cache ? '$this->pi_USER_INT_obj = 1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
 								$lConf = $this->conf[\'listView.\'];	// Local settings for the listView function
 
 								if ($this->piVars[\'showUid\'])	{	// If a single element should be displayed:
@@ -550,11 +550,11 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								 * @param	array		$conf: The PlugIn configuration
 								 * @return	HTML of a single database entry
 								 */
-								function singleView($content, $conf)	{
-									$this->conf=$conf;
+								function singleView($content, $conf) {
+									$this->conf = $conf;
 									$this->pi_setPiVarDefaults();
 									$this->pi_loadLL();
-									'.(!$cache ? '$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
+									'.(!$cache ? '$this->pi_USER_INT_obj = 1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
 
 										// This sets the title of the page for use in indexed search results:
 									if ($this->internal[\'currentRow\'][\'title\'])	$GLOBALS[\'TSFE\']->indexedDocTitle=$this->internal[\'currentRow\'][\'title\'];
@@ -577,11 +577,11 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								 * @param	array		$conf: The PlugIn configuration
 								 * @return	HTML of a single database entry
 								 */
-								function singleView($content, $conf)	{
-									$this->conf=$conf;
+								function singleView($content, $conf) {
+									$this->conf = $conf;
 									$this->pi_setPiVarDefaults();
 									$this->pi_loadLL();
-									'.(!$cache ? '$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
+									'.(!$cache ? '$this->pi_USER_INT_obj = 1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
 
 										// This sets the title of the page for use in indexed search results:
 									if ($this->internal[\'currentRow\'][\'title\'])	$GLOBALS[\'TSFE\']->indexedDocTitle=$this->internal[\'currentRow\'][\'title\'];
@@ -685,7 +685,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							}
 						');
 
-						$CSS_editor_code = '';
+/*						$CSS_editor_code = '';
 						$pCSSSel = str_replace('_','-',$cN);
 
 						if ($config['list_default_listmode'])	{
@@ -889,7 +889,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								',$CSS_editor_code,'
 							}
 						'),1);
-
+*/
 						$this->addFileToFileArray($config['plus_not_staticTemplate']?'ext_typoscript_setup.txt':$pathSuffix.'static/setup.txt',$this->sPS('
 							plugin.'.$cN.' {
 								CMD =
@@ -936,11 +936,11 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 						 * @param	array		$conf: The PlugIn configuration
 						 * @return	The content that is displayed on the website
 						 */
-						function main($content, $conf)	{
-							$this->conf=$conf;
+						function main($content, $conf) {
+							$this->conf = $conf;
 							$this->pi_setPiVarDefaults();
 							$this->pi_loadLL();
-							'.(!$cache ? '$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
+							'.(!$cache ? '$this->pi_USER_INT_obj = 1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
 
 							$content=\'
 								<strong>This is a few paragraphs:</strong><br />
@@ -962,7 +962,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					');
 
 
-					$CSS_editor_code='';
+/*					$CSS_editor_code='';
 					$pCSSSel = str_replace('_','-',$cN);
 
 					$this->addFileToFileArray($config['plus_not_staticTemplate']?'ext_typoscript_editorcfg.txt':$pathSuffix.'static/editorcfg.txt',$this->sPS('
@@ -991,7 +991,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							t3lib_extMgm::addStaticFile($_EXTKEY, \''.$pathSuffix.'static/\', \''.addslashes(trim($config['title'])).'\');
 						');
 					}
-				}
+*/				}
 			break;
 			case 'textbox':
 				$this->wizard->ext_localconf[]=$this->sPS('
@@ -1040,7 +1040,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							// And returns content
 						return $finalContent;
 					}
-					
+
 					/**
 					 * This calls a function in the TypoScript API which will return an image tag with the image
 					 * processed according to the parsed TypoScript content in the $TSconf array.
@@ -1165,7 +1165,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				');
 			break;
 		}
-		
+
 		$indexRequire = 'require_once(PATH_tslib.\'class.tslib_pibase.php\');';
 		$indexContent = $this->wrapBody('
 			class '.$cN.' extends tslib_pibase {
@@ -1227,13 +1227,13 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					function includeLocalLang()	{
 						$llFile = t3lib_extMgm::extPath(\''.$extKey.'\').\'locallang.xml\';
 						$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS[\'LANG\']->lang);
-						
+
 						return $LOCAL_LANG;
 					}
 				}
 			',
 			0);
-			
+
 			$this->addFileToFileArray(
 				$pathSuffix.'class.'.$cN.'_wizicon.php',
 				$this->PHPclassFile(
@@ -1252,7 +1252,9 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 			$this->wizard->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[plus_wiz]:').'
-				if (TYPO3_MODE == \'BE\')	$TBE_MODULES_EXT[\'xMOD_db_new_content_el\'][\'addElClasses\'][\''.$cN.'_wizicon\'] = t3lib_extMgm::extPath($_EXTKEY).\'pi'.$k.'/class.'.$cN.'_wizicon.php\';
+				if (TYPO3_MODE == \'BE\') {
+					$TBE_MODULES_EXT[\'xMOD_db_new_content_el\'][\'addElClasses\'][\''.$cN.'_wizicon\'] = t3lib_extMgm::extPath($_EXTKEY).\'pi'.$k.'/class.'.$cN.'_wizicon.php\';
+				}
 			');
 		}
 	}
