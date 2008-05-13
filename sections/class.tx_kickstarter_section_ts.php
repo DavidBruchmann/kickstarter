@@ -33,7 +33,7 @@ require_once(PATH_t3lib.'class.t3lib_basicfilefunc.php');
 
 class tx_kickstarter_section_ts extends tx_kickstarter_sectionbase {
   var $sectionID = 'ts';
-  
+
 	/**
 	 * Renders the form in the kickstarter
 	 *
@@ -54,7 +54,7 @@ class tx_kickstarter_section_ts extends tx_kickstarter_sectionbase {
 			);
 			$piConf   = $this->wizard->wizArray[$this->sectionID][$action[1]];
 			$ffPrefix ='['.$this->sectionID.']['.$action[1].']';
-			
+
 				// Enter title of the static extension template
 			$subContent='<strong>Enter a title for the static extension template:</strong><br />'.
 			$this->renderStringBox($ffPrefix.'[title]',$piConf['title']);
@@ -99,18 +99,18 @@ class tx_kickstarter_section_ts extends tx_kickstarter_sectionbase {
 	function render_extPart($k,$config,$extKey) {
 
 		$WOP = '[ts]['.$k.']';
-		$tsPath = strtolower(t3lib_basicFileFunctions::cleanFileName($config['title']));		
+		$tsPath = strtolower(t3lib_basicFileFunctions::cleanFileName($config['title']));
 		$pathSuffix = 'static/'.$tsPath.'/';
-		
+
 		$this->addFileToFileArray(
-			$pathSuffix.'constants.txt', 
+			$pathSuffix.'constants.txt',
 			$config['constants']
 		);
 		$this->addFileToFileArray(
 			$pathSuffix.'setup.txt',
 			$config['setup']
 		);
-		
+
 		// add TS definition to ext_tables.php
 		$this->wizard->ext_tables[] = $this->sPS(
 			$this->WOPcomment('WOP:'.$WOP).chr(10).

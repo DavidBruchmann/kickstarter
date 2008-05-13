@@ -70,7 +70,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	 */
 	function tx_kickstarter_wizard() {
 		$this->modData = t3lib_div::_POST($this->varPrefix);
-				
+
 		// getting the available languages
 		$theLanguages = t3lib_div::trimExplode('|', TYPO3_languages);
 		$llFile = t3lib_extMgm::extPath('setup').'/mod/locallang.xml';
@@ -82,7 +82,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			}
 		}
 		asort($this->languages);
-		
+
 		// init reserved words
 		$resWords = t3lib_div::makeInstance('tx_kickstarter_reservedWords');
 		$this->reservedWords = $resWords->getReservedWords();
@@ -111,7 +111,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	}
 
 	/**
-	 * Switch between the basic operations. Calls the different modules and puts 
+	 * Switch between the basic operations. Calls the different modules and puts
 	 * their content into a basic framework.
 	 *
 	 * @return	HTML code for the kickstarter containing the module content
@@ -134,7 +134,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			$this->options[$k] = array($v['title'],$v['description']);
 		}
 
-		$saveKey = $this->saveKey = $this->wizArray['save']['extension_key'] 
+		$saveKey = $this->saveKey = $this->wizArray['save']['extension_key']
 			= substr(
 				strtolower(trim($this->wizArray['save']['extension_key'])),
 				0,
@@ -335,18 +335,18 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 	/**
 	 * gets single items as a comma separated list
-	 * 
+	 *
 	 * @return string comma separated list of single items
 	 */
 	function getSingles() {
 		$singles = array('save');
-		
+
 		foreach($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['kickstarter']['sections'] as $sectionName => $sectionConf) {
 			if($sectionConf['singleItem']) {
 				$singles[] = $sectionName;
-			}			
+			}
 		}
-		
+
 		return implode(',', $singles);
 	}
 
@@ -364,7 +364,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		$filesOverview1 = array();
 		$filesOverview2 = array();
 		$filesContent   = array();
-		
+
 		$filesOverview1[]= '<tr'.$this->bgCol(1).'>
 			<td><strong>' . $this->fw('Filename:') . '</strong></td>
 			<td><strong>' . $this->fw('Size:') . '</strong></td>
@@ -378,14 +378,14 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			$fI = pathinfo($fileName);
 			if (t3lib_div::inList('php,sql,txt,xml',strtolower($fI['extension'])))	{
 				$linkToFile='<strong><a href="#'.md5($fileName).'">'.$this->fw("&nbsp;View&nbsp;").'</a></strong>';
-				
+
 				if($fI['extension'] == 'xml') {
 					$data['content'] = $GLOBALS['LANG']->csConvObj->utf8_decode(
 						$data['content'],
 						$GLOBALS['LANG']->charSet
 					);
 				}
-				
+
 				$filesContent[]='<tr' .$this->bgCol(1) .'>
 				<td><a name="' . md5($fileName) . '"></a><strong>' . $this->fw($fileName) . '</strong></td>
 				</tr>
@@ -400,11 +400,11 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				<td>' . $linkToFile . '</td>
 				<td>';
 
-			if($fileName == 'doc/wizard_form.dat' 
+			if($fileName == 'doc/wizard_form.dat'
 			|| $fileName == 'doc/wizard_form.html') {
 				$line .= '<input type="hidden" name="' . $this->piFieldName('wizArray_upd') . '[save][overwrite_files]['.$fileName.']" value="1" />';
 			} else {
-				$checked = '';				
+				$checked = '';
 
 				if(!is_array($this->wizArray['save']['overwrite_files']) // check for first time call of "View Result"
 				|| (isset($this->wizArray['save']['overwrite_files'][$fileName]) && $this->wizArray['save']['overwrite_files'][$fileName] == '1') // if selected
@@ -413,7 +413,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 					$checked = ' checked="checked"';
 				}
 
-				$line .= '<input type="hidden" name="' . $this->piFieldName('wizArray_upd') . '[save][overwrite_files]['.$fileName.']" value="0" />';	
+				$line .= '<input type="hidden" name="' . $this->piFieldName('wizArray_upd') . '[save][overwrite_files]['.$fileName.']" value="0" />';
 				$line .= '<input type="checkbox" name="' . $this->piFieldName('wizArray_upd') . '[save][overwrite_files]['.$fileName.']" value="1"'.$checked.' />';
 			}
 
@@ -504,10 +504,10 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			foreach($this->wizArray['save']['overwrite_files'] as $fileName => $overwrite) {
 				if($overwrite) {
 					$uploadArray['FILES'][$fileName] = $files[$fileName];
-				}				
+				}
 			}
 		}
-		
+
 		return $uploadArray;
 	}
 

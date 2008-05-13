@@ -204,7 +204,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 			$BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
 				// DEFAULT initialization of a module [END]
 		');
-		
+
 			// Make module index.php file:
 		$indexContent = $this->sPS(
 				'class  '.$cN.' extends t3lib_SCbase {

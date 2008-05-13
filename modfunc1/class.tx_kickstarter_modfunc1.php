@@ -33,7 +33,7 @@ require_once(PATH_t3lib.'class.t3lib_extobjbase.php');
 require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_wizard.php');
 
 class tx_kickstarter_modfunc1 extends t3lib_extobjbase {
-	
+
 	/**
 	 * Main method of modfunc1
 	 */
@@ -62,11 +62,11 @@ class tx_kickstarter_modfunc1 extends t3lib_extobjbase {
 
 
 class tx_kickstarter_modfunc2 extends tx_kickstarter_modfunc1 {
-	
+
 	/**
 	 * Main method of modfunc2
 	 *
-	 */	
+	 */
 	function main()	{
 		$kickstarter = $this->initKickstarter();
 		if(!$kickstarter->modData['wizArray_ser']) {

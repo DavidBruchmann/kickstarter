@@ -1,3 +1,7 @@
+2008-05-13 Oliver Klee  <typo3-coding@oliverklee.de>
+
+	* CHG 0008377: Remove trailing whitespace from all kickstarter files
+
 2008-02-14 Dmitry Dulepov  <dmitry@typo3.org>
 
 	* Changed blob columns to text

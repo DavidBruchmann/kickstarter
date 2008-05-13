@@ -29,7 +29,7 @@ require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionb
 
 
 /**
- * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Ingo Renner <typo3@ingo-renner.com>
  */
 class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
@@ -226,13 +226,13 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		}
 		return $optValues;
 	}
-	
+
 	/**
 	 *
 	 */
 	function getFieldsFromTable($tableName) {
 		$optionValues = array();
-		
+
 		if (is_array($this->wizard->wizArray['tables']))	{
 			foreach($this->wizard->wizArray['tables'] as $k=>$info)	{
 				$tempTableName = $this->returnName($this->wizard->extKey,'tables',trim($info['tablename']));
@@ -246,7 +246,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				}
 			}
 		}
-		
+
 		return $optionValues;
 	}
 
@@ -319,7 +319,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 		$fDetails = '';
 		switch((string)$fConf['type'])	{
-		    case 'inline':  
+		    case 'inline':
 		    	$fDetails .= $this->renderInlineField($prefix,$fConf);
 				break;
 			case 'input+':
@@ -1500,7 +1500,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 				$DBfields[] = $fConf["fieldname"]." text,";
 			break;
-			case 'flex': 
+			case 'flex':
 				$DBfields[] = $fConf['fieldname'] . ' mediumtext,';
 				$configL[]  = trim($this->sPS('
 					\'type\' => \'flex\',
@@ -1525,7 +1525,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					\'type\' => \'passthrough\',
 				'));
 			break;
-			case 'inline': 
+			case 'inline':
 	#$DBfields=$this->getInlineDBfields($fConf);
 				if ($DBfields) {
 					$DBfields=array_merge($DBfields, $this->getInlineDBfields($table, $fConf));
@@ -1574,13 +1574,13 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 *
 	 * @param	string		$prefix: The prefix for the fieldname
  	 * @param	array		$fConf: field config
-	 * @return	array		
+	 * @return	array
 	 */
 	function renderInlineField($prefix,$fConf) {
 	     $optValues = array(
 		    'blank' => '',
 		);
-		
+
 		$optValues = $this->addOtherExtensionTables($optValues);
 		$fDetails .= '<br /><strong>Create relation to table:</strong><br />'
 			.$this->renderSelectBox(
@@ -1589,11 +1589,11 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			  	$optValues
 			)
 			.'<br />';
-		
+
 		if($fConf['foreign_table'] == 'blank') {
 			$fDetails .= '<strong><span style="color:red">Required!</span></strong> There is no type "inline" without a foreign table.<br />';
         }
-		
+
 		if($fConf['foreign_table'] == '_CUSTOM') {
 			$fDetails .= 'Custom table name: '
 				.$this->renderStringBox(
@@ -1601,7 +1601,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$fConf['conf_custom_table_name'],
 					200
 				)
-				.'<br />';			
+				.'<br />';
 		}
 
 		if($fConf['foreign_table'] !='blank' && $fConf['foreign_table'] !='_CUSTOM' || $fConf['conf_custom_table_name'] !='') {
@@ -1627,7 +1627,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 
 
-            
+
             $fDetails .= '<br /><strong>Foreign table field:</strong><br />'
             	.$this->renderStringBox(
             		$prefix.'[foreign_table_field]',
@@ -1649,7 +1649,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					200
 				);
 			$fDetails .= '<br />Field which stores the sorting information.<br />';
-            
+
 			$fDetails .= '<br /><strong>Foreign field label:</strong><br />'
 				.$this->renderStringBox(
 					$prefix.'[foreign_label]',
@@ -1663,9 +1663,9 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
         			$prefix.'[foreign_selector]',
         			$fConf['foreign_selector'],
         			200
-        		);                
-			$fDetails .= '<br />Points to a field of the foreign_table that is responsible for providing a selectbox. Type is usually set to <i>"select"</i> and there is also a <i>"foreign_table"</i> defined.<br />';  
-        
+        		);
+			$fDetails .= '<br />Points to a field of the foreign_table that is responsible for providing a selectbox. Type is usually set to <i>"select"</i> and there is also a <i>"foreign_table"</i> defined.<br />';
+
 			$fDetails .= '<br /><strong>Foreign unique:</strong><br />'
 				.$this->renderStringBox(
 					$prefix.'[foreign_unique]',
@@ -1673,7 +1673,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					200
 				);
 			$fDetails .= '<br />Field which must be unique for all children of a parent record.<br />';
-        
+
 			$fDetails .= '<br /><strong>Intermediate table:</strong><br />'
 				.$this->renderStringBox(
 					$prefix.'[MM]',
@@ -1690,7 +1690,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$prefix.'[conf_symmetric]',
 					$fConf['conf_symmetric']
 				)
-				.'<strong>Symmetric relations</strong><br />';    
+				.'<strong>Symmetric relations</strong><br />';
 
 			if ($fConf['conf_symmetric']) {
 				$fDetails .= '<br /><strong>Symmetric field:</strong><br />'
@@ -1700,36 +1700,36 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						200
 					);
 				$fDetails .= '<br />This works like <i>"foreign_field"</i>, but in case of using symmetric relations.<br />';
-				
+
 				$fDetails .= '<br /><strong>Symmetric label:</strong><br />'
 					.$this->renderStringBox(
 						$prefix.'[conf_symmetric_label]',
 						$fConf['conf_symmetric_label'],
 						200
 					);
-				$fDetails .= '<br />Overrrides the label set in TCA for the inline view and only if looking to a symmetric relation from the <i>"other"</i>side.<br />'; 
-				
+				$fDetails .= '<br />Overrrides the label set in TCA for the inline view and only if looking to a symmetric relation from the <i>"other"</i>side.<br />';
+
 				$fDetails .= '<br /><strong>Symmetric sortby:</strong><br />'
 					.$this->renderStringBox(
 						$prefix.'[conf_symmetric_sortby]',
 						$fConf['conf_symmetric_sortby'],
 						200
 					);
-				$fDetails .= '<br />This works like <i>"foreign_sortby"</i>, but in case of using symmetric relations.<br />'; 
+				$fDetails .= '<br />This works like <i>"foreign_sortby"</i>, but in case of using symmetric relations.<br />';
         	}
 		}
-		
+
 		return $fDetails;
 	}
 
 	/**
 	 * Create SQL definitions according to the appropriate input values
 	 *
-	 * @param	string		$table: current table name 
-	 * @param	array		$fConf: array holding field configuration values    
+	 * @param	string		$table: current table name
+	 * @param	array		$fConf: array holding field configuration values
 	 * @return	array		DB fields definition
 	 */
-	function getInlineDBfields ($table, $fConf) { 
+	function getInlineDBfields ($table, $fConf) {
 			// field type set to 'text' to fit csv values
 		if($fConf['conf_ff'] == 0) {
 			$DBfields[] = $fConf['fieldname'].' text NOT NULL,';
@@ -1746,18 +1746,18 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				if(preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['foreign_table'])) {
 					foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field) {
 						if(preg_match('/'.$fConf['foreign_field'].'/', $field['fieldname'], $match)) {
-							print_r('Error: Field name already exists!');  
+							print_r('Error: Field name already exists!');
 						}
-						$count++; 
+						$count++;
 					}
 
 					if(!count($match)) {
-						$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_field'],'type'=>'passthrough'); 
+						$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_field'],'type'=>'passthrough');
 					}
 				}
 			}
 		}
-             
+
 		if($fConf['foreign_table_field']) {
 			foreach ($this->wizard->wizArray['tables'] as $k => $v) {
 				$count='';
@@ -1765,13 +1765,13 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				if(preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['foreign_table'])) {
 					foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field) {
 						if(preg_match('/'.$fConf['foreign_table_field'].'/', $field['fieldname'], $match)) {
-							print_r('Error: Field name already exists!');  
+							print_r('Error: Field name already exists!');
 						}
-						$count++; 
+						$count++;
 					}
 
 					if(!count($match)) {
-						$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_table_field'],'type'=>'passthrough'); 
+						$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_table_field'],'type'=>'passthrough');
 					}
 				}
 			}
@@ -1784,12 +1784,12 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				if(preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['foreign_table'])) {
 					foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field) {
 						if(preg_match('/'.$fConf['foreign_sortby'].'/', $field['fieldname'], $match)) {
-							print_r('Error: Field name already exists!');  
+							print_r('Error: Field name already exists!');
 						}
-						$count++; 
+						$count++;
 					}
 					if(!count($match)) {
-						$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_sortby'],'type'=>'passthrough'); 
+						$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_sortby'],'type'=>'passthrough');
 					}
 				}
 			}
@@ -1802,36 +1802,36 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				if(preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['foreign_selector'])) {
 					foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field) {
 						if (preg_match('/'.$fConf['foreign_selector'].'/', $field['fieldname'], $match)) {
-							print_r('Error: Field name already exists!');  
+							print_r('Error: Field name already exists!');
 						}
-						$count++; 
+						$count++;
 					}
 					if(!count($match)) {
-						$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_selector'],'type'=>'select'); 
+						$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_selector'],'type'=>'select');
 					}
 				}
 			}
 		}
 
-		if($fConf['foreign_unique']) { 
+		if($fConf['foreign_unique']) {
 			foreach ($this->wizard->wizArray['tables'] as $k => $v) {
 				$count='';
 
 				if (preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['foreign_unique'])) {
 					foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field) {
 						if (preg_match('/'.$fConf['foreign_unique'].'/', $field['fieldname'], $match)) {
-							print_r('Error: Field name already exists!');  
+							print_r('Error: Field name already exists!');
 						}
-						$count++; 
+						$count++;
 					}
 					if(!count($match)) {
-						$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_unique'],'type'=>'select'); 
+						$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['foreign_unique'],'type'=>'select');
 					}
 				}
 			}
 		}
 
-		if($fConf['MM']) { 
+		if($fConf['MM']) {
 			$intermediateTable = $this->sPS("
 				#
 				# Table structure for intermediate table '".$table."_".$fConf['MM']."_mm'
@@ -1841,44 +1841,44 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					uid_foreign int(11) NOT NULL,
 					sorting int(10) NOT NULL,
 				);
-			"); 
+			");
 			$this->wizard->ext_tables_sql[] = chr(10).$intermediateTable.chr(10);
 		}
 
 		if($fConf['conf_symmetric']) {
- 			if($fConf['conf_symmetric_field']) { 
+ 			if($fConf['conf_symmetric_field']) {
 				foreach ($this->wizard->wizArray['tables'] as $k => $v) {
 					$count='';
 
 					if(preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['conf_symmetric_field'])) {
 						foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field) {
 							if (preg_match('/'.$fConf['conf_symmetric_field'].'/', $field['fieldname'], $match)) {
-								print_r('Error: Field name already exists!');  
+								print_r('Error: Field name already exists!');
 							}
-							$count++; 
+							$count++;
 						}
 						if(!count($match)) {
-							$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['conf_symmetric_field'],'type'=>'select'); 
+							$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['conf_symmetric_field'],'type'=>'select');
 						}
 					}
 				}
 			}
 
-			if($fConf['conf_symmetric_sortby']) { 
+			if($fConf['conf_symmetric_sortby']) {
 				foreach ($this->wizard->wizArray['tables'] as $k => $v) {
 					$count = '';
 
 					if (preg_match('/'.$this->wizard->wizArray['tables'][$k]['tablename'].'/', $fConf['conf_symmetric_sortby'])) {
 						foreach($this->wizard->wizArray['tables'][$k]['fields'] as $n => $field) {
 							if (preg_match('/'.$fConf['conf_symmetric_sortby'].'/', $field['fieldname'], $match)) {
-								print_r('Error: Field name already exists!');  
+								print_r('Error: Field name already exists!');
 							}
-							$count++; 
+							$count++;
 						}
 						if(!count($match)) {
-							$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['conf_symmetric_sortby'],'type'=>'passthrough'); 
+							$this->wizard->wizArray['tables'][$k]['fields'][$count+1]= array('fieldname'=>$fConf['conf_symmetric_sortby'],'type'=>'passthrough');
 						}
-					} 
+					}
 				}
 			}
 		}
@@ -1897,7 +1897,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		$configL[] = '\'type\' => \'inline\',';
 			foreach($fConf as $k => $v) {
 				if($v && $v !=1 && ereg('^foreign',$k)) {
-					$configL[] = '\''.$k.'\' => \''.$fConf[''.$k.''].'\','; 	
+					$configL[] = '\''.$k.'\' => \''.$fConf[''.$k.''].'\',';
 				}
 
 				if($k == 'conf_symmetric_label' && $fConf[''.$k.'']) {

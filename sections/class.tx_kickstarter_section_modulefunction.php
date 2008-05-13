@@ -182,7 +182,7 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 					function overview_main()	{
 						$icon = \'<img src="\'.$this->backPath.t3lib_extMgm::extRelPath("'.$extKey.'").\'ext_icon.gif" width=18 height=16 class="absmiddle">\';
 						$content = $this->mkMenuConfig($icon.$this->headLink('.$cN.',1),\'\',$this->overviewContent());
-						
+
 						return $content;
 					}
 
@@ -203,7 +203,7 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 					 * @return	Content for overview frame
 					 */
 					function overviewContent()	{
-						$content = \'Content in overview frame...\';  
+						$content = \'Content in overview frame...\';
 						return \'<a href="index.php?SET[function]='.$cN.'"  onClick="this.blur();"><img src="\'.$this->backPath.\'gfx/edit2.gif" style="float: left;"></a><div><a href="index.php?SET[function]='.$cN.'"  onClick="this.blur();">\'.$content.\'</a></div>\';
 					}
 
@@ -230,7 +230,7 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 				'',
 				'',
 				$indexRequire
-			
+
 			)
 		);
 

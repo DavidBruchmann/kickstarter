@@ -26,12 +26,12 @@
 
 /**
  * Reserved TYPO3 and MySQL words
- * 
+ *
  * @author Ingo Renner <typo3@ingo-renner.com>
  * @author Peter Foerger
  */
 class tx_kickstarter_reservedWords {
-	
+
 	var $TYPO3ReservedFields = array(
 		'uid',
 		'pid',
@@ -45,7 +45,7 @@ class tx_kickstarter_reservedWords {
 		'crdate',
 		'tstamp'
 	);
-	
+
 	var $mysqlReservedWords = array(
 		'data',
 		'table',
@@ -164,10 +164,10 @@ class tx_kickstarter_reservedWords {
 		'upgrade',
 		'while'
 	);
-	
+
 	/**
 	 * merges the lists of reserved words and returns them in an unique array
-	 * 
+	 *
 	 * @return array array of reserved words
 	 */
 	function getReservedWords() {
@@ -177,10 +177,10 @@ class tx_kickstarter_reservedWords {
 				$this->mysqlReservedWords
 			)
 		);
-		
+
 		return $reservedWords;
 	}
-	
+
 }
 
 

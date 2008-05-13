@@ -26,7 +26,7 @@
 /**
  * TYPO3 Extension Kickstarter
  *
- * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Ingo Renner <typo3@ingo-renner.com>
  */
 

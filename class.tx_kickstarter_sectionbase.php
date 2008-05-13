@@ -30,7 +30,7 @@
 /**
  * TYPO3 Extension Kickstarter
  *
- * @author	Kasper Skrhj <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Ingo Renner	<typo3@ingo-renner.com>
  */
 class tx_kickstarter_sectionbase {
