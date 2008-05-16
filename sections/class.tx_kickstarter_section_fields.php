@@ -280,6 +280,8 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 * @return	string		HTML code of the field
 	 */
 	function renderField($prefix,$fConf,$dontRemove=0)	{
+		global $LANG;
+		
 		$onCP = $this->getOnChangeParts($prefix.'[fieldname]');
 		$fieldName = $this->renderStringBox($prefix.'[fieldname]',$fConf['fieldname']).
 			(!$dontRemove?' (Remove:'.$this->renderCheckBox($prefix.'[_DELETE]',0).')'.
@@ -315,12 +317,13 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			'passthrough'     => '[Passthrough]',
 		);
 		$typeCfg .= $this->renderSelectBox($prefix.'[type]',$fConf['type'],$optValues);
-		$typeCfg .= $this->renderCheckBox($prefix.'[excludeField]',isset($fConf['excludeField'])?$fConf['excludeField']:1).' Is Exclude-field '.$this->whatIsThis('If a field is marked "Exclude-field", users can edit it ONLY if the field is specifically listed in one of the backend user groups of the user.\nIn other words, if a field is marked "Exclude-field" you can control which users can edit it and which cannot.').'<br />';
+		$typeCfg .= $this->renderCheckBox($prefix.'[excludeField]', isset($fConf['excludeField']) ? $fConf['excludeField'] : 0);
+		$typeCfg .= $LANG->getLL('fields.excludeField') . $this->whatIsThis($LANG->getLL('fields.excludeField_description')) . '<br />';
 
 		$fDetails = '';
 		switch((string)$fConf['type'])	{
-		    case 'inline':
-		    	$fDetails .= $this->renderInlineField($prefix,$fConf);
+			case 'inline':
+				$fDetails .= $this->renderInlineField($prefix,$fConf);
 				break;
 			case 'input+':
 				$typeCfg .= $this->resImg('t_input.png','','');

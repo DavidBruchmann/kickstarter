@@ -1,3 +1,7 @@
+2008-05-15 Peter Foerger	<p.foerger@vke-design.de>
+
+	* FIX fixed bug 8408: Default value of excludeField changed to zero, thanks to Steffen Kamper
+
 2008-05-13 Oliver Klee  <typo3-coding@oliverklee.de>
 
 	* CHG 0008377: Remove trailing whitespace from all kickstarter files
