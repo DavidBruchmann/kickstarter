@@ -24,7 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  * @author	Ingo Renner <typo3@ingo-renner.com>
  */
 
@@ -147,7 +147,7 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 		$cN  = $this->returnName($extKey,'class','sv'.$k);
 		$pathSuffix = 'sv'.$k.'/';
 
-		$this->wizard->ext_tables[]=$this->sPS('
+		$this->wizard->ext_localconf[]=$this->sPS('
 			'.$this->WOPcomment('WOP:'.$WOP.'[type]').'
 			t3lib_extMgm::addService($_EXTKEY,  \''.$config['type'].'\' /* sv type */,  \''.$cN.'\' /* sv key */,
 					array(

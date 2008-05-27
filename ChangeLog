@@ -1,5 +1,9 @@
 2008-05-27 Peter Foerger	<p.foerger@vke-design.de>
 
+	* FIX fixed bug 5339: t3lib_mgm::addServices should be placed in ext_localconf instead of ext_tables, Thanks to Nathan
+
+2008-05-27 Peter Foerger	<p.foerger@vke-design.de>
+
 	* FIX fixed bug 6386: Added 'default' and 'column' to the list of reserved words
 
 2008-05-27  Michael Stucki  <michael@typo3.org>
