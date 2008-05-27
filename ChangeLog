@@ -1,3 +1,7 @@
+2008-05-27  Michael Stucki  <michael@typo3.org>
+
+	* Add missing parameter while calling ->cleanFieldsAndDoCommands(), bug 6053
+
 2008-05-27 Peter Foerger	<p.foerger@vke-design.de>
 
 	* FIX fixed bug 6482: Creating wizard leads to a breaking wizard

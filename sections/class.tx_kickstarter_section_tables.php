@@ -24,7 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  */
 
 require_once(t3lib_extMgm::extPath('kickstarter').'sections/class.tx_kickstarter_section_fields.php');
@@ -81,7 +81,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$c = array(0);
 			$this->usedNames = array();
 			if (is_array($piConf['fields']))	{
-				$piConf['fields'] = $this->cleanFieldsAndDoCommands($piConf['fields'],$this->sectionID,$action[1], $piConf['tablename']);
+				$piConf['fields'] = $this->cleanFieldsAndDoCommands($piConf['fields'],$this->sectionID,$action[1],$piConf['which_table']?$piConf['which_table']:'');
 
 				// Do it for real...
 				$lines[] = '<tr'.$this->bgCol(1).'><td><strong> Fields Overview </strong></td></tr>';
