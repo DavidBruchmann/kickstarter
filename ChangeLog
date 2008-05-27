@@ -1,5 +1,9 @@
 2008-05-27 Peter Foerger	<p.foerger@vke-design.de>
 
+	* FIX fixed bug 6482: Creating wizard leads to a breaking wizard
+
+2008-05-27 Peter Foerger	<p.foerger@vke-design.de>
+
 	* FIX fixed bug 5433: Removed the no_cache parameter for USER_INT
 
 2008-05-15 Peter Foerger	<p.foerger@vke-design.de>

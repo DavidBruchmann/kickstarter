@@ -30,7 +30,7 @@
 /**
  * TYPO3 Extension Kickstarter
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  * @author	Ingo Renner	<typo3@ingo-renner.com>
  */
 class tx_kickstarter_sectionbase {
@@ -728,17 +728,17 @@ class tx_kickstarter_sectionbase {
 			// Add clear.gif
 		$this->addFileToFileArray($pathSuffix.'clear.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/clear.gif'));
 
-		$indexRequire = $this->sPS("
+		$indexRequire = $this->sPS('
 				// DEFAULT initialization of a module [BEGIN]
-			unset(\$MCONF);
-			require_once('conf.php');
-			require_once(\$BACK_PATH.'init.php');
-			require_once(\$BACK_PATH.'template.php');
-			\$LANG->includeLLFile('EXT:".$extKey."/".$pathSuffix."locallang.xml');
-			require_once(PATH_t3lib.'class.t3lib_scbase.php');
+			unset($MCONF);
+			require_once(\'conf.php\');
+			require_once($BACK_PATH.\'init.php\');
+			require_once($BACK_PATH.\'template.php\');
+			$LANG->includeLLFile(\'EXT:'.$extKey.'/'.$pathSuffix.'locallang.xml\');
+			require_once(PATH_t3lib.\'class.t3lib_scbase.php\');
 				// ....(But no access check here...)
 				// DEFAULT initialization of a module [END]
-		");
+		');
 			// Make module index.php file:
 		$indexContent = $this->sPS(
 				'class '.$cN.' extends t3lib_SCbase {
@@ -751,9 +751,9 @@ class tx_kickstarter_sectionbase {
 					global $LANG;
 					$this->MOD_MENU = Array (
 						\'function\' => array (
-							\'1\' => \$LANG->getLL(\'function1\'),
-							\'2\' => \$LANG->getLL(\'function2\'),
-							\'3\' => \$LANG->getLL(\'function3\'),
+							\'1\' => $LANG->getLL(\'function1\'),
+							\'2\' => $LANG->getLL(\'function2\'),
+							\'3\' => $LANG->getLL(\'function3\'),
 						)
 					);
 					parent::menuConfig();
