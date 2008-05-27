@@ -24,7 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  * @author	Ingo Renner	<typo3@ingo-renner.com>
  */
 
@@ -949,7 +949,6 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 								<h3>This is a form:</h3>
 								<form action="\'.$this->pi_getPageLink($GLOBALS[\'TSFE\']->id).\'" method="POST">
-									<input type="hidden" name="no_cache" value="1">
 									<input type="text" name="\'.$this->prefixId.\'[input_field]" value="\'.htmlspecialchars($this->piVars[\'input_field\']).\'">
 									<input type="submit" name="\'.$this->prefixId.\'[submit_button]" value="\'.htmlspecialchars($this->pi_getLL(\'submit_button_label\')).\'">
 								</form>

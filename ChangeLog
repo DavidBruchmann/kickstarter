@@ -1,3 +1,7 @@
+2008-05-27 Peter Foerger	<p.foerger@vke-design.de>
+
+	* FIX fixed bug 5433: Removed the no_cache parameter for USER_INT
+
 2008-05-15 Peter Foerger	<p.foerger@vke-design.de>
 
 	* FIX fixed bug 8408: Default value of excludeField changed to zero, thanks to Steffen Kamper
