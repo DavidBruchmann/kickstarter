@@ -1,3 +1,7 @@
+2008-05-27 Peter Foerger	<p.foerger@vke-design.de>
+
+	* FIX fixed bug 6386: Added 'default' and 'column' to the list of reserved words
+
 2008-05-27  Michael Stucki  <michael@typo3.org>
 
 	* Add missing parameter while calling ->cleanFieldsAndDoCommands(), bug 6053
