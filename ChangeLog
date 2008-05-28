@@ -1,3 +1,7 @@
+2008-05-28 Peter Foerger	<p.foerger@vke-design.de>
+
+	* FIX fixed bug 3334: RTE "Typical Basic Setup" should default to richtext[]. Thanks to Ernesto Baschny
+	
 2008-05-27 Peter Foerger	<p.foerger@vke-design.de>
 
 	* FIX fixed bug 5339: t3lib_mgm::addServices should be placed in ext_localconf instead of ext_tables, Thanks to Nathan

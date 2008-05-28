@@ -29,7 +29,7 @@ require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionb
 
 
 /**
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  * @author	Ingo Renner <typo3@ingo-renner.com>
  */
 class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
@@ -980,13 +980,13 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 				switch($fConf['conf_rte'])	{
 					case 'tt_content':
-						$typeP = 'richtext[paste|bold|italic|underline|formatblock|class|left|center|right|orderedlist|unorderedlist|outdent|indent|link|image]:rte_transform[mode=ts]';
+						$typeP = 'richtext[]:rte_transform[mode=ts]';
 					break;
 					case 'moderate':
-						$typeP = 'richtext[*]:rte_transform[mode='.$transformation.''.$rteImageDir.']';
+						$typeP = 'richtext[]:rte_transform[mode='.$transformation.''.$rteImageDir.']';
 					break;
 					case 'basic':
-						$typeP = 'richtext[cut|copy|paste|formatblock|textcolor|bold|italic|underline|left|center|right|orderedlist|unorderedlist|outdent|indent|link|table|image|line|chMode]:rte_transform[mode=ts_css'.$rteImageDir.']';
+						$typeP = 'richtext[]:rte_transform[mode=ts_css'.$rteImageDir.']';
 						$this->wizard->ext_localconf[]=trim($this->wrapBody("
 								t3lib_extMgm::addPageTSConfig('
 
@@ -1010,7 +1010,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						",0));
 					break;
 					case 'none':
-						$typeP = 'richtext[*]';
+						$typeP = 'richtext[]';
 					break;
 					case 'custom':
 						$enabledButtons=array();
