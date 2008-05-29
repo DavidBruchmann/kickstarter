@@ -1,5 +1,9 @@
 2008-05-28 Peter Foerger	<p.foerger@vke-design.de>
 
+	* FIX fixed bug 1045: Upper Value for field endtime is the 31.12.2020. Thanks to Steffen Müller
+
+2008-05-28 Peter Foerger	<p.foerger@vke-design.de>
+
 	* FIX fixed bug 3334: RTE "Typical Basic Setup" should default to richtext[]. Thanks to Ernesto Baschny
 	
 2008-05-27 Peter Foerger	<p.foerger@vke-design.de>

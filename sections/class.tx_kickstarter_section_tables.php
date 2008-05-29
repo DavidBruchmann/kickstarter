@@ -24,7 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @author	Kasper Sk�rh�j <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  */
 
 require_once(t3lib_extMgm::extPath('kickstarter').'sections/class.tx_kickstarter_section_fields.php');
@@ -506,7 +506,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 						\'checkbox\' => \'0\',
 						\'default\'  => \'0\',
 						\'range\'    => array (
-							\'upper\' => mktime(0, 0, 0, 12, 31, 2020),
+							\'upper\' => mktime(3, 14, 7, 1, 19, 2038),
 							\'lower\' => mktime(0, 0, 0, date(\'m\')-1, date(\'d\'), date(\'Y\'))
 						)
 					)
