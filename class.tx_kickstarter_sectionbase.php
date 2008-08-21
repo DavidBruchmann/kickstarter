@@ -468,7 +468,9 @@ class tx_kickstarter_sectionbase {
 		reset($lines);
 		while(list($k,$v)=each($lines))	{
 			if (trim($v))	{
-				if ($firstLineWithContent==-1)	$firstLineWithContent=$k;
+				if ($firstLineWithContent==-1) {
+					$firstLineWithContent=$k;
+				}
 				list($preSpace) = split('[^[:space:]]',$v,2);
 				$min[]=count(explode(chr(9),$preSpace));
 				$lastLineWithContent=$k;
