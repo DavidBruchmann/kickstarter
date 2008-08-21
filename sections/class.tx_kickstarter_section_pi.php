@@ -243,7 +243,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				$this->wizard->ext_tables[]=$this->sPS('
 					'.$this->WOPcomment('WOP:'.$WOP.'[addType]')."
 					t3lib_div::loadTCA('tt_content');
-					\$TCA['tt_content']['types'][\$_EXTKEY.'_pi".$k."']['showitem']='".implode(', ',$tFields)."';
+					\$TCA['tt_content']['types'][\$_EXTKEY . '_pi" . $k . "']['showitem'] = '" . implode(', ', $tFields) . "';
 				");
 			break;
 			case 'header':
@@ -272,13 +272,18 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 		$this->wizard->ext_localconf[]=$this->sPS('
 			'.$this->WOPcomment('WOP:'.$WOP.'[addType]')."
-			t3lib_extMgm::addPItoST43(\$_EXTKEY,'pi".$k."/class.".$cN.".php','_pi".$k."','".$setType."',".$cache.");
+			t3lib_extMgm::addPItoST43(\$_EXTKEY, 'pi" . $k . "/class." . $cN .
+			".php', '_pi" . $k . "', '" . $setType . "', " . $cache . ");
 		");
 
-		if ($setType && !t3lib_div::inList('typotags,includeLib',$setType))	{
+		if ($setType && !t3lib_div::inList('typotags,includeLib', $setType)) {
 			$this->wizard->ext_tables[]=$this->sPS('
 				'.$this->WOPcomment('WOP:'.$WOP.'[addType]')."
-				t3lib_extMgm::addPlugin(array('".addslashes($this->getSplitLabels_reference($config,'title','tt_content.'.$setType.'_pi'.$k))."', \$_EXTKEY.'_pi".$k."'),'".$setType."');
+				t3lib_extMgm::addPlugin(array(
+					'" . addslashes($this->getSplitLabels_reference($config, 'title', 'tt_content.' . $setType . '_pi' . $k)) . "',
+					\$_EXTKEY . '_pi" . $k . "',
+					t3lib_extMgm::extRelPath(\$_EXTKEY) . 'ext_icon.gif'
+				),'" . $setType . "');
 			");
 		}
 
