@@ -310,7 +310,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			'select'          => 'Selectorbox',
 			'radio'           => 'Radio buttons',
 			'rel'             => 'Database relation',
-			'inline'          => 'Inline relation',
+		//	'inline'          => 'Inline relation',
 			'files'           => 'Files',
 			'flex'            => 'Flex',
 			'none'            => 'Not editable, only displayed',

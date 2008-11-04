@@ -1,3 +1,7 @@
+2008-11-04 Peter Foerger	<p.foerger@vke-design.de>
+
+	* IRRE integration skipped. Option has been simply commented out, for ease of use to those who want to try out IRRE at it's basics…
+	
 2008-05-28 Peter Foerger	<p.foerger@vke-design.de>
 
 	* FIX fixed bug 1045: Upper Value for field endtime is the 31.12.2020. Thanks to Steffen Müller
