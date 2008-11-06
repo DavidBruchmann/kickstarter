@@ -1487,7 +1487,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						$configL[] = '\'disallowed\' => \'php,php3\',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files_type]');
 					break;
 				}
-				$configL[] = '\'max_size\' => '.t3lib_div::intInRange($fConf["conf_max_filesize"],1,1000,500).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_max_filesize]');
+				$configL[] = '\'max_size\' => $GLOBALS[\'TYPO3_CONF_VARS\'][\'BE\'][\'maxFileSize\'],	'.$this->WOPcomment('WOP:'.$WOP.'[conf_max_filesize]');
 
 				$this->wizard->EM_CONF_presets["uploadfolder"]=1;
 
