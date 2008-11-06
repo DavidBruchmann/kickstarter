@@ -61,8 +61,11 @@ class tx_kickstarter_section_emconf extends tx_kickstarter_sectionbase {
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Description
-			$subContent='<strong>Description:</strong><br />'.
-				$this->renderStringBox($ffPrefix.'[description]',$piConf['description']?$piConf['description']:$extKeyRec['description']);
+			$subContent='<strong>Description:</strong><br />' .
+				$this->renderTextareaBox(
+					$ffPrefix.'[description]',
+					$piConf['description'] ? $piConf['description'] : $extKeyRec['description']
+				);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
 				// Sub-position
