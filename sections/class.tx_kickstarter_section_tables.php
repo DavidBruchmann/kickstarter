@@ -402,12 +402,12 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		}
 		if ($config['localization'])	{
 			$ctrl[] = '\'languageField\'            => \'sys_language_uid\',	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
-			$ctrl[] = '\'transOrigPointerField\'    => \'l18n_parent\',	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
-			$ctrl[] = '\'transOrigDiffSourceField\' => \'l18n_diffsource\',	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
+			$ctrl[] = '\'transOrigPointerField\'    => \'l10n_parent\',	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
+			$ctrl[] = '\'transOrigDiffSourceField\' => \'l10n_diffsource\',	'.$this->WOPcomment('WOP:'.$WOP.'[localization]');
 
 			$DBfields[] = 'sys_language_uid int(11) DEFAULT \'0\' NOT NULL,';
-			$DBfields[] = 'l18n_parent int(11) DEFAULT \'0\' NOT NULL,';
-			$DBfields[] = 'l18n_diffsource mediumblob,';
+			$DBfields[] = 'l10n_parent int(11) DEFAULT \'0\' NOT NULL,';
+			$DBfields[] = 'l10n_diffsource mediumtext,';
 
 			$columns['sys_language_uid'] = trim($this->sPS('
 				\'sys_language_uid\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[localization]').'
@@ -425,8 +425,8 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 				),
 			'));
 
-			$columns['l18n_parent'] = trim($this->sPS("
-				'l18n_parent' => array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
+			$columns['l10n_parent'] = trim($this->sPS("
+				'l10n_parent' => array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
 					'displayCond' => 'FIELD:sys_language_uid:>:0',
 					'exclude'     => 1,
 					'label'       => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
@@ -441,8 +441,8 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 				),
 			"));
 
-			$columns['l18n_diffsource'] = trim($this->sPS("
-				'l18n_diffsource' => array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
+			$columns['l10n_diffsource'] = trim($this->sPS("
+				'l10n_diffsource' => array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
 					'config' => array (
 						'type' => 'passthrough'
 					)
