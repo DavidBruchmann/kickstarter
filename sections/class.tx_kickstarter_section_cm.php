@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c)  2001-2007 Kasper Skårhøj (kasperYYYY@typo3.com)  All rights reserved
+*  (c)  2001-2008 Kasper Skårhøj (kasperYYYY@typo3.com)  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
@@ -31,7 +31,7 @@ require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionb
  * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Daniel Brün <dbruen@saltation.de>
  * @author	Ingmar Schlecht <ingmars@web.de>
- * @author	Ingo Renner <typo3@ingo-renner.com>
+ * @author	Ingo Renner <ingo@typo3.org>
  */
 class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 	var $sectionID = 'cm';

@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c)  2001-2006 Kasper Skaarhoj (kasperYYYY@typo3.com)  All rights reserved
+*  (c)  2001-2008 Kasper Skaarhoj (kasperYYYY@typo3.com)  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
@@ -31,7 +31,7 @@
  * TYPO3 Extension Kickstarter
  *
  * @author	Kasper Sk�rh�j <kasperYYYY@typo3.com>
- * @author	Ingo Renner	<typo3@ingo-renner.com>
+ * @author	Ingo Renner	<ingo@typo3.org>
  */
 class tx_kickstarter_sectionbase {
 

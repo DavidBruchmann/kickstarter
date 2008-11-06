@@ -2,7 +2,7 @@
 /***************************************************************
 *  Copyright notice
 *
-*  (c)  2006 Ingo Renner (typo3@ingo-renner.com)  All rights reserved
+*  (c)  2006-2008 Ingo Renner (ingo@typo3.org)  All rights reserved
 *
 *  This script is part of the TYPO3 project. The TYPO3 project is
 *  free software; you can redistribute it and/or modify
@@ -27,7 +27,7 @@
 /**
  * Reserved TYPO3 and MySQL words
  *
- * @author Ingo Renner <typo3@ingo-renner.com>
+ * @author Ingo Renner <ingo@typo3.org>
  * @author Peter Foerger
  */
 class tx_kickstarter_reservedWords {
