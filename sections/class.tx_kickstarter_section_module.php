@@ -107,7 +107,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 	}
 
 	/**
-	 * Renders the extension PHP codee; this was
+	 * Renders the extension PHP code; this was
 	 *
 	 * @param	string		$k: module name key
 	 * @param	array		$config: module configuration
@@ -185,10 +185,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 		$this->addLocalConf($ll,array('function3'=>'Function #3'),'function3','module',$k,1,1);
 		$this->addLocalLangFile($ll,$pathSuffix.'locallang.xml','Language labels for module "'.$mN.'"');
 
-			// Add clear.gif
-		$this->addFileToFileArray($pathSuffix.'clear.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/clear.gif'));
-
-			// Add clear.gif
+			// Add default module icon
 		$this->addFileToFileArray($pathSuffix.'moduleicon.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/notfound_module.gif'));
 
 
