@@ -1,15 +1,19 @@
+2008-11-05 Ingo Renner	<ingo3@typo3.org>
+
+	* Fixed bug #9240: Value of default_sortby is TCA ctrl section is wrapped with double quotes
+
 2008-11-04 Peter Foerger	<p.foerger@vke-design.de>
 
 	* IRRE integration skipped. Option has been simply commented out, for ease of use to those who want to try out IRRE at it's basics…
-	
+
 2008-05-28 Peter Foerger	<p.foerger@vke-design.de>
 
-	* FIX fixed bug 1045: Upper Value for field endtime is the 31.12.2020. Thanks to Steffen Müller
+	* FIX fixed bug 1045: Upper Value for field endtime is the 31.12.2020. Thanks to Steffen Mueller
 
 2008-05-28 Peter Foerger	<p.foerger@vke-design.de>
 
 	* FIX fixed bug 3334: RTE "Typical Basic Setup" should default to richtext[]. Thanks to Ernesto Baschny
-	
+
 2008-05-27 Peter Foerger	<p.foerger@vke-design.de>
 
 	* FIX fixed bug 5339: t3lib_mgm::addServices should be placed in ext_localconf instead of ext_tables, Thanks to Nathan

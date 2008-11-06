@@ -453,7 +453,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$ctrl[]     = '\'sortby\' => \'sorting\',	'.$this->WOPcomment('WOP:'.$WOP.'[sorting]');
 			$DBfields[] = "sorting int(10) DEFAULT '0' NOT NULL,";
 		} else {
-			$ctrl[] = '\'default_sortby\' => "ORDER BY '.trim($config["sorting_field"].' '.($config["sorting_desc"]?"DESC":"")).'",	'.$this->WOPcomment('WOP:'.$WOP.'[sorting] / '.$WOP.'[sorting_field] / '.$WOP.'[sorting_desc]');
+			$ctrl[] = '\'default_sortby\' => \'ORDER BY '.trim($config['sorting_field'].' '.($config['sorting_desc'] ? 'DESC' : '')) . '\',	' . $this->WOPcomment('WOP:'.$WOP.'[sorting] / '.$WOP.'[sorting_field] / '.$WOP.'[sorting_desc]');
 		}
 		if ($config['add_deleted'])	{
 			$ctrl[]     = '\'delete\' => \'deleted\',	'.$this->WOPcomment('WOP:'.$WOP.'[add_deleted]');
