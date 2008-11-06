@@ -1,6 +1,7 @@
 2008-11-05 Ingo Renner	<ingo3@typo3.org>
 
 	* Updated contact email, year in copyright notices
+	* Fixed bug #9168: 'character' is also a reserved name/word
 	* Fixed bug #9240: Value of default_sortby is TCA ctrl section is wrapped with double quotes
 
 2008-11-04 Peter Foerger	<p.foerger@vke-design.de>

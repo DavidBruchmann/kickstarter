@@ -59,6 +59,7 @@ class tx_kickstarter_reservedWords {
 		'both',
 		'cascade',
 		'char',
+		'character',
 		'collate',
 		'column',
 		'connection',
