@@ -1,3 +1,7 @@
+2008-11-08 Francois Suter <francois@typo3.org>
+
+	* Corrected wrong reference to page id in example modfunc code
+
 2008-11-05 Ingo Renner	<ingo3@typo3.org>
 
 	* Updated contact email, year in copyright notices

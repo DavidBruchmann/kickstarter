@@ -24,7 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper Skï¿½rhï¿½j <kasperYYYY@typo3.com>
  * @author	Ingo Renner <ingo@typo3.org>
  */
 
@@ -161,7 +161,7 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 						$theOutput.=$this->pObj->doc->section($LANG->getLL("title"),"Dummy content here...",0,1);
 
 						$menu=array();
-						$menu[]=t3lib_BEfunc::getFuncCheck($this->wizard->pObj->id,"SET['.$cN.'_check]",$this->wizard->pObj->MOD_SETTINGS["'.$cN.'_check"]).$LANG->getLL("checklabel");
+						$menu[]=t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET['.$cN.'_check]",$this->pObj->MOD_SETTINGS["'.$cN.'_check"]).$LANG->getLL("checklabel");
 						$theOutput.=$this->pObj->doc->spacer(5);
 						$theOutput.=$this->pObj->doc->section("Menu",implode(" - ",$menu),0,1);
 
