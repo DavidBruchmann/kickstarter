@@ -87,10 +87,19 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 				$this->renderSelectBox($ffPrefix.'[subpos]',$piConf['subpos'],$optValues);
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
-				// Admin only
-			$subContent = $this->renderCheckBox($ffPrefix.'[admin_only]',$piConf['admin_only']).'Admin-only access!<br />';
+			
+				// docheaders
+			$subContent = '<strong>Backend Module with docheaders</strong>' .
+				$this->resImg('docheader.png') .
+				$this->renderCheckBox($ffPrefix.'[docheader]',$piConf['docheader']).'Use docheader<br />';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 
+				// Admin only
+			$subContent = '<strong>Other settings</strong><br />' .
+				$this->renderCheckBox($ffPrefix.'[admin_only]',$piConf['admin_only']).'Admin-only access!<br />';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
+			
+			
 				// Options
 			$subContent = $this->renderCheckBox($ffPrefix.'[interface]',$piConf['interface']).'Allow other extensions to interface with function menu<br />';
 		}
@@ -175,8 +184,48 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 			?>
 		',0);
 
-		$this->addFileToFileArray($pathSuffix.'conf.php',trim($content));
+		$this->addFileToFileArray($pathSuffix . 'conf.php', trim($content));
+		
+			// add the template for docheader
+		if ($config['docheader']) {
+			$mod_template = '<!-- ###FULLDOC### begin -->
+<div class="typo3-fullDoc">
+	<!-- Page header with buttons, path details and csh -->
+	<div id="typo3-docheader">
+		<div id="typo3-docheader-row1">
+			<div class="buttonsleft">###BUTTONLIST_LEFT###</div>
+			<div class="buttonsright">###BUTTONLIST_RIGHT###</div>
+		</div>
+		<div id="typo3-docheader-row2">
+			<div class="docheader-row2-left"><div class="docheader-funcmenu">###FUNC_MENU###</div></div>
+			<div class="docheader-row2-right">###PAGEPATH######PAGEINFO###</div>
+		</div>
+	</div>
+	<!-- Content of module, for instance listing, info or editing -->
+	<div id="typo3-docbody">
+		<div id="typo3-inner-docbody">
+			###CONTENT###
+		</div>
+	</div>
+</div>
+<!-- ###FULLDOC### end -->
 
+<!-- Grouping the icons on top -->
+
+<!-- ###BUTTON_GROUP_WRAP### -->
+	<div class="buttongroup">###BUTTONS###</div>
+<!-- ###BUTTON_GROUP_WRAP### -->
+
+<!-- ###BUTTON_GROUPS_LEFT### -->
+<!-- ###BUTTON_GROUP1### -->###SAVE###<!-- ###BUTTON_GROUP1### -->
+<!-- ###BUTTON_GROUPS_LEFT### -->
+
+<!-- ###BUTTON_GROUPS_RIGHT### -->
+<!-- ###BUTTON_GROUP1### -->###SHORTCUT###<!-- ###BUTTON_GROUP1### -->
+<!-- ###BUTTON_GROUPS_RIGHT### -->';
+			$this->addFileToFileArray($pathSuffix . 'mod_template.html', $mod_template);
+		}
+		
 			// Add title to local lang file
 		$ll=array();
 		$this->addLocalConf($ll,$config,'title','module',$k,1);
@@ -253,13 +302,57 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 					// The page will show only if there is a valid page and if this page may be viewed by the user
 					$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
 					$access = is_array($this->pageinfo) ? 1 : 0;
+				' . ($config['docheader'] ? '
+						// initialize doc
+					$this->doc = t3lib_div::makeInstance(\'template\');  
+					$this->doc->setModuleTemplate(t3lib_extMgm::extPath(\'' . $extKey . '\') . \'' . $pathSuffix . '/mod_template.html\'); 
+					$this->doc->backPath = $BACK_PATH;
+					$docHeaderButtons = $this->getButtons();    
+					
+					if (($this->id && $access) || ($BE_USER->user[\'admin\'] && !$this->id))	{
 
+							// Draw the form
+						$this->doc->form = \'<form action="" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">\';
+
+							// JavaScript
+						$this->doc->JScode = \'
+							<script language="javascript" type="text/javascript">
+								script_ended = 0;
+								function jumpToUrl(URL)	{
+									document.location = URL;
+								}
+							</script>
+						\';
+						$this->doc->postCode=\'
+							<script language="javascript" type="text/javascript">
+								script_ended = 1;
+								if (top.fsMod) top.fsMod.recentIds["web"] = 0;
+							</script>
+						\';
+							// Render content:
+						$this->moduleContent();
+					} else {
+							// If no access or if ID == zero
+						$docHeaderButtons[\'save\'] = \'\';
+						$this->content.=$this->doc->spacer(10);
+					}
+					
+						// compile document
+					$markers[\'FUNC_MENU\'] = t3lib_BEfunc::getFuncMenu(0, \'SET[function]\', $this->MOD_SETTINGS[\'function\'], $this->MOD_MENU[\'function\']);
+					$markers[\'CONTENT\'] = $this->content;
+					
+							// Build the <body> for the module
+					$this->content = $this->doc->startPage($LANG->getLL(\'title\'));
+					$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+					$this->content.= $this->doc->endPage();
+					$this->content = $this->doc->insertStylesAndJS($this->content);
+                ' : '
 					if (($this->id && $access) || ($BE_USER->user[\'admin\'] && !$this->id))	{
 
 							// Draw the header.
 						$this->doc = t3lib_div::makeInstance(\'mediumDoc\');
 						$this->doc->backPath = $BACK_PATH;
-						$this->doc->form=\'<form action="" method="POST">\';
+						$this->doc->form=\'<form action="" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">\';
 
 							// JavaScript
 						$this->doc->JScode = \'
@@ -276,7 +369,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 								if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 							</script>
 						\';
-
+                        
 						$headerSection = $this->doc->getHeader(\'pages\',$this->pageinfo,$this->pageinfo[\'_thePath\']).\'<br />\'.$LANG->sL(\'LLL:EXT:lang/locallang_core.xml:labels.path\').\': \'.t3lib_div::fixed_lgd_pre($this->pageinfo[\'_thePath\'],50);
 
 						$this->content.=$this->doc->startPage($LANG->getLL(\'title\'));
@@ -307,6 +400,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 						$this->content.=$this->doc->spacer(5);
 						$this->content.=$this->doc->spacer(10);
 					}
+				') . '
 				}
 
 				/**
@@ -347,7 +441,36 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 						break;
 					}
 				}
-			}
+				' . ($config['docheader'] ? '
+				
+				/**
+				 * Create the panel of buttons for submitting the form or otherwise perform operations.
+				 *
+				 * @return	array	all available buttons as an assoc. array
+				 */
+				protected function getButtons()	{
+
+					$buttons = array(
+						\'csh\' => \'\',
+						\'shortcut\' => \'\',
+						\'save\' => \'\'
+					);
+						// CSH
+					$buttons[\'csh\'] = t3lib_BEfunc::cshItem(\'_MOD_web_func\', \'\', $GLOBALS[\'BACK_PATH\']);
+
+						// SAVE button
+					$buttons[\'save\'] = \'<input type="image" class="c-inputButton" name="submit" value="Update"\' . t3lib_iconWorks::skinImg($GLOBALS[\'BACK_PATH\'], \'gfx/savedok.gif\', \'\') . \' title="\' . $GLOBALS[\'LANG\']->sL(\'LLL:EXT:lang/locallang_core.php:rm.saveDoc\', 1) . \'" />\';
+
+					
+						// Shortcut
+					if ($GLOBALS[\'BE_USER\']->mayMakeShortcut())	{
+						$buttons[\'shortcut\'] = $this->doc->makeShortcutIcon(\'\', \'function\', $this->MCONF[\'name\']);
+					}
+
+					return $buttons;
+				}
+				' : '') . '
+		}
 		',
 		0);
 
