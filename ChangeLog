@@ -1,6 +1,7 @@
 2008-12-22 Steffen Kamper <info@sk-typo3.de>
 
 	* feature #9990: Enable option to use BE-module with docheader
+	* feature #9988: Enable option to use BE-module with _DISPATCH
 
 2008-11-08 Francois Suter <francois@typo3.org>
 

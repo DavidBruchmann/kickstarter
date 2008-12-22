@@ -82,7 +82,7 @@ class tx_kickstarter_sectionbase {
 	function renderCheckBox($prefix,$value,$defVal=0)	{
 		if (!isset($value))	$value=$defVal;
 		$onCP = $this->getOnChangeParts($prefix);
-		return $this->wopText($prefix).$onCP[0].'<input type="hidden" name="'.$this->piFieldName('wizArray_upd').$prefix.'" value="0"><input type="checkbox" name="'.$this->piFieldName("wizArray_upd").$prefix.'" value="1"'.($value?' checked="checked"':'').' onclick="'.$onCP[1].'"'.$this->wop($prefix).'>';
+		return $this->wopText($prefix).$onCP[0].'<input type="hidden" name="'.$this->piFieldName('wizArray_upd').$prefix.'" value="0"><input type="checkbox" class="checkbox" name="'.$this->piFieldName("wizArray_upd").$prefix.'" value="1"'.($value?' checked="checked"':'').' onclick="'.$onCP[1].'"'.$this->wop($prefix).'>';
 	}
 
 	/**

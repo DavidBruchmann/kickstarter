@@ -99,6 +99,9 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 				$this->renderCheckBox($ffPrefix.'[admin_only]',$piConf['admin_only']).'Admin-only access!<br />';
 			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 			
+				//  Use mod.php
+			$subContent = $this->renderCheckBox($ffPrefix.'[mod_php]',$piConf['mod_php']).'Module use mod.php<br />';
+			$lines[]='<tr'.$this->bgCol(3).'><td>'.$this->fw($subContent).'</td></tr>';
 			
 				// Options
 			$subContent = $this->renderCheckBox($ffPrefix.'[interface]',$piConf['interface']).'Allow other extensions to interface with function menu<br />';
@@ -144,32 +147,49 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 		$this->wizard->ext_tables[]=$this->sPS('
 			'.$this->WOPcomment('WOP:'.$WOP).'
 			if (TYPO3_MODE == \'BE\')	{
+				' . ($config['mod_php'] ?  '
+			    t3lib_extMgm::addModulePath(\'' . $mN . '\', t3lib_extMgm::extPath ($_EXTKEY) . \'' .$pathSuffix . '\');' : '') . '
 					'.$this->WOPcomment('1. and 2. parameter is WOP:'.$WOP.'[position] , 3. parameter is WOP:'.$WOP.'[subpos]').'
 				t3lib_extMgm::addModule(\''.
 					($config['position']!='_MAIN'?$config['position']:$this->returnName($extKey,'module','M'.$k)).
-					'\',\''.
+					'\', \''.
 					($config['position']!='_MAIN'?$this->returnName($extKey,'module','M'.$k):'').
-					'\',\''.
+					'\', \''.
 					$subPos.
-					'\',t3lib_extMgm::extPath($_EXTKEY).\''.$pathSuffix.'\');
+					'\', t3lib_extMgm::extPath($_EXTKEY) . \'' . $pathSuffix . '\');
 			}
 		');
 
 			// Make conf.php file:
-		$content = $this->sPS('
+		$content = $config['mod_php'] ? 
+			$this->sPS('
+				// DO NOT REMOVE OR CHANGE THESE 2 LINES:
+			$MCONF[\'name\'] = \''.$mN.'\';
+            $MCONF[\'script\'] = \'_DISPATCH\';  
+				' . $this->WOPcomment('WOP:' .$WOP . '[admin_only]: If the flag was set the value is "admin", otherwise "user,group"') . '
+			$MCONF[\'access\'] = \'' . ($config['admin_only'] ? 'admin' : 'user,group') . '\';
+
+			$MLANG[\'default\'][\'tabs_images\'][\'tab\'] = \'moduleicon.gif\';
+			$MLANG[\'default\'][\'ll_ref\'] = \'LLL:EXT:' . $extKey . '/' . $pathSuffix . 'locallang_mod.xml\';
+		')
+		:
+		$this->sPS('
 				// DO NOT REMOVE OR CHANGE THESE 3 LINES:
 			define(\'TYPO3_MOD_PATH\', \'ext/'.$extKey.'/'.$pathSuffix.'\');
-			$BACK_PATH=\'../../../\';
-			$MCONF[\'name\']=\''.$mN.'\';
+			$BACK_PATH = \'../../../\';
+			$MCONF[\'name\'] = \''.$mN.'\';
 
-				'.$this->WOPcomment('WOP:'.$WOP.'[admin_only]: If the flag was set the value is "admin", otherwise "user,group"').'
-			$MCONF[\'access\']=\''.($config['admin_only']?'admin':'user,group').'\';
+				'.$this->WOPcomment('WOP:' . $WOP . '[admin_only]: If the flag was set the value is "admin", otherwise "user,group"').'
+			$MCONF[\'access\'] = \'' . ($config['admin_only'] ? 'admin' : 'user,group') . '\';
 			$MCONF[\'script\']=\'index.php\';
 
 			$MLANG[\'default\'][\'tabs_images\'][\'tab\'] = \'moduleicon.gif\';
-			$MLANG[\'default\'][\'ll_ref\']=\'LLL:EXT:'.$extKey.'/'.$pathSuffix.'locallang_mod.xml\';
+			$MLANG[\'default\'][\'ll_ref\']=\'LLL:EXT:' . $extKey . '/' . $pathSuffix . 'locallang_mod.xml\';
 		');
-		$this->wizard->EM_CONF_presets['module'][]=ereg_replace('\/$','',$pathSuffix);
+		
+		if (!$config['mod_php']) {
+			$this->wizard->EM_CONF_presets['module'][] = ereg_replace('\/$', '', $pathSuffix);
+		}
 
 
 		$ll=array();
@@ -238,15 +258,15 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 		$this->addFileToFileArray($pathSuffix.'moduleicon.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/notfound_module.gif'));
 
 
-		$indexRequire = $this->sPS('
+		$indexRequire = $this->sPS(($config['mod_php'] ? '' : '
 				// DEFAULT initialization of a module [BEGIN]
 			unset($MCONF);
 			require_once(\'conf.php\');
-			require_once($BACK_PATH.\'init.php\');
-			require_once($BACK_PATH.\'template.php\');
-
-			$LANG->includeLLFile(\'EXT:'.$extKey.'/'.$pathSuffix.'locallang.xml\');
-			require_once(PATH_t3lib.\'class.t3lib_scbase.php\');
+			require_once($BACK_PATH . \'init.php\');
+			require_once($BACK_PATH . \'template.php\');
+        ') . '
+			$LANG->includeLLFile(\'EXT:' . $extKey . '/' . $pathSuffix . 'locallang.xml\');
+			require_once(PATH_t3lib . \'class.t3lib_scbase.php\');
 			$BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
 				// DEFAULT initialization of a module [END]
 		');
