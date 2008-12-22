@@ -165,7 +165,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 			$this->sPS('
 				// DO NOT REMOVE OR CHANGE THESE 2 LINES:
 			$MCONF[\'name\'] = \''.$mN.'\';
-            $MCONF[\'script\'] = \'_DISPATCH\';  
+			$MCONF[\'script\'] = \'_DISPATCH\';  
 				' . $this->WOPcomment('WOP:' .$WOP . '[admin_only]: If the flag was set the value is "admin", otherwise "user,group"') . '
 			$MCONF[\'access\'] = \'' . ($config['admin_only'] ? 'admin' : 'user,group') . '\';
 
@@ -264,7 +264,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 			require_once(\'conf.php\');
 			require_once($BACK_PATH . \'init.php\');
 			require_once($BACK_PATH . \'template.php\');
-        ') . '
+		') . '
 			$LANG->includeLLFile(\'EXT:' . $extKey . '/' . $pathSuffix . 'locallang.xml\');
 			require_once(PATH_t3lib . \'class.t3lib_scbase.php\');
 			$BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
@@ -366,7 +366,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 					$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 					$this->content.= $this->doc->endPage();
 					$this->content = $this->doc->insertStylesAndJS($this->content);
-                ' : '
+				' : '
 					if (($this->id && $access) || ($BE_USER->user[\'admin\'] && !$this->id))	{
 
 							// Draw the header.
@@ -389,7 +389,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 								if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
 							</script>
 						\';
-                        
+
 						$headerSection = $this->doc->getHeader(\'pages\',$this->pageinfo,$this->pageinfo[\'_thePath\']).\'<br />\'.$LANG->sL(\'LLL:EXT:lang/locallang_core.xml:labels.path\').\': \'.t3lib_div::fixed_lgd_pre($this->pageinfo[\'_thePath\'],50);
 
 						$this->content.=$this->doc->startPage($LANG->getLL(\'title\'));
