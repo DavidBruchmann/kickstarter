@@ -140,7 +140,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 				$subPos='before:info';
 			break;
 		}
-		$this->wizard->ext_tables[]=$this->sPS('
+		$this->wizard->ext_tables[] = $this->sPS('
 			'.$this->WOPcomment('WOP:'.$WOP).'
 			if (TYPO3_MODE == \'BE\') {
 				t3lib_extMgm::addModulePath(\'' . $mN . '\', t3lib_extMgm::extPath($_EXTKEY) . \'' .$pathSuffix . '\');' . '
@@ -156,7 +156,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 		');
 
 			// Make conf.php file:
-		$this->sPS('
+		$content = $this->sPS('
 				// DO NOT REMOVE OR CHANGE THESE 2 LINES:
 			$MCONF[\'name\'] = \''.$mN.'\';
 			$MCONF[\'script\'] = \'_DISPATCH\';
