@@ -1,6 +1,7 @@
 2009-01-11 Ingo Renner	<ingo3@typo3.org>
 
 	* made use of mod.php for backend modules the only available method for backend modules
+	* removed translationsas they're provided from the translation server
 
 2008-12-22 Steffen Kamper <info@sk-typo3.de>
 
