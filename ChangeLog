@@ -1,3 +1,7 @@
+2009-01-11 Ingo Renner	<ingo3@typo3.org>
+
+	* made use of mod.php for backend modules the only available method for backend modules
+
 2008-12-22 Steffen Kamper <info@sk-typo3.de>
 
 	* feature #9990: Enable option to use BE-module with docheader
