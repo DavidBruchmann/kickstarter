@@ -2,6 +2,7 @@
 
 	* made use of mod.php for backend modules the only available method for backend modules
 	* removed translationsas they're provided from the translation server
+	* set the status to "stable"
 
 2008-12-22 Steffen Kamper <info@sk-typo3.de>
 
