@@ -1,3 +1,7 @@
+2009-01-23 Peter Foerger	<pfoerger@gmail.com>
+
+	* Fixed bug #10161: 'blob' is also a reserved name/word
+
 2009-01-11 Ingo Renner	<ingo3@typo3.org>
 
 	* Release of EXT:kickstarter v0.4.0
