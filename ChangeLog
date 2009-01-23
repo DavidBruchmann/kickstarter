@@ -1,3 +1,7 @@
+2009-01-23 Peter Foerger	<pfoerger@gmail.com>
+
+	* Fixed bug #10161: 'blob' is also a reserved name/word
+
 2009-01-12 Ingo Renner	<ingo3@typo3.org>
 
 	* set the version number to 0.5.0-dev

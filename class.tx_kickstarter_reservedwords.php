@@ -56,6 +56,7 @@ class tx_kickstarter_reservedWords {
 		'and',
 		'asensitive',
 		'bigint',
+		'blob',
 		'both',
 		'cascade',
 		'char',
