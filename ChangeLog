@@ -1,3 +1,7 @@
+2009-02-03 Steffen Kamper <info@sk-typo3.de>
+
+	* Fixed bug #10332: MySQL keywords are not complete 
+
 2009-01-23 Peter Foerger	<pfoerger@gmail.com>
 
 	* Fixed bug #10161: 'blob' is also a reserved name/word
