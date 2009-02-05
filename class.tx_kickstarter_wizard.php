@@ -71,6 +71,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	function tx_kickstarter_wizard() {
 		$this->modData = t3lib_div::_POST($this->varPrefix);
 
+		
 		// getting the available languages
 		$theLanguages = t3lib_div::trimExplode('|', TYPO3_languages);
 		$llFile = t3lib_extMgm::extPath('setup').'/mod/locallang.xml';
@@ -390,7 +391,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 				<td><a name="' . md5($fileName) . '"></a><strong>' . $this->fw($fileName) . '</strong></td>
 				</tr>
 				<tr>
-					<td>' . $this->preWrap($data['content']) . '</td>
+					<td>' . $this->preWrap($data['content'], $fI['extension']) . '</td>
 				</tr>';
 			} else $linkToFile=$this->fw('&nbsp;');
 

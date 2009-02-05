@@ -432,10 +432,14 @@ class tx_kickstarter_sectionbase {
 	 * @param	string		the string to wrap
 	 * @return	string		string wrapped in <pre> tags
 	 */
-	function preWrap($str)	{
-		$str = str_replace(chr(9),'&nbsp;&nbsp;&nbsp;&nbsp;',htmlspecialchars($str));
-		$str = '<pre>'.$str.'</pre>';
+	function preWrap($str, $ext='txt')	{
+		if ($ext == 'php') {
+			return '<p style="font-size:12px;">' . highlight_string($str, true) . '</p>';
+		} else {
+			$str = str_replace(chr(9),'&nbsp;&nbsp;&nbsp;&nbsp;',htmlspecialchars($str));
+			$str = '<pre>' . $str . '</pre>';
 		return $str;
+		}
 	}
 
 	/**
