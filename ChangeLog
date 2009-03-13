@@ -1,5 +1,6 @@
 2009-03-13 Steffen Kamper <info@sk-typo3.de>
 
+	* Fixed bug #10491: View Result: content of XML-Files are empty   
 	* Fixed bug #10489: Add extension.title to locallang_db.xml  
 
 2009-02-05 Steffen Kamper <info@sk-typo3.de>
