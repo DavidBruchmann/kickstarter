@@ -1,3 +1,7 @@
+2009-03-13 Steffen Kamper <info@sk-typo3.de>
+
+	* Fixed bug #10491: View Result: content of XML-Files are empty   
+
 2009-02-03 Steffen Kamper <info@sk-typo3.de>
 
 	* Fixed bug #10332: MySQL keywords are not complete 
