@@ -379,6 +379,13 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			if (t3lib_div::inList('php,sql,txt,xml',strtolower($fI['extension'])))	{
 				$linkToFile='<strong><a href="#'.md5($fileName).'">'.$this->fw("&nbsp;View&nbsp;").'</a></strong>';
 
+				if($fI['extension'] == 'xml') {
+					$data['content'] = $GLOBALS['LANG']->csConvObj->utf8_decode(
+						$data['content'],
+						$GLOBALS['LANG']->charSet
+					);
+				}
+
 				$filesContent[]='<tr' .$this->bgCol(1) .'>
 				<td><a name="' . md5($fileName) . '"></a><strong>' . $this->fw($fileName) . '</strong></td>
 				</tr>
