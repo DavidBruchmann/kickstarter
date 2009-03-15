@@ -653,9 +653,6 @@ class tx_kickstarter_sectionbase {
 		);
 
 		$outputArray['data'] = array();
-		$outputArray['data']['default']['extension.title'] = $GLOBALS['LANG']->csConvObj->utf8_encode(
-			$this->wizard->wizArray['emconf'][1]['title'],
-			$GLOBALS['LANG']->charSet);
 		while(list($lK,$labels)=each($arr))	{
 			if (is_array($labels))	{
 				while(list($l,$v)=each($labels))	{
