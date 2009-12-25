@@ -2,6 +2,7 @@
 
 	* Fixed bug #12891: kickstarter crashes with 5.3 (credits Steffen Kamper)
 	* Added feature #12775: Use label tags in the language section (credits Georg Ringer)
+	* Fixed bug #12768: extension key field not using htmlspecialchars (credits Georg Ringer)
 
 2009-02-05 Steffen Kamper <info@sk-typo3.de>
 

@@ -308,7 +308,7 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 
 		$lines[]='<tr><td width="150">
 		'.$this->fw('Enter extension key:').'<br />
-		<input type="text" name="'.$this->piFieldName('wizArray_upd').'[save][extension_key]" value="'.$this->wizArray['save']['extension_key'].'" maxlength="30" />
+		<input type="text" name="'.$this->piFieldName('wizArray_upd').'[save][extension_key]" value="' . htmlspecialchars($this->wizArray['save']['extension_key']) . '" maxlength="30" />
 		'.($this->wizArray['save']['extension_key']?'':'<br /><a href="http://typo3.org/1382.0.html" target="_blank"><font color="red">Make sure to enter the right extension key from the beginning here!</font> You can register one here.</a>').'
 		</td><td></td></tr>';
 
