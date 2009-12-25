@@ -1,6 +1,7 @@
 2009-12-25 Ingo Renner	<ingo3@typo3.org>
 
 	* Fixed bug #12891: kickstarter crashes with 5.3 (credits Steffen Kamper)
+	* Added feature #12775: Use label tags in the language section (credits Georg Ringer)
 
 2009-02-05 Steffen Kamper <info@sk-typo3.de>
 
