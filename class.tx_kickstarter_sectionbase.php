@@ -475,7 +475,7 @@ class tx_kickstarter_sectionbase {
 				if ($firstLineWithContent==-1) {
 					$firstLineWithContent=$k;
 				}
-				list($preSpace) = split('[^[:space:]]',$v,2);
+				list($preSpace) = preg_split('/[^[:space:]]/', $v, 2);
 				$min[]=count(explode(chr(9),$preSpace));
 				$lastLineWithContent=$k;
 			}
@@ -721,7 +721,7 @@ class tx_kickstarter_sectionbase {
 			?>
 		',0);
 		$this->addFileToFileArray($pathSuffix.'conf.php',trim($content));
-		$this->wizard->EM_CONF_presets['module'][]=ereg_replace("\/$","",$pathSuffix);
+		$this->wizard->EM_CONF_presets['module'][] = preg_replace("/\/$/", '', $pathSuffix);
 
 			// Add title to local lang file
 		$ll=array();

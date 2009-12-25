@@ -1,10 +1,14 @@
+2009-12-25 Ingo Renner	<ingo3@typo3.org>
+
+	* Fixed bug #12891: kickstarter crashes with 5.3 (credits Steffen Kamper)
+
 2009-02-05 Steffen Kamper <info@sk-typo3.de>
 
-	* Fixed bug #10335: Feature: highlight php code in "View result"  
+	* Fixed bug #10335: Feature: highlight php code in "View result"
 
 2009-02-03 Steffen Kamper <info@sk-typo3.de>
 
-	* Fixed bug #10332: MySQL keywords are not complete 
+	* Fixed bug #10332: MySQL keywords are not complete
 
 2009-01-23 Peter Foerger	<pfoerger@gmail.com>
 

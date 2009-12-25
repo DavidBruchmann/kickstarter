@@ -253,7 +253,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				if ($config['plus_user_ex'])	$setType='includeLib';
 			break;
 			case 'typotags':
-				$tagName = ereg_replace('[^a-z0-9_]','',strtolower($config['tag_name']));
+				$tagName = preg_replace('/[^a-z0-9_]/', '', strtolower($config['tag_name']));
 				if ($tagName)	{
 					$this->wizard->ext_localconf[]=$this->sPS('
 						'.$this->WOPcomment('WOP:'.$WOP.'[addType] / '.$WOP.'[tag_name]')."
