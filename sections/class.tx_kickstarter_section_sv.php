@@ -151,7 +151,6 @@ class tx_kickstarter_section_sv extends tx_kickstarter_sectionbase {
 			'.$this->WOPcomment('WOP:'.$WOP.'[type]').'
 			t3lib_extMgm::addService($_EXTKEY,  \''.$config['type'].'\' /* sv type */,  \''.$cN.'\' /* sv key */,
 					array(
-
 						\'title\' => \''.addslashes($config['title']).'\','.$this->WOPcomment('	WOP:'.$WOP.'[title]').'
 						\'description\' => \''.addslashes($config['description']).'\','.$this->WOPcomment('	WOP:'.$WOP.'[description]').'
 
