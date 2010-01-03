@@ -1,3 +1,7 @@
+2010-01-03 Ingo Renner	<ingo3@typo3.org>
+
+	* Fixed a whitespace issue
+
 2009-12-25 Ingo Renner	<ingo3@typo3.org>
 
 	* Fixed bug #12891: kickstarter crashes with 5.3 (credits Steffen Kamper)
