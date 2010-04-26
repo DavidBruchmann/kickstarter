@@ -680,7 +680,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			# Table structure for table \''.$tableName.'\'
 			#
 			CREATE TABLE '.$tableName.' (
-		', preg_replace(',[[:space:]]*$','',implode(chr(10),$DBfields)), '
+		', preg_replace('/,[[:space:]]*$/','',implode(chr(10),$DBfields)), '
 
 			);
 		');
