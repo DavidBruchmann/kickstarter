@@ -43,7 +43,8 @@ class tx_kickstarter_reservedWords {
 		'deleted',
 		'cruser_id',
 		'crdate',
-		'tstamp'
+		'tstamp',
+		'type'
 	);
 
 	 var $mysqlReservedWords = array(
