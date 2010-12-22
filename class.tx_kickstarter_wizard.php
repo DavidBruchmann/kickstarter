@@ -99,6 +99,11 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 		$this->wizArray = is_array($inArray) ? $inArray : array();
 		if (is_array($this->modData['wizArray_upd']))	{
 			$this->wizArray = t3lib_div::array_merge_recursive_overrule($this->wizArray,$this->modData['wizArray_upd']);
+
+				// Use "overwrite_files" from uploaded data always. This prevents recreation of removed files.
+			if (isset($this->modData['wizArray_upd']['save']['overwrite_files']))	{
+				$this->wizArray['save']['overwrite_files'] = $this->modData['wizArray_upd']['save']['overwrite_files'];
+			}
 		}
 
 		$lA = is_array($this->wizArray['languages']) ? current($this->wizArray['languages']) : '';
