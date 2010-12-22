@@ -1,3 +1,7 @@
+2010-12-22 Steffen Kamper <info@sk-typo3.de>
+
+	* Fixed wrong module template path
+
 2010-07-29 Ingo Renner	<ingo3@typo3.org>
 
 	* Added "type" as reserved word
