@@ -1,3 +1,7 @@
+2010-12-22 Peter Foerger  <pfoerger@gmail.com>
+
+	* Fixed bug #10917: ShowUid is not checked for numeric content
+
 2010-12-22 Steffen Kamper <info@sk-typo3.de>
 
 	* Fixed wrong module template path

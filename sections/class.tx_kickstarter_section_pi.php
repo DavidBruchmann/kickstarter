@@ -24,7 +24,7 @@
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
 /**
- * @author	Kasper Sk�rh�j <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Ingo Renner	<ingo@typo3.org>
  */
 
@@ -457,7 +457,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								'.(!$cache ? '$this->pi_USER_INT_obj = 1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
 								$lConf = $this->conf[\'listView.\'];	// Local settings for the listView function
 
-								if ($this->piVars[\'showUid\'])	{	// If a single element should be displayed:
+								if (is_numeric($this->piVars[\'showUid\']))	{	// If a single element should be displayed:
 									$this->internal[\'currentTable\'] = \''.$tableName.'\';
 									$this->internal[\'currentRow\'] = $this->pi_getRecord(\''.$tableName.'\',$this->piVars[\'showUid\']);
 
