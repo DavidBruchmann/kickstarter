@@ -1,5 +1,9 @@
 2010-12-22 Peter Foerger  <pfoerger@gmail.com>
 
+	* Fixed bug #13208: Add pages to subtypes_excludelist (credits Georg Ringer)
+
+2010-12-22 Peter Foerger  <pfoerger@gmail.com>
+
 	* Fixed bug #11645: Message text contains LINE BREAK (credits Stefano Kowalke)
 
 2010-12-22 Peter Foerger  <pfoerger@gmail.com>

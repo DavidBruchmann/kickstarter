@@ -196,7 +196,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				$this->wizard->ext_tables[]=$this->sPS('
 					'.$this->WOPcomment('WOP:'.$WOP.'[addType]')."
 					t3lib_div::loadTCA('tt_content');
-					\$TCA['tt_content']['types']['list']['subtypes_excludelist'][\$_EXTKEY.'_pi".$k."']='layout,select_key';
+					\$TCA['tt_content']['types']['list']['subtypes_excludelist'][\$_EXTKEY.'_pi".$k."']='layout,select_key,pages';
 					".($config['apply_extended']?"\$TCA['tt_content']['types']['list']['subtypes_addlist'][\$_EXTKEY.'_pi".$k."']='".$this->wizard->_apply_extended_types[$config['apply_extended']]."';":"")."
 				");
 
