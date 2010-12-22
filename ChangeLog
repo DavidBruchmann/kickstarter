@@ -1,5 +1,9 @@
 2010-12-22 Peter Foerger  <pfoerger@gmail.com>
 
+	* Fixed bug #11645: Message text contains LINE BREAK (credits Stefano Kowalke)
+
+2010-12-22 Peter Foerger  <pfoerger@gmail.com>
+
 	* Fixed bug #11414 : After deletion of files kickstarter recreates them always (credits Daniel Hahler)
 
 2010-12-22 Peter Foerger  <pfoerger@gmail.com>
