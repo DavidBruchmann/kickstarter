@@ -1,5 +1,9 @@
 2011-01-26 Peter Foerger  <pfoerger@gmail.com>
 
+	* Fixed bug #17332: Newline character after php closing tag in class.tx_kickstarter_reservedwords.php
+
+2011-01-26 Peter Foerger  <pfoerger@gmail.com>
+
 	* Fixed bug #16962: t3ver_stage should be int(11) in 4.5 (credits Tolleiv Nietsch)
 
 2010-12-22 Peter Foerger  <pfoerger@gmail.com>
