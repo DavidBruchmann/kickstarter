@@ -1,5 +1,9 @@
 2011-01-26 Peter Foerger  <pfoerger@gmail.com>
 
+	* Converted encoding to utf-8 and corrected Kaspers name
+
+2011-01-26 Peter Foerger  <pfoerger@gmail.com>
+
 	* Fixed bug #17332: Newline character after php closing tag in class.tx_kickstarter_reservedwords.php
 
 2011-01-26 Peter Foerger  <pfoerger@gmail.com>
