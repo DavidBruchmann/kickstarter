@@ -29,7 +29,7 @@ require_once(t3lib_extMgm::extPath('kickstarter').'class.tx_kickstarter_sectionb
 
 
 /**
- * @author	Kasper Sk�rh�j <kasperYYYY@typo3.com>
+ * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
  * @author	Ingo Renner <ingo@typo3.org>
  */
 class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {

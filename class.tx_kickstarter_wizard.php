@@ -31,7 +31,7 @@ require_once($pathKickstarter.'class.tx_kickstarter_reservedwords.php');
 /**
  * TYPO3 Extension Kickstarter
  *
- * @author	Kasper Skårhøj <kasperYYYY@typo3.com>
+ * @author	Kasper SkÃ¥rhÃ¸j <kasperYYYY@typo3.com>
  * @author	Ingo Renner <ingo@typo3.org>
  */
 class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
