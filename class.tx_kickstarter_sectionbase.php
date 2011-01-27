@@ -721,7 +721,7 @@ class tx_kickstarter_sectionbase {
 			?>
 		',0);
 		$this->addFileToFileArray($pathSuffix.'conf.php',trim($content));
-		$this->wizard->EM_CONF_presets['module'][] = preg_replace("/\/$/", '', $pathSuffix);
+		$this->wizard->EM_CONF_presets['module'][] = preg_replace('/\/$/', '', $pathSuffix);
 
 			// Add title to local lang file
 		$ll=array();
