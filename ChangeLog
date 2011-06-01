@@ -1,3 +1,7 @@
+2011-06-01 Peter Foerger  <pfoerger@gmail.com>
+
+	* Fixed bug #13446: Kickstarter allows hyphen in extension key (credits Matze)
+
 2011-04-10 Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #18088: Generated extensions are not compatible with workspaces
