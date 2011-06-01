@@ -1,5 +1,9 @@
 2011-06-01 Peter Foerger  <pfoerger@gmail.com>
 
+	* Fixed bug #18157: Created Backend module use removed function t3lib_div::fixed_lgd_pre() (credits Steffen Gebert)
+
+ 2011-06-01 Peter Foerger  <pfoerger@gmail.com>
+
 	* Fixed bug #13446: Kickstarter allows hyphen in extension key (credits Matze)
 
 2011-04-10 Xavier Perseguers  <typo3@perseguers.ch>
