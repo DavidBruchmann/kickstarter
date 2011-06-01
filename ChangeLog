@@ -1,5 +1,9 @@
 2011-06-01 Peter Foerger  <pfoerger@gmail.com>
 
+	* Release of EXT:kickstarter v0.5.1
+
+2011-06-01 Peter Foerger  <pfoerger@gmail.com>
+
 	* Fixed bug #18157: Created Backend module use removed function t3lib_div::fixed_lgd_pre() (credits Steffen Gebert)
 
  2011-06-01 Peter Foerger  <pfoerger@gmail.com>
