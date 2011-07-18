@@ -474,8 +474,16 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 										// Initializing the query parameters:
 									list($this->internal[\'orderBy\'],$this->internal[\'descFlag\']) = explode(\':\',$this->piVars[\'sort\']);
-									$this->internal[\'results_at_a_time\']=t3lib_div::intInRange($lConf[\'results_at_a_time\'],0,1000,3);		// Number of results to show in a listing.
-									$this->internal[\'maxPages\']=t3lib_div::intInRange($lConf[\'maxPages\'],0,1000,2);;		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
+									$version = class_exists(\'t3lib_utility_VersionNumber\')
+											? t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version)
+											: t3lib_div::int_from_ver(TYPO3_version);
+									if ($version < 4006000) {
+										$this->internal[\'results_at_a_time\'] = t3lib_div::intInRange($lConf[\'results_at_a_time\'], 0, 1000, 3);		// Number of results to show in a listing.
+										$this->internal[\'maxPages\'] = t3lib_div::intInRange($lConf[\'maxPages\'], 0, 1000, 2);;		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
+									} else {
+										$this->internal[\'results_at_a_time\'] = t3lib_utility_Math::forceIntegerInRange($lConf[\'results_at_a_time\'], 0, 1000, 3);		// Number of results to show in a listing.
+										$this->internal[\'maxPages\'] = t3lib_utility_Math::forceIntegerInRange($lConf[\'maxPages\'], 0, 1000, 2);;		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
+									}
 									$this->internal[\'searchFieldList\']=\''.implode(',',$theLines['searchFieldList']).'\';
 									$this->internal[\'orderByList\']=\''.implode(',',$theLines['orderByList']).'\';
 

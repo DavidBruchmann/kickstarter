@@ -180,7 +180,10 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 			if ($saveKey) {
 				$this->makeFilesArray($this->saveKey);
 				$uploadArray = $this->makeUploadArray($this->saveKey,$this->fileArray);
-				if (t3lib_div::int_from_ver(TYPO3_version) < t3lib_div::int_from_ver('4.0.0')) {
+				$version = class_exists('t3lib_utility_VersionNumber')
+						? t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version)
+						: t3lib_div::int_from_ver(TYPO3_version);
+				if ($version < 4000000) {
 						// Syntax for TYPO3 3.8 and older
 					$this->pObj->importExtFromRep(0,$this->modData['loc'],0,$uploadArray,0,0,1);
 				} else {

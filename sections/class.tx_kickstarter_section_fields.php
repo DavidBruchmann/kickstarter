@@ -157,7 +157,14 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$ses_optValues
 			);
 		}
-		if (count($optValues))		$selPresetBox = '<select name="'.$this->piFieldName('_PRESET').'[]" size="'.t3lib_div::intInRange(count($optValues),1,10).'" multiple="multiple">'.implode('',$optValues).'</select>';
+		if (count($optValues)) {
+			$version = class_exists('t3lib_utility_VersionNumber')
+					? t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version)
+					: t3lib_div::int_from_ver(TYPO3_version);
+			$size = ($version < 4006000) ? t3lib_div::intInRange(count($optValues), 1, 10) : t3lib_utility_Math::forceIntegerInRange(count($optValues), 1, 10);
+
+			$selPresetBox = '<select name="' . $this->piFieldName('_PRESET') . '[]" size="' . $size . '" multiple="multiple">' . implode('', $optValues) . '</select>';
+		}
 		return $selPresetBox;
 	}
 
@@ -281,6 +288,10 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 */
 	function renderField($prefix,$fConf,$dontRemove=0)	{
 		global $LANG;
+		
+		$version = class_exists('t3lib_utility_VersionNumber')
+				? t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version)
+				: t3lib_div::int_from_ver(TYPO3_version);
 
 		$onCP = $this->getOnChangeParts($prefix.'[fieldname]');
 		$fieldName = $this->renderStringBox($prefix.'[fieldname]',$fConf['fieldname']).
@@ -503,7 +514,12 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						<td valign="top">'.$this->fw('Item label:').'</td>
 						<td valign="top">'.$this->fw('Item value:').'</td>
 					</tr>';
-				$nItems = $fConf['conf_select_items'] = isset($fConf['conf_select_items'])?t3lib_div::intInRange(intval($fConf['conf_select_items']),0,20):4;
+				if ($version < 4006000) {
+					$nItems = $fConf['conf_select_items'] = isset($fConf['conf_select_items']) ? t3lib_div::intInRange(intval($fConf['conf_select_items']), 0, 20) : 4;
+				} else {
+					$nItems = $fConf['conf_select_items'] = isset($fConf['conf_select_items']) ? t3lib_utility_Math::forceIntegerInRange(intval($fConf['conf_select_items']), 0, 20) : 4;
+				}
+				
 				for($a=0;$a<$nItems;$a++)	{
 					$subLines[]='<tr>
 						<td valign="top">'.$this->fw($this->renderStringBox_lang('conf_select_item_'.$a,$prefix,$fConf)).'</td>
@@ -517,8 +533,13 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$fDetails.=$this->renderCheckBox($prefix.'[conf_select_icons]',$fConf['conf_select_icons']).'Add a dummy set of icons<br />';
 					$fDetails.=$this->resImg('t_select_icons.png','hspace="20"','','<br /><br />');
 
-					$fDetails.=$this->renderStringBox($prefix.'[conf_relations]',t3lib_div::intInRange($fConf['conf_relations'],1,1000),50).' Max number of relations<br />';
-					$fDetails.=$this->renderStringBox($prefix.'[conf_relations_selsize]',t3lib_div::intInRange($fConf['conf_relations_selsize'],1,50),50).' Size of selector box<br />';
+					if ($version < 4006000) {				
+						$fDetails .= $this->renderStringBox($prefix . '[conf_relations]', t3lib_div::intInRange($fConf['conf_relations'], 1, 1000), 50) . ' Max number of relations<br />';
+						$fDetails .= $this->renderStringBox($prefix . '[conf_relations_selsize]', t3lib_div::intInRange($fConf['conf_relations_selsize'], 1, 50), 50) . ' Size of selector box<br />';
+					} else {
+						$fDetails .= $this->renderStringBox($prefix . '[conf_relations]', t3lib_utility_Math::forceIntegerInRange($fConf['conf_relations'], 1, 1000), 50) . ' Max number of relations<br />';
+						$fDetails .= $this->renderStringBox($prefix . '[conf_relations_selsize]', t3lib_utility_Math::forceIntegerInRange($fConf['conf_relations_selsize'], 1, 50), 50) . ' Size of selector box<br />';
+					}
 
 					$fDetails.=$this->renderCheckBox($prefix.'[conf_select_pro]',$fConf['conf_select_pro']).'Add pre-processing with PHP-function<br />';
 				}
@@ -556,12 +577,19 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					'select_storage' => 'Selectorbox, select from storage page',
 				);
 				$fDetails.='<br />Type:<br />'.$this->renderSelectBox($prefix.'[conf_rel_type]',$fConf['conf_rel_type']?$fConf['conf_rel_type']:'group',$optValues).'<br />';
-				if (t3lib_div::intInRange($fConf['conf_relations'],1,1000)==1 && $fConf['conf_rel_type']!='group')	{
+				
+				$confRelationsInRange = ($version < 4006000) ? t3lib_div::intInRange($fConf['conf_relations'], 1, 1000) : t3lib_utility_Math::forceIntegerInRange($fConf['conf_relations'], 1, 1000);
+				if ($confRelationsInRange == 1 && $fConf['conf_rel_type'] !== 'group') {
 					$fDetails.=$this->renderCheckBox($prefix.'[conf_rel_dummyitem]',$fConf['conf_rel_dummyitem']).'Add a blank item to the selector<br />';
 				}
 
-				$fDetails.=$this->renderStringBox($prefix.'[conf_relations]',t3lib_div::intInRange($fConf['conf_relations'],1,1000),50).' Max number of relations<br />';
-				$fDetails.=$this->renderStringBox($prefix.'[conf_relations_selsize]',t3lib_div::intInRange($fConf['conf_relations_selsize'],1,50),50).' Size of selector box<br />';
+				if ($version < 4006000) {
+					$fDetails .= $this->renderStringBox($prefix . '[conf_relations]', t3lib_div::intInRange($fConf['conf_relations'], 1, 1000), 50) . ' Max number of relations<br />';
+					$fDetails .= $this->renderStringBox($prefix . '[conf_relations_selsize]', t3lib_div::intInRange($fConf['conf_relations_selsize'], 1, 50), 50) . ' Size of selector box<br />';
+				} else {
+					$fDetails .= $this->renderStringBox($prefix . '[conf_relations]', t3lib_utility_Math::forceIntegerInRange($fConf['conf_relations'], 1, 1000), 50) . ' Max number of relations<br />';
+					$fDetails .= $this->renderStringBox($prefix . '[conf_relations_selsize]', t3lib_utility_Math::forceIntegerInRange($fConf['conf_relations_selsize'], 1, 50), 50) . ' Size of selector box<br />';
+				}
 				$fDetails.=$this->renderCheckBox($prefix.'[conf_relations_mm]',$fConf['conf_relations_mm']).'True M-M relations (otherwise commalist of values)<br />';
 
 
@@ -589,9 +617,15 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				);
 				$fDetails.='<br />Extensions:<br />'.$this->renderSelectBox($prefix.'[conf_files_type]',$fConf['conf_files_type'],$optValues).'<br />';
 
-				$fDetails.=$this->renderStringBox($prefix.'[conf_files]',t3lib_div::intInRange($fConf['conf_files'],1,1000),50).' Max number of files<br />';
-				$fDetails.=$this->renderStringBox($prefix.'[conf_max_filesize]',t3lib_div::intInRange($fConf['conf_max_filesize'],1,1000,500),50).' Max filesize allowed (kb)<br />';
-				$fDetails.=$this->renderStringBox($prefix.'[conf_files_selsize]',t3lib_div::intInRange($fConf['conf_files_selsize'],1,50),50).' Size of selector box<br />';
+				if ($version < 4006000) {
+					$fDetails .= $this->renderStringBox($prefix . '[conf_files]', t3lib_div::intInRange($fConf['conf_files'], 1, 1000), 50) . ' Max number of files<br />';
+					$fDetails .= $this->renderStringBox($prefix . '[conf_max_filesize]', t3lib_div::intInRange($fConf['conf_max_filesize'], 1, 1000, 500), 50) . ' Max filesize allowed (kb)<br />';
+					$fDetails .= $this->renderStringBox($prefix . '[conf_files_selsize]', t3lib_div::intInRange($fConf['conf_files_selsize'], 1, 50), 50) . ' Size of selector box<br />';
+				} else {
+					$fDetails .= $this->renderStringBox($prefix . '[conf_files]', t3lib_utility_Math::forceIntegerInRange($fConf['conf_files'], 1, 1000), 50) . ' Max number of files<br />';
+					$fDetails .= $this->renderStringBox($prefix . '[conf_max_filesize]', t3lib_utility_Math::forceIntegerInRange($fConf['conf_max_filesize'], 1, 1000, 500), 50) . ' Max filesize allowed (kb)<br />';
+					$fDetails .= $this->renderStringBox($prefix . '[conf_files_selsize]', t3lib_utility_Math::forceIntegerInRange($fConf['conf_files_selsize'], 1, 50), 50) . ' Size of selector box<br />';
+				}
 				$fDetails.=$this->resImg('t_file_size.png','','','<br /><br />');
 				$fDetails.=$this->renderCheckBox($prefix.'[conf_files_thumbs]',$fConf['conf_files_thumbs']).'Show thumbnails<br />';
 				$fDetails.=$this->resImg('t_file_thumb.png','hspace="20"','','<br /><br />');
@@ -606,7 +640,12 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				} else {
 					$typeCfg.=$this->resImg('t_check10.png','','');
 				}
-				$nItems= t3lib_div::intInRange($fConf['conf_numberBoxes'],1,10,(string)$fConf['type']=='check_4'?4:10);
+				if ($version < 4006000) {
+					$nItems = t3lib_div::intInRange($fConf['conf_numberBoxes'], 1, 10, (string)$fConf['type'] === 'check_4' ? 4 : 10);
+				} else {
+					$nItems = t3lib_utility_Math::forceIntegerInRange($fConf['conf_numberBoxes'], 1, 10, (string)$fConf['type'] === 'check_4' ? 4 : 10);
+				}
+
 				$fDetails.=$this->renderStringBox($prefix.'[conf_numberBoxes]',$nItems,50).' Number of checkboxes<br />';
 
 				for($a=0;$a<$nItems;$a++)	{
@@ -769,6 +808,10 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 		if (!(string)$fConf['type'])	return;
 		$id = $table.'_'.$fConf['fieldname'];
 
+		$version = class_exists('t3lib_utility_VersionNumber')
+				? t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version)
+				: t3lib_div::int_from_ver(TYPO3_version);
+
 		$configL=array();
 		$t = (string)$fConf['type'];
 		switch($t)	{
@@ -776,8 +819,17 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 			case 'input+':
 				$isString = true;
 				$configL[]='\'type\' => \'input\',	' . $this->WOPcomment('WOP:'.$WOP.'[type]');
-				$configL[]='\'size\' => \'' . t3lib_div::intInRange($fConf['conf_size'],5,48,30) . '\',	' .$this->WOPcomment('WOP:'.$WOP.'[conf_size]');
-				if (intval($fConf['conf_max']))	$configL[]='\'max\' => \'' . t3lib_div::intInRange($fConf['conf_max'],1,255).'\',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_max]');
+				if ($version < 4006000) {
+					$configL[] = '\'size\' => \'' . t3lib_div::intInRange($fConf['conf_size'], 5, 48, 30) . '\',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_size]');
+					if (intval($fConf['conf_max']))	{
+						$configL[] = '\'max\' => \'' . t3lib_div::intInRange($fConf['conf_max'], 1, 255) . '\',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_max]');
+					}
+				} else {
+					$configL[] = '\'size\' => \'' . t3lib_utility_Math::forceIntegerInRange($fConf['conf_size'], 5, 48, 30) . '\',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_size]');
+					if (intval($fConf['conf_max']))	{
+						$configL[] = '\'max\' => \'' . t3lib_utility_Math::forceIntegerInRange($fConf['conf_max'], 1, 255) . '\',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_max]');
+					}
+				}
 
 				$evalItems=array();
 				if ($fConf['conf_required'])	{$evalItems[0][] = 'required';			$evalItems[1][] = $WOP.'[conf_required]';}
@@ -848,7 +900,11 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				} elseif (!$fConf['conf_varchar'])		{
 					$DBfields[] = $fConf['fieldname'] . ' tinytext,';
 				} else {
-					$varCharLn = (intval($fConf['conf_max'])?t3lib_div::intInRange($fConf['conf_max'],1,255):255);
+					if ($version < 4006000) {
+						$varCharLn = (intval($fConf['conf_max']) ? t3lib_div::intInRange($fConf['conf_max'], 1, 255) : 255);
+					} else {
+						$varCharLn = (intval($fConf['conf_max']) ? t3lib_utility_Math::forceIntegerInRange($fConf['conf_max'], 1, 255) : 255);
+					}
 					$DBfields[] = $fConf['fieldname'] . ' ' . ($varCharLn>$this->wizard->charMaxLng?'var':'') . 'char(' . $varCharLn .') DEFAULT \'\' NOT NULL,';
 				}
 			break;
@@ -906,8 +962,13 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				if ($t=='textarea_nowrap')	{
 					$configL[]='\'wrap\' => \'OFF\',';
 				}
-				$configL[]='\'cols\' => \''.t3lib_div::intInRange($fConf["conf_cols"],5,48,30).'\',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_cols]');
-				$configL[]='\'rows\' => \''.t3lib_div::intInRange($fConf["conf_rows"],1,20,5).'\',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_rows]');
+				if ($version < 4006000) {
+					$configL[] = '\'cols\' => \'' . t3lib_div::intInRange($fConf['conf_cols'], 5, 48, 30) . '\',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_cols]');
+					$configL[] = '\'rows\' => \'' . t3lib_div::intInRange($fConf['conf_rows'], 1, 20, 5) . '\',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_rows]');
+				} else {
+					$configL[] = '\'cols\' => \'' . t3lib_utility_Math::forceIntegerInRange($fConf['conf_cols'], 5, 48, 30) . '\',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_cols]');
+					$configL[] = '\'rows\' => \'' . t3lib_utility_Math::forceIntegerInRange($fConf['conf_rows'], 1, 20, 5) . '\',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_rows]');
+				}
 				if ($fConf["conf_wiz_example"])	{
 					$wizards =array();
 					$wizards[] = trim($this->sPS('
@@ -1254,7 +1315,8 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$configL[]='\'type\' => \''.($t == 'select' ? 'select' : 'radio').'\',';
 				$notIntVal=0;
 				$len=array();
-				for($a=0;$a<t3lib_div::intInRange($fConf["conf_select_items"],1,20);$a++)	{
+				$numberOfItems = ($version < 4006000) ? t3lib_div::intInRange($fConf['conf_select_items'], 1, 20) : t3lib_utility_Math::forceIntegerInRange($fConf['conf_select_items'], 1, 20);
+				for ($a = 0; $a < $numberOfItems; $a++) {
 					$val = $fConf["conf_select_itemvalue_".$a];
 					$notIntVal+= t3lib_div::testInt($val)?0:1;
 					$len[]=strlen($val);
@@ -1321,9 +1383,13 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					');
 				}
 
-				$numberOfRelations = t3lib_div::intInRange($fConf["conf_relations"],1,100);
+				$numberOfRelations = ($version < 4006000) ? t3lib_div::intInRange($fConf['conf_relations'], 1, 100) : t3lib_utility_Math::forceIntegerInRange($fConf['conf_relations'], 1, 100);
 				if ($t == 'select')	{
-					$configL[]='\'size\' => '.t3lib_div::intInRange($fConf["conf_relations_selsize"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_relations_selsize]');
+					if ($version < 4006000) {
+						$configL[] = '\'size\' => ' . t3lib_div::intInRange($fConf['conf_relations_selsize'], 1, 100) . ',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_relations_selsize]');
+					} else {
+						$configL[] = '\'size\' => ' . t3lib_utility_Math::forceIntegerInRange($fConf['conf_relations_selsize'], 1, 100) . ',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_relations_selsize]');
+					}
 					$configL[]='\'maxitems\' => '.$numberOfRelations.',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_relations]');
 				}
 
@@ -1334,7 +1400,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						$DBfields[] = $fConf["fieldname"]." text,";
 					}
 				} elseif ($notIntVal)	{
-					$varCharLn = t3lib_div::intInRange(max($len),1);
+					$varCharLn = ($version < 4006000) ? t3lib_div::intInRange(max($len), 1) : t3lib_utility_Math::forceIntegerInRange(max($len), 1);
 					$DBfields[] = $fConf["fieldname"]." ".($varCharLn>$this->wizard->charMaxLng?'var':'')."char(".$varCharLn.") DEFAULT '' NOT NULL,";
 				} else {
 					$DBfields[] = $fConf["fieldname"].' int(11) DEFAULT \'0\' NOT NULL,';
@@ -1384,9 +1450,17 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$configL[]='\'foreign_table\' => \''.$fConf["conf_rel_table"].'\',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_rel_table]');
 					$configL[]='\'foreign_table_where\' => \''.$where.'ORDER BY '.$fConf["conf_rel_table"].'.uid\',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_rel_type]');
 				}
-				$configL[]='\'size\' => '.t3lib_div::intInRange($fConf["conf_relations_selsize"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_relations_selsize]');
-				$configL[]='\'minitems\' => 0,';
-				$configL[]='\'maxitems\' => '.t3lib_div::intInRange($fConf["conf_relations"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_relations]');
+				if ($version < 4006000) {
+					$configL[] = '\'size\' => ' . t3lib_div::intInRange($fConf['conf_relations_selsize'], 1, 100) . ',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_relations_selsize]');
+					$configL[] = '\'minitems\' => 0,';
+					$configL[] = '\'maxitems\' => ' . t3lib_div::intInRange($fConf['conf_relations'], 1, 100) . ',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_relations]');
+					$confRelations = t3lib_div::intInRange($fConf['conf_relations'], 1, 100);
+				} else {
+					$configL[] = '\'size\' => ' . t3lib_utility_Math::forceIntegerInRange($fConf['conf_relations_selsize'], 1, 100) . ',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_relations_selsize]');
+					$configL[] = '\'minitems\' => 0,';
+					$configL[] = '\'maxitems\' => ' . t3lib_utility_Math::forceIntegerInRange($fConf['conf_relations'], 1, 100) . ',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_relations]');
+					$confRelations = t3lib_utility_Math::forceIntegerInRange($fConf['conf_relations'], 1, 100);
+				}
 
 				if ($fConf["conf_relations_mm"])	{
 					$mmTableName=$id."_mm";
@@ -1408,7 +1482,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						);
 					");
 					$this->wizard->ext_tables_sql[]=chr(10).$createTable.chr(10);
-				} elseif (t3lib_div::intInRange($fConf["conf_relations"],1,100)>1 || $fConf["conf_rel_type"]=="group") {
+				} elseif ($confRelations > 1 || $fConf["conf_rel_type"]=="group") {
 					$DBfields[] = $fConf["fieldname"]." text,";
 				} else {
 					$DBfields[] = $fConf["fieldname"].' int(11) DEFAULT \'0\' NOT NULL,';
@@ -1497,9 +1571,15 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$configL[] = '\'show_thumbs\' => 1,	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files_thumbs]');
 				}
 
-				$configL[] = '\'size\' => '.t3lib_div::intInRange($fConf["conf_files_selsize"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files_selsize]');
-				$configL[] = '\'minitems\' => 0,';
-				$configL[] = '\'maxitems\' => '.t3lib_div::intInRange($fConf["conf_files"],1,100).',	'.$this->WOPcomment('WOP:'.$WOP.'[conf_files]');
+				if ($version < 4006000) {
+					$configL[] = '\'size\' => ' . t3lib_div::intInRange($fConf['conf_files_selsize'], 1, 100) . ',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_files_selsize]');
+					$configL[] = '\'minitems\' => 0,';
+					$configL[] = '\'maxitems\' => ' . t3lib_div::intInRange($fConf['conf_files'], 1, 100) . ',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_files]');
+				} else {
+					$configL[] = '\'size\' => ' . t3lib_utility_Math::forceIntegerInRange($fConf['conf_files_selsize'], 1, 100) . ',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_files_selsize]');
+					$configL[] = '\'minitems\' => 0,';
+					$configL[] = '\'maxitems\' => ' . t3lib_utility_Math::forceIntegerInRange($fConf['conf_files'], 1, 100) . ',	' . $this->WOPcomment('WOP:' . $WOP . '[conf_files]');
+				}
 
 				$DBfields[] = $fConf["fieldname"]." text,";
 			break;
