@@ -71,14 +71,26 @@ class tx_kickstarter_wizard extends tx_kickstarter_compilefiles {
 	function tx_kickstarter_wizard() {
 		$this->modData = t3lib_div::_POST($this->varPrefix);
 
-		
 		// getting the available languages
 		$theLanguages = t3lib_div::trimExplode('|', TYPO3_languages);
-		$llFile = t3lib_extMgm::extPath('setup').'/mod/locallang.xml';
-		$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, 'default');
-		foreach($theLanguages as $val) {
-			if ($val != 'default') {
-				$localLabel = htmlspecialchars($LOCAL_LANG['default']['lang_'.$val]);
+		$llFile = t3lib_extMgm::extPath('setup') . '/mod/locallang.xml';
+		$version = class_exists('t3lib_utility_VersionNumber')
+				? t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version)
+				: t3lib_div::int_from_ver(TYPO3_version);
+		if ($version < 4006000) {
+			$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, 'default');
+		} else {
+			/** @var $llxmlParser t3lib_l10n_parser_Llxml */
+			$llxmlParser = t3lib_div::makeInstance('t3lib_l10n_parser_Llxml');
+			$LOCAL_LANG = $llxmlParser->getParsedData($llFile, 'default');
+		}
+		foreach ($theLanguages as $val) {
+			if ($val !== 'default') {
+				if ($version < 4006000) {
+					$localLabel = htmlspecialchars($LOCAL_LANG['default']['lang_' . $val]);
+				} else {
+					$localLabel = htmlspecialchars($LOCAL_LANG['default']['lang_' . $val][0]['target']);
+				}
 				$this->languages[$val] = $localLabel;
 			}
 		}
