@@ -1318,7 +1318,11 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$numberOfItems = ($version < 4006000) ? t3lib_div::intInRange($fConf['conf_select_items'], 1, 20) : t3lib_utility_Math::forceIntegerInRange($fConf['conf_select_items'], 1, 20);
 				for ($a = 0; $a < $numberOfItems; $a++) {
 					$val = $fConf["conf_select_itemvalue_".$a];
-					$notIntVal+= t3lib_div::testInt($val)?0:1;
+					if ($version < 4006000) {
+						$notIntVal += t3lib_div::testInt($val) ? 0 : 1;
+					} else {
+						$notIntVal += t3lib_utility_Math::canBeInterpretedAsInteger($val) ? 0 : 1;
+					}
 					$len[]=strlen($val);
 					if ($fConf["conf_select_icons"] && $t=="select")	{
 						$icon = ', t3lib_extMgm::extRelPath(\''.$extKey.'\').\''.'selicon_'.$id.'_'.$a.'.gif'.'\'';
