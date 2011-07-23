@@ -66,8 +66,8 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 			$optValues = array(
 				'web' => 'Sub in Web-module',
 				'file' => 'Sub in File-module',
-				'user' => 'Sub in User-module',
-				'tools' => 'Sub in Tools-module',
+				'user' => 'Sub in User Tools-module',
+				'tools' => 'Sub in Admin Tools-module',
 				'help' => 'Sub in Help-module',
 				'_MAIN' => 'New main module'
 			);

@@ -1,3 +1,7 @@
+2011-07-24 Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #10232: Reflect changes in main module names in TYPO3 4.2 (credits Francois Suter)
+
 2011-07-23 Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed bug #18218: Generated code should stick to TYPO3 CGL
