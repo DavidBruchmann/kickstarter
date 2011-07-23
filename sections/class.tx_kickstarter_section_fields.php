@@ -288,7 +288,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 	 */
 	function renderField($prefix,$fConf,$dontRemove=0)	{
 		global $LANG;
-		
+
 		$version = class_exists('t3lib_utility_VersionNumber')
 				? t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version)
 				: t3lib_div::int_from_ver(TYPO3_version);
@@ -519,7 +519,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				} else {
 					$nItems = $fConf['conf_select_items'] = isset($fConf['conf_select_items']) ? t3lib_utility_Math::forceIntegerInRange(intval($fConf['conf_select_items']), 0, 20) : 4;
 				}
-				
+
 				for($a=0;$a<$nItems;$a++)	{
 					$subLines[]='<tr>
 						<td valign="top">'.$this->fw($this->renderStringBox_lang('conf_select_item_'.$a,$prefix,$fConf)).'</td>
@@ -533,7 +533,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$fDetails.=$this->renderCheckBox($prefix.'[conf_select_icons]',$fConf['conf_select_icons']).'Add a dummy set of icons<br />';
 					$fDetails.=$this->resImg('t_select_icons.png','hspace="20"','','<br /><br />');
 
-					if ($version < 4006000) {				
+					if ($version < 4006000) {
 						$fDetails .= $this->renderStringBox($prefix . '[conf_relations]', t3lib_div::intInRange($fConf['conf_relations'], 1, 1000), 50) . ' Max number of relations<br />';
 						$fDetails .= $this->renderStringBox($prefix . '[conf_relations_selsize]', t3lib_div::intInRange($fConf['conf_relations_selsize'], 1, 50), 50) . ' Size of selector box<br />';
 					} else {
@@ -577,7 +577,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					'select_storage' => 'Selectorbox, select from storage page',
 				);
 				$fDetails.='<br />Type:<br />'.$this->renderSelectBox($prefix.'[conf_rel_type]',$fConf['conf_rel_type']?$fConf['conf_rel_type']:'group',$optValues).'<br />';
-				
+
 				$confRelationsInRange = ($version < 4006000) ? t3lib_div::intInRange($fConf['conf_relations'], 1, 1000) : t3lib_utility_Math::forceIntegerInRange($fConf['conf_relations'], 1, 1000);
 				if ($confRelationsInRange == 1 && $fConf['conf_rel_type'] !== 'group') {
 					$fDetails.=$this->renderCheckBox($prefix.'[conf_rel_dummyitem]',$fConf['conf_rel_dummyitem']).'Add a blank item to the selector<br />';
@@ -727,9 +727,9 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 
 			// Finalize ext_tables.php:
-		$this->wizard->ext_tables[]=$this->wrapBody('
-			$tempColumns = array (
-				', implode(chr(10),$columns)	,'
+		$this->wizard->ext_tables[] = $this->wrapBody('
+			$tempColumns = array(
+				', implode(chr(10), $columns), '
 			);
 		');
 
@@ -838,8 +838,8 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					$isString = (bool) !$fConf['conf_eval'] || t3lib_div::inList('alphanum,upper,lower',$fConf['conf_eval']);
 					$isDouble2 = (bool) !$fConf['conf_eval'] || t3lib_div::inList('double2',$fConf['conf_eval']);
 					if ($fConf['conf_varchar'] && $isString)		{$evalItems[0][] = 'trim';			$evalItems[1][] = $WOP.'[conf_varchar]';}
-					if ($fConf['conf_eval']=='int+')	{
-						$configL[]='\'range\' => array (\'lower\'=>0,\'upper\'=>1000),	'.$this->WOPcomment('WOP:'.$WOP.'[conf_eval] = int+ results in a range setting');
+					if ($fConf['conf_eval'] === 'int+') {
+						$configL[] = '\'range\' => array(\'lower\' => 0, \'upper\' => 1000),	'.$this->WOPcomment('WOP:'.$WOP.'[conf_eval] = int+ results in a range setting');
 						$fConf['conf_eval']='int';
 					}
 					if ($fConf['conf_eval'])		{$evalItems[0][] = $fConf['conf_eval'];			$evalItems[1][] = $WOP.'[conf_eval]';}
@@ -948,7 +948,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 					\'max\'      => \'4\',
 					\'eval\'     => \'int\',
 					\'checkbox\' => \'0\',
-					\'range\'    => array (
+					\'range\'    => array(
 						\'upper\' => \'1000\',
 						\'lower\' => \'10\'
 					),
@@ -1304,8 +1304,8 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 						$cItems[]='array(\''.addslashes($this->getSplitLabels_reference($fConf,"conf_boxLabel_".$a,$table.".".$fConf["fieldname"].".I.".$a)).'\', \'\'),';
 					}
 					$configL[]=trim($this->wrapBody('
-						\'items\' => array (
-							',implode(chr(10),$cItems),'
+						\'items\' => array(
+							', implode(chr(10), $cItems), '
 						),
 					'));
 				}
@@ -1334,8 +1334,8 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				}
 				$configL[]=trim($this->wrapBody('
 					'.$this->WOPcomment('WOP:'.$WOP.'[conf_select_items]').'
-					\'items\' => array (
-						',implode(chr(10),$cItems),'
+					\'items\' => array(
+						', implode(chr(10), $cItems), '
 					),
 				'));
 				if ($fConf['conf_select_pro'] && $t=='select')	{
@@ -1381,7 +1381,7 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 					$this->wizard->ext_tables[]=$this->sPS('
 						'.$this->WOPcomment('WOP:'.$WOP.'[conf_select_pro]:').'
-						if (TYPO3_MODE == \'BE\')	{
+						if (TYPO3_MODE === \'BE\')	{
 							include_once(t3lib_extMgm::extPath(\''.$extKey.'\').\''.'class.'.$cN.'.php\');
 						}
 					');
@@ -1421,8 +1421,8 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				if ($fConf["conf_rel_type"]!="group" && $fConf["conf_relations"]==1 && $fConf["conf_rel_dummyitem"])	{
 					$configL[]=trim($this->wrapBody('
 						'.$this->WOPcomment('WOP:'.$WOP.'[conf_rel_dummyitem]').'
-						\'items\' => array (
-							','array(\'\',0),','
+						\'items\' => array(
+							', 'array(\'\', 0),', '
 						),
 					'));
 				}
@@ -1591,8 +1591,8 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 				$DBfields[] = $fConf['fieldname'] . ' mediumtext,';
 				$configL[]  = trim($this->sPS('
 					\'type\' => \'flex\',
-		\'ds\' => array (
-			\'default\' => \'FILE:EXT:'.$extKey.'/flexform_'.$table.'_'.$fConf['fieldname'].'.xml\',
+		\'ds\' => array(
+			\'default\' => \'FILE:EXT:' . $extKey . '/flexform_' . $table . '_' . $fConf['fieldname'] . '.xml\',
 		),
 				'));
 				$this->addFileToFileArray(
@@ -1626,19 +1626,19 @@ class tx_kickstarter_section_fields extends tx_kickstarter_sectionbase {
 
 		if ($t=="passthrough")	{
 			$columns[$fConf["fieldname"]] = trim($this->wrapBody('
-				\''.$fConf["fieldname"].'\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[fieldname]').'
-					\'config\' => array (
-						',implode(chr(10),$configL),'
+				\''.$fConf["fieldname"].'\' => array(		'.$this->WOPcomment('WOP:'.$WOP.'[fieldname]').'
+					\'config\' => array(
+						', implode(chr(10), $configL), '
 					)
 				),
-			',2));
+			', 2));
 		} else {
 			$columns[$fConf["fieldname"]] = trim($this->wrapBody('
-				\''.$fConf["fieldname"].'\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[fieldname]').'
-					\'exclude\' => '.($fConf["excludeField"]?1:0).',		'.$this->WOPcomment('WOP:'.$WOP.'[excludeField]').'
-					\'label\' => \''.addslashes($this->getSplitLabels_reference($fConf,"title",$table.".".$fConf["fieldname"])).'\',		'.$this->WOPcomment('WOP:'.$WOP.'[title]').'
-					\'config\' => array (
-						',implode(chr(10),$configL),'
+				\'' . $fConf["fieldname"] . '\' => array(		' . $this->WOPcomment('WOP:' . $WOP . '[fieldname]').'
+					\'exclude\' => '.($fConf["excludeField"]?1:0).',		'.$this->WOPcomment('WOP:' . $WOP . '[excludeField]').'
+					\'label\' => \'' . addslashes($this->getSplitLabels_reference($fConf, "title", $table . "." . $fConf["fieldname"])) . '\',		' . $this->WOPcomment('WOP:' . $WOP . '[title]').'
+					\'config\' => array(
+						', implode(chr(10), $configL), '
 					)
 				),
 			',2));

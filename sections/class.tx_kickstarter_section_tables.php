@@ -391,9 +391,9 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$DBfields[] = 't3_origuid int(11) DEFAULT \'0\' NOT NULL,';
 
 			$columns['t3ver_label'] = trim($this->sPS('
-				\'t3ver_label\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[versioning]').'
+				\'t3ver_label\' => array(		'.$this->WOPcomment('WOP:'.$WOP.'[versioning]').'
 					\'label\'  => \'LLL:EXT:lang/locallang_general.xml:LGL.versionLabel\',
-					\'config\' => array (
+					\'config\' => array(
 						\'type\' => \'input\',
 						\'size\' => \'30\',
 						\'max\'  => \'30\',
@@ -411,10 +411,10 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$DBfields[] = 'l10n_diffsource mediumtext,';
 
 			$columns['sys_language_uid'] = trim($this->sPS('
-				\'sys_language_uid\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[localization]').'
+				\'sys_language_uid\' => array(		'.$this->WOPcomment('WOP:'.$WOP.'[localization]').'
 					\'exclude\' => 1,
 					\'label\'  => \'LLL:EXT:lang/locallang_general.xml:LGL.language\',
-					\'config\' => array (
+					\'config\' => array(
 						\'type\'                => \'select\',
 						\'foreign_table\'       => \'sys_language\',
 						\'foreign_table_where\' => \'ORDER BY sys_language.title\',
@@ -427,13 +427,13 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			'));
 
 			$columns['l10n_parent'] = trim($this->sPS("
-				'l10n_parent' => array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
+				'l10n_parent' => array(		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
 					'displayCond' => 'FIELD:sys_language_uid:>:0',
 					'exclude'     => 1,
 					'label'       => 'LLL:EXT:lang/locallang_general.xml:LGL.l18n_parent',
-					'config'      => array (
+					'config'      => array(
 						'type'  => 'select',
-						'items' => array (
+						'items' => array(
 							array('', 0),
 						),
 						'foreign_table'       => '".$tableName."',
@@ -443,8 +443,8 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			"));
 
 			$columns['l10n_diffsource'] = trim($this->sPS("
-				'l10n_diffsource' => array (		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
-					'config' => array (
+				'l10n_diffsource' => array(		".$this->WOPcomment('WOP:'.$WOP.'[localization]')."
+					'config' => array(
 						'type' => 'passthrough'
 					)
 				),
@@ -464,10 +464,10 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$enFields[] = '\'disabled\' => \'hidden\',	'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden]');
 			$DBfields[] = "hidden tinyint(4) DEFAULT '0' NOT NULL,";
 			$columns["hidden"] = trim($this->sPS('
-				\'hidden\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden]').'
+				\'hidden\' => array(		'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden]').'
 					\'exclude\' => 1,
 					\'label\'   => \'LLL:EXT:lang/locallang_general.xml:LGL.hidden\',
-					\'config\'  => array (
+					\'config\'  => array(
 						\'type\'    => \'check\',
 						\'default\' => \'0\'
 					)
@@ -478,10 +478,10 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$enFields[] = '\'starttime\' => \'starttime\',	'.$this->WOPcomment('WOP:'.$WOP.'[add_starttime]');
 			$DBfields[] = "starttime int(11) DEFAULT '0' NOT NULL,";
 			$columns["starttime"] = trim($this->sPS('
-				\'starttime\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_starttime]').'
+				\'starttime\' => array(		'.$this->WOPcomment('WOP:'.$WOP.'[add_starttime]').'
 					\'exclude\' => 1,
 					\'label\'   => \'LLL:EXT:lang/locallang_general.xml:LGL.starttime\',
-					\'config\'  => array (
+					\'config\'  => array(
 						\'type\'     => \'input\',
 						\'size\'     => \'8\',
 						\'max\'      => \'20\',
@@ -496,17 +496,17 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$enFields[] = '\'endtime\' => \'endtime\',	'.$this->WOPcomment('WOP:'.$WOP.'[add_endtime]');
 			$DBfields[] = "endtime int(11) DEFAULT '0' NOT NULL,";
 			$columns["endtime"] = trim($this->sPS('
-				\'endtime\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_endtime]').'
+				\'endtime\' => array(		'.$this->WOPcomment('WOP:'.$WOP.'[add_endtime]').'
 					\'exclude\' => 1,
 					\'label\'   => \'LLL:EXT:lang/locallang_general.xml:LGL.endtime\',
-					\'config\'  => array (
+					\'config\'  => array(
 						\'type\'     => \'input\',
 						\'size\'     => \'8\',
 						\'max\'      => \'20\',
 						\'eval\'     => \'date\',
 						\'checkbox\' => \'0\',
 						\'default\'  => \'0\',
-						\'range\'    => array (
+						\'range\'    => array(
 							\'upper\' => mktime(3, 14, 7, 1, 19, 2038),
 							\'lower\' => mktime(0, 0, 0, date(\'m\')-1, date(\'d\'), date(\'Y\'))
 						)
@@ -518,12 +518,12 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			$enFields[] = '\'fe_group\' => \'fe_group\',	'.$this->WOPcomment('WOP:'.$WOP.'[add_access]');
 			$DBfields[] = "fe_group int(11) DEFAULT '0' NOT NULL,";
 			$columns["fe_group"] = trim($this->sPS('
-				\'fe_group\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_access]').'
+				\'fe_group\' => array(		'.$this->WOPcomment('WOP:'.$WOP.'[add_access]').'
 					\'exclude\' => 1,
 					\'label\'   => \'LLL:EXT:lang/locallang_general.xml:LGL.fe_group\',
-					\'config\'  => array (
+					\'config\'  => array(
 						\'type\'  => \'select\',
-						\'items\' => array (
+						\'items\' => array(
 							array(\'\', 0),
 							array(\'LLL:EXT:lang/locallang_general.xml:LGL.hide_at_login\', -1),
 							array(\'LLL:EXT:lang/locallang_general.xml:LGL.any_login\', -2),
@@ -537,14 +537,14 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			// Add enable fields in header:
 		if (is_array($enFields) && count($enFields))	{
 			$ctrl[]=trim($this->wrapBody('
-				\'enablecolumns\' => array (		'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden] / '.$WOP.'[add_starttime] / '.$WOP.'[add_endtime] / '.$WOP.'[add_access]').'
+				\'enablecolumns\' => array(		'.$this->WOPcomment('WOP:'.$WOP.'[add_hidden] / '.$WOP.'[add_starttime] / '.$WOP.'[add_endtime] / '.$WOP.'[add_access]').'
 				',implode(chr(10),$enFields),'
 				),
 			'));
 		}
 			// Add dynamic config file.
-		$ctrl[]= '\'dynamicConfigFile\' => t3lib_extMgm::extPath($_EXTKEY).\'tca.php\',';
-		$ctrl[]= '\'iconfile\'          => t3lib_extMgm::extRelPath($_EXTKEY).\'icon_'.$tableName.'.gif\',';
+		$ctrl[]= '\'dynamicConfigFile\' => t3lib_extMgm::extPath($_EXTKEY) . \'tca.php\',';
+		$ctrl[]= '\'iconfile\'          => t3lib_extMgm::extRelPath($_EXTKEY) . \'icon_' . $tableName . '.gif\',';
 
 		if ($config['allow_on_pages'])	{
 			$this->wizard->ext_tables[]=$this->sPS('
@@ -601,19 +601,19 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 		$showRecordFieldList = $columns;
 		unset($showRecordFieldList['t3ver_label']);
 		$tca_file.=$this->wrapBody('
-			$TCA[\''.$tableName.'\'] = array (
+			$TCA[\'' . $tableName . '\'] = array(
 				\'ctrl\' => $TCA[\''.$tableName.'\'][\'ctrl\'],
-				\'interface\' => array (
+				\'interface\' => array(
 					\'showRecordFieldList\' => \''.implode(',',array_keys($showRecordFieldList)).'\'
 				),
 				\'feInterface\' => $TCA[\''.$tableName.'\'][\'feInterface\'],
-				\'columns\' => array (
+				\'columns\' => array(
 			', trim(implode(chr(10),$columns)),'
 				),
-				\'types\' => array (
+				\'types\' => array(
 					\'0\' => array(\'showitem\' => \''.$typeList.'\')
 				),
-				\'palettes\' => array (
+				\'palettes\' => array(
 					\'1\' => array(\'showitem\' => \''.$palList.'\')
 				)
 			);
@@ -623,10 +623,10 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			// Finalize ext_tables.php:
 		$feInterface = $columns;
 		unset($feInterface['t3ver_label']);
-		$this->wizard->ext_tables[]=$this->wrapBody('
-			$TCA[\''.$tableName.'\'] = array (
-				\'ctrl\' => array (
-			', implode(chr(10),$ctrl),'
+		$this->wizard->ext_tables[] = $this->wrapBody('
+			$TCA[\'' . $tableName . '\'] = array(
+				\'ctrl\' => array(
+			', implode(chr(10), $ctrl), '
 				),
 			);
 		',2);

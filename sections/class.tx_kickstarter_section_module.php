@@ -142,7 +142,7 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 		}
 		$this->wizard->ext_tables[] = $this->sPS('
 			'.$this->WOPcomment('WOP:'.$WOP).'
-			if (TYPO3_MODE == \'BE\') {
+			if (TYPO3_MODE === \'BE\') {
 				t3lib_extMgm::addModulePath(\'' . $mN . '\', t3lib_extMgm::extPath($_EXTKEY) . \'' .$pathSuffix . '\');' . '
 					'.$this->WOPcomment('1. and 2. parameter is WOP:'.$WOP.'[position] , 3. parameter is WOP:'.$WOP.'[subpos]').'
 				t3lib_extMgm::addModule(\''.
@@ -234,233 +234,225 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 
 
 		$indexRequire = $this->sPS('
-			$LANG->includeLLFile(\'EXT:' . $extKey . '/' . $pathSuffix . 'locallang.xml\');
-			require_once(PATH_t3lib . \'class.t3lib_scbase.php\');
-			$BE_USER->modAccess($MCONF,1);	// This checks permissions and exits if the users has no permission for entry.
+			$GLOBALS[\'LANG\']->includeLLFile(\'EXT:' . $extKey . '/' . $pathSuffix . 'locallang.xml\');
+			//require_once(PATH_t3lib . \'class.t3lib_scbase.php\');
+			$GLOBALS[\'BE_USER\']->modAccess($MCONF, 1);	// This checks permissions and exits if the users has no permission for entry.
 				// DEFAULT initialization of a module [END]
 		');
 
 			// Make module index.php file:
 		$indexContent = $this->sPS(
-				'class  '.$cN.' extends t3lib_SCbase {
-				var $pageinfo;
+				'class ' . $cN . ' extends t3lib_SCbase {
+	protected $pageinfo;
 
-				/**
-				 * Initializes the Module
-				 * @return	void
-				 */
-				function init()	{
-					global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
+	/**
+	 * Initializes the module.
+	 *
+	 * @return void
+	 */
+	public function init() {
+		parent::init();
 
-					parent::init();
-
-					/*
-					if (t3lib_div::_GP(\'clear_all_cache\'))	{
-						$this->include_once[] = PATH_t3lib.\'class.t3lib_tcemain.php\';
-					}
-					*/
-				}
-
-				/**
-				 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
-				 *
-				 * @return	void
-				 */
-				function menuConfig()	{
-					global $LANG;
-					$this->MOD_MENU = Array (
-						\'function\' => Array (
-							\'1\' => $LANG->getLL(\'function1\'),
-							\'2\' => $LANG->getLL(\'function2\'),
-							\'3\' => $LANG->getLL(\'function3\'),
-						)
-					);
-					parent::menuConfig();
-				}
-
-				/**
-				 * Main function of the module. Write the content to $this->content
-				 * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
-				 *
-				 * @return	[type]		...
-				 */
-				function main()	{
-					global $BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
-
-					// Access check!
-					// The page will show only if there is a valid page and if this page may be viewed by the user
-					$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id,$this->perms_clause);
-					$access = is_array($this->pageinfo) ? 1 : 0;
-				' . ($config['docheader'] ? '
-						// initialize doc
-					$this->doc = t3lib_div::makeInstance(\'template\');
-					$this->doc->setModuleTemplate(t3lib_extMgm::extPath(\'' . $extKey . '\') . \'' . $pathSuffix . 'mod_template.html\');
-					$this->doc->backPath = $BACK_PATH;
-					$docHeaderButtons = $this->getButtons();
-
-					if (($this->id && $access) || ($BE_USER->user[\'admin\'] && !$this->id))	{
-
-							// Draw the form
-						$this->doc->form = \'<form action="" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">\';
-
-							// JavaScript
-						$this->doc->JScode = \'
-							<script language="javascript" type="text/javascript">
-								script_ended = 0;
-								function jumpToUrl(URL)	{
-									document.location = URL;
-								}
-							</script>
-						\';
-						$this->doc->postCode=\'
-							<script language="javascript" type="text/javascript">
-								script_ended = 1;
-								if (top.fsMod) top.fsMod.recentIds["web"] = 0;
-							</script>
-						\';
-							// Render content:
-						$this->moduleContent();
-					} else {
-							// If no access or if ID == zero
-						$docHeaderButtons[\'save\'] = \'\';
-						$this->content.=$this->doc->spacer(10);
-					}
-
-						// compile document
-					$markers[\'FUNC_MENU\'] = t3lib_BEfunc::getFuncMenu(0, \'SET[function]\', $this->MOD_SETTINGS[\'function\'], $this->MOD_MENU[\'function\']);
-					$markers[\'CONTENT\'] = $this->content;
-
-							// Build the <body> for the module
-					$this->content = $this->doc->startPage($LANG->getLL(\'title\'));
-					$this->content.= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
-					$this->content.= $this->doc->endPage();
-					$this->content = $this->doc->insertStylesAndJS($this->content);
-				' : '
-					if (($this->id && $access) || ($BE_USER->user[\'admin\'] && !$this->id))	{
-
-							// Draw the header.
-						$this->doc = t3lib_div::makeInstance(\'mediumDoc\');
-						$this->doc->backPath = $BACK_PATH;
-						$this->doc->form=\'<form action="" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">\';
-
-							// JavaScript
-						$this->doc->JScode = \'
-							<script language="javascript" type="text/javascript">
-								script_ended = 0;
-								function jumpToUrl(URL)	{
-									document.location = URL;
-								}
-							</script>
-						\';
-						$this->doc->postCode=\'
-							<script language="javascript" type="text/javascript">
-								script_ended = 1;
-								if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
-							</script>
-						\';
-
-						$headerSection = $this->doc->getHeader(\'pages\', $this->pageinfo, $this->pageinfo[\'_thePath\']) . \'<br />\'
-							. $LANG->sL(\'LLL:EXT:lang/locallang_core.xml:labels.path\') . \': \' . t3lib_div::fixed_lgd_cs($this->pageinfo[\'_thePath\'], -50);
-
-						$this->content.=$this->doc->startPage($LANG->getLL(\'title\'));
-						$this->content.=$this->doc->header($LANG->getLL(\'title\'));
-						$this->content.=$this->doc->spacer(5);
-						$this->content.=$this->doc->section(\'\',$this->doc->funcMenu($headerSection,t3lib_BEfunc::getFuncMenu($this->id,\'SET[function]\',$this->MOD_SETTINGS[\'function\'],$this->MOD_MENU[\'function\'])));
-						$this->content.=$this->doc->divider(5);
-
-
-						// Render content:
-						$this->moduleContent();
-
-
-						// ShortCut
-						if ($BE_USER->mayMakeShortcut())	{
-							$this->content.=$this->doc->spacer(20).$this->doc->section(\'\',$this->doc->makeShortcutIcon(\'id\',implode(\',\',array_keys($this->MOD_MENU)),$this->MCONF[\'name\']));
-						}
-
-						$this->content.=$this->doc->spacer(10);
-					} else {
-							// If no access or if ID == zero
-
-						$this->doc = t3lib_div::makeInstance(\'mediumDoc\');
-						$this->doc->backPath = $BACK_PATH;
-
-						$this->content.=$this->doc->startPage($LANG->getLL(\'title\'));
-						$this->content.=$this->doc->header($LANG->getLL(\'title\'));
-						$this->content.=$this->doc->spacer(5);
-						$this->content.=$this->doc->spacer(10);
-					}
-				') . '
-				}
-
-				/**
-				 * Prints out the module HTML
-				 *
-				 * @return	void
-				 */
-				function printContent()	{
-
-					$this->content.=$this->doc->endPage();
-					echo $this->content;
-				}
-
-				/**
-				 * Generates the module content
-				 *
-				 * @return	void
-				 */
-				function moduleContent()	{
-					switch((string)$this->MOD_SETTINGS[\'function\'])	{
-						case 1:
-							$content=\'<div align="center"><strong>Hello World!</strong></div><br />
-								The "Kickstarter" has made this module automatically, it contains a default framework for a backend module but apart from that it does nothing useful until you open the script \'.substr(t3lib_extMgm::extPath(\''.$extKey.'\'),strlen(PATH_site)).\''.$pathSuffix.'index.php and edit it!
-								<hr />
-								<br />This is the GET/POST vars sent to the script:<br />\'.
-								\'GET:\'.t3lib_div::view_array($_GET).\'<br />\'.
-								\'POST:\'.t3lib_div::view_array($_POST).\'<br />\'.
-								\'\';
-							$this->content.=$this->doc->section(\'Message #1:\',$content,0,1);
-						break;
-						case 2:
-							$content=\'<div align=center><strong>Menu item #2...</strong></div>\';
-							$this->content.=$this->doc->section(\'Message #2:\',$content,0,1);
-						break;
-						case 3:
-							$content=\'<div align=center><strong>Menu item #3...</strong></div>\';
-							$this->content.=$this->doc->section(\'Message #3:\',$content,0,1);
-						break;
-					}
-				}
-				' . ($config['docheader'] ? '
-
-				/**
-				 * Create the panel of buttons for submitting the form or otherwise perform operations.
-				 *
-				 * @return	array	all available buttons as an assoc. array
-				 */
-				protected function getButtons()	{
-
-					$buttons = array(
-						\'csh\' => \'\',
-						\'shortcut\' => \'\',
-						\'save\' => \'\'
-					);
-						// CSH
-					$buttons[\'csh\'] = t3lib_BEfunc::cshItem(\'_MOD_web_func\', \'\', $GLOBALS[\'BACK_PATH\']);
-
-						// SAVE button
-					$buttons[\'save\'] = \'<input type="image" class="c-inputButton" name="submit" value="Update"\' . t3lib_iconWorks::skinImg($GLOBALS[\'BACK_PATH\'], \'gfx/savedok.gif\', \'\') . \' title="\' . $GLOBALS[\'LANG\']->sL(\'LLL:EXT:lang/locallang_core.php:rm.saveDoc\', 1) . \'" />\';
-
-
-						// Shortcut
-					if ($GLOBALS[\'BE_USER\']->mayMakeShortcut())	{
-						$buttons[\'shortcut\'] = $this->doc->makeShortcutIcon(\'\', \'function\', $this->MCONF[\'name\']);
-					}
-
-					return $buttons;
-				}
-				' : '') . '
+		/*
+		if (t3lib_div::_GP(\'clear_all_cache\'))	{
+			$this->include_once[] = PATH_t3lib . \'class.t3lib_tcemain.php\';
 		}
+		*/
+	}
+
+	/**
+	 * Adds items to the ->MOD_MENU array. Used for the function menu selector.
+	 *
+	 * @return	void
+	 */
+	public function menuConfig() {
+		$this->MOD_MENU = array(
+			\'function\' => array(
+				\'1\' => $GLOBALS[\'LANG\']->getLL(\'function1\'),
+				\'2\' => $GLOBALS[\'LANG\']->getLL(\'function2\'),
+				\'3\' => $GLOBALS[\'LANG\']->getLL(\'function3\'),
+			)
+		);
+		parent::menuConfig();
+	}
+
+	/**
+	 * Main function of the module. Write the content to $this->content
+	 * If you chose "web" as main module, you will need to consider the $this->id parameter which will contain the uid-number of the page clicked in the page tree
+	 *
+	 * @return void
+	 */
+	public function main() {
+			// Access check!
+			// The page will show only if there is a valid page and if this page may be viewed by the user
+		$this->pageinfo = t3lib_BEfunc::readPageAccess($this->id, $this->perms_clause);
+		$access = is_array($this->pageinfo) ? 1 : 0;
+	' . ($config['docheader'] ? '
+			// Initialize doc
+		$this->doc = t3lib_div::makeInstance(\'template\');
+		$this->doc->setModuleTemplate(t3lib_extMgm::extPath(\'' . $extKey . '\') . \'' . $pathSuffix . 'mod_template.html\');
+		$this->doc->backPath = $GLOBALS[\'BACK_PATH\'];
+		$docHeaderButtons = $this->getButtons();
+
+		if (($this->id && $access) || ($GLOBALS[\'BE_USER\']->user[\'admin\'] && !$this->id)) {
+
+				// Draw the form
+			$this->doc->form = \'<form action="" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">\';
+
+				// JavaScript
+			$this->doc->JScode = \'
+				<script language="javascript" type="text/javascript">
+					script_ended = 0;
+					function jumpToUrl(URL)	{
+						document.location = URL;
+					}
+				</script>
+			\';
+			$this->doc->postCode=\'
+				<script language="javascript" type="text/javascript">
+					script_ended = 1;
+					if (top.fsMod) top.fsMod.recentIds["web"] = 0;
+				</script>
+			\';
+				// Render content:
+			$this->moduleContent();
+		} else {
+				// If no access or if ID == zero
+			$docHeaderButtons[\'save\'] = \'\';
+			$this->content .= $this->doc->spacer(10);
+		}
+
+			// Compile document
+		$markers[\'FUNC_MENU\'] = t3lib_BEfunc::getFuncMenu(0, \'SET[function]\', $this->MOD_SETTINGS[\'function\'], $this->MOD_MENU[\'function\']);
+		$markers[\'CONTENT\'] = $this->content;
+
+			// Build the <body> for the module
+		$this->content .= $this->doc->startPage($GLOBALS[\'LANG\']->getLL(\'title\'));
+		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
+		$this->content .= $this->doc->endPage();
+		$this->content .= $this->doc->insertStylesAndJS($this->content);
+	' : '
+		if (($this->id && $access) || ($GLOBALS[\'BE_USER\']->user[\'admin\'] && !$this->id)) {
+
+				// Draw the header.
+			$this->doc = t3lib_div::makeInstance(\'mediumDoc\');
+			$this->doc->backPath = $GLOBALS[\'BACK_PATH\'];
+			$this->doc->form = \'<form action="" method="post" enctype="' . $GLOBALS['TYPO3_CONF_VARS']['SYS']['form_enctype'] . '">\';
+
+				// JavaScript
+			$this->doc->JScode = \'
+				<script language="javascript" type="text/javascript">
+					script_ended = 0;
+					function jumpToUrl(URL)	{
+						document.location = URL;
+					}
+				</script>
+			\';
+			$this->doc->postCode = \'
+				<script language="javascript" type="text/javascript">
+					script_ended = 1;
+					if (top.fsMod) top.fsMod.recentIds["web"] = '.intval($this->id).';
+				</script>
+			\';
+
+			$headerSection = $this->doc->getHeader(\'pages\', $this->pageinfo, $this->pageinfo[\'_thePath\']) . \'<br />\'
+				. $GLOBALS[\'LANG\']->sL(\'LLL:EXT:lang/locallang_core.xml:labels.path\') . \': \' . t3lib_div::fixed_lgd_cs($this->pageinfo[\'_thePath\'], -50);
+
+			$this->content .= $this->doc->startPage($GLOBALS[\'LANG\']->getLL(\'title\'));
+			$this->content .= $this->doc->header($GLOBALS[\'LANG\']->getLL(\'title\'));
+			$this->content .= $this->doc->spacer(5);
+			$this->content .= $this->doc->section(\'\',$this->doc->funcMenu($headerSection, t3lib_BEfunc::getFuncMenu($this->id, \'SET[function]\', $this->MOD_SETTINGS[\'function\'], $this->MOD_MENU[\'function\'])));
+			$this->content .= $this->doc->divider(5);
+
+				// Render content:
+			$this->moduleContent();
+
+				// Shortcut
+			if ($GLOBALS[\'BE_USER\']->mayMakeShortcut()) {
+				$this->content .= $this->doc->spacer(20) . $this->doc->section(\'\', $this->doc->makeShortcutIcon(\'id\', implode(\',\', array_keys($this->MOD_MENU)), $this->MCONF[\'name\']));
+			}
+
+			$this->content .= $this->doc->spacer(10);
+		} else {
+				// If no access or if ID == zero
+
+			$this->doc = t3lib_div::makeInstance(\'mediumDoc\');
+			$this->doc->backPath = $GLOBALS[\'BACK_PATH\'];
+
+			$this->content .= $this->doc->startPage($GLOBALS[\'LANG\']->getLL(\'title\'));
+			$this->content .= $this->doc->header($GLOBALS[\'LANG\']->getLL(\'title\'));
+			$this->content .= $this->doc->spacer(5);
+			$this->content .= $this->doc->spacer(10);
+		}
+	') . '
+	}
+
+	/**
+	 * Prints out the module HTML.
+	 *
+	 * @return void
+	 */
+	public function printContent() {
+		$this->content .= $this->doc->endPage();
+		echo $this->content;
+	}
+
+	/**
+	 * Generates the module content.
+	 *
+	 * @return void
+	 */
+	protected function moduleContent() {
+		switch ((string)$this->MOD_SETTINGS[\'function\']) {
+			case 1:
+				$content = \'<div align="center"><strong>Hello World!</strong></div><br />
+					The "Kickstarter" has made this module automatically, it contains a default framework for a backend module but apart from that it does nothing useful until you open the script \'.substr(t3lib_extMgm::extPath(\''.$extKey.'\'),strlen(PATH_site)).\''.$pathSuffix.'index.php and edit it!
+					<hr />
+					<br />This is the GET/POST vars sent to the script:<br />\'.
+					\'GET:\' . t3lib_div::view_array($_GET) . \'<br />\'.
+					\'POST:\' . t3lib_div::view_array($_POST) . \'<br />\'.
+					\'\';
+				$this->content .= $this->doc->section(\'Message #1:\', $content, 0, 1);
+				break;
+			case 2:
+				$content = \'<div align=center><strong>Menu item #2...</strong></div>\';
+				$this->content .= $this->doc->section(\'Message #2:\', $content, 0, 1);
+				break;
+			case 3:
+				$content = \'<div align=center><strong>Menu item #3...</strong></div>\';
+				$this->content .= $this->doc->section(\'Message #3:\', $content, 0, 1);
+				break;
+		}
+	}
+	' . ($config['docheader'] ? '
+
+	/**
+	 * Creates the panel of buttons for submitting the form or otherwise perform operations.
+	 *
+	 * @return array All available buttons as an assoc.
+	 */
+	protected function getButtons()	{
+		$buttons = array(
+			\'csh\' => \'\',
+			\'shortcut\' => \'\',
+			\'save\' => \'\'
+		);
+
+			// CSH
+		$buttons[\'csh\'] = t3lib_BEfunc::cshItem(\'_MOD_web_func\', \'\', $GLOBALS[\'BACK_PATH\']);
+
+			// SAVE button
+		$buttons[\'save\'] = \'<input type="image" class="c-inputButton" name="submit" value="Update"\' . t3lib_iconWorks::skinImg($GLOBALS[\'BACK_PATH\'], \'gfx/savedok.gif\', \'\') . \' title="\' . $GLOBALS[\'LANG\']->sL(\'LLL:EXT:lang/locallang_core.php:rm.saveDoc\', 1) . \'" />\';
+
+			// Shortcut
+		if ($GLOBALS[\'BE_USER\']->mayMakeShortcut())	{
+			$buttons[\'shortcut\'] = $this->doc->makeShortcutIcon(\'\', \'function\', $this->MCONF[\'name\']);
+		}
+
+		return $buttons;
+	}
+	' : '') . '
+}
 		',
 		0);
 

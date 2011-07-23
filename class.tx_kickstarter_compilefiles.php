@@ -161,9 +161,9 @@ class tx_kickstarter_compilefiles extends tx_kickstarter_sectionbase {
 		$this->addFileToFileArray('doc/wizard_form.dat',serialize($this->wizArray));
 
 		$this->addFileToFileArray('ChangeLog',
-date('Y-m-d').' '.$this->userField('name').'  <'.$this->userField('email').'>
+date('Y-m-d') . '  ' . $this->userField('name') . '  <' . $this->userField('email') . '>
 
-	* initial code generated with kickstarter
+	* Initial code generated with kickstarter
 '		);
 
 		$this->addFileToFileArray('README.txt','
@@ -171,7 +171,7 @@ Feel free to add some documentation or simply add a link to the online manual.
 '		);
 
 			// icon:
-		$this->addFileToFileArray('ext_icon.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/notfound.gif'));
+		$this->addFileToFileArray('ext_icon.gif', t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter') . 'res/notfound.gif'));
 	}
 
 

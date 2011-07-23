@@ -1,3 +1,7 @@
+2011-07-23 Xavier Perseguers  <typo3@perseguers.ch>
+
+	* Fixed bug #18218: Generated code should stick to TYPO3 CGL
+
 2011-07-18 Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Removed calls to deprecated methods in TYPO3 4.6

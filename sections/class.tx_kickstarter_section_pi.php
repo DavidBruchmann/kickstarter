@@ -193,11 +193,11 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 			case 'list_type':
 				$setType='list_type';
 
-				$this->wizard->ext_tables[]=$this->sPS('
-					'.$this->WOPcomment('WOP:'.$WOP.'[addType]')."
+				$this->wizard->ext_tables[] = $this->sPS('
+					'.$this->WOPcomment('WOP:' . $WOP . '[addType]') . "
 					t3lib_div::loadTCA('tt_content');
-					\$TCA['tt_content']['types']['list']['subtypes_excludelist'][\$_EXTKEY.'_pi".$k."']='layout,select_key,pages';
-					".($config['apply_extended']?"\$TCA['tt_content']['types']['list']['subtypes_addlist'][\$_EXTKEY.'_pi".$k."']='".$this->wizard->_apply_extended_types[$config['apply_extended']]."';":"")."
+					\$TCA['tt_content']['types']['list']['subtypes_excludelist'][\$_EXTKEY.'_pi".$k."'] = 'layout,select_key,pages';
+					" . ($config['apply_extended'] ? "\$TCA['tt_content']['types']['list']['subtypes_addlist'][\$_EXTKEY . '_pi" . $k . "'] = '" . $this->wizard->_apply_extended_types[$config['apply_extended']] . "';" : "") . "
 				");
 
 //				$this->wizard->ext_localconf[]=$this->sPS('
@@ -288,14 +288,14 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 		}
 
 			// Make Plugin class:
-		switch($config['addType'])	{
+		switch ($config['addType']) {
 			case 'list_type':
-				if ($config['list_default'])	{
-					if (is_array($this->wizard->wizArray['tables'][$config['list_default']]))	{
+				if ($config['list_default']) {
+					if (is_array($this->wizard->wizArray['tables'][$config['list_default']])) {
 						$tempTableConf = $this->wizard->wizArray['tables'][$config['list_default']];
 						$tableName = $this->returnName($extKey,'tables',$tempTableConf['tablename']);
 
-						$ll=array();
+						$ll = array();
 
 						$theLines = array();
 						$theLines['getListRow']         = array();
@@ -311,86 +311,86 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 						$theLines['orderByList']        = array();
 
 						$tcol = 'uid';
-						$theLines['getListRow'][$tcol] = '<td><p>\'.$this->getFieldContent(\''.$tcol.'\').\'</p></td>';
-						$theLines['getListHeader'][$tcol] = '<td><p>\'.$this->getFieldHeader_sortLink(\''.$tcol.'\').\'</p></td>';
+						$theLines['getListRow'][$tcol] = '<td><p>\' . $this->getFieldContent(\'' . $tcol . '\') . \'</p></td>';
+						$theLines['getListHeader'][$tcol] = '<td><p>\' . $this->getFieldHeader_sortLink(\'' . $tcol . '\') . \'</p></td>';
 						$theLines['orderByList'][$tcol] = $tcol;
 
 						if (is_array($tempTableConf['fields']))	{
 							reset($tempTableConf['fields']);
-							while(list(,$fC)=each($tempTableConf['fields']))	{
+							while (list(,$fC) = each($tempTableConf['fields'])) {
 								$tcol = $fC['fieldname'];
-								if ($tcol)	{
+								if ($tcol) {
 									$theLines['singleRows'][$tcol] = trim($this->sPS('
 										<tr>
-											<td nowrap="nowrap" valign="top"\'.$this->pi_classParam(\'singleView-HCell\').\'><p>\'.$this->getFieldHeader(\''.$tcol.'\').\'</p></td>
-											<td valign="top"><p>\'.$this->getFieldContent(\''.$tcol.'\').\'</p></td>
+											<td nowrap="nowrap" valign="top"\' . $this->pi_classParam(\'singleView-HCell\') . \'><p>\' . $this->getFieldHeader(\'' . $tcol . '\') . \'</p></td>
+											<td valign="top"><p>\' . $this->getFieldContent(\'' . $tcol . '\') . \'</p></td>
 										</tr>
 									'));
 
 									if ($this->fieldIsRTE($fC))	{
 										$theLines['singleRows_section'][$tcol] = trim($this->sPS('
-											\'.$this->getFieldContent(\''.$tcol.'\').\'
+											\'.$this->getFieldContent(\'' . $tcol . '\') . \'
 										'));
 									} else {
-										$tempN='singleViewField-'.str_replace('_','-',$tcol);
+										$tempN = 'singleViewField-' . str_replace('_', '-', $tcol);
 										$theLines['singleRows_section'][$tcol] = trim($this->sPS('
-											<p\'.$this->pi_classParam("'.$tempN.'").\'><strong>\'.$this->getFieldHeader(\''.$tcol.'\').\':</strong> \'.$this->getFieldContent(\''.$tcol.'\').\'</p>
+											<p\' . $this->pi_classParam("' . $tempN . '") . \'><strong>\' . $this->getFieldHeader(\'' . $tcol . '\') . \':</strong> \' . $this->getFieldContent(\'' . $tcol . '\') . \'</p>
 										'));
-										$P_classes['SV'][]=$tempN;
+										$P_classes['SV'][] = $tempN;
 									}
 
-									if (!strstr($fC['type'],'textarea'))	{
-										$theLines['getListRow'][$tcol] = '<td valign="top"><p>\'.$this->getFieldContent(\''.$tcol.'\').\'</p></td>';
-										$theLines['getListHeader'][$tcol] = '<td nowrap><p>\'.$this->getFieldHeader(\''.$tcol.'\').\'</p></td>';
+									if (!strstr($fC['type'], 'textarea')) {
+										$theLines['getListRow'][$tcol] = '<td valign="top"><p>\' . $this->getFieldContent(\'' . $tcol . '\') . \'</p></td>';
+										$theLines['getListHeader'][$tcol] = '<td nowrap="nowrap"><p>\' . $this->getFieldHeader(\'' . $tcol . '\') . \'</p></td>';
 
-										$tempN='listrowField-'.str_replace('_','-',$tcol);
+										$tempN = 'listrowField-' . str_replace('_', '-', $tcol);
 										$theLines['listItemRows'][$tcol] = trim($this->sPS('
-											<p\'.$this->pi_classParam(\''.$tempN.'\').\'>\'.$this->getFieldContent(\''.$tcol.'\').\'</p>
+											<p\' . $this->pi_classParam(\'' . $tempN . '\') . \'>\' . $this->getFieldContent(\'' . $tcol . '\') . \'</p>
 										'));
-										$P_classes['LV'][]=$tempN;
+										$P_classes['LV'][] = $tempN;
 									}
 
 
-									$this->addLocalConf($ll,array('listFieldHeader_'.$tcol=>$fC['title']),'listFieldHeader_'.$tcol,'pi',$k,1,1);
+									$this->addLocalConf($ll, array('listFieldHeader_' . $tcol => $fC['title']), 'listFieldHeader_' . $tcol, 'pi', $k, 1, 1);
 
-									if ($tcol == 'title')	{
+									if ($tcol === 'title')	{
 										$theLines['getFieldContent'][$tcol] = trim($this->sPS('
-												case "'.$tcol.'":
+												case "' . $tcol . '":
 														// This will wrap the title in a link.
-													return $this->pi_list_linkSingle($this->internal[\'currentRow\'][\''.$tcol.'\'],$this->internal[\'currentRow\'][\'uid\'],1);
-												break;
+													return $this->pi_list_linkSingle($this->internal[\'currentRow\'][\'' . $tcol . '\'], $this->internal[\'currentRow\'][\'uid\'], 1);
+													break;
 										'));
 										$theLines['getFieldHeader'][$tcol] = trim($this->sPS('
-												case "'.$tcol.'":
-													return $this->pi_getLL(\'listFieldHeader_'.$tcol.'\',\'<em>'.$tcol.'</em>\');
-												break;
+												case "' . $tcol . '":
+													return $this->pi_getLL(\'listFieldHeader_' . $tcol . '\', \'<em>' . $tcol . '</em>\');
+													break;
 										'));
 									} elseif ($this->fieldIsRTE($fC)) {
 											$theLines['getFieldContent'][$tcol] = trim($this->sPS('
-													case "'.$tcol.'":
-														return $this->pi_RTEcssText($this->internal[\'currentRow\'][\''.$tcol.'\']);
-													break;
+													case "' . $tcol . '":
+														return $this->pi_RTEcssText($this->internal[\'currentRow\'][\'' . $tcol . '\']);
+														break;
 											'));
-									} elseif ($fC['type']=='datetime')	{
+									} elseif ($fC['type'] === 'datetime') {
 										$theLines['getFieldContent'][$tcol] = trim($this->sPS('
-												case "'.$tcol.'":
-													return strftime(\'%d-%m-%y %H:%M:%S\',$this->internal[\'currentRow\'][\''.$tcol.'\']);
-												break;
+												case "' . $tcol . '":
+													return strftime(\'%d-%m-%y %H:%M:%S\', $this->internal[\'currentRow\'][\'' . $tcol . '\']);
+													break;
 										'));
-									} elseif ($fC['type']=='date')	{
+									} elseif ($fC['type'] === 'date') {
 										$theLines['getFieldContent'][$tcol] = trim($this->sPS('
-												case "'.$tcol.'":
+												case "' . $tcol . '":
 														// For a numbers-only date, use something like: %d-%m-%y
-													return strftime(\'%A %e. %B %Y\',$this->internal[\'currentRow\'][\''.$tcol.'\']);
-												break;
+													return strftime(\'%A %e. %B %Y\', $this->internal[\'currentRow\'][\'' . $tcol . '\']);
+													break;
 										'));
 									}
-									if (strstr($fC['type'],'input'))	{
-										$theLines['getListHeader'][$tcol] = '<td><p>\'.$this->getFieldHeader_sortLink(\''.$tcol.'\').\'</p></td>';
-										$theLines['orderByList'][$tcol]=$tcol;
+									if (strstr($fC['type'],'input')) {
+										$theLines['getListHeader'][$tcol] = '<td><p>\' . $this->getFieldHeader_sortLink(\'' . $tcol . '\') . \'</p></td>';
+										$theLines['orderByList'][$tcol] = $tcol;
 									}
-									if (strstr($fC['type'],'input')||strstr($fC['type'],'textarea'))	{
-										$theLines['searchFieldList'][$tcol]=$tcol;
+									if (strstr($fC['type'], 'input') || strstr($fC['type'], 'textarea')) {
+										$theLines['searchFieldList'][$tcol] = $tcol;
 									}
 								}
 							}
@@ -398,82 +398,82 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 						$theLines['singleRows']['tstamp'] = trim($this->sPS('
 							<tr>
-								<td nowrap\'.$this->pi_classParam(\'singleView-HCell\').\'><p>Last updated:</p></td>
-								<td valign="top"><p>\'.date(\'d-m-Y H:i\',$this->internal[\'currentRow\'][\'tstamp\']).\'</p></td>
+								<td nowrap="nowrap"\' . $this->pi_classParam(\'singleView-HCell\') . \'><p>Last updated:</p></td>
+								<td valign="top"><p>\' . date(\'d-m-Y H:i\', $this->internal[\'currentRow\'][\'tstamp\']) . \'</p></td>
 							</tr>
 						'));
 						$theLines['singleRows']['crdate'] = trim($this->sPS('
 							<tr>
-								<td nowrap\'.$this->pi_classParam(\'singleView-HCell\').\'><p>Created:</p></td>
-								<td valign="top"><p>\'.date(\'d-m-Y H:i\',$this->internal[\'currentRow\'][\'crdate\']).\'</p></td>
+								<td nowrap="nowrap"\' . $this->pi_classParam(\'singleView-HCell\') . \'><p>Created:</p></td>
+								<td valign="top"><p>\' . date(\'d-m-Y H:i\', $this->internal[\'currentRow\'][\'crdate\']) . \'</p></td>
 							</tr>
 						'));
 
 							// Add title to local lang file
 						$ll = $this->addStdLocalLangConf($ll,$k);
 
-						$this->addLocalLangFile($ll,$pathSuffix.'locallang.xml','Language labels for plugin "'.$cN.'"');
+						$this->addLocalLangFile($ll, $pathSuffix . 'locallang.xml', 'Language labels for plugin "' . $cN . '"');
 
 
 						$innerMainContent = $this->sPS('
 							/**
-							 * Main method of your PlugIn
+							 * Main method of your Plugin.
 							 *
-							 * @param	string		$content: The content of the PlugIn
-							 * @param	array		$conf: The PlugIn Configuration
-							 * @return	The content that should be displayed on the website
+							 * @param string $content The content of the Plugin
+							 * @param array $conf The Plugin Configuration
+							 * @return string The content that should be displayed on the website
 							 */
-							function main($content, $conf)	{
-								switch((string)$conf[\'CMD\'])	{
+							public function main($content, array $conf) {
+								switch ((string)$conf[\'CMD\']) {
 									case \'singleView\':
-										list($t) = explode(\':\',$this->cObj->currentRecord);
-										$this->internal[\'currentTable\']=$t;
-										$this->internal[\'currentRow\']=$this->cObj->data;
+										list($t) = explode(\':\', $this->cObj->currentRecord);
+										$this->internal[\'currentTable\'] = $t;
+										$this->internal[\'currentRow\'] = $this->cObj->data;
 										return $this->pi_wrapInBaseClass($this->singleView($content, $conf));
-									break;
+										break;
 									default:
-										if (strstr($this->cObj->currentRecord,\'tt_content\'))	{
+										if (strstr($this->cObj->currentRecord, \'tt_content\')) {
 											$conf[\'pidList\'] = $this->cObj->data[\'pages\'];
 											$conf[\'recursive\'] = $this->cObj->data[\'recursive\'];
 										}
 										return $this->pi_wrapInBaseClass($this->listView($content, $conf));
-									break;
+										break;
 								}
 							}
 						');
 
 						$innerMainContent .= $this->sPS('
 							/**
-							 * Shows a list of database entries
+							 * Shows a list of database entries.
 							 *
-							 * @param	string		$content: content of the PlugIn
-							 * @param	array		$conf: PlugIn Configuration
-							 * @return	HTML list of table entries
+							 * @param string $content content of the Plugin
+							 * @param array $conf Plugin Configuration
+							 * @return string HTML list of table entries
 							 */
-							function listView($content, $conf) {
+							protected function listView($content, array $conf) {
 								$this->conf = $conf;		// Setting the TypoScript passed to this function in $this->conf
 								$this->pi_setPiVarDefaults();
 								$this->pi_loadLL();		// Loading the LOCAL_LANG values
-								'.(!$cache ? '$this->pi_USER_INT_obj = 1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
+								' . (!$cache ? '$this->pi_USER_INT_obj = 1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
 								$lConf = $this->conf[\'listView.\'];	// Local settings for the listView function
 
-								if (is_numeric($this->piVars[\'showUid\']))	{	// If a single element should be displayed:
-									$this->internal[\'currentTable\'] = \''.$tableName.'\';
-									$this->internal[\'currentRow\'] = $this->pi_getRecord(\''.$tableName.'\',$this->piVars[\'showUid\']);
+								if (is_numeric($this->piVars[\'showUid\'])) {	// If a single element should be displayed:
+									$this->internal[\'currentTable\'] = \'' . $tableName . '\';
+									$this->internal[\'currentRow\'] = $this->pi_getRecord(\'' . $tableName . '\', $this->piVars[\'showUid\']);
 
 									$content = $this->singleView($content, $conf);
 									return $content;
 								} else {
-									$items=array(
-										\'1\'=> $this->pi_getLL(\'list_mode_1\',\'Mode 1\'),
-										\'2\'=> $this->pi_getLL(\'list_mode_2\',\'Mode 2\'),
-										\'3\'=> $this->pi_getLL(\'list_mode_3\',\'Mode 3\'),
+									$items = array(
+										\'1\' => $this->pi_getLL(\'list_mode_1\', \'Mode 1\'),
+										\'2\' => $this->pi_getLL(\'list_mode_2\', \'Mode 2\'),
+										\'3\' => $this->pi_getLL(\'list_mode_3\', \'Mode 3\'),
 									);
-									if (!isset($this->piVars[\'pointer\']))	$this->piVars[\'pointer\']=0;
-									if (!isset($this->piVars[\'mode\']))	$this->piVars[\'mode\']=1;
+									if (!isset($this->piVars[\'pointer\'])) $this->piVars[\'pointer\'] = 0;
+									if (!isset($this->piVars[\'mode\'])) $this->piVars[\'mode\'] = 1;
 
 										// Initializing the query parameters:
-									list($this->internal[\'orderBy\'],$this->internal[\'descFlag\']) = explode(\':\',$this->piVars[\'sort\']);
+									list($this->internal[\'orderBy\'],$this->internal[\'descFlag\']) = explode(\':\', $this->piVars[\'sort\']);
 									$version = class_exists(\'t3lib_utility_VersionNumber\')
 											? t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version)
 											: t3lib_div::int_from_ver(TYPO3_version);
@@ -484,32 +484,32 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 										$this->internal[\'results_at_a_time\'] = t3lib_utility_Math::forceIntegerInRange($lConf[\'results_at_a_time\'], 0, 1000, 3);		// Number of results to show in a listing.
 										$this->internal[\'maxPages\'] = t3lib_utility_Math::forceIntegerInRange($lConf[\'maxPages\'], 0, 1000, 2);;		// The maximum number of "pages" in the browse-box: "Page 1", "Page 2", etc.
 									}
-									$this->internal[\'searchFieldList\']=\''.implode(',',$theLines['searchFieldList']).'\';
-									$this->internal[\'orderByList\']=\''.implode(',',$theLines['orderByList']).'\';
+									$this->internal[\'searchFieldList\'] = \'' . implode(',', $theLines['searchFieldList']) . '\';
+									$this->internal[\'orderByList\'] = \'' . implode(',', $theLines['orderByList']) . '\';
 
 										// Get number of records:
-									$res = $this->pi_exec_query(\''.$tableName.'\',1);
+									$res = $this->pi_exec_query(\'' . $tableName . '\', 1);
 									list($this->internal[\'res_count\']) = $GLOBALS[\'TYPO3_DB\']->sql_fetch_row($res);
 
 										// Make listing query, pass query to SQL database:
-									$res = $this->pi_exec_query(\''.$tableName.'\');
-									$this->internal[\'currentTable\'] = \''.$tableName.'\';
+									$res = $this->pi_exec_query(\'' . $tableName . '\');
+									$this->internal[\'currentTable\'] = \'' . $tableName . '\';
 
 										// Put the whole list together:
-									$fullTable=\'\';	// Clear var;
-								#	$fullTable.=t3lib_div::view_array($this->piVars);	// DEBUG: Output the content of $this->piVars for debug purposes. REMEMBER to comment out the IP-lock in the debug() function in t3lib/config_default.php if nothing happens when you un-comment this line!
+									$fullTable = \'\';	// Clear var;
+									// $fullTable .= t3lib_div::view_array($this->piVars);	// DEBUG: Output the content of $this->piVars for debug purposes. REMEMBER to comment out the IP-lock in the debug() function in t3lib/config_default.php if nothing happens when you un-comment this line!
 
 										// Adds the mode selector.
-									$fullTable.=$this->pi_list_modeSelector($items);
+									$fullTable .= $this->pi_list_modeSelector($items);
 
 										// Adds the whole list table
-									$fullTable.='.($config['list_default_listmode']?'$this->makelist($res);':'$this->pi_list_makelist($res);').'
+									$fullTable .= ' . ($config['list_default_listmode'] ? '$this->makeList($res);' : '$this->pi_list_makelist($res);') . '
 
 										// Adds the search box:
-									$fullTable.=$this->pi_list_searchBox();
+									$fullTable .= $this->pi_list_searchBox();
 
 										// Adds the result browser:
-									$fullTable.=$this->pi_list_browseresults();
+									$fullTable .= $this->pi_list_browseresults();
 
 										// Returns the content from the plugin.
 									return $fullTable;
@@ -518,39 +518,39 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 						');
 
 
-						if ($config['list_default_listmode'])	{
+						if ($config['list_default_listmode']) {
 							$innerMainContent .= $this->wrapBody('
 								/**
-								 * Creates a list from a database query
+								 * Creates a list from a database query.
 								 *
-								 * @param	ressource	$res: A database result ressource
-								 * @return	A HTML list if result items
+								 * @param resource $res A database result resource
+								 * @return string A HTML list if result items
 								 */
-								function makelist($res)	{
-									$items=array();
+								protected function makeList($res) {
+									$items = array();
 										// Make list table rows
-									while($this->internal[\'currentRow\'] = $GLOBALS[\'TYPO3_DB\']->sql_fetch_assoc($res))	{
-										$items[]=$this->makeListItem();
+									while (($this->internal[\'currentRow\'] = $GLOBALS[\'TYPO3_DB\']->sql_fetch_assoc($res)) !== FALSE) {
+										$items[] = $this->makeListItem();
 									}
 
-									$out = \'<div\'.$this->pi_classParam(\'listrow\').\'>
-										\'.implode(chr(10),$items).\'
+									$out = \'<div\' . $this->pi_classParam(\'listrow\') . \'>
+										\' . implode(chr(10), $items) . \'
 										</div>\';
 									return $out;
 								}
 
 								/**
-								 * Implodes a single row from a database to a single line
+								 * Implodes a single row from a database to a single line.
 								 *
-								 * @return	Imploded column values
+								 * @return string Imploded column values
 								 */
-								function makeListItem()	{
-									$out=\'
-										',implode(chr(10),$theLines['listItemRows']),'
+								protected function makeListItem() {
+									$out = \'
+										', implode(chr(10), $theLines['listItemRows']), '
 										\';
 									return $out;
 								}
-							',3);
+							', 3);
 						}
 
 						// Single display:
@@ -559,147 +559,154 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 								/**
 								 * Display a single item from the database
 								 *
-								 * @param	string		$content: The PlugIn content
-								 * @param	array		$conf: The PlugIn configuration
-								 * @return	HTML of a single database entry
+								 * @param string $content The Plugin content
+								 * @param array $conf The Plugin configuration
+								 * @return string HTML of a single database entry
 								 */
-								function singleView($content, $conf) {
+								protected function singleView($content, array $conf) {
 									$this->conf = $conf;
 									$this->pi_setPiVarDefaults();
 									$this->pi_loadLL();
 									'.(!$cache ? '$this->pi_USER_INT_obj = 1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
 
 										// This sets the title of the page for use in indexed search results:
-									if ($this->internal[\'currentRow\'][\'title\'])	$GLOBALS[\'TSFE\']->indexedDocTitle=$this->internal[\'currentRow\'][\'title\'];
+									if ($this->internal[\'currentRow\'][\'title\'])	{
+										$GLOBALS[\'TSFE\']->indexedDocTitle = $this->internal[\'currentRow\'][\'title\'];
+									}
 
-									$content=\'<div\'.$this->pi_classParam(\'singleView\').\'>
-										<H2>Record "\'.$this->internal[\'currentRow\'][\'uid\'].\'" from table "\'.$this->internal[\'currentTable\'].\'":</H2>
-										',implode(chr(10),$theLines['singleRows_section']),'
-									<p>\'.$this->pi_list_linkSingle($this->pi_getLL(\'back\',\'Back\'),0).\'</p></div>\'.
+									$content = \'<div\' . $this->pi_classParam(\'singleView\') . \'>
+										<h2>Record "\' . $this->internal[\'currentRow\'][\'uid\'] . \'" from table "\' . $this->internal[\'currentTable\'] . \'":</h2>
+										', implode(chr(10), $theLines['singleRows_section']), '
+									<p>\' . $this->pi_list_linkSingle($this->pi_getLL(\'back\', \'Back\'), 0) . \'</p></div>\' .
 									$this->pi_getEditPanel();
 
 									return $content;
 								}
-							',3);
+							', 3);
 						} else {
-							$innerMainContent.= $this->wrapBody('
+							$innerMainContent .= $this->wrapBody('
 								/**
-								 * Display a single item from the database
+								 * Displays a single item from the database.
 								 *
-								 * @param	string		$content: The PlugIn content
-								 * @param	array		$conf: The PlugIn configuration
-								 * @return	HTML of a single database entry
+								 * @param string $content The Plugin content
+								 * @param array $conf The Plugin configuration
+								 * @return string HTML of a single database entry
 								 */
-								function singleView($content, $conf) {
+								protected function singleView($content, array $conf) {
 									$this->conf = $conf;
 									$this->pi_setPiVarDefaults();
 									$this->pi_loadLL();
-									'.(!$cache ? '$this->pi_USER_INT_obj = 1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
+									' . (!$cache ? '$this->pi_USER_INT_obj = 1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
 
 										// This sets the title of the page for use in indexed search results:
 									if ($this->internal[\'currentRow\'][\'title\'])	$GLOBALS[\'TSFE\']->indexedDocTitle=$this->internal[\'currentRow\'][\'title\'];
 
 									$content=\'<div\'.$this->pi_classParam(\'singleView\').\'>
-										<H2>Record "\'.$this->internal[\'currentRow\'][\'uid\'].\'" from table "\'.$this->internal[\'currentTable\'].\'":</H2>
+										<h2>Record "\' . $this->internal[\'currentRow\'][\'uid\'] . \'" from table "\' . $this->internal[\'currentTable\'] . \'":</h2>
 										<table>
-											',implode(chr(10),$theLines['singleRows']),'
+											', implode(chr(10), $theLines['singleRows']), '
 										</table>
-									<p>\'.$this->pi_list_linkSingle($this->pi_getLL(\'back\',\'Back\'),0).\'</p></div>\'.
+									<p>\' . $this->pi_list_linkSingle($this->pi_getLL(\'back\', \'Back\'), 0) . \'</p></div>\' .
 									$this->pi_getEditPanel();
 
 									return $content;
 								}
-							',3);
+							', 3);
 						}
 
-						$this->wizard->ext_localconf[]=$this->sPS('
-							'.$this->WOPcomment('WOP:'.$WOP.'[...]').'
-							t3lib_extMgm::addTypoScript($_EXTKEY,\'setup\',\'
-								tt_content.shortcut.20.0.conf.'.$tableName.' = < plugin.\'.t3lib_extMgm::getCN($_EXTKEY).\'_pi'.$k.'
-								tt_content.shortcut.20.0.conf.'.$tableName.'.CMD = singleView
-							\',43);
+						$this->wizard->ext_localconf[] = $this->sPS('
+							' . $this->WOPcomment('WOP:' . $WOP . '[...]') . '
+							t3lib_extMgm::addTypoScript($_EXTKEY, \'setup\', \'
+								tt_content.shortcut.20.0.conf.' . $tableName . ' = < plugin.\' . t3lib_extMgm::getCN($_EXTKEY) . \'_pi' . $k . '
+								tt_content.shortcut.20.0.conf.' . $tableName . '.CMD = singleView
+							\', 43);
 						');
 
 						if (!$config['list_default_listmode'])	{
 							$innerMainContent.= $this->wrapBody('
 								/**
-								 * Returns a single table row for list view
+								 * Returns a single table row for list view.
 								 *
-								 * @param	integer		$c: Counter for odd / even behavior
-								 * @return	A HTML table row
+								 * @param integer $c Counter for odd / even behavior
+								 * @return string A HTML table row
 								 */
-								function pi_list_row($c)	{
+								protected function pi_list_row($c) {
 									$editPanel = $this->pi_getEditPanel();
-									if ($editPanel)	$editPanel=\'<TD>\'.$editPanel.\'</TD>\';
+									if ($editPanel)	$editPanel = \'<td>\' . $editPanel . \'</td>\';
 
-									return \'<tr\'.($c%2 ? $this->pi_classParam(\'listrow-odd\') : \'\').\'>
-											',implode(chr(10),$theLines['getListRow']),'
-											'.$editPanel.'
+									return \'<tr\' . ($c % 2 ? $this->pi_classParam(\'listrow-odd\') : \'\') . \'>
+											', implode(chr(10), $theLines['getListRow']), '
+											' . $editPanel . '
 										</tr>\';
 								}
-							',3);
-							$innerMainContent.= $this->wrapBody('
+							', 3);
+							$innerMainContent .= $this->wrapBody('
 								/**
 								 * Returns a table row with column names of the table
 								 *
-								 * @return	A HTML table row
+								 * @return string A HTML table row
 								 */
-								function pi_list_header()	{
-									return \'<tr\'.$this->pi_classParam(\'listrow-header\').\'>
-											',implode(chr(10),$theLines['getListHeader']),'
+								protected function pi_list_header() {
+									return \'<tr\' . $this->pi_classParam(\'listrow-header\') . \'>
+											', implode(chr(10), $theLines['getListHeader']), '
 										</tr>\';
 								}
 							',3);
 						}
-						$innerMainContent.= $this->wrapBody('
+						$innerMainContent .= $this->wrapBody('
 							/**
 							 * Returns the content of a given field
 							 *
-							 * @param	string		$fN: name of table field
-							 * @return	Value of the field
+							 * @param string $fN Name of table field
+							 * @return string Value of the field
 							 */
-							function getFieldContent($fN)	{
+							protected function getFieldContent($fN) {
 								switch($fN) {
 									case \'uid\':
-										return $this->pi_list_linkSingle($this->internal[\'currentRow\'][$fN],$this->internal[\'currentRow\'][\'uid\'],1);	// The "1" means that the display of single items is CACHED! Set to zero to disable caching.
-									break;
-									',implode(chr(10),$theLines['getFieldContent']),'
+										return $this->pi_list_linkSingle($this->internal[\'currentRow\'][$fN], $this->internal[\'currentRow\'][\'uid\'], 1);	// The "1" means that the display of single items is CACHED! Set to zero to disable caching.
+										break;
+									', implode(chr(10), $theLines['getFieldContent']), '
 									default:
 										return $this->internal[\'currentRow\'][$fN];
-									break;
+										break;
 								}
 							}
-						',2);
-						$innerMainContent.= $this->wrapBody('
+						', 2);
+						$innerMainContent .= $this->wrapBody('
 							/**
-							 * Returns the label for a fieldname from local language array
+							 * Returns the label for a field name from local language array.
 							 *
-							 * @param	[type]		$fN: ...
-							 * @return	[type]		...
+							 * @param string $fN Name of table field
+							 * @return string
 							 */
-							function getFieldHeader($fN)	{
-								switch($fN) {
-									',implode(chr(10),$theLines['getFieldHeader']),'
+							protected function getFieldHeader($fN) {
+								switch ($fN) {
+									', implode(chr(10), $theLines['getFieldHeader']), '
 									default:
-										return $this->pi_getLL(\'listFieldHeader_\'.$fN,\'[\'.$fN.\']\');
-									break;
+										return $this->pi_getLL(\'listFieldHeader_\' . $fN, \'[\' . $fN . \']\');
+										break;
 								}
 							}
 						',2);
-						$innerMainContent.= $this->sPS('
+						$innerMainContent .= $this->sPS('
 							/**
-							 * Returns a sorting link for a column header
+							 * Returns a sorting link for a column header.
 							 *
-							 * @param	string		$fN: Fieldname
-							 * @return	The fieldlabel wrapped in link that contains sorting vars
+							 * @param string $fN Name of table field
+							 * @return string The field label wrapped in link that contains sorting vars
 							 */
-							function getFieldHeader_sortLink($fN)	{
-								return $this->pi_linkTP_keepPIvars($this->getFieldHeader($fN),array(\'sort\'=>$fN.\':\'.($this->internal[\'descFlag\']?0:1)));
+							protected function getFieldHeader_sortLink($fN) {
+								return $this->pi_linkTP_keepPIvars(
+									$this->getFieldHeader($fN),
+									array(
+										\'sort\' => $fN . \' : \' . ($this->internal[\'descFlag\'] ? 0 : 1),
+									)
+								);
 							}
 						');
 
+						$pCSSSel = str_replace('_', '-', $cN);
 /*						$CSS_editor_code = '';
-						$pCSSSel = str_replace('_','-',$cN);
 
 						if ($config['list_default_listmode'])	{
 							$temp_merge=array();
@@ -903,70 +910,70 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 							}
 						'),1);
 */
-						$this->addFileToFileArray($config['plus_not_staticTemplate']?'ext_typoscript_setup.txt':$pathSuffix.'static/setup.txt',$this->sPS('
-							plugin.'.$cN.' {
+						$this->addFileToFileArray($config['plus_not_staticTemplate'] ? 'ext_typoscript_setup.txt' : $pathSuffix . 'static/setup.txt', $this->sPS('
+							plugin.' . $cN . ' {
 								CMD =
 								pidList =
 								recursive =
 							}
-							plugin.'.$cN.'.listView {
+							plugin.' . $cN . '.listView {
 								results_at_a_time =
 								maxPages =
 							}
 							  # Example of default set CSS styles (these go into the document header):
-							plugin.'.$cN.'._CSS_DEFAULT_STYLE (
-							  .'.$pCSSSel.' H2 { margin-top: 0px; margin-bottom: 0px; }
+							plugin.' . $cN . '._CSS_DEFAULT_STYLE (
+							  .' . $pCSSSel . ' h2 { margin-top: 0px; margin-bottom: 0px; }
 							)
 							  # Example of how to overrule LOCAL_LANG values for the plugin:
-							plugin.'.$cN.'._LOCAL_LANG.default {
+							plugin.' . $cN . '._LOCAL_LANG.default {
 							  pi_list_searchBox_search = Search!
 							}
 							  # Example of how to set default values from TS in the incoming array, $this->piVars of the plugin:
-							plugin.'.$cN.'._DEFAULT_PI_VARS.test = test
+							plugin.' . $cN . '._DEFAULT_PI_VARS.test = test
 						'),1);
 
-						$this->wizard->EM_CONF_presets['clearCacheOnLoad']=1;
+						$this->wizard->EM_CONF_presets['clearCacheOnLoad'] = 1;
 
-						if (!$config['plus_not_staticTemplate'])	{
+						if (!$config['plus_not_staticTemplate']) {
 							$this->wizard->ext_tables[]=$this->sPS('
-								t3lib_extMgm::addStaticFile($_EXTKEY,\''.$pathSuffix.'static/\',\''.addslashes(trim($config['title'])).'\');
+								t3lib_extMgm::addStaticFile($_EXTKEY, \'' . $pathSuffix . 'static/\', \'' . addslashes(trim($config['title'])) . '\');
 							');
 						}
 					}
 				} else {
 						// Add title to local lang file
-					$ll=$this->addStdLocalLangConf($ll,$k,1);
-					$this->addLocalConf($ll,array('submit_button_label'=>'Click here to submit value'),'submit_button_label','pi',$k,1,1);
+					$ll = $this->addStdLocalLangConf($ll, $k, 1);
+					$this->addLocalConf($ll, array('submit_button_label' => 'Click here to submit value'), 'submit_button_label', 'pi', $k, 1, 1);
 
-					$this->addLocalLangFile($ll,$pathSuffix.'locallang.xml','Language labels for plugin "'.$cN.'"');
+					$this->addLocalLangFile($ll, $pathSuffix . 'locallang.xml', 'Language labels for plugin "' . $cN . '"');
 
 
 					$innerMainContent = $this->sPS('
 						/**
-						 * The main method of the PlugIn
+						 * The main method of the Plugin.
 						 *
-						 * @param	string		$content: The PlugIn content
-						 * @param	array		$conf: The PlugIn configuration
-						 * @return	The content that is displayed on the website
+						 * @param string $content The Plugin content
+						 * @param array $conf The Plugin configuration
+						 * @return string The content that is displayed on the website
 						 */
-						function main($content, $conf) {
+						public function main($content, array $conf) {
 							$this->conf = $conf;
 							$this->pi_setPiVarDefaults();
 							$this->pi_loadLL();
-							'.(!$cache ? '$this->pi_USER_INT_obj = 1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
+							' . (!$cache ? '$this->pi_USER_INT_obj = 1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it\'s a USER_INT object!' : '').'
 
-							$content=\'
+							$content = \'
 								<strong>This is a few paragraphs:</strong><br />
 								<p>This is line 1</p>
 								<p>This is line 2</p>
 
 								<h3>This is a form:</h3>
-								<form action="\'.$this->pi_getPageLink($GLOBALS[\'TSFE\']->id).\'" method="POST">
-									<input type="text" name="\'.$this->prefixId.\'[input_field]" value="\'.htmlspecialchars($this->piVars[\'input_field\']).\'">
-									<input type="submit" name="\'.$this->prefixId.\'[submit_button]" value="\'.htmlspecialchars($this->pi_getLL(\'submit_button_label\')).\'">
+								<form action="\' . $this->pi_getPageLink($GLOBALS[\'TSFE\']->id) . \'" method="POST">
+									<input type="text" name="\' . $this->prefixId . \'[input_field]" value="\' . htmlspecialchars($this->piVars[\'input_field\']) . \'" />
+									<input type="submit" name="\' . $this->prefixId . \'[submit_button]" value="\' . htmlspecialchars($this->pi_getLL(\'submit_button_label\')) . \'" />
 								</form>
 								<br />
-								<p>You can click here to \'.$this->pi_linkToPage(\'get to this page again\',$GLOBALS[\'TSFE\']->id).\'</p>
+								<p>You can click here to \' . $this->pi_linkToPage(\'get to this page again\', $GLOBALS[\'TSFE\']->id) . \'</p>
 							\';
 
 							return $this->pi_wrapInBaseClass($content);
@@ -1006,46 +1013,45 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 */				}
 			break;
 			case 'textbox':
-				$this->wizard->ext_localconf[]=$this->sPS('
+				$this->wizard->ext_localconf[] = $this->sPS('
 					  ## Setting TypoScript for the image in the textbox:
 					t3lib_extMgm::addTypoScript($_EXTKEY,\'setup\',\'
-						plugin.'.$cN.'_pi'.$k.'.IMAGEcObject {
-						  file.width=100
+						plugin.' . $cN . '_pi' . $k . '.IMAGEcObject {
+						  file.width = 100
 						}
-					\',43);
+					\', 43);
 				');
 
 				$innerMainContent = $this->sPS('
 					/**
-					 * The main method of the PlugIn
+					 * The main method of the Plugin.
 					 *
-					 * @param	string		$content: The PlugIn content
-					 * @param	array		$conf: The PlugIn configuration
-					 * @return	The content that is displayed on the website (Textbox)
+					 * @param string $content The Plugin content
+					 * @param array $conf The Plugin configuration
+					 * @return string The content that is displayed on the website (Textbox)
 					 */
-					function main($content, $conf)	{
+					public function main($content, array $conf) {
 
 							// Processes the image-field content:
 							// $conf[\'IMAGEcObject.\'] is passed to the getImage() function as TypoScript
 							// configuration for the image (except filename which is set automatically here)
-						$imageFiles = explode(\',\',$this->cObj->data[\'image\']);	// This returns an array with image-filenames, if many
-						$imageRows=array();	// Accumulates the images
-						reset($imageFiles);
-						while(list(,$iFile)=each($imageFiles))	{
+						$imageFiles = explode(\', \', $this->cObj->data[\'image\']);	// This returns an array with image-filenames, if many
+						$imageRows = array();	// Accumulates the images
+						foreach ($imageFiles as $iFile) {
 							$imageRows[] = \'<tr>
-								<td>\'.$this->getImage($iFile,$conf[\'IMAGEcObject.\']).\'</td>
+								<td>\' . $this->getImage($iFile, $conf[\'IMAGEcObject.\']) . \'</td>
 							</tr>\';
 						}
-						$imageBlock = count($imageRows)?\'<table border=0 cellpadding=5 cellspacing=0>\'.implode(\'\',$imageRows).\'</table>\':\'<img src=clear.gif width=100 height=1>\';
+						$imageBlock = count($imageRows) ? \'<table border="0" cellpadding="5" cellspacing="0">\' . implode(\'\', $imageRows) . \'</table>\' : \'<img src="clear.gif" width="100" height="1" alt="" />\';
 
 							// Sets bodytext
 						$bodyText = nl2br($this->cObj->data[\'bodytext\']);
 
 							// And compiles everything into a table:
-						$finalContent = \'<table border=1>
+						$finalContent = \'<table border="1">
 							<tr>
-								<td valign=top>\'.$imageBlock.\'</td>
-								<td valign=top>\'.$bodyText.\'</td>
+								<td valign="top">\' . $imageBlock . \'</td>
+								<td valign="top">\' . $bodyText . \'</td>
 							</tr>
 						</table>\';
 
@@ -1057,12 +1063,12 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					 * This calls a function in the TypoScript API which will return an image tag with the image
 					 * processed according to the parsed TypoScript content in the $TSconf array.
 					 *
-					 * @param	string		$filename: The filename of the image
-					 * @param	array		$TSconf: The TS configuration for displaying the image
-					 * @return	The image HTML code
+					 * @param string $filename The filename of the image
+					 * @param array $TSconf The TS configuration for displaying the image
+					 * @return string The image HTML code
 					 */
-					function getImage($filename,$TSconf)	{
-						list($theImage)=explode(\',\',$filename);
+					protected function getImage($filename, array $TSconf) {
+						list($theImage) = explode(\', \', $filename);
 						$TSconf[\'file\'] = \'uploads/pics/\'.$theImage;
 						$img = $this->cObj->IMAGE($TSconf);
 						return $img;
@@ -1072,14 +1078,14 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 			case 'header':
 				$innerMainContent = $this->sPS('
 					/**
-					 * The main method of the PlugIn
+					 * The main method of the Plugin.
 					 *
-					 * @param	string		$content: The PlugIn content
-					 * @param	array		$conf: The PlugIn configuration
-					 * @return	The content that is displayed on the website (Header)
+					 * @param string $content The Plugin content
+					 * @param array $conf The Plugin configuration
+					 * @return string The content that is displayed on the website (Header)
 					 */
-					function main($content, $conf)	{
-						return \'<H1>\'.$this->cObj->data[\'header\'].\'</H1>\';
+					public function main($content, array $conf) {
+						return \'<h1>\' . $this->cObj->data[\'header\'] . \'</j1>\';
 					}
 				');
 			break;
@@ -1087,50 +1093,50 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 				$innerMainContent = $this->sPS('
 
 					/**
-					 * The main method of the PlugIn
+					 * The main method of the Plugin.
 					 *
-					 * @param	string		$content: The PlugIn content
-					 * @param	array		$conf: The PlugIn configuration
-					 * @return	The content that is displayed on the website (Menu)
+					 * @param string $content The Plugin content
+					 * @param array $conf The Plugin configuration
+					 * @return string The content that is displayed on the website (Menu)
 					 */
-					function main($content, $conf)	{
+					public function main($content, array $conf) {
 							// Get the PID from which to make the menu.
 							// If a page is set as reference in the \'Startingpoint\' field, use that
 							// Otherwise use the page\'s id-number from TSFE
-						$menuPid = intval($this->cObj->data[\'pages\']?$this->cObj->data[\'pages\']:$GLOBALS[\'TSFE\']->id);
+						$menuPid = intval($this->cObj->data[\'pages\'] ? $this->cObj->data[\'pages\'] : $GLOBALS[\'TSFE\']->id);
 
 							// Now, get an array with all the subpages to this pid:
 							// (Function getMenu() is found in class.t3lib_page.php)
 						$menuItems_level1 = $GLOBALS[\'TSFE\']->sys_page->getMenu($menuPid);
 
 							// Prepare vars:
-						$tRows=array();
+						$tRows = array();
 
 							// Traverse menuitems:
 						reset($menuItems_level1);
-						while(list($uid,$pages_row)=each($menuItems_level1))	{
-							$tRows[]=\'<tr bgColor="#cccccc"><td>\'.$this->pi_linkToPage(
-								$pages_row[\'nav_title\']?$pages_row[\'nav_title\']:$pages_row[\'title\'],
+						while (list($uid, $pages_row) = each($menuItems_level1)) {
+							$tRows[] = \'<tr bgcolor="#cccccc"><td>\' . $this->pi_linkToPage(
+								$pages_row[\'nav_title\'] ? $pages_row[\'nav_title\'] : $pages_row[\'title\'],
 								$pages_row[\'uid\'],
 								$pages_row[\'target\']
-							).\'</td></tr>\';
+							) . \'</td></tr>\';
 						}
 
-						$totalMenu = \'<table border=0 cellpadding=0 cellspacing=2>
+						$totalMenu = \'<table border="0" cellpadding="0" cellspacing="2">
 							<tr><td>This is a menu. Go to your favourite page:</td></tr>
-							\'.implode(\'\',$tRows).
-							\'</table><br />(\'.$this->tellWhatToDo(\'Click here if you want to know where to change the menu design\').\')\';
+							\' . implode(\'\', $tRows) .
+							\'</table><br />(\' . $this->tellWhatToDo(\'Click here if you want to know where to change the menu design\') . \')\';
 
 						return $totalMenu;
 					}
 
 					/**
-					 * Here you can do what ever you want
+					 * Here you can do what ever you want.
 					 *
-					 * @param	string		$str: The string that is processed
-					 * @return	It\'s your decission
+					 * @param string $str The string that is processed
+					 * @return It\'s your decision
 					 */
-					function tellWhatToDo($str)	{
+					protected function tellWhatToDo($str) {
 						return \'<a href="#" onClick="alert(\\\'Open the PHP-file \'.t3lib_extMgm::siteRelPath(\''.$extKey.'\').\''.$pathSuffix.'class.'.$cN.'.php and edit the function main()\nto change how the menu is rendered! It is pure PHP coding!\\\')">\'.$str.\'</a>\';
 					}
 				');
@@ -1138,24 +1144,24 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 			case 'typotags':
 				$innerMainContent = $this->sPS('
 					/**
-					 * The main method of the PlugIn
+					 * The main method of the Plugin.
 					 *
-					 * @param	string		$content: The PlugIn content
-					 * @param	array		$conf: The PlugIn configuration
-					 * @return	The content that is displayed on the website (TypoTag)
+					 * @param string $content The Plugin content
+					 * @param array $conf The Plugin configuration
+					 * @return string The content that is displayed on the website (TypoTag)
 					 */
-					function main($content, $conf)	{
+					public function main($content, array $conf) {
 						$tag_content = $this->cObj->getCurrentVal();
-						return \'<b>\'.$this->tellWhatToDo(strtoupper($tag_content)).\'</b>\';
+						return \'<b>\' . $this->tellWhatToDo(strtoupper($tag_content)) . \'</b>\';
 					}
 
 					/**
 					 * Here you can do what ever you want
 					 *
-					 * @param	string		$str: The string that is processed
-					 * @return	It\'s your decission
+					 * @param string $str The string that is processed
+					 * @return It\'s your decision
 					 */
-					function tellWhatToDo($str)	{
+					protected function tellWhatToDo($str) {
 						return \'<a href="#" onClick="alert(\\\'Open the PHP-file \'.t3lib_extMgm::siteRelPath(\''.$extKey.'\').\''.$pathSuffix.'class.'.$cN.'.php and edit the function main()\nto change how the tag content is processed!\\\')">\'.$str.\'</a>\';
 					}
 				');
@@ -1163,39 +1169,39 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 			default:
 				$innerMainContent = $this->sPS('
 					/**
-					 * The main method of the PlugIn
+					 * The main method of the Plugin.
 					 *
-					 * @param	string		$content: The PlugIn content
-					 * @param	array		$conf: The PlugIn configuration
-					 * @return	The content that is displayed on the website
+					 * @param string $content The Plugin content
+					 * @param array $conf The Plugin configuration
+					 * @return string The content that is displayed on the website
 					 */
-					function main($content, $conf)	{
-						return \'Hello World!<HR>
-							Here is the TypoScript passed to the method:\'.
+					public function main($content, array $conf) {
+						return \'Hello World!<hr />
+							Here is the TypoScript passed to the method:\' .
 									t3lib_div::view_array($conf);
 					}
 				');
 			break;
 		}
 
-		$indexRequire = 'require_once(PATH_tslib.\'class.tslib_pibase.php\');';
+		$indexRequire = '// require_once(PATH_tslib . \'class.tslib_pibase.php\');';
 		$indexContent = $this->wrapBody('
-			class '.$cN.' extends tslib_pibase {
-				var $prefixId      = \''.$cN.'\';		// Same as class name
-				var $scriptRelPath = \''.($pathSuffix."class.".$cN.".php").'\';	// Path to this script relative to the extension dir.
-				var $extKey        = \''.$extKey.'\';	// The extension key.
-				'.($cache ? 'var $pi_checkCHash = true;
-				' : '').'
-				',$innerMainContent,'
+			class ' . $cN . ' extends tslib_pibase {
+				public $prefixId      = \'' . $cN . '\';		// Same as class name
+				public $scriptRelPath = \'' . ($pathSuffix . "class." . $cN . ".php") . '\';	// Path to this script relative to the extension dir.
+				public $extKey        = \'' . $extKey . '\';	// The extension key.
+				' . ($cache ? 'public $pi_checkCHash = TRUE;
+				' : '') . '
+				', $innerMainContent, '
 			}
 		');
 		$this->addFileToFileArray(
-			$pathSuffix.'class.'.$cN.'.php',
+			$pathSuffix . 'class.' . $cN . '.php',
 			$this->PHPclassFile(
 				$extKey,
-				$pathSuffix.'class.'.$cN.'.php',
+				$pathSuffix . 'class.' . $cN . '.php',
 				$indexContent,
-				'Plugin \''.$config['title'].'\' for the \''.$extKey.'\' extension.',
+				'Plugin \'' . $config['title'] . '\' for the \'' . $extKey . '\' extension.',
 				'',
 				'',
 				$indexRequire
@@ -1203,69 +1209,76 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 		);
 
 			// Add wizard?
-		if ($config['plus_wiz'] && $config['addType']=='list_type')	{
-			$this->addLocalConf($this->wizard->ext_locallang,$config,'title','pi',$k);
-			$this->addLocalConf($this->wizard->ext_locallang,$config,'plus_wiz_description','pi',$k);
+		if ($config['plus_wiz'] && $config['addType'] === 'list_type') {
+			$this->addLocalConf($this->wizard->ext_locallang, $config, 'title', 'pi', $k);
+			$this->addLocalConf($this->wizard->ext_locallang, $config, 'plus_wiz_description', 'pi', $k);
 
 			$indexContent = $this->sPS(
-				'class '.$cN.'_wizicon {
+				'class ' . $cN . '_wizicon {
 
-					/**
-					 * Processing the wizard items array
-					 *
-					 * @param	array		$wizardItems: The wizard items
-					 * @return	Modified array with wizard items
-					 */
-					function proc($wizardItems)	{
-						global $LANG;
+	/**
+	 * Processing the wizard items array
+	 *
+	 * @param array $wizardItems The wizard items
+	 * @return array Modified array with wizard items
+	 */
+	public function proc(array $wizardItems) {
+		$LL = $this->includeLocalLang();
 
-						$LL = $this->includeLocalLang();
+		$wizardItems[\'plugins_' . $cN . '\'] = array(
+			\'icon\' => t3lib_extMgm::extRelPath(\'' . $extKey . '\') . \'' . $pathSuffix . 'ce_wiz.gif\',
+			\'title\' => $GLOBALS[\'LANG\']->getLLL(\'pi' . $k . '_title\', $LL),
+			\'description\' => $GLOBALS[\'LANG\']->getLLL(\'pi' . $k . '_plus_wiz_description\', $LL),
+			\'params\' => \'&defVals[tt_content][CType]=list&defVals[tt_content][list_type]=' . $extKey . '_pi' . $k . '\'
+		);
 
-						$wizardItems[\'plugins_'.$cN.'\'] = array(
-							\'icon\'=>t3lib_extMgm::extRelPath(\''.$extKey.'\').\''.$pathSuffix.'ce_wiz.gif\',
-							\'title\'=>$LANG->getLLL(\'pi'.$k.'_title\',$LL),
-							\'description\'=>$LANG->getLLL(\'pi'.$k.'_plus_wiz_description\',$LL),
-							\'params\'=>\'&defVals[tt_content][CType]=list&defVals[tt_content][list_type]='.$extKey.'_pi'.$k.'\'
-						);
+		return $wizardItems;
+	}
 
-						return $wizardItems;
-					}
+	/**
+	 * Reads the [extDir]/locallang.xml and returns the $LOCAL_LANG array found in that file.
+	 *
+	 * @return array The array with language labels
+	 */
+	protected function includeLocalLang() {
+		$llFile = t3lib_extMgm::extPath(\'' . $extKey . '\') . \'locallang.xml\';
+		$version = class_exists(\'t3lib_utility_VersionNumber\')
+				? t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version)
+				: t3lib_div::int_from_ver(TYPO3_version);
+		if ($version < 4006000) {
+			$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS[\'LANG\']->lang);
+		} else {
+			/** @var $llxmlParser t3lib_l10n_parser_Llxml */
+			$llxmlParser = t3lib_div::makeInstance(\'t3lib_l10n_parser_Llxml\');
+			$LOCAL_LANG = $llxmlParser->getParsedData($llFile, $GLOBALS[\'LANG\']->lang);
+		}
 
-					/**
-					 * Reads the [extDir]/locallang.xml and returns the $LOCAL_LANG array found in that file.
-					 *
-					 * @return	The array with language labels
-					 */
-					function includeLocalLang()	{
-						$llFile = t3lib_extMgm::extPath(\''.$extKey.'\').\'locallang.xml\';
-						$LOCAL_LANG = t3lib_div::readLLXMLfile($llFile, $GLOBALS[\'LANG\']->lang);
-
-						return $LOCAL_LANG;
-					}
-				}
-			',
+		return $LOCAL_LANG;
+	}
+}
+',
 			0);
 
 			$this->addFileToFileArray(
-				$pathSuffix.'class.'.$cN.'_wizicon.php',
+				$pathSuffix.'class.' . $cN . '_wizicon.php',
 				$this->PHPclassFile(
 					$extKey,
-					$pathSuffix.'class.'.$cN.'_wizicon.php',
+					$pathSuffix . 'class.' . $cN . '_wizicon.php',
 					$indexContent,
 					'Class that adds the wizard icon.'
 				)
 			);
 
 				// Add wizard icon
-			$this->addFileToFileArray($pathSuffix.'ce_wiz.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/wiz.gif'));
+			$this->addFileToFileArray($pathSuffix . 'ce_wiz.gif', t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter') . 'res/wiz.gif'));
 
 				// Add clear.gif
-			$this->addFileToFileArray($pathSuffix.'clear.gif',t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter').'res/clear.gif'));
+			$this->addFileToFileArray($pathSuffix . 'clear.gif', t3lib_div::getUrl(t3lib_extMgm::extPath('kickstarter') . 'res/clear.gif'));
 
-			$this->wizard->ext_tables[]=$this->sPS('
-				'.$this->WOPcomment('WOP:'.$WOP.'[plus_wiz]:').'
-				if (TYPO3_MODE == \'BE\') {
-					$TBE_MODULES_EXT[\'xMOD_db_new_content_el\'][\'addElClasses\'][\''.$cN.'_wizicon\'] = t3lib_extMgm::extPath($_EXTKEY).\'pi'.$k.'/class.'.$cN.'_wizicon.php\';
+			$this->wizard->ext_tables[] = $this->sPS('
+				' . $this->WOPcomment('WOP:' . $WOP . '[plus_wiz]:') . '
+				if (TYPO3_MODE === \'BE\') {
+					$TBE_MODULES_EXT[\'xMOD_db_new_content_el\'][\'addElClasses\'][\'' . $cN . '_wizicon\'] = t3lib_extMgm::extPath($_EXTKEY) . \'pi' . $k . '/class.' . $cN . '_wizicon.php\';
 				}
 			');
 		}

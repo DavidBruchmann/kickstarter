@@ -99,7 +99,7 @@ class tx_kickstarter_section_cm extends tx_kickstarter_sectionbase {
 			// This will make sure our item is inserted in the clickmenu!
 		$this->wizard->ext_tables[]=$this->sPS('
 			'.$this->WOPcomment('WOP:'.$WOP.':').'
-			if (TYPO3_MODE == \'BE\')	{
+			if (TYPO3_MODE === \'BE\')	{
 				$GLOBALS[\'TBE_MODULES_EXT\'][\'xMOD_alt_clickmenu\'][\'extendCMclasses\'][] = array(
 					\'name\' => \''.$cN.'\',
 					\'path\' => t3lib_extMgm::extPath($_EXTKEY).\''.$filename.'\'

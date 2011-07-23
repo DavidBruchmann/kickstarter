@@ -110,7 +110,7 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 		}
 
 		$this->wizard->ext_tables[]=$this->sPS('
-			if (TYPO3_MODE == \'BE\')	{
+			if (TYPO3_MODE === \'BE\')	{
 				t3lib_extMgm::insertModuleFunction(
 					\''.$position.'\',		'.$this->WOPcomment('WOP:'.$WOP.'[position]').'
 					\''.$cN.'\',
@@ -138,13 +138,13 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 					/**
 					 * Returns the module menu
 					 *
-					 * @return	Array with menuitems
+					 * @return array Array with menuitems
 					 */
-					function modMenu()	{
+					function modMenu() {
 						global $LANG;
 
-						return Array (
-							"'.$cN.'_check" => "",
+						return array(
+							"' . $cN . '_check" => "",
 						);
 					}
 
@@ -153,12 +153,12 @@ class tx_kickstarter_section_modulefunction extends tx_kickstarter_sectionbase {
 					 *
 					 * @return	HTML
 					 */
-					function main()	{
+					public function main() {
 							// Initializes the module. Done in this function because we may need to re-initialize if data is submitted!
 						global $SOBE,$BE_USER,$LANG,$BACK_PATH,$TCA_DESCR,$TCA,$CLIENT,$TYPO3_CONF_VARS;
 
-						$theOutput.=$this->pObj->doc->spacer(5);
-						$theOutput.=$this->pObj->doc->section($LANG->getLL("title"),"Dummy content here...",0,1);
+						$theOutput .= $this->pObj->doc->spacer(5);
+						$theOutput .= $this->pObj->doc->section($LANG->getLL("title"),"Dummy content here...",0,1);
 
 						$menu=array();
 						$menu[]=t3lib_BEfunc::getFuncCheck($this->pObj->id,"SET['.$cN.'_check]",$this->pObj->MOD_SETTINGS["'.$cN.'_check"]).$LANG->getLL("checklabel");
