@@ -591,7 +591,7 @@ class tx_kickstarter_section_tables extends tx_kickstarter_section_fields {
 			#
 			CREATE TABLE '.$tableName.' (
 		', implode(chr(10),$DBfields), '
-			);
+			) ENGINE=InnoDB;
 		');
 		$this->wizard->ext_tables_sql[]=chr(10).$createTable.chr(10);
 
