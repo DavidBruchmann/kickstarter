@@ -1,3 +1,7 @@
+2012-07-19 Peter Foerger  <pfoerger@gmail.com>
+
+	* Release of EXT:kickstarter v0.5.3
+
 2011-08-04 Xavier Perseguers  <typo3@perseguers.ch>
 
 	* Fixed retrieval of common labels in kickstarter wizard when using TYPO3 4.6 (XLIFF)
