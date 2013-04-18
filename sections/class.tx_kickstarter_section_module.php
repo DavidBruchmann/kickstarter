@@ -410,8 +410,8 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 					The "Kickstarter" has made this module automatically, it contains a default framework for a backend module but apart from that it does nothing useful until you open the script \'.substr(t3lib_extMgm::extPath(\''.$extKey.'\'),strlen(PATH_site)).\''.$pathSuffix.'index.php and edit it!
 					<hr />
 					<br />This is the GET/POST vars sent to the script:<br />\'.
-					\'GET:\' . t3lib_div::view_array($_GET) . \'<br />\'.
-					\'POST:\' . t3lib_div::view_array($_POST) . \'<br />\'.
+					\'GET:\' . t3lib_utility_Debug::viewArray($_GET) . \'<br />\'.
+					\'POST:\' . t3lib_utility_Debug::viewArray($_POST) . \'<br />\'.
 					\'\';
 				$this->content .= $this->doc->section(\'Message #1:\', $content, 0, 1);
 				break;

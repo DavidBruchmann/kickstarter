@@ -814,7 +814,7 @@ class tx_kickstarter_sectionbase {
 				$this->content.=$this->doc->spacer(20).$this->doc->section(\'\',$this->doc->makeShortcutIcon(\'id\',implode(\',\',array_keys($this->MOD_MENU)),$this->MCONF[\'name\']));
 			}
 		}
-		$this->content.=$this->doc->spacer(10);
+		$this->content .= $this->doc->spacer(10);
 	}
 
 	/**
@@ -822,7 +822,7 @@ class tx_kickstarter_sectionbase {
 	 *
 	 * @return	[type]		...
 	 */
-	function printContent()	{
+	function printContent() {
 		$this->content .= $this->doc->endPage();
 		echo $this->content;
 	}
@@ -832,25 +832,25 @@ class tx_kickstarter_sectionbase {
 	 *
 	 * @return	[type]		...
 	 */
-	function moduleContent()	{
+	function moduleContent() {
 		switch((string) $this->MOD_SETTINGS[\'function\'])	{
 			case 1:
 				$content = \'<div align=center><strong>Hello World!</strong></div><br />
 					The "Kickstarter" has made this module automatically, it contains a default framework for a backend module but apart from that it does nothing useful until you open the script "\'.substr(t3lib_extMgm::extPath(\''.$extKey.'\'),strlen(PATH_site)).$pathSuffix.index.php.\'" and edit it!
 					<hr />
-					<br />This is the GET/POST vars sent to the script:<br />\'.
-					\'GET:\'.t3lib_div::view_array($_GET).\'<br />\'.
-					\'POST:\'.t3lib_div::view_array($_POST).\'<br />\'.
+					<br />This is the GET/POST vars sent to the script:<br />\' .
+					\'GET:\' . t3lib_utility_Debug::viewArray($_GET) . \'<br />\' .
+					\'POST:\' . t3lib_utility_Debug::viewArray($_POST) . \'<br />\' .
 					\'\';
-				$this->content.=$this->doc->section(\'Message #1:\',$content,0,1);
+				$this->content .= $this->doc->section(\'Message #1:\',$content,0,1);
 			break;
 			case 2:
 				$content=\'<div align=center><strong>Menu item #2...</strong></div>\';
-				$this->content.=$this->doc->section(\'Message #2:\',$content,0,1);
+				$this->content .= $this->doc->section(\'Message #2:\', $content, 0, 1);
 			break;
 			case 3:
-				$content=\'<div align=center><strong>Menu item #3...</strong></div>\';
-				$this->content.=$this->doc->section(\'Message #3:\',$content,0,1);
+				$content = \'<div align=center><strong>Menu item #3...</strong></div>\';
+				$this->content .= $this->doc->section(\'Message #3:\', $content, 0, 1);
 			break;
 		}
 	}

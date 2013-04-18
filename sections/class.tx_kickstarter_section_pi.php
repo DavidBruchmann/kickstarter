@@ -497,7 +497,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 
 										// Put the whole list together:
 									$fullTable = \'\';	// Clear var;
-									// $fullTable .= t3lib_div::view_array($this->piVars);	// DEBUG: Output the content of $this->piVars for debug purposes. REMEMBER to comment out the IP-lock in the debug() function in t3lib/config_default.php if nothing happens when you un-comment this line!
+									// $fullTable .= t3lib_utility_Debug::viewArray($this->piVars);	// DEBUG: Output the content of $this->piVars for debug purposes. REMEMBER to comment out the IP-lock in the debug() function in t3lib/config_default.php if nothing happens when you un-comment this line!
 
 										// Adds the mode selector.
 									$fullTable .= $this->pi_list_modeSelector($items);
@@ -1178,7 +1178,7 @@ class tx_kickstarter_section_pi extends tx_kickstarter_sectionbase {
 					public function main($content, array $conf) {
 						return \'Hello World!<hr />
 							Here is the TypoScript passed to the method:\' .
-									t3lib_div::view_array($conf);
+									t3lib_utility_Debug::viewArray($conf);
 					}
 				');
 			break;

@@ -1,5 +1,6 @@
 2013-04-18 Xavier Perseguers  <xavier@typo3.org>
 
+	* Remove use of deprecated method t3lib_div::view_array()
 	* Fixed bug: invalid skeleton code for Backend modules (content is shown twice)
 
 2012-07-19 Peter Foerger  <pfoerger@gmail.com>
