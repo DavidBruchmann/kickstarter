@@ -1,3 +1,7 @@
+2013-04-18 Xavier Perseguers  <xavier@typo3.org>
+
+	* Fixed bug: invalid skeleton code for Backend modules (content is shown twice)
+
 2012-07-19 Peter Foerger  <pfoerger@gmail.com>
 
 	* Set trunk to version 0.6.0-dev

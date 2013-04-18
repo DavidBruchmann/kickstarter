@@ -327,10 +327,12 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 		$markers[\'CONTENT\'] = $this->content;
 
 			// Build the <body> for the module
+		$this->content = '';
 		$this->content .= $this->doc->startPage($GLOBALS[\'LANG\']->getLL(\'title\'));
 		$this->content .= $this->doc->moduleBody($this->pageinfo, $docHeaderButtons, $markers);
 		$this->content .= $this->doc->endPage();
-		$this->content .= $this->doc->insertStylesAndJS($this->content);
+			// Reset content with full HTML
+		$this->content = $this->doc->insertStylesAndJS($this->content);
 	' : '
 		if (($this->id && $access) || ($GLOBALS[\'BE_USER\']->user[\'admin\'] && !$this->id)) {
 
@@ -393,7 +395,6 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 	 * @return void
 	 */
 	public function printContent() {
-		$this->content .= $this->doc->endPage();
 		echo $this->content;
 	}
 
@@ -476,8 +477,8 @@ class tx_kickstarter_section_module extends tx_kickstarter_sectionbase {
 
 
 // Include ux_class extension?
-if (defined('TYPO3_MODE') && $TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/kickstarter/sections/class.tx_kickstarter_section_module.php']) {
-	include_once($TYPO3_CONF_VARS[TYPO3_MODE]['XCLASS']['ext/kickstarter/sections/class.tx_kickstarter_section_module.php']);
+if (defined('TYPO3_MODE') && isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/kickstarter/sections/class.tx_kickstarter_section_module.php'])) {
+	include_once($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/kickstarter/sections/class.tx_kickstarter_section_module.php']);
 }
 
 
