@@ -15,7 +15,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'description' => 'Creates a framework for a new extension',
 	'category' => 'be',
 	'shy' => 0,
-	'version' => '0.5.3',
+	'version' => '0.5.4',
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',
@@ -34,6 +34,7 @@ $EM_CONF[$_EXTKEY] = array(
 	'CGLcompliance_note' => '',
 	'constraints' => array(
 		'depends' => array(
+			'typo3' => '4.0.0-6.1.99'
 		),
 		'conflicts' => array(
 		),
